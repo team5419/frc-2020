@@ -14,7 +14,7 @@ repos:
         args: [--autofix]
     - id: trailing-whitespace
 -   repo: https://github.com/team5419/pre-commit-hooks
-    rev: v0.3.2
+    rev: v1.0.0
     hooks:
     -   id: ktlint-wrapper
         args: [--color, --format, --relative, --verbose]
