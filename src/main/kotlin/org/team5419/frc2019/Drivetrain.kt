@@ -5,39 +5,27 @@ import org.team5419.fault.subsystems.drivetrain.AbstractTankDrive
 import org.team5419.fault.subsystems.drivetrain.AbstractTankDrive.TurnType
 import org.team5419.fault.hardware.ctre.BerkeliumSPX
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
-import org.team5419.fault.math.units.Meter
-import org.team5419.fault.math.units.SIUnit
-import org.team5419.fault.math.units.derived.AngularVelocity
-import org.team5419.fault.math.units.derived.LinearVelocity
-import org.team5419.fault.math.units.derived.Radian
-import org.team5419.fault.math.units.derived.Volt
+import org.team5419.fault.math.units.*
+import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.math.physics.DifferentialDrive
 import org.team5419.fault.math.physics.DCMotorTransmission
 
-class Drivetrain(
+object Drivetrain : AbstractTankDrive() {
 
-    _leftMaster: BerkeliumSRX<Meter>,
-    _leftSlave1: BerkeliumSPX<Meter>,
-    _leftSlave2: BerkeliumSPX<Meter>,
-    _rightMaster: BerkeliumSRX<Meter>,
-    _rightSlave1: BerkeliumSPX<Meter>,
-    _rightSlave2: BerkeliumSPX<Meter>
+    private val leftMaster = BerkeliumSRX(12, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
+    private val leftSlave1 = BerkeliumSPX(2, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
+    private val leftSlave2 = BerkeliumSPX(3, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
 
-) : AbstractTankDrive() {
+    private val rightMaster = BerkeliumSRX(6, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
+    private val rightSlave1 = BerkeliumSPX(7, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
+    private val rightSlave2 = BerkeliumSPX(8, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
 
-    private val leftMaster: BerkeliumSRX<Meter>
-    private val leftSlave1: BerkeliumSPX<Meter>
-    private val leftSlave2: BerkeliumSPX<Meter>
-    private val rightMaster: BerkeliumSRX<Meter>
-    private val rightSlave1: BerkeliumSPX<Meter>
-    private val rightSlave2: BerkeliumSPX<Meter>
+    override val leftDistance: Length get() = 0.0.meter
+    override val leftDistanceError: Length get() = SIUnit<Meter>(0.0)
 
-    override val leftDistance: SIUnit<Meter> get() = SIUnit<Meter>(0.0)
-    override val leftDistanceError: SIUnit<Meter> get() = SIUnit<Meter>(0.0)
-
-    override val rightDistance: SIUnit<Meter> get() = SIUnit<Meter>(0.0)
-    override val rightDistanceError: SIUnit<Meter> get() = SIUnit<Meter>(0.0)
+    override val rightDistance: Length get() = SIUnit<Meter>(0.0)
+    override val rightDistanceError: Length get() = SIUnit<Meter>(0.0)
 
     override val angularVelocity: SIUnit<AngularVelocity> get() = SIUnit<AngularVelocity>(0.0)
     override val turnError: SIUnit<Radian> get() = SIUnit<Radian>(0.0)
@@ -59,50 +47,18 @@ class Drivetrain(
     )
 
     init {
-
-        leftMaster = _leftMaster
-        leftSlave1 = _leftSlave1
-        leftSlave2 = _leftSlave2
-        rightMaster = _rightMaster
-        rightSlave1 = _rightSlave1
-        rightSlave2 = _rightSlave2
-
-        leftSlave1.victorSPX.follow(leftMaster)
-
-        // leftMaster = _leftMaster.apply {
-        //     setInverted(false)
-        //     setSensorPhase(true)
-        //     setStatusFramePeriod(
-        //         StatusFrameEnhanced.Status_3_Quadrature,
-        //         Constants.TALON_UPDATE_PERIOD_MS,
-        //         0
-        //     )
-        // }
-        // leftSlave1 = _leftSlave1.apply {
-        //     follow(leftMaster)
-        //     setInverted(false)
-        // }
-        // leftSlave1 = _leftSlave2.apply {
-        //     follow(leftMaster)
-        //     setInverted(false)
-        // }
-        // rightMaster = _rightMaster.apply {
-        //     setInverted(true)
-        //     setSensorPhase(true)
-        //     setStatusFramePeriod(
-        //         StatusFrameEnhanced.Status_3_Quadrature,
-        //         Constants.TALON_UPDATE_PERIOD_MS,
-        //         0
-        //     )
-        // }
-        // rightSlave1 = _rightSlave1.apply {
-        //     follow(rightMaster)
-        //     setInverted(false)
-        // }
-        // rightSlave2 = _rightSlave2.apply {
-        //     follow(rightMaster)
-        //     setInverted(false)
-        // }
+        leftSlave1.victorSPX.apply {
+            follow(leftMaster)
+        }
+        leftSlave2.apply{
+            follow(leftMaster)
+        }
+        rightSlave1.apply{
+            follow(rightMaster)
+        }
+        rightSlave2.apply{
+            follow(rightMaster)
+        }
     }
 
     override fun setPercent(left: Double, right: Double) {

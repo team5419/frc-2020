@@ -24,23 +24,7 @@ class Robot : TimedRobot() {
     private val xboxController: BerkeliumXbox
 
     init {
-        leftMaster = BerkeliumSRX(12, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
-        leftSlave1 = BerkeliumSPX(2, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
-        leftSlave2 = BerkeliumSPX(3, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
-
-        rightMaster = BerkeliumSRX(6, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
-        rightSlave1 = BerkeliumSPX(7, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
-        rightSlave2 = BerkeliumSPX(8, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
-
-        drivetrain = Drivetrain(
-            leftMaster,
-            leftSlave1,
-            leftSlave2,
-            rightMaster,
-            rightSlave1,
-            rightSlave2
-        )
-
+        drivetrain = Drivetrain()
         xboxController = BerkeliumXbox(0)
     }
 
