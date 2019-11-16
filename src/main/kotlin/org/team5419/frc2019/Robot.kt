@@ -2,36 +2,46 @@ package org.team5419.frc2019
 
 import edu.wpi.first.wpilibj.TimedRobot
 
-import org.team5419.fault.hardware.LazyTalonSRX
-import org.team5419.fault.hardware.LazyVictorSPX
-import com.ctre.phoenix.motorcontrol.ControlMode
+import org.team5419.fault.hardware.ctre.BerkeliumSPX
+import org.team5419.fault.hardware.ctre.BerkeliumSRX
+import org.team5419.fault.input.BerkeliumXbox
+import org.team5419.fault.math.units.Meter
 
-import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.GenericHID.Hand
 
 @SuppressWarnings("MagicNumber")
 class Robot : TimedRobot() {
 
-    private val mLeftMaster: LazyTalonSRX
-    private val mLeftSlave1: LazyVictorSPX
-    private val mLeftSlave2: LazyVictorSPX
+    private val leftMaster: BerkeliumSRX<Meter>
+    private val leftSlave1: BerkeliumSPX<Meter>
+    private val leftSlave2: BerkeliumSPX<Meter>
 
-    private val mRightMaster: LazyTalonSRX
-    private val mRightSlave1: LazyVictorSPX
-    private val mRightSlave2: LazyVictorSPX
+    private val rightMaster: BerkeliumSRX<Meter>
+    private val rightSlave1: BerkeliumSPX<Meter>
+    private val rightSlave2: BerkeliumSPX<Meter>
 
-    private val mXboxController: XboxController
+    private val drivetrain: Drivetrain
+    private val xboxController: BerkeliumXbox
 
     init {
-        mLeftMaster = LazyTalonSRX(12)
-        mLeftSlave1 = LazyVictorSPX(2)
-        mLeftSlave2 = LazyVictorSPX(3)
+        leftMaster = BerkeliumSRX(12, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
+        leftSlave1 = BerkeliumSPX(2, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
+        leftSlave2 = BerkeliumSPX(3, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
 
-        mRightMaster = LazyTalonSRX(6)
-        mRightSlave1 = LazyVictorSPX(7)
-        mRightSlave2 = LazyVictorSPX(8)
+        rightMaster = BerkeliumSRX(6, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
+        rightSlave1 = BerkeliumSPX(7, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
+        rightSlave2 = BerkeliumSPX(8, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
 
-        mXboxController = XboxController(0)
+        drivetrain = Drivetrain(
+            leftMaster,
+            leftSlave1,
+            leftSlave2,
+            rightMaster,
+            rightSlave1,
+            rightSlave2
+        )
+
+        xboxController = BerkeliumXbox(0)
     }
 
     override fun robotInit() {
@@ -51,21 +61,8 @@ class Robot : TimedRobot() {
 
     override fun teleopPeriodic() {
 
-        // val chainDown: Double = mXboxController.getTriggerAxis(Hand.kLeft) / 1.0
-        // val chainUp: Double = mXboxController.getTriggerAxis(Hand.kRight) / 1.0
-
-        val leftHand: Double = mXboxController.getY(Hand.kLeft) / 1
-        val rightHand: Double = mXboxController.getY(Hand.kRight) / -1
-
-        mLeftMaster.set(ControlMode.PercentOutput, leftHand)
-        mLeftSlave1.set(ControlMode.PercentOutput, leftHand)
-        mLeftSlave2.set(ControlMode.PercentOutput, leftHand)
-
-        mRightMaster.set(ControlMode.PercentOutput, rightHand)
-        mRightSlave1.set(ControlMode.PercentOutput, rightHand)
-        mRightSlave2.set(ControlMode.PercentOutput, rightHand)
-
-        // mChainLift.set(ControlMode.PercentOutput, chainUp - chainDown)
-        // mChainBottom.set(ControlMode.PercentOutput, chainUp - chainDown)
+        val leftHand: Double = xboxController.getY(Hand.kLeft) / 1
+        val rightHand: Double = xboxController.getY(Hand.kRight) / -1
+        drivetrain.setPercent(leftHand, rightHand)
     }
 }
