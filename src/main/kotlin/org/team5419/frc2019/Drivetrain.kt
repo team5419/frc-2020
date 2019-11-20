@@ -11,6 +11,7 @@ import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.math.physics.DifferentialDrive
 import org.team5419.fault.math.physics.DCMotorTransmission
 
+
 object Drivetrain : AbstractTankDrive() {
 
     private val leftMaster = BerkeliumSRX(12, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
@@ -21,11 +22,11 @@ object Drivetrain : AbstractTankDrive() {
     private val rightSlave1 = BerkeliumSPX(7, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
     private val rightSlave2 = BerkeliumSPX(8, Constants.Drivetrain.NATIVE_UNIT_LENGTH_MODEL)
 
-    override val leftDistance: Length get() = 0.0.meter
-    override val leftDistanceError: Length get() = SIUnit<Meter>(0.0)
+    override val leftDistance: SIUnit<Meter> get() = 0.0.meter
+    override val leftDistanceError: SIUnit<Meter> get() = 0.0.meter
 
-    override val rightDistance: Length get() = SIUnit<Meter>(0.0)
-    override val rightDistanceError: Length get() = SIUnit<Meter>(0.0)
+    override val rightDistance: SIUnit<Meter> get() = 0.0.meter
+    override val rightDistanceError: SIUnit<Meter> get() = 0.0.meter
 
     override val angularVelocity: SIUnit<AngularVelocity> get() = SIUnit<AngularVelocity>(0.0)
     override val turnError: SIUnit<Radian> get() = SIUnit<Radian>(0.0)
