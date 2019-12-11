@@ -18,7 +18,7 @@ class Robot : TimedRobot() {
 
     init {
         drivetrain = Drivetrain
-        mXboxController = xboxController(0)
+        mXboxController = XboxController(0)
     }
 
     override fun robotInit() {

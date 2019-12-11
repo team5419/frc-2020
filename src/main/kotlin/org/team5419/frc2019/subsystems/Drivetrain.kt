@@ -118,13 +118,13 @@ object Drivetrain : AbstractTankDrive() {
         get() = DriveConstants.kNativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
 
     val angle: Rotation2d
-        get() = periodicIO.gyroAngle.degree
+        get() = periodicIO.gyroAngle.toRotation2d()
 
-    override val angularVelocity: AngularVelocity
-        get() = periodicIO.angularVelocity.degree.velocity
+    override val angularVelocity: SIUnit<AngularVelocity>
+        get() = periodicIO.angularVelocity
 
-    override val turnError: Rotation2d
-        get() = periodicIO.turnError.degrees
+    override val turnError: SIUnit<Radian>
+        get() = periodicIO.turnError
 
 
     override fun setPercent(left: Double, right: Double) = setOpenLoop(left, right)
@@ -169,14 +169,14 @@ object Drivetrain : AbstractTankDrive() {
         periodicIO.rightFeedforward = 0.0.volts
     }
 
-    fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>, leftFF: SIUnit<Volt>, rightFF: SIUnit<Volt>) {
+    override fun setVelocity(leftVelocity: LinearVelocity, rightVelocity: LinearVelocity, leftFF: Volt, rightFF: Volt) {
         wantedState = State.Velocity
 
         leftMasterMotor.talonSRX.selectProfileSlot(kVelocitySlot, 0)
         rightMasterMotor.talonSRX.selectProfileSlot(kVelocitySlot, 0)
 
-        periodicIO.leftDemand = leftVelocity.value
-        periodicIO.rightDemand = rightVelocity.value
+        periodicIO.leftDemand = leftVelocity
+        periodicIO.rightDemand = rightVelocity
 
         periodicIO.leftFeedforward = leftFF
         periodicIO.rightFeedforward = rightFF
@@ -185,8 +185,8 @@ object Drivetrain : AbstractTankDrive() {
     override fun setOutput(wheelVelocities: DifferentialDrive.WheelState, wheelVoltages: DifferentialDrive.WheelState) {
         wantedState = State.PathFollowing
 
-        periodicIO.leftDemand = wheelVelocities.left * differentialDrive.wheelRadius
-        periodicIO.rightDemand = wheelVelocities.right * differentialDrive.wheelRadius
+        periodicIO.leftDemand = differentialDrive.wheelRadius * wheelVelocities.left
+        periodicIO.rightDemand = differentialDrive.wheelRadius * wheelVelocities.right
 
         periodicIO.leftFeedforward = wheelVoltages.left.volts
         periodicIO.rightFeedforward = wheelVoltages.right.volts
@@ -198,8 +198,8 @@ object Drivetrain : AbstractTankDrive() {
         periodicIO.leftDemand = 0.0
         periodicIO.rightDemand = 0.0
 
-        periodicIO.leftFeedforward = 0.0
-        periodicIO.rightFeedforward = 0.0
+        periodicIO.leftFeedforward = 0.0.volts
+        periodicIO.rightFeedforward = 0.0.volts
     }
 
     override fun periodic() {
@@ -217,11 +217,11 @@ object Drivetrain : AbstractTankDrive() {
         periodicIO.leftRawSensorVelocity = leftMasterMotor.encoder.rawVelocity
         periodicIO.rightRawSensorVelocity = rightMasterMotor.encoder.rawVelocity
 
-        periodicIO.gyroAngle = gyro.fusedHeading
+        periodicIO.gyroAngle = gyro.fusedHeading.radians
 
         val xyz = DoubleArray(3)
         gyro.getRawGyro(xyz)
-        periodicIO.angularVelocity = xyz[1]
+        periodicIO.angularVelocity = xyz[1].radians.velocity
 
         when(wantedState) {
             State.Nothing -> {
@@ -233,12 +233,12 @@ object Drivetrain : AbstractTankDrive() {
                 rightMasterMotor.setPercent(periodicIO.rightDemand)
             }
             State.PathFollowing, State.Velocity -> {
-                leftMasterMotor.setVelocity(periodicIO.leftDemand, periodicIO.leftFeedforward)
-                rightMasterMotor.setVelocity(periodicIO.rightDemand, periodicIO.rightFeedforward)
+                leftMasterMotor.setVelocity(periodicIO.leftDemand.meters.velocity, periodicIO.leftFeedforward)
+                rightMasterMotor.setVelocity(periodicIO.rightDemand.meters.velocity, periodicIO.rightFeedforward)
             }
             State.Position -> {
-                leftMasterMotor.setPosition(periodicIO.leftDemand,0.0)
-                rightMasterMotor.setPosition(periodicIO.rightDemand,0.0)
+                leftMasterMotor.setPosition(periodicIO.leftDemand.meters,0.0.volts)
+                rightMasterMotor.setPosition(periodicIO.rightDemand.meters,0.0.volts)
             }
             State.Turning -> {
                 rightMasterMotor.talonSRX.set(
@@ -255,11 +255,11 @@ object Drivetrain : AbstractTankDrive() {
 
     class PeriodicIO {
         // input
-        var leftVoltage = 0.0.volts
-        var rightVoltage = 0.0.volts
+        var leftVoltage: SIUnit<Volt> = 0.0.volts
+        var rightVoltage: SIUnit<Volt> = 0.0.volts
 
-        var leftCurrent = 0.0.amps
-        var rightCurrent = 0.0.amps
+        var leftCurrent: SIUnit<Ampere> = 0.0.amps
+        var rightCurrent: SIUnit<Ampere> = 0.0.amps
 
         var leftRawSensorPosition = 0.0.nativeUnits
         var rightRawSensorPosition = 0.0.nativeUnits
@@ -267,19 +267,19 @@ object Drivetrain : AbstractTankDrive() {
         var leftRawDistanceError = 0.0.nativeUnits
         var rightRawDistanceError = 0.0.nativeUnits
 
-        var leftRawSensorVelocity = 0.0.meters.velocity
-        var rightRawSensorVelocity = 0.0.meters.velocity
+        var leftRawSensorVelocity = 0.0.nativeUnits.velocity
+        var rightRawSensorVelocity = 0.0.nativeUnits.velocity
 
-        var gyroAngle = 0.0.degrees
+        var gyroAngle: SIUnit<Radian> = 0.0.degrees
         var angularVelocity = 0.0.radians.velocity
-        var turnError = 0.0.nativeUnits
+        var turnError: SIUnit<Radian> = 0.0.degrees
 
         // output
-        var leftDemand: Double  = 0.0
-        var rightDemand: Double = 0.0
+        var leftDemand  = 0.0
+        var rightDemand = 0.0
 
-        var leftFeedforward = 0.0.volts
-        var rightFeedforward = 0.0.volts
+        var leftFeedforward: SIUnit<Volt> = 0.0.volts
+        var rightFeedforward: SIUnit<Volt> = 0.0.volts
 
         var angleTarget = 0.0
     }
