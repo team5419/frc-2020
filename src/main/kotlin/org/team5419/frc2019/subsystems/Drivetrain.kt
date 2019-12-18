@@ -50,7 +50,10 @@ object Drivetrain : AbstractTankDrive() {
     private val leftSlave1 = BerkeliumSPX(DriveConstants.kLeftSlave1Port, DriveConstants.kNativeGearboxConversion)
     private val leftSlave2 = BerkeliumSPX(DriveConstants.kLeftSlave2Port, DriveConstants.kNativeGearboxConversion)
 
-    override val rightMasterMotor = BerkeliumSRX(DriveConstants.kRightMasterPort, DriveConstants.kNativeGearboxConversion)
+    override val rightMasterMotor = BerkeliumSRX(
+        DriveConstants.kRightMasterPort,
+        DriveConstants.kNativeGearboxConversion
+    )
     private val rightSlave1 = BerkeliumSPX(DriveConstants.kRightSlave1Port, DriveConstants.kNativeGearboxConversion)
     private val rightSlave2 = BerkeliumSPX(DriveConstants.kRightSlave2Port, DriveConstants.kNativeGearboxConversion)
 
@@ -71,11 +74,19 @@ object Drivetrain : AbstractTankDrive() {
         rightSlave2.victorSPX.setInverted(InvertType.FollowMaster)
         rightMasterMotor.outputInverted = false
 
-        leftMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0)
-        rightMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0)
+        leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
+            FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
+        )
+        rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
+            FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
+        )
 
-        leftMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0)
-        rightMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0)
+        leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
+            FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
+        )
+        rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
+            FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
+        )
 
         leftMasterMotor.encoder.encoderPhase = DriveConstants.kEncoderPhase
         rightMasterMotor.encoder.encoderPhase = DriveConstants.kEncoderPhase
@@ -169,7 +180,7 @@ object Drivetrain : AbstractTankDrive() {
 
         leftMasterMotor.talonSRX.follow(rightMasterMotor.talonSRX, FollowerType.AuxOutput1)
 
-        periodicIO.angleTarget = angle.value.value
+        periodicIO.angleTarget = angle.value
 
         periodicIO.leftDemand = 0.0
         periodicIO.rightDemand = 0.0
@@ -178,7 +189,12 @@ object Drivetrain : AbstractTankDrive() {
         periodicIO.rightFeedforward = 0.0.volts
     }
 
-    override fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>, leftFF: SIUnit<Volt>, rightFF: SIUnit<Volt>) {
+    override fun setVelocity(
+            leftVelocity: SIUnit<LinearVelocity>,
+            rightVelocity: SIUnit<LinearVelocity>,
+            leftFF: SIUnit<Volt>,
+            rightFF: SIUnit<Volt>
+        ) {
         wantedState = State.Velocity
 
         leftMasterMotor.talonSRX.selectProfileSlot(kVelocitySlot, 0)
