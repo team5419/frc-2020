@@ -36,6 +36,27 @@ class Robot : TimedRobot() {
     init {
         drivetrain = Drivetrain
         mXboxController = XboxController(0)
-        autoController = AutoController(defaultRoutine)
+    }
+
+    override fun robotInit() {
+    }
+
+    override fun robotPeriodic() {
+    }
+
+    override fun disabledInit() {
+    }
+
+    override fun disabledPeriodic() {
+    }
+
+    override fun teleopInit() {
+    }
+
+    override fun teleopPeriodic() {
+        val leftHand: Double = mXboxController.getY(Hand.kLeft) / 1
+        val rightHand: Double = mXboxController.getY(Hand.kRight) / -1
+        drivetrain.setPercent(leftHand, rightHand)
+        drivetrain.setOutput(//Nick: Output from controller?)
     }
 }
