@@ -4,12 +4,9 @@ import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.XboxController
 
-import org.team5419.fault.hardware.ctre.BerkeliumSPX
-import org.team5419.fault.hardware.ctre.BerkeliumSRX
-import org.team5419.fault.input.xboxController
-import org.team5419.fault.math.units.Meter
-import org.team5419.frc2019.subsystems.Drivetrain
+import org.team5419.fault.math.physics.DifferentialDrive
 
+import org.team5419.frc2019.subsystems.Drivetrain
 
 @SuppressWarnings("MagicNumber")
 class Robot : TimedRobot() {
@@ -18,7 +15,7 @@ class Robot : TimedRobot() {
 
     init {
         drivetrain = Drivetrain
-        mXboxController = xboxController(0)
+        mXboxController = XboxController(0)
     }
 
     override fun robotInit() {
@@ -40,5 +37,6 @@ class Robot : TimedRobot() {
         val leftHand: Double = mXboxController.getY(Hand.kLeft) / 1
         val rightHand: Double = mXboxController.getY(Hand.kRight) / -1
         drivetrain.setPercent(leftHand, rightHand)
+        drivetrain.setOutput(//Nick: Output from controller?)
     }
 }

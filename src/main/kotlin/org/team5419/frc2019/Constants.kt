@@ -4,18 +4,29 @@ import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
 import org.team5419.fault.math.units.derived.acceleration
 import org.team5419.fault.math.units.derived.velocity
+import org.team5419.fault.math.units.derived.radians
 import org.team5419.fault.math.units.*
+import org.team5419.fault.math.kEpsilon
 
 import org.team5419.fault.math.units.native.NativeUnitLengthModel
 import org.team5419.fault.math.units.native.nativeUnits
 import kotlin.math.PI
 import kotlin.math.pow
 
+@SuppressWarnings("MaxLineLength, WildcardImport")
 object RobotConstants {
     val kRobotLength = 32.inches
     val kRobotWidth = 27.5.inches
     val kBumperThickness = 2.inches
 }
+
+object TrajectoryConstants {
+	val kMaxCentripetalAcceleration = 4.0.feet.acceleration
+	val kMaxAcceleration = 4.0.feet.acceleration
+	val kMaxAngularAcceleration = 2.0.radians.acceleration
+	val kMaxVelocity = 10.0.feet.velocity
+}
+
 
 object DriveConstants {
     // ports
@@ -51,14 +62,12 @@ object DriveConstants {
     val kMoi = 0.0 // kg * m^2
     val kAngularDrag = 10.0 // (N * m) / (rad / s)  TUNE ME
 
-
     val kTicksPerRotation = 4096.nativeUnits
     val kPigeonConversion = (3600.0 / 8192.0).nativeUnits
 
-
-    const val kDriveKv = 0.0
-    const val kDriveKa = 0.0
-    const val kDriveKs = 0.0
+    const val kDriveKv = kEpsilon
+    const val kDriveKa = kEpsilon
+    const val kDriveKs = kEpsilon
 
     val kLeftDriveGearbox = DCMotorTransmission(
             1 / kDriveKv,
@@ -86,10 +95,4 @@ object DriveConstants {
             kTicksPerRotation,
             kWheelRadius
     )
-
-
-
-
-
-
 }
