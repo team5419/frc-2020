@@ -1,4 +1,4 @@
-package org.team5419.frc2019
+package org.team5419.frc2020
 
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
@@ -19,12 +19,11 @@ object RobotConstants {
     val kRobotWidth = 27.5.inches
     val kBumperThickness = 2.inches
 }
-
-object TrajectoryConstants {
-	val kMaxCentripetalAcceleration = 4.0.feet.acceleration
-	val kMaxAcceleration = 4.0.feet.acceleration
-	val kMaxAngularAcceleration = 2.0.radians.acceleration
-	val kMaxVelocity = 10.0.feet.velocity
+object TrajectoryConstants{
+    val kMaxCentripetalAcceleration = 4.0.feet.acceleration
+    val kMaxAcceleration = 4.0.feet.acceleration
+    val kMaxAngularAcceleration = 2.0.radians.acceleration
+    val kMaxVelocity = 10.0.feet.velocity
 }
 
 
@@ -70,29 +69,29 @@ object DriveConstants {
     const val kDriveKs = kEpsilon
 
     val kLeftDriveGearbox = DCMotorTransmission(
-            1 / kDriveKv,
-            kWheelRadius.value.pow(2) * kMass.value / (2.0 * kDriveKa),
-            kDriveKs
+        1 / kDriveKv,
+        kWheelRadius.value.pow(2) * kMass.value / (2.0 * kDriveKa),
+        kDriveKs
     )
 
     val kRightDriveGearbox = DCMotorTransmission(
-            1 / kDriveKv,
-            kWheelRadius.value.pow(2) * kMass.value / (2.0 * kDriveKa),
-            kDriveKs
+        1 / kDriveKv,
+        kWheelRadius.value.pow(2) * kMass.value / (2.0 * kDriveKa),
+        kDriveKs
     )
 
     val kDriveModel = DifferentialDrive(
-            kMass.value,
-            kMoi,
-            kAngularDrag, // tune me
-            kWheelRadius.value,
-            kEffectiveWheelbaseRadius.value,
-            kLeftDriveGearbox,
-            kRightDriveGearbox
+        kMass.value,
+        kMoi,
+        kAngularDrag, // tune me
+        kWheelRadius.value,
+        kEffectiveWheelbaseRadius.value,
+        kLeftDriveGearbox,
+        kRightDriveGearbox
     )
 
     val kNativeGearboxConversion = NativeUnitLengthModel(
-            kTicksPerRotation,
-            kWheelRadius
+        kTicksPerRotation,
+        kWheelRadius
     )
 }
