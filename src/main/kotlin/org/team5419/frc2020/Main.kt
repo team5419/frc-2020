@@ -1,6 +1,7 @@
 package org.team5419.frc2020
 
 import edu.wpi.first.wpilibj.RobotBase
+import org.team5419.frc2020.Robot
 
 import java.util.function.Supplier
 
