@@ -9,9 +9,7 @@ def ROBOT_MAIN_CLASS = "org.team5419.frc2020.Main"
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
     targets {
-        target("roborio") {
-            // Team can be overridden by command line, for use with VSCode
-        roboRIO("roborio", edu.wpi.first.gradlerio.frc.RoboRIO) {
+        roboRIO("roborio") {
             // Team number is loaded either from the .wpilib/wpilib_preferences.json
             // or from command line. If not found an exception will be thrown.
             // You can use getTeamOrDefault(team) instead of getTeamNumber if you

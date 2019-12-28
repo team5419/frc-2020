@@ -19,13 +19,13 @@ object RobotConstants {
     val kRobotWidth = 27.5.inches
     val kBumperThickness = 2.inches
 }
+
 object TrajectoryConstants{
     val kMaxCentripetalAcceleration = 4.0.feet.acceleration
     val kMaxAcceleration = 4.0.feet.acceleration
     val kMaxAngularAcceleration = 2.0.radians.acceleration
     val kMaxVelocity = 10.0.feet.velocity
 }
-
 
 object DriveConstants {
     // ports
@@ -95,3 +95,21 @@ object DriveConstants {
         kWheelRadius
     )
 }
+
+object InputConstants {
+    public const val DRIVER_PORT = 0
+    public const val CODRIVER_BUTTON_BOARD_PORT = 1
+    public const val CODRIVER_JOYSTICK_PORT = 2
+
+    // driver constants
+    public const val JOYSTICK_DEADBAND = 0.07
+    public const val TRIGGER_DEADBAND = 0.1
+    public const val TURN_MULT = 0.4
+    public const val SLOW_MULT = 0.5
+    public const val DRIVER_STOW_TIMEOUT = 2.0 // seconds
+
+    // codriver constants
+    public const val MANUAL_CONTROL_DEADBAND = 0.07
+
+}
+
