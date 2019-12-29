@@ -9,12 +9,14 @@ import org.team5419.fault.auto.Action
 import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.trajectory.DefaultTrajectoryGenerator
-import org.team5419.frc2020.subsystems.Drivetrain
+import org.team5419.frc2020.subsystems.SubsystemManager
 
+public class AutoController(vararg Routines): Controller {
+    init {
 
-public class AutoController(subsystems : SubsystemManager, ): Controller {
-    public val routines : Array<Action> = arrayOf(
-        redLeft, redCenter, redRight,
-        blueLeft, blueCenter, blueRight
-    )
+    }
+
+    override fun start() {}
+    override fun update() {}
+    override fun reset() {}
 }

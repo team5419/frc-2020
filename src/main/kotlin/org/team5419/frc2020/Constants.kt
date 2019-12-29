@@ -20,7 +20,7 @@ object RobotConstants {
     val kBumperThickness = 2.inches
 }
 
-object TrajectoryConstants{
+object TrajectoryConstants {
     val kMaxCentripetalAcceleration = 4.0.feet.acceleration
     val kMaxAcceleration = 4.0.feet.acceleration
     val kMaxAngularAcceleration = 2.0.radians.acceleration
@@ -110,6 +110,4 @@ object InputConstants {
 
     // codriver constants
     public const val MANUAL_CONTROL_DEADBAND = 0.07
-
 }
-

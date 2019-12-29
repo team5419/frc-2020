@@ -149,7 +149,7 @@ object Drivetrain : AbstractTankDrive() {
         get() = periodicIO.turnError
 
     override fun setPercent(left: Double, right: Double) = setOpenLoop(left, right)
-    fun setPercent(signal : DriveSignal) = setOpenLoop(signal.left, signal.right)
+    fun setPercent(signal: DriveSignal) = setOpenLoop(signal.left, signal.right)
 
     fun setOpenLoop(left: Double, right: Double) {
         wantedState = State.OpenLoop
@@ -192,11 +192,11 @@ object Drivetrain : AbstractTankDrive() {
     }
 
     override fun setVelocity(
-            leftVelocity: SIUnit<LinearVelocity>,
-            rightVelocity: SIUnit<LinearVelocity>,
-            leftFF: SIUnit<Volt>,
-            rightFF: SIUnit<Volt>
-        ) {
+        leftVelocity: SIUnit<LinearVelocity>,
+        rightVelocity: SIUnit<LinearVelocity>,
+        leftFF: SIUnit<Volt>,
+        rightFF: SIUnit<Volt>
+    ) {
         wantedState = State.Velocity
 
         leftMasterMotor.talonSRX.selectProfileSlot(kVelocitySlot, 0)

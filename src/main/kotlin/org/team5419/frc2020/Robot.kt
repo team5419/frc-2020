@@ -3,10 +3,6 @@ package org.team5419.frc2020
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.XboxController
 
-import org.team5419.fault.auto.Routine
-import org.team5419.fault.auto.DriveTrajectoryAction
-import org.team5419.frc2020.subsystems.Drivetrain
-import org.team5419.frc2020.controllers.AutoController
 import org.team5419.frc2020.controllers.TeleopController
 
 @SuppressWarnings("MagicNumber")
@@ -19,7 +15,6 @@ class Robot : TimedRobot() {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
         teleopController = TeleopController(mDriver, mCodriver)
-
     }
 
     override fun robotInit() {
