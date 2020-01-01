@@ -1,9 +1,5 @@
 package org.team5419.frc2020
 
-import edu.wpi.first.wpilibj.RobotBase
-
-import java.util.function.Supplier
-
 public class Main {
 
     /**
@@ -14,7 +10,7 @@ public class Main {
     companion object {
         @JvmStatic
         public fun main(args: Array<String>) {
-            RobotBase.startRobot(Supplier<Robot> { Robot() })
+            Robot().start()
         }
     }
 }

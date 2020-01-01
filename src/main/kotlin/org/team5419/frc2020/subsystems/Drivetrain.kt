@@ -154,8 +154,8 @@ object Drivetrain : AbstractTankDrive() {
     fun setOpenLoop(left: Double, right: Double) {
         wantedState = State.OpenLoop
 
-        periodicIO.leftDemand = left
-        periodicIO.rightDemand = right
+        periodicIO.leftPercent = left
+        periodicIO.rightPercent = right
 
         periodicIO.leftFeedforward = 0.0.volts
         periodicIO.rightFeedforward = 0.0.volts
@@ -167,8 +167,8 @@ object Drivetrain : AbstractTankDrive() {
         leftMasterMotor.talonSRX.selectProfileSlot(kPositionSlot, 0)
         rightMasterMotor.talonSRX.selectProfileSlot(kPositionSlot, 0)
 
-        periodicIO.leftDemand = distance.value
-        periodicIO.rightDemand = distance.value
+        periodicIO.leftPosition = distance
+        periodicIO.rightPosition = distance
 
         periodicIO.leftFeedforward = 0.0.volts
         periodicIO.rightFeedforward = 0.0.volts
@@ -176,19 +176,14 @@ object Drivetrain : AbstractTankDrive() {
 
     override fun setTurn(angle: Rotation2d, type: TurnType) {
         wantedState = State.Turning
+        zeroOutputs()
 
         rightMasterMotor.talonSRX.selectProfileSlot(kPositionSlot, 0)
         rightMasterMotor.talonSRX.selectProfileSlot(kTurnSlot, 1)
 
         leftMasterMotor.talonSRX.follow(rightMasterMotor.talonSRX, FollowerType.AuxOutput1)
 
-        periodicIO.angleTarget = angle.value.value
-
-        periodicIO.leftDemand = 0.0
-        periodicIO.rightDemand = 0.0
-
-        periodicIO.leftFeedforward = 0.0.volts
-        periodicIO.rightFeedforward = 0.0.volts
+        periodicIO.angleTarget = angle
     }
 
     override fun setVelocity(
@@ -202,8 +197,8 @@ object Drivetrain : AbstractTankDrive() {
         leftMasterMotor.talonSRX.selectProfileSlot(kVelocitySlot, 0)
         rightMasterMotor.talonSRX.selectProfileSlot(kVelocitySlot, 0)
 
-        periodicIO.leftDemand = leftVelocity.value
-        periodicIO.rightDemand = rightVelocity.value
+        periodicIO.leftVelocity = leftVelocity
+        periodicIO.rightVelocity = rightVelocity
 
         periodicIO.leftFeedforward = leftFF
         periodicIO.rightFeedforward = rightFF
@@ -212,8 +207,8 @@ object Drivetrain : AbstractTankDrive() {
     override fun setOutput(wheelVelocities: DifferentialDrive.WheelState, wheelVoltages: DifferentialDrive.WheelState) {
         wantedState = State.PathFollowing
 
-        periodicIO.leftDemand = differentialDrive.wheelRadius * wheelVelocities.left
-        periodicIO.rightDemand = differentialDrive.wheelRadius * wheelVelocities.right
+        periodicIO.leftVelocity = (differentialDrive.wheelRadius * wheelVelocities.left).meters.velocity
+        periodicIO.rightVelocity = (differentialDrive.wheelRadius * wheelVelocities.right).meters.velocity
 
         periodicIO.leftFeedforward = wheelVoltages.left.volts
         periodicIO.rightFeedforward = wheelVoltages.right.volts
@@ -222,9 +217,12 @@ object Drivetrain : AbstractTankDrive() {
     override fun zeroOutputs() {
         wantedState = State.Nothing
 
-        periodicIO.leftDemand = 0.0
-        periodicIO.rightDemand = 0.0
-
+        periodicIO.leftPercent = 0.0
+        periodicIO.rightPercent = 0.0
+        periodicIO.leftVelocity = 0.0.meters.velocity
+        periodicIO.rightVelocity = 0.0.meters.velocity
+        periodicIO.leftPosition = 0.0.meters
+        periodicIO.rightPosition = 0.0.meters
         periodicIO.leftFeedforward = 0.0.volts
         periodicIO.rightFeedforward = 0.0.volts
     }
@@ -256,22 +254,22 @@ object Drivetrain : AbstractTankDrive() {
                 rightMasterMotor.setNeutral()
             }
             State.OpenLoop -> {
-                leftMasterMotor.setPercent(periodicIO.leftDemand)
-                rightMasterMotor.setPercent(periodicIO.rightDemand)
+                leftMasterMotor.setPercent(periodicIO.leftPercent)
+                rightMasterMotor.setPercent(periodicIO.rightPercent)
             }
             State.PathFollowing, State.Velocity -> {
-                leftMasterMotor.setVelocity(periodicIO.leftDemand.meters.velocity, periodicIO.leftFeedforward)
-                rightMasterMotor.setVelocity(periodicIO.rightDemand.meters.velocity, periodicIO.rightFeedforward)
+                leftMasterMotor.setVelocity(periodicIO.leftVelocity, periodicIO.leftFeedforward)
+                rightMasterMotor.setVelocity(periodicIO.leftVelocity, periodicIO.rightFeedforward)
             }
             State.Position -> {
-                leftMasterMotor.setPosition(periodicIO.leftDemand.meters, 0.0.volts)
-                rightMasterMotor.setPosition(periodicIO.rightDemand.meters, 0.0.volts)
+                leftMasterMotor.setPosition(periodicIO.leftPosition, 0.0.volts)
+                rightMasterMotor.setPosition(periodicIO.rightPosition, 0.0.volts)
             }
             State.Turning -> {
                 rightMasterMotor.talonSRX.set(
                         ControlMode.PercentOutput, 0.0,
                         DemandType.AuxPID, rightMasterMotor.talonSRX.getSelectedSensorPosition(1) +
-                            periodicIO.angleTarget
+                            periodicIO.angleTarget.value.value
                 )
             }
         }
@@ -301,13 +299,19 @@ object Drivetrain : AbstractTankDrive() {
         var turnError: SIUnit<Radian> = 0.0.degrees
 
         // output
-        var leftDemand = 0.0
-        var rightDemand = 0.0
+        var leftPercent = 0.0
+        var rightPercent = 0.0
+
+        var leftVelocity: SIUnit<LinearVelocity> = 0.0.meters.velocity
+        var rightVelocity: SIUnit<LinearVelocity> = 0.0.meters.velocity
+
+        var leftPosition: SIUnit<Meter> = 0.0.meters
+        var rightPosition: SIUnit<Meter> = 0.0.meters
 
         var leftFeedforward: SIUnit<Volt> = 0.0.volts
         var rightFeedforward: SIUnit<Volt> = 0.0.volts
 
-        var angleTarget = 0.0
+        var angleTarget: Rotation2d = Rotation2d()
     }
 
     private enum class State { Nothing, Turning, Velocity, PathFollowing, OpenLoop, Position }

@@ -2,21 +2,31 @@ package org.team5419.frc2020.controllers
 
 import org.team5419.fault.Controller
 import org.team5419.fault.auto.Routine
-import org.team5419.fault.auto.ParallelAction
-import org.team5419.fault.auto.NothingAction
-import org.team5419.fault.auto.DriveTrajectoryAction
-import org.team5419.fault.auto.Action
-import org.team5419.fault.math.geometry.Rotation2d
-import org.team5419.fault.math.geometry.Pose2d
-import org.team5419.fault.trajectory.DefaultTrajectoryGenerator
-import org.team5419.frc2020.subsystems.SubsystemManager
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 
-public class AutoController(vararg Routines): Controller {
+public class AutoController(val baseline: Routine, vararg routines: Routine) : Controller {
+
+    private val mRoutines: Array<out Routine>
+    public val mAutoSelector = SendableChooser<Routine>()
+    private var routine: Routine
+
     init {
+        mRoutines = routines
+        routine = baseline
 
+        mAutoSelector.addDefault("baseline", baseline)
+        mRoutines.forEach(
+            { mAutoSelector.addOption(it.name, it) }
+        )
     }
 
-    override fun start() {}
-    override fun update() {}
+    override fun start() {
+        routine = mAutoSelector.getSelected()
+        routine.start()
+    }
+
+    override fun update() {
+        routine.update()
+    }
     override fun reset() {}
 }
