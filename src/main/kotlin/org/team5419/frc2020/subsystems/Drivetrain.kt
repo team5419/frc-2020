@@ -58,7 +58,7 @@ object Drivetrain : AbstractTankDrive() {
     private val rightSlave1 = BerkeliumSPX(DriveConstants.kRightSlave1Port, DriveConstants.kNativeGearboxConversion)
     private val rightSlave2 = BerkeliumSPX(DriveConstants.kRightSlave2Port, DriveConstants.kNativeGearboxConversion)
 
-    private val gyro = PigeonIMU(DriveConstants.kGyroPort)
+    public val gyro = PigeonIMU(DriveConstants.kGyroPort)
 
     init {
         leftSlave1.follow(leftMasterMotor)

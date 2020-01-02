@@ -14,7 +14,7 @@ public class AutoController(val baseline: Routine, vararg routines: Routine) : C
         mRoutines = routines
         routine = baseline
 
-        mAutoSelector.addDefault("baseline", baseline)
+        mAutoSelector.addDefault("Baseline", baseline)
         mRoutines.forEach(
             { mAutoSelector.addOption(it.name, it) }
         )
@@ -28,5 +28,7 @@ public class AutoController(val baseline: Routine, vararg routines: Routine) : C
     override fun update() {
         routine.update()
     }
-    override fun reset() {}
+    override fun reset() {
+        start()
+    }
 }
