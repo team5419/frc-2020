@@ -12,7 +12,10 @@ class TeleopController(driver: XboxController, codriver: XboxController) : Contr
         { driver.getY(Hand.kLeft) },
         { driver.getX(Hand.kRight) },
         { driver.getBumper(Hand.kLeft) || driver.getBumper(Hand.kLeft) },
-        { driver.getTriggerAxis(Hand.kLeft) >= InputConstants.TRIGGER_DEADBAND || driver.getTriggerAxis(Hand.kRight) >= InputConstants.TRIGGER_DEADBAND }
+        {
+            driver.getTriggerAxis(Hand.kLeft) >= InputConstants.TRIGGER_DEADBAND ||
+            driver.getTriggerAxis(Hand.kRight) >= InputConstants.TRIGGER_DEADBAND
+        }
     )
 
     override fun start() {
