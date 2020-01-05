@@ -119,7 +119,7 @@ empty-blocks:
     active: true
     allowedExceptionNameRegex: "^(_|(ignore|expected).*)"
   EmptyClassBlock:
-    active: true
+    active: false
   EmptyDefaultConstructor:
     active: true
   EmptyDoWhileBlock:
@@ -131,14 +131,14 @@ empty-blocks:
   EmptyForBlock:
     active: true
   EmptyFunctionBlock:
-    active: true
+    active: false
     ignoreOverriddenFunctions: false
   EmptyIfBlock:
     active: true
   EmptyInitBlock:
     active: true
   EmptyKtFile:
-    active: true
+    active: false
   EmptySecondaryConstructor:
     active: true
   EmptyWhenBlock:
@@ -216,7 +216,7 @@ formatting:
     indentSize: 4
     continuationIndentSize: 4
   MaximumLineLength:
-    active: true
+    active: false
     maxLineLength: 120
   ModifierOrdering:
     active: true
