@@ -259,7 +259,7 @@ object Drivetrain : AbstractTankDrive() {
             }
             State.PathFollowing, State.Velocity -> {
                 leftMasterMotor.setVelocity(periodicIO.leftVelocity, periodicIO.leftFeedforward)
-                rightMasterMotor.setVelocity(periodicIO.leftVelocity, periodicIO.rightFeedforward)
+                rightMasterMotor.setVelocity(periodicIO.rightVelocity, periodicIO.rightFeedforward)
             }
             State.Position -> {
                 leftMasterMotor.setPosition(periodicIO.leftPosition, 0.0.volts)

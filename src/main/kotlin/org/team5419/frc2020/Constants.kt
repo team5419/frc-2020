@@ -97,7 +97,7 @@ object DriveConstants {
 }
 
 object InputConstants {
-    public const val DRIVER_PORT = 0
+    public const val kDriverPort = 0
     public const val CODRIVER_BUTTON_BOARD_PORT = 1
     public const val CODRIVER_JOYSTICK_PORT = 2
 
@@ -110,4 +110,15 @@ object InputConstants {
 
     // codriver constants
     public const val MANUAL_CONTROL_DEADBAND = 0.07
+}
+
+object ShoogerConstants {
+    public const val MOTOR_PORT = 8
+    public const val kV = 500
+}
+
+object ClimberConstants {
+    public const val MASTER_PORT = 9
+    public const val SLAVE_PORT = 10
+
 }
