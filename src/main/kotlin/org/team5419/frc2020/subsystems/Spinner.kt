@@ -10,7 +10,7 @@ object Spinner : Subsystem("Spinner") {
     private val spinMotor = BerkeliumSRX(SpinConstants.kMotorPort, DriveConstants.kNativeGearboxConversion)
 
     public fun rotationControl() {
-        
+
     }
 
     public fun colorControl() {

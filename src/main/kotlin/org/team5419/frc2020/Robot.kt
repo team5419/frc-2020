@@ -25,7 +25,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
         teleopController = TeleopController(mDriver, mCodriver)
-        autoController = AutoController(Routine("", Pose2d()), *generateRoutines(Pose2d()))
+        autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
         smartDashboard = Shuffleboard.getTab("SmartDashboard")
 
         // subsystem manager

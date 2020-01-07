@@ -13,7 +13,7 @@ import org.team5419.frc2020.TrajectoryConstants
 fun generateRoutines (initalPose: Pose2d) : Array<Routine>{
 
     return arrayOf(
-        Routine("Alliance Side Trech", initalPose, 
+        Routine("Alliance Side Trech", initalPose,
             ParallelAction(
                 SerialAction(),
                 DriveTrajectoryAction(

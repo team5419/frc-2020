@@ -6,7 +6,7 @@ import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.frc2020.subsystems.Drivetrain
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 
-public class AutoController(val baseline: Routine, vararg routines: Routine) : Controller {
+public class AutoController(val baseline: Routine, var routines: Array<Routine>) : Controller {
 
     private val mRoutines: Array<out Routine>
     public val mAutoSelector = SendableChooser<Routine>()
