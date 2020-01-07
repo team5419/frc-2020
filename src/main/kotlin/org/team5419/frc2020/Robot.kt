@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import org.team5419.frc2020.controllers.TeleopController
 import org.team5419.frc2020.controllers.AutoController
 import org.team5419.frc2020.subsystems.*
+import org.team5419.frc2020.auto.routineArray
 import org.team5419.fault.BerkeliumRobot
 import org.team5419.fault.math.units.seconds
 import org.team5419.fault.math.geometry.Pose2d
@@ -24,7 +25,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
         teleopController = TeleopController(mDriver, mCodriver)
-        autoController = AutoController(Routine("", Pose2d()))
+        autoController = AutoController(Routine("", Pose2d()), *routineArray)
         smartDashboard = Shuffleboard.getTab("SmartDashboard")
 
         // subsystem manager
@@ -34,7 +35,8 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     override fun robotInit() {
         smartDashboard.apply {
             add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
+            add("Angle", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
+            // add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kCameraStream)
             add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
         }
     }
