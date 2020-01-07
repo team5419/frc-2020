@@ -15,7 +15,6 @@ import org.team5419.fault.subsystems.drivetrain.AbstractTankDrive
 import org.team5419.fault.trajectory.followers.RamseteFollower
 import org.team5419.fault.input.DriveSignal
 
-@SuppressWarnings("WildcardImport")
 object Drivetrain : AbstractTankDrive() {
 
     private const val kPositionSlot = 0
