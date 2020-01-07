@@ -113,12 +113,20 @@ object InputConstants {
 }
 
 object ShoogerConstants {
-    public const val MOTOR_PORT = 8
+    public const val kMotorPort = 8
     public const val kV = 500
 }
 
 object ClimberConstants {
-    public const val MASTER_PORT = 9
-    public const val SLAVE_PORT = 10
+    public const val kMasterPort = 9
+    public const val kSlavePort = 10
 
+}
+
+object SpinConstants {
+    public const val kMotorPort = 9
+}
+
+object IntakeConstants {
+    public const val kIntakePort = 9
 }

@@ -25,7 +25,7 @@ public class AutoController(val baseline: Routine, vararg routines: Routine) : C
     override fun start() {
         routine = mAutoSelector.getSelected()
         routine.start()
-        val initalPose: Pose2d = Drivetrain.localization()
+        val initalPose: Pose2d = Pose2d()
     }
 
     override fun update() {
