@@ -16,7 +16,7 @@ public class AutoController(val baseline: Routine, var routines: Array<Routine>)
         mRoutines = routines
         routine = baseline
 
-        mAutoSelector.addDefault("Baseline", baseline)
+        mAutoSelector.setDefaultOption("Baseline", baseline)
         mRoutines.forEach(
             { mAutoSelector.addOption(it.name, it) }
         )
