@@ -18,7 +18,7 @@ object Shooger : Subsystem("Shooger") {
         return  0.0.volts * ShoogerConstants.kV
     }
 
-    public fun shoog(shoogVelocity : SIUnit<AngularVelocity) {
+    public fun shoog(shoogVelocity : SIUnit<AngularVelocity>) {
         shoogerMotor.setVelocity(shoogVelocity, calculateFeedforward(shoogVelocity))
     }
 }

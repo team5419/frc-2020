@@ -39,6 +39,19 @@ object DriveConstants {
 
     const val kGyroPort = 7
 
+    // Added Constants - Remove Later If Necessary
+    const val kLeftEncoderPort1 = 1
+    const val kLeftEncoderPort2 = 2
+    const val kLeftEncoderReversed = true
+    const val kRightEncoderPort1 = 4
+    const val kRightEncoderPort2 = 7
+    const val kRightEncoderReversed = false
+
+    const val kEncoderDistancePerPulse = 1000.0
+
+    const val kGyroReversed = false
+    // End
+
     // misc
     const val kEncoderPhase = true
 
