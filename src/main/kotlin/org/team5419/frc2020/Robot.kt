@@ -30,17 +30,24 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
         // subsystem manager
         +Drivetrain
-    }
+        +Climber
+        +Intake
+        +Shooger
+        +Spinner
 
-    override fun robotInit() {
         smartDashboard.apply {
             add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Angle", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
+            add("Gyro", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
+            add("Stored Balls", Intake.numberOfLoadedBalls)
             //add number of preoaded balls
             // add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kCameraStream)
             add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
         }
+
+    }
+
+    override fun robotInit() {
+        
     }
 
     override fun robotPeriodic() {
