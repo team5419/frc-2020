@@ -130,6 +130,9 @@ object StorageConstants {
     public const val kLoaderPort = 9
 
     public const val kBallInputPort = 10
+    public const val storagePercent = 70.0
+    public const val handPercent = 70.0
+
 
 }
 
