@@ -112,6 +112,19 @@ object InputConstants {
     public const val MANUAL_CONTROL_DEADBAND = 0.07
 }
 
+object InputConstants {
+    public const val XboxCodrivePort = 0
+    public const val XboxDrivePort = 1
+
+    public const val SlowTurnMult = 0.4
+    public const val SlowMoveMult = 0.4
+
+    public const val DriverStowTimeout = 2.0
+
+    public const val TriggerDeadband = 0.1
+    public const val JoystickDeadband = 0.07
+}
+
 object ShoogerConstants {
     public const val kMotorPort = 8
     public const val kV = 500
