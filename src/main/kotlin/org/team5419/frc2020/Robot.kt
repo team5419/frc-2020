@@ -17,8 +17,8 @@ import org.team5419.fault.auto.Routine
 
 @SuppressWarnings("MagicNumber")
 class Robot : BerkeliumRobot(0.05.seconds) {
-    private val mDriver: XboxController
-    private val mCodriver: XboxController
+    private val mDriver: XboxController = XboxController(InputConstants.XboxDrivePort)
+    private val mCodriver: XboxController = XboxController(InputConstants.XboxCodrivePort)
     private val teleopController: TeleopController
     private val autoController: AutoController
     private val smartDashboard: ShuffleboardTab

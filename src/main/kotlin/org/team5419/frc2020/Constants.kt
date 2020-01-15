@@ -97,22 +97,6 @@ object DriveConstants {
 }
 
 object InputConstants {
-    public const val kDriverPort = 0
-    public const val CODRIVER_BUTTON_BOARD_PORT = 1
-    public const val CODRIVER_JOYSTICK_PORT = 2
-
-    // driver constants
-    public const val JOYSTICK_DEADBAND = 0.07
-    public const val TRIGGER_DEADBAND = 0.1
-    public const val TURN_MULT = 0.4
-    public const val SLOW_MULT = 0.5
-    public const val DRIVER_STOW_TIMEOUT = 2.0 // seconds
-
-    // codriver constants
-    public const val MANUAL_CONTROL_DEADBAND = 0.07
-}
-
-object InputConstants {
     public const val XboxCodrivePort = 0
     public const val XboxDrivePort = 1
 
@@ -120,6 +104,8 @@ object InputConstants {
     public const val SlowMoveMult = 0.4
 
     public const val DriverStowTimeout = 2.0
+
+    public const val QuickTurnMultiplier = 0.4;
 
     public const val TriggerDeadband = 0.1
     public const val JoystickDeadband = 0.07

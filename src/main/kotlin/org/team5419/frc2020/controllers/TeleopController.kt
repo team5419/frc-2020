@@ -6,7 +6,7 @@ import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
 
 import org.team5419.fault.Controller
-import org.team5419.fault.InputConstants
+
 import org.team5419.fault.input.SpaceDriveHelper
 
 import edu.wpi.first.wpilibj.GenericHID.Hand
@@ -18,9 +18,9 @@ class TeleopController(driver: DriverControls, codriver: CodriverControls) : Con
         { driver.getTurn()     },
         { driver.quickTurn()   },
         { driver.slow()        },
-        InputConstants.0,
-        InputConstants.0,
-        InputConstants.0,
+        InputConstants.JoystickDeadband,
+        InputConstants.QuickTurnMultiplier,
+        InputConstants.SlowMoveMult
     )
 
     override fun start() {
