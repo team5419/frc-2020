@@ -39,11 +39,9 @@ class Robot : BerkeliumRobot(0.05.seconds) {
             add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
             add("Gyro", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
             add("Stored Balls", Intake.numberOfLoadedBalls)
-            //add number of preoaded balls
             // add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kCameraStream)
             add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
         }
-
     }
 
     override fun robotInit() {
