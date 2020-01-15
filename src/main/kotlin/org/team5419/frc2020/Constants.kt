@@ -126,6 +126,12 @@ object ClimberConstants {
 object SpinConstants {
     public const val kMotorPort = 9
 }
+object StorageConstants {
+    public const val kLoaderPort = 9
+
+    public const val kBallInputPort = 10
+
+}
 
 object IntakeConstants {
     public const val kIntakePort = 9
