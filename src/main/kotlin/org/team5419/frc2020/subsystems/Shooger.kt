@@ -2,6 +2,7 @@ package org.team5419.frc2020.subsystems
 
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.operations.*
 import org.team5419.fault.math.units.*
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
@@ -14,8 +15,10 @@ object Shooger : Subsystem("Shooger") {
     private val slaveMotor1 = BerkeliumSRX(ShoogerConstants.kSlavePort1, ShoogerConstants.flywheel)
     private val slaveMotor2 = BerkeliumSRX(ShoogerConstants.kSlavePort2, ShoogerConstants.flywheel)
     private val slaveMotor3 = BerkeliumSRX(ShoogerConstants.kSlavePort3, ShoogerConstants.flywheel)
-
     private val hoodMotor = BerkeliumSRX(ShoogerConstants.kHoodPort, ShoogerConstants.flywheel)
+
+    // public val flyWheelVelocity : AngularVelocity
+        // get() = 
 
     init{
         hoodMotor.talonSRX.apply{
@@ -32,10 +35,15 @@ object Shooger : Subsystem("Shooger") {
     }
 
     private fun calculateFeedforward(velocity : SIUnit<AngularVelocity>) : SIUnit<Volt> {
-        return  0.0.volts * ShoogerConstants.kV
+        return velocity * ShoogerConstants.kV
     }
 
     public fun shoog (shoogVelocity : SIUnit<AngularVelocity>) {
-        masterMotor.setVelocity(shoogVelocity, calculateFeedforward(shoogVelocity))
+        masterMotor.setVoltage(calculateFeedforward(shoogVelocity))
+    }
+
+    public fun setPercent (percent: Double) {
+        val velocity = (ShoogerConstants.kMaxVelocity - ShoogerConstants.kMinVelocity) * percent + ShoogerConstants.kMinVelocity
+        shoog(velocity)
     }
 }
