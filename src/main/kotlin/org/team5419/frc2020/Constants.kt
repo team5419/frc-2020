@@ -2,14 +2,8 @@ package org.team5419.frc2020
 
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
-import org.team5419.fault.math.units.derived.acceleration
-import org.team5419.fault.math.units.derived.velocity
-import org.team5419.fault.math.units.derived.radians
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.kEpsilon
-
-import org.team5419.fault.math.units.native.NativeUnitLengthModel
-import org.team5419.fault.math.units.native.nativeUnits
 import kotlin.math.PI
 import kotlin.math.pow
 
@@ -113,8 +107,28 @@ object InputConstants {
 }
 
 object ShoogerConstants {
-    public const val kMotorPort = 8
+    public const val kMasterPort = 6
+    public const val kSlavePort1 = 7
+    public const val kSlavePort2 = 8
+    public const val kSlavePort3 = 9
     public const val kV = 500
+    public val kTicksPerRotation = (4092 / 3).nativeUnits
+    public val flywheel = NativeUnitRotationModel(kShoogerTicksPerRotation)
+
+    public const val kHoodP = 1
+    public const val kHoodI = 0
+    public const val kHoodD = 0
+    public const val kHoodPort = 8
+}
+
+object HoodConstants{
+    public const val kPort = 8
+    public const val kP = 1
+    public const val kI = 0
+    public const val kD = 0
+
+    public val kTicksPerRotation = (4092 / 3).nativeUnits
+    public val hood = NativeUnitRotationModel(kShoogerTicksPerRotation)
 }
 
 object ClimberConstants {
