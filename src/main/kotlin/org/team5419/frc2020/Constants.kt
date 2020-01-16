@@ -131,11 +131,6 @@ object ShoogerConstants {
     public val kV = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
     public val kTicksPerRotation = (4092.0 / 3).nativeUnits
     public val flywheel = NativeUnitRotationModel(kTicksPerRotation)
-
-    public const val kHoodP = 1
-    public const val kHoodI = 0
-    public const val kHoodD = 0
-    public const val kHoodPort = 8
 }
 
 object HoodConstants{

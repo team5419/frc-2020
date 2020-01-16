@@ -15,10 +15,14 @@ object Shooger : Subsystem("Shooger") {
     private val slaveMotor1 = BerkeliumSRX(ShoogerConstants.kSlavePort1, ShoogerConstants.flywheel)
     private val slaveMotor2 = BerkeliumSRX(ShoogerConstants.kSlavePort2, ShoogerConstants.flywheel)
     private val slaveMotor3 = BerkeliumSRX(ShoogerConstants.kSlavePort3, ShoogerConstants.flywheel)
-    private val hoodMotor = BerkeliumSRX(ShoogerConstants.kHoodPort, ShoogerConstants.flywheel)
+    private val hoodMotor = BerkeliumSRX(HoodConstants.kPort, ShoogerConstants.flywheel)
 
     // public val flyWheelVelocity : AngularVelocity
         // get() = 
+
+    public var hoodAngle: SIUnit<Radian>
+        get() = HoodConstants.hood.fromNativeUnitPosition(hoodMotor.encoder.rawPosition)
+        set(value) = setLaunchAngle(value)
 
     init{
         hoodMotor.talonSRX.apply{
@@ -32,6 +36,10 @@ object Shooger : Subsystem("Shooger") {
         slaveMotor1.follow(masterMotor)
         slaveMotor2.follow(masterMotor)
         slaveMotor3.follow(masterMotor)
+    }
+
+    public fun setLaunchAngle(angle: SIUnit<Radian>){
+        hoodMotor.setPosition(angle)
     }
 
     private fun calculateFeedforward(velocity : SIUnit<AngularVelocity>) : SIUnit<Volt> {
