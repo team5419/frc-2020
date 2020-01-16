@@ -3,6 +3,8 @@ package org.team5419.frc2020
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
 import org.team5419.fault.math.units.*
+import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.kEpsilon
 import kotlin.math.PI
 import kotlin.math.pow
@@ -113,7 +115,7 @@ object ShoogerConstants {
     public const val kSlavePort3 = 9
     public const val kV = 500
     public val kTicksPerRotation = (4092 / 3).nativeUnits
-    public val flywheel = NativeUnitRotationModel(kShoogerTicksPerRotation)
+    public val flywheel = NativeUnitRotationModel(kTicksPerRotation)
 
     public const val kHoodP = 1
     public const val kHoodI = 0
@@ -123,12 +125,12 @@ object ShoogerConstants {
 
 object HoodConstants{
     public const val kPort = 8
-    public const val kP = 1
-    public const val kI = 0
-    public const val kD = 0
+    public const val kP = 1.0
+    public const val kI = 0.0
+    public const val kD = 0.0
 
     public val kTicksPerRotation = (4092 / 3).nativeUnits
-    public val hood = NativeUnitRotationModel(kShoogerTicksPerRotation)
+    public val hood = NativeUnitRotationModel(kTicksPerRotation)
 }
 
 object ClimberConstants {

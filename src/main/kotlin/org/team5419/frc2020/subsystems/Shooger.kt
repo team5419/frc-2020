@@ -1,8 +1,9 @@
 package org.team5419.frc2020.subsystems
 
 import org.team5419.fault.subsystems.Subsystem
+import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
-import org.team5419.fault.hardware.ctre.FeedbackDevice
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 import org.team5419.frc2020.ShoogerConstants
 import org.team5419.frc2020.HoodConstants
@@ -10,18 +11,18 @@ import org.team5419.frc2020.HoodConstants
 object Shooger : Subsystem("Shooger") {
 
     private val masterMotor = BerkeliumSRX(ShoogerConstants.kMasterPort, ShoogerConstants.flywheel)
-    private val slaveMotor1 = BerkeliumSRX(ShoogerConstants.kSalvePort1, ShoogerConstants.flywheel)
-    private val slaveMotor2 = BerkeliumSRX(ShoogerConstants.kSalvePort2, ShoogerConstants.flywheel)
-    private val slaveMotor3 = BerkeliumSRX(ShoogerConstants.kSalvePort3, ShoogerConstants.flywheel)
+    private val slaveMotor1 = BerkeliumSRX(ShoogerConstants.kSlavePort1, ShoogerConstants.flywheel)
+    private val slaveMotor2 = BerkeliumSRX(ShoogerConstants.kSlavePort2, ShoogerConstants.flywheel)
+    private val slaveMotor3 = BerkeliumSRX(ShoogerConstants.kSlavePort3, ShoogerConstants.flywheel)
 
     private val hoodMotor = BerkeliumSRX(ShoogerConstants.kHoodPort, ShoogerConstants.flywheel)
 
     init{
         hoodMotor.talonSRX.apply{
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-            configkP(HoodConstants.kP)
-            configkI(HoodConstants.kI)
-            configkD(HoodConstants.kD)
+            config_kP(0, HoodConstants.kP)
+            config_kI(0, HoodConstants.kI)
+            config_kD(0, HoodConstants.kD)
         }
 
         masterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
@@ -35,6 +36,6 @@ object Shooger : Subsystem("Shooger") {
     }
 
     public fun shoog (shoogVelocity : SIUnit<AngularVelocity>) {
-        shoogerMotor.setVelocity(shoogVelocity, calculateFeedforward(shoogVelocity))
+        masterMotor.setVelocity(shoogVelocity, calculateFeedforward(shoogVelocity))
     }
 }
