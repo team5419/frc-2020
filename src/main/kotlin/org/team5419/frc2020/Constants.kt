@@ -29,18 +29,17 @@ object TrajectoryConstants {
 
 object DriveConstants {
     // ports
-    const val kLeftMasterPort = 1
-    const val kLeftSlave1Port = 2
-    const val kLeftSlave2Port = 3
+    const val kLeftMasterPort = 2
+    const val kLeftSlavePort = 4
 
-    const val kRightMasterPort = 4
-    const val kRightSlave1Port = 5
-    const val kRightSlave2Port = 6
+    const val kRightMasterPort = 5
+    const val kRightSlavePort = 3
 
     const val kGyroPort = 7
 
     // misc
-    const val kEncoderPhase = true
+    const val kLeftEncoderPhase = true
+    const val kRightEncoderPhase = kLeftEncoderPhase
 
     // path following parameters
     const val kBeta = 1.0 // m^-2

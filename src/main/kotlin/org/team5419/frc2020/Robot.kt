@@ -25,7 +25,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
         teleopController = TeleopController(mDriver, mCodriver)
-        autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
+        autoController = AutoController(generateRoutines(Pose2d())[1], generateRoutines(Pose2d()))
         smartDashboard = Shuffleboard.getTab("SmartDashboard")
 
         // subsystem manager
@@ -36,7 +36,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         smartDashboard.apply {
             add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
             add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Angle", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
+            add("Angle", Drivetrain.angle).withWidget(BuiltInWidgets.kGyro)
             //add number of preoaded balls
             // add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kCameraStream)
             add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
