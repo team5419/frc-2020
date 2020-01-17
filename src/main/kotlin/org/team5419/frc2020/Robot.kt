@@ -12,6 +12,7 @@ import org.team5419.fault.BerkeliumRobot
 import org.team5419.fault.math.units.seconds
 import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.auto.Routine
+import org.team5419.frc2020.InputConstants
 
 @SuppressWarnings("MagicNumber")
 class Robot : BerkeliumRobot(0.05.seconds) {
@@ -24,6 +25,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     init {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
+        mColorSensor = ColorSensor(InputConstants.kColorSensorPort)
         teleopController = TeleopController(mDriver, mCodriver)
         autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
         smartDashboard = Shuffleboard.getTab("SmartDashboard")

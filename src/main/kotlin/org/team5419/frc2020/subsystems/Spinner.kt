@@ -2,18 +2,51 @@ package org.team5419.frc2020.subsystems
 
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
+import org.team5419.fault.hardware.ctre.CTREBerkeliumEncoder
+import org.team5419.fault.math.units.native.NaitveUnitRotationModel
 import org.team5419.frc2020.DriveConstants
 import org.team5419.frc2020.SpinConstants
+import org.team5419.frc2020.input.ColorSensor
+import org.team5419.frc2020.input.ColorSensor.ColorOutput
 
-object Spinner : Subsystem("Spinner") {
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import edu.wpi.first.wpilibj.DriverStation
 
-    private val spinMotor = BerkeliumSRX(SpinConstants.kMotorPort, DriveConstants.kNativeGearboxConversion)
+object Spinner() : Subsystem("Spinner") {
 
-    public fun rotationControl() {
+    private val mColorSensor: ColorSensor()
+
+    init {
+        private val spinnerMotor = BerkeliumSRX(SpinConstants.kMotorPort, DriveConstants.kNativeGearboxConversion)
+        spinnerMotor.apply {
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
+            setSensorPhase(true)
+        }
+        spinnerMotor.brakeMode = true
 
     }
+    
+    public fun rotationControl() {
+        var encoderTicks = 3.5 * SpinConstants.kEncoderTicksPerRotation
+        if (spinnerMotor.getSelectedSensorPosition(0) <= /*>*/ encoderTick s) {
+            spinnerMotor.setVelocity(SpinConstants.kSpinSpeed)
+        }
+    }
 
-    public fun colorControl() {
+    public fun colorControl() {     
+        var gameData: String = DriverStation.getInstance.getGameSpecificMessage()   
+        var estColor: ColorOutput = mColorSensor.getColor()
+        var colorGoal: ColorOutput
+        when (gameData) {
+            "R" -> colorGoal = ColorOutput.BLUE // accounting for color offset
+            "G" -> colorGoal = ColorOutput.YELLOW
+            "B" -> colorGoal = ColorOutput.RED
+            "Y" -> colorGoal = ColorOutput.GREEN
+            else -> colorGoal = ColorOuput.UNKNOWN
+        }
 
+        if (estColor != colorGoal) {
+            spinnerMotor.setVelocity(SpinConstants.kSpinSpeed)
+        } //todo: update dep, find maven repo for rev robotics
     }
 }
