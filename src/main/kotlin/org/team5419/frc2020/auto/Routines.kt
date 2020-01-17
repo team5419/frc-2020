@@ -31,6 +31,7 @@ fun generateRoutines (initalPose: Pose2d) : Array<Routine>{
                     )
                 )
             )
-        )
+        ),
+        Routine("Characterization", initalPose, CharacterizationAction(Drivetrain))
     )
 }

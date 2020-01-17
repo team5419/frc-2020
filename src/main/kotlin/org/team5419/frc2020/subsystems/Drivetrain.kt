@@ -88,7 +88,7 @@ object Drivetrain : AbstractTankDrive() {
             FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
         )
 
-        leftMasterMotor.encoder.encoderPhase = DriveConstants.kEncoderPhase
+        leftMasterMotor.encoder.encoderPhase  = DriveConstants.kEncoderPhase
         rightMasterMotor.encoder.encoderPhase = DriveConstants.kEncoderPhase
 
         rightMasterMotor.talonSRX.configRemoteFeedbackFilter(gyro.deviceID, RemoteSensorSource.Pigeon_Yaw, 1, 0)
@@ -137,6 +137,12 @@ object Drivetrain : AbstractTankDrive() {
 
     override val rightDistanceError: SIUnit<Meter>
         get() = DriveConstants.kNativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
+
+    override val leftVelocity: SIUnit<LinearVelocity>
+        get() = -DriveConstants.kNativeGearboxConversion.fromNativeUnitVelocity(periodicIO.leftRawSensorVelocity)
+
+    override val rightVelocity: SIUnit<LinearVelocity>
+        get() = -DriveConstants.kNativeGearboxConversion.fromNativeUnitVelocity(periodicIO.rightRawSensorVelocity)
 
     val angle: Rotation2d
         get() = periodicIO.gyroAngle.toRotation2d()
