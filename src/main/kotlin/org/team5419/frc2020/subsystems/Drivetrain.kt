@@ -75,8 +75,8 @@ object Drivetrain : AbstractTankDrive() {
             FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
         )
 
-        leftMasterMotor.encoder.encoderPhase  = DriveConstants.kEncoderPhase
-        rightMasterMotor.encoder.encoderPhase = DriveConstants.kEncoderPhase
+        leftMasterMotor.encoder.encoderPhase  = DriveConstants.kLeftEncoderPhase
+        rightMasterMotor.encoder.encoderPhase = DriveConstants.kRightEncoderPhase
 
         rightMasterMotor.talonSRX.configRemoteFeedbackFilter(gyro.deviceID, RemoteSensorSource.Pigeon_Yaw, 1, 0)
         rightMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0)
