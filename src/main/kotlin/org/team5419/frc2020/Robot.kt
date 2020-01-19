@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import org.team5419.frc2020.controllers.TeleopController
 import org.team5419.frc2020.controllers.AutoController
+import org.team5419.frc2020.input.ColorSensor
 import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.auto.generateRoutines
 import org.team5419.fault.BerkeliumRobot
@@ -18,6 +19,7 @@ import org.team5419.frc2020.InputConstants
 class Robot : BerkeliumRobot(0.05.seconds) {
     private val mDriver: XboxController
     private val mCodriver: XboxController
+    private val mColorSensor: ColorSensor
     private val teleopController: TeleopController
     private val autoController: AutoController
     private val smartDashboard: ShuffleboardTab
@@ -25,7 +27,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     init {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
-        mColorSensor = ColorSensor(InputConstants.kColorSensorPort)
+        mColorSensor = ColorSensor()
         teleopController = TeleopController(mDriver, mCodriver)
         autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
         smartDashboard = Shuffleboard.getTab("SmartDashboard")

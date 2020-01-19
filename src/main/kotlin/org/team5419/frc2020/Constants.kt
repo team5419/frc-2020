@@ -13,9 +13,6 @@ import org.team5419.fault.math.units.native.nativeUnits
 import kotlin.math.PI
 import kotlin.math.pow
 
-import com.revrobotics.ColorSensorV3.Color
-import edu.wpi.first.wpilibj.util.Color
-
 @SuppressWarnings("MaxLineLength, WildcardImport")
 object RobotConstants {
     val kRobotLength = 32.inches
@@ -116,10 +113,6 @@ object InputConstants {
 
     // color sensor constants
     public const val kColorSensorPort = 0x39 //check
-    public const val kBlue: Color = Color(0, 255, 255)
-    public const val kGreen: Color = Color(0, 255,   0)
-    public const val kRed: Color = Color(255, 0, 0)
-    public const val kYellow: Color = Color(255, 255, 0)
     public const val kConfidence = 1.0
 }
 
@@ -137,13 +130,9 @@ object ClimberConstants {
 object SpinConstants {
     public const val kMotorPort = 9
     public const val kEncoderTicksPerRotation = 4096 //check
-    public const val kSpinSpeed = 4.0.inches.velocity
+    public const val kSpinSpeed = 4.0
 }
 
 object IntakeConstants {
     public const val kIntakePort = 9
-}
-
-object InputConstants {
-
 }

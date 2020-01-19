@@ -14,21 +14,18 @@ import edu.wpi.first.wpilibj.DriverStation
 
 object Spinner() : Subsystem("Spinner") {
 
-    private val mColorSensor: ColorSensor()
-
-    init {
-        private val spinnerMotor = BerkeliumSRX(SpinConstants.kMotorPort, DriveConstants.kNativeGearboxConversion)
-        spinnerMotor.apply {
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
-            setSensorPhase(true)
-        }
-        spinnerMotor.brakeMode = true
-
+    private val mColorSensor: ColorSensor
+    private val spinnerMotor = BerkeliumSRX(SpinConstants.kMotorPort, DriveConstants.kNativeGearboxConversion)
+    spinnerMotor.apply {
+        configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
+        setSensorPhase(true)
     }
+    spinnerMotor.brakeMode = true
+
 
     public fun rotationControl() {
         var encoderTicks = 3.5 * SpinConstants.kEncoderTicksPerRotation
-        if (spinnerMotor.getSelectedSensorPosition(0) <= /*>*/ encoderTick s) {
+        if (spinnerMotor.getSelectedSensorPosition(0) <= /*>*/ encoderTicks) {
             spinnerMotor.setVelocity(SpinConstants.kSpinSpeed)
         }
     }
@@ -42,7 +39,7 @@ object Spinner() : Subsystem("Spinner") {
             "G" -> colorGoal = ColorOutput.YELLOW
             "B" -> colorGoal = ColorOutput.RED
             "Y" -> colorGoal = ColorOutput.GREEN
-            else -> colorGoal = ColorOuput.UNKNOWN
+            else -> colorGoal = ColorOutput.UNKNOWN
         }
 
         if (estColor != colorGoal) {

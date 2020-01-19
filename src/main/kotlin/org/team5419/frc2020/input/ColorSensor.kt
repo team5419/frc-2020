@@ -9,37 +9,47 @@ import org.team5419.frc2020.InputConstants
 
 public class ColorSensor() {
 
-    public val mColorSensorV3: ColorSensorV3 = ColorSensorV3(I2C.Port.kOnboard)
-    public val mColorMatcher: ColorMatch = ColorMatch()
+    val mColorSensorV3: ColorSensorV3
+    val mColorMatcher: ColorMatch
+
+    init { 
+        val mColorSensorV3: ColorSensorV3 = ColorSensorV3(I2C.Port.kOnboard)
+        val mColorMatcher: ColorMatch = ColorMatch()
+    }
+
 
     public enum class ColorOutput{
         RED, GREEN, BLUE, YELLOW, UNKNOWN
     }
 
-    public fun getRawColor() {
-        var rawColor: RawColor = mColorSensorV3.getRawColor()
-        return rawColor
-    }
+    val kBlue: Color = ColorMatch.makeColor(0, 255, 255)
+    val kGreen: Color = ColorMatch.makeColor(0, 255,   0)
+    val kRed: Color = ColorMatch.makeColor(255, 0, 0)
+    val kYellow: Color = ColorMatch.makeColor(255, 255, 0)
+    // public fun getRawColor() {
+    //     var rawColor: RawColor = mColorSensorV3.getRawColor()
+    //     return rawColor
+    // }
 
     public fun getColor() {
         var input: Color = mColorSensorV3.getColor()
         var result: ColorOutput
         var colorMatchResult: Color
 
-        colorMatcher.addColorMatch(InputConstants.kRed)
-        colorMatcher.addColorMatch(InputConstants.kGreen)
-        colorMatcher.addColorMatch(InputConstants.kBlue)
-        colorMatcher.addColorMatch(InputConstants.kYellow)
+        mColorMatcher.addColorMatch(kRed)
+        mColorMatcher.addColorMatch(kGreen)
+        mColorMatcher.addColorMatch(kBlue)
+        mColorMatcher.addColorMatch(kYellow)
 
-        colorMatcher.setConfidenceThreshold(InputConstants.kConfidence)
+        mColorMatcher.setConfidenceThreshold(InputConstants.kConfidence)
         colorMatchResult = mColorMatcher.matchClosestColor(input).color
 
         when (colorMatchResult) {
-            InputConstant.kRed -> res = ColorOutput.RED
-            InputConstant.kGreen -> res = ColorOutput.GREEN
-            InputConstant.kBlue -> res = ColorOutput.BLUE
-            InputConstant.kYellow -> res = ColorOutput.YELLOW
-            else -> res = ColorOutput.UNKNOWN
+            kRed -> result = ColorOutput.RED
+            kGreen -> result = ColorOutput.GREEN
+            kBlue -> result = ColorOutput.BLUE
+            kYellow -> result = ColorOutput.YELLOW
+            else -> result = ColorOutput.UNKNOWN
         }
 
         return result
