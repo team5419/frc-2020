@@ -25,7 +25,7 @@ object Spinner() : Subsystem("Spinner") {
         spinnerMotor.brakeMode = true
 
     }
-    
+
     public fun rotationControl() {
         var encoderTicks = 3.5 * SpinConstants.kEncoderTicksPerRotation
         if (spinnerMotor.getSelectedSensorPosition(0) <= /*>*/ encoderTick s) {
@@ -33,8 +33,8 @@ object Spinner() : Subsystem("Spinner") {
         }
     }
 
-    public fun colorControl() {     
-        var gameData: String = DriverStation.getInstance.getGameSpecificMessage()   
+    public fun colorControl() {
+        var gameData: String = DriverStation.getInstance.getGameSpecificMessage()
         var estColor: ColorOutput = mColorSensor.getColor()
         var colorGoal: ColorOutput
         when (gameData) {

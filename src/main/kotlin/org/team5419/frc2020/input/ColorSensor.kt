@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.util.Color
 import org.team5419.frc2020.InputConstants
 
 public class ColorSensor() {
-    
+
     public val mColorSensorV3: ColorSensorV3 = ColorSensorV3(I2C.Port.kOnboard)
     public val mColorMatcher: ColorMatch = ColorMatch()
 
@@ -20,7 +20,7 @@ public class ColorSensor() {
         var rawColor: RawColor = mColorSensorV3.getRawColor()
         return rawColor
     }
-    
+
     public fun getColor() {
         var input: Color = mColorSensorV3.getColor()
         var result: ColorOutput
