@@ -34,6 +34,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
         // subsystem manager
         +Drivetrain
+        +Spinner
     }
 
     override fun robotInit() {

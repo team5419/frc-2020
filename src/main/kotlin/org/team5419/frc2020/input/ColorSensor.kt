@@ -9,14 +9,8 @@ import org.team5419.frc2020.InputConstants
 
 public class ColorSensor() {
 
-    val mColorSensorV3: ColorSensorV3
-    val mColorMatcher: ColorMatch
-
-    init { 
-        val mColorSensorV3: ColorSensorV3 = ColorSensorV3(I2C.Port.kOnboard)
-        val mColorMatcher: ColorMatch = ColorMatch()
-    }
-
+    val mColorSensorV3: ColorSensorV3 = ColorSensorV3(I2C.Port.kOnboard)
+    val mColorMatcher: ColorMatch = ColorMatch()
 
     public enum class ColorOutput{
         RED, GREEN, BLUE, YELLOW, UNKNOWN

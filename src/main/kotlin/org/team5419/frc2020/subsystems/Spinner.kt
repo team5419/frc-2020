@@ -14,24 +14,23 @@ import edu.wpi.first.wpilibj.DriverStation
 
 object Spinner() : Subsystem("Spinner") {
 
-    private val mColorSensor: ColorSensor
-    private val spinnerMotor = BerkeliumSRX(SpinConstants.kMotorPort, DriveConstants.kNativeGearboxConversion)
-    spinnerMotor.apply {
-        configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
-        setSensorPhase(true)
-    }
+    private val mColorSensor = ColorSensor()
+    private val spinnerMotor = BerkeliumSRX(SpinConstants.kMotorPort, NativeUnitRotationModel(DriveConstants.kTicksPerRotation))
+
+    spinnerMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
+    spinnerMotor.talonSRX.setSensorPhase(true)
     spinnerMotor.brakeMode = true
 
 
     public fun rotationControl() {
         var encoderTicks = 3.5 * SpinConstants.kEncoderTicksPerRotation
-        if (spinnerMotor.getSelectedSensorPosition(0) <= /*>*/ encoderTicks) {
+        if (spinnerMotor.talonSRX.getSelectedSensorPosition(0) <=  encoderTicks) {
             spinnerMotor.setVelocity(SpinConstants.kSpinSpeed)
         }
     }
 
     public fun colorControl() {
-        var gameData: String = DriverStation.getInstance.getGameSpecificMessage()
+        var gameData: String = DriverStation.getInstance().getGameSpecificMessage()
         var estColor: ColorOutput = mColorSensor.getColor()
         var colorGoal: ColorOutput
         when (gameData) {
@@ -44,6 +43,6 @@ object Spinner() : Subsystem("Spinner") {
 
         if (estColor != colorGoal) {
             spinnerMotor.setVelocity(SpinConstants.kSpinSpeed)
-        } //todo: update dep, find maven repo for rev robotics
+        } 
     }
 }
