@@ -14,23 +14,13 @@ fun generateRoutines (initalPose: Pose2d) : Array<Routine>{
 
     return arrayOf(
         Routine("Alliance Side Trech", initalPose,
-            ParallelAction(
-                SerialAction(),
-                DriveTrajectoryAction(
-                    Drivetrain,
-                    Drivetrain.trajectoryFollower,
-                    DefaultTrajectoryGenerator.generateTrajectory(
-                        listOf<Pose2d>(initalPose),
-                        listOf<TimingConstraint<Pose2dWithCurvature>>(),
-                        0.0.meters.velocity,
-                        0.0.meters.velocity,
-                        TrajectoryConstants.kMaxVelocity,
-                        TrajectoryConstants.kMaxAcceleration,
-                        false,
-                        true
-                    )
-                )
-            )
+            DriveStraightAction(Drivetrain, 10.meters)
+        ),
+        Routine("Opposition Side Trech", initalPose,
+            DriveStraightAction(Drivetrain, 10.meters)
+        ),
+        Routine("Generator Switch", initalPose,
+            DriveStraightAction(Drivetrain, 10.meters)
         )
     )
 }

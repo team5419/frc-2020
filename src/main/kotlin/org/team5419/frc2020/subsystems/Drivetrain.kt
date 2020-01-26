@@ -47,31 +47,24 @@ object Drivetrain : AbstractTankDrive() {
 
     // hardware
     override val leftMasterMotor = BerkeliumSRX(DriveConstants.kLeftMasterPort, DriveConstants.kNativeGearboxConversion)
-    private val leftSlave1 = BerkeliumSPX(DriveConstants.kLeftSlave1Port, DriveConstants.kNativeGearboxConversion)
-    private val leftSlave2 = BerkeliumSPX(DriveConstants.kLeftSlave2Port, DriveConstants.kNativeGearboxConversion)
+    private val leftSlave1 = BerkeliumSRX(DriveConstants.kLeftSlave1Port, DriveConstants.kNativeGearboxConversion)
 
     override val rightMasterMotor = BerkeliumSRX(
         DriveConstants.kRightMasterPort,
         DriveConstants.kNativeGearboxConversion
     )
-    private val rightSlave1 = BerkeliumSPX(DriveConstants.kRightSlave1Port, DriveConstants.kNativeGearboxConversion)
-    private val rightSlave2 = BerkeliumSPX(DriveConstants.kRightSlave2Port, DriveConstants.kNativeGearboxConversion)
+    private val rightSlave1 = BerkeliumSRX(DriveConstants.kRightSlave1Port, DriveConstants.kNativeGearboxConversion)
 
     public val gyro = PigeonIMU(DriveConstants.kGyroPort)
 
     init {
         leftSlave1.follow(leftMasterMotor)
-        leftSlave2.follow(leftMasterMotor)
-
         rightSlave1.follow(rightMasterMotor)
-        rightSlave2.follow(rightMasterMotor)
 
-        leftSlave1.victorSPX.setInverted(InvertType.FollowMaster)
-        leftSlave2.victorSPX.setInverted(InvertType.FollowMaster)
-        leftMasterMotor.outputInverted = true
+        leftSlave1.talonSRX.setInverted(InvertType.FollowMaster)
+        leftMasterMotor.outputInverted = false
 
-        rightSlave1.victorSPX.setInverted(InvertType.FollowMaster)
-        rightSlave2.victorSPX.setInverted(InvertType.FollowMaster)
+        rightSlave1.talonSRX.setInverted(InvertType.FollowMaster)
         rightMasterMotor.outputInverted = false
 
         leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
@@ -152,6 +145,7 @@ object Drivetrain : AbstractTankDrive() {
 
     fun setOpenLoop(left: Double, right: Double) {
         wantedState = State.OpenLoop
+        println(left.toString() + " " + right.toString())
 
         periodicIO.leftPercent = left
         periodicIO.rightPercent = right

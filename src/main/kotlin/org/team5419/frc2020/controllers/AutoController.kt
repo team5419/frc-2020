@@ -25,7 +25,6 @@ public class AutoController(val baseline: Routine, var routines: Array<Routine>)
     override fun start() {
         routine = mAutoSelector.getSelected()
         routine.start()
-        val initalPose: Pose2d = Pose2d()
     }
 
     override fun update() {

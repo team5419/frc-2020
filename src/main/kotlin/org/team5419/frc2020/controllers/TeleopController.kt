@@ -19,6 +19,7 @@ class TeleopController(driver: XboxController, codriver: XboxController) : Contr
     )
 
     override fun start() {
+        println("update")
     }
 
     override fun update() {
