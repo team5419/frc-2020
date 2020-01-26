@@ -50,6 +50,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
     override fun robotPeriodic() {
         Shuffleboard.update()
+        mColorSensor.getSensorValue()
     }
 
     override fun disabledInit() {

@@ -51,4 +51,26 @@ public class ColorSensor() {
 
         return result
     }
+
+    fun getSensorValue() {
+        var input: Color = mColorSensorV3.getColor()
+        var colorMatchResult: Color
+
+        mColorMatcher.addColorMatch(kRed)
+        mColorMatcher.addColorMatch(kGreen)
+        mColorMatcher.addColorMatch(kBlue)
+        mColorMatcher.addColorMatch(kYellow)
+
+        mColorMatcher.setConfidenceThreshold(InputConstants.kConfidence)
+        colorMatchResult = mColorMatcher.matchClosestColor(input).color
+
+        when (colorMatchResult) {
+            kRed -> println("red")
+            kGreen -> println("green")
+            kBlue -> println("blue")
+            kYellow -> println("yellow")
+            else -> println("unknown")
+        }
+
+    }
 }
