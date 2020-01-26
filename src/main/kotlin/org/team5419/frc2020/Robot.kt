@@ -1,9 +1,7 @@
 package org.team5419.frc2020
 
 import edu.wpi.first.wpilibj.XboxController
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+
 import org.team5419.frc2020.controllers.TeleopController
 import org.team5419.frc2020.controllers.AutoController
 import org.team5419.frc2020.input.ColorSensor
@@ -22,7 +20,6 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     private val mColorSensor: ColorSensor
     private val teleopController: TeleopController
     private val autoController: AutoController
-    private val smartDashboard: ShuffleboardTab
 
     init {
         mDriver = XboxController(0)
@@ -30,7 +27,6 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         mColorSensor = ColorSensor()
         teleopController = TeleopController(mDriver, mCodriver)
         autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
-        smartDashboard = Shuffleboard.getTab("SmartDashboard")
 
         // subsystem manager
         +Drivetrain
@@ -38,18 +34,9 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     }
 
     override fun robotInit() {
-        smartDashboard.apply {
-            add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Angle", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
-            //add number of preoaded balls
-            // add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kCameraStream)
-            add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
-        }
     }
 
     override fun robotPeriodic() {
-        Shuffleboard.update()
         mColorSensor.getSensorValue()
     }
 
