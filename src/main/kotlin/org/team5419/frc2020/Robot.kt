@@ -35,14 +35,14 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
         // subsystem manager
         +Drivetrain
-        +Climber
-        +Intake
-        +Shooger
-        +Spinner
+        // +Climber
+        // +Intake
+        // +Shooger
+        // +Spinner
 
         bool = tab.add("bool", false).withWidget("Toggle Button").getEntry();
         tab.addNumber("Stored Cells", { balls })
-        tab.addNumber("Heading", { Drivetrain.angle.degree }).withWidget(BuiltInWidgets.kGyro)
+        tab.addNumber("Heading", { Drivetrain.angle.value.value }).withWidget(BuiltInWidgets.kGyro)
         tab.add("AutoSelector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
     }
 
@@ -51,7 +51,8 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     }
 
     override fun robotPeriodic() {
-        println(Drivetrain.angle.value)
+        Drivetrain.periodic()
+        // println(Drivetrain.angle.value)
         Shuffleboard.update()
         val tempVal = bool.getBoolean(false)
         if(addBall != tempVal) {
