@@ -43,15 +43,12 @@ object Storage : Subsystem("Storage") {
 
    public enum class HandMode(val num : Number) {
         ROTATION(kHandPercent),
-        NOROTATION(0.0)
+        NOROTATION(0.0),
         PASSIVELOADING(0)
     }
 
-    init{
-      private var handMode: HandMode = NOROTATION;
-      private var storageMode: StorageMode = NOROTATION;
-
-    }
+    private var handMode: HandMode = HandMode.NOROTATION;
+    private var storageMode: StorageMode = StorageMode.NOROTATION;
 
     //Storage
     public fun storagerotation() {
@@ -122,12 +119,6 @@ object Storage : Subsystem("Storage") {
 
     public fun ballInput(){ //takes ball from storage and puts it in shooger (1 at a time)
     }
-
-
-    /////
-    startLoading()
-    stopLoading()
-    /////
 
     /////////////////
     public fun sTurnOn(){storageMode = StorageMode.NOROTATION;}
