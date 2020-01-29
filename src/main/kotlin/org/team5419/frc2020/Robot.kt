@@ -18,29 +18,23 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     private val mDriver: XboxController
     private val mCodriver: XboxController
     private val teleopController: TeleopController
-    private val autoController: AutoController
-    private val smartDashboard: ShuffleboardTab
+    private val tab: ShuffleboardTab
+    private var shooterVelocity : NetworkTableEntry
 
     init {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
         teleopController = TeleopController(mDriver, mCodriver)
-        autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
-        smartDashboard = Shuffleboard.getTab("SmartDashboard")
+        tab = Shuffleboard.getTab("Shooger")
 
         // subsystem manager
-        +Drivetrain
+
+        +Shooger
+
+        shooterVelocity = tab.add("Velocity", { Shooger.}).
     }
 
     override fun robotInit() {
-        smartDashboard.apply {
-            add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Angle", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
-            //add number of preoaded balls
-            // add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kCameraStream)
-            add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
-        }
     }
 
     override fun robotPeriodic() {
