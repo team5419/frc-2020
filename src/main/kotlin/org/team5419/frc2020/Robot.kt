@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.networktables.NetworkTableEntry
 import org.team5419.frc2020.controllers.TeleopController
 import org.team5419.frc2020.controllers.AutoController
 import org.team5419.frc2020.subsystems.*
@@ -31,7 +32,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
         +Shooger
 
-        shooterVelocity = tab.add("Velocity", { Shooger.}).
+        shooterVelocity = tab.add("Velocity", 6000.0).getEntry()
     }
 
     override fun robotInit() {
@@ -48,11 +49,11 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     }
 
     override fun autonomousInit() {
-        autoController.start()
+
     }
 
     override fun autonomousPeriodic() {
-        autoController.update()
+
     }
 
     override fun teleopInit() {
