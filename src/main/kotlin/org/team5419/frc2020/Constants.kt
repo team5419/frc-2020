@@ -122,10 +122,9 @@ object InputConstants {
 }
 
 object ShoogerConstants {
-    public const val kMasterPort = 6
-    public const val kSlavePort1 = 7
-    public const val kSlavePort2 = 8
-    public const val kSlavePort3 = 9
+    public const val kMasterPort = 3
+    public const val kSlavePort1 = 9
+    public const val kSlavePort2 = 12
     public val kMaxVelocity = 6000.0.radians.velocity
     public val kMinVelocity = 0.0.radians.velocity
     public val kV = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
@@ -134,7 +133,7 @@ object ShoogerConstants {
 }
 
 object HoodConstants{
-    public const val kPort = 8
+    public const val kPort = 5
     public const val kP = 1.0
     public const val kI = 0.0
     public const val kD = 0.0
