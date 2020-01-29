@@ -1,9 +1,7 @@
 package org.team5419.frc2020
 
 import edu.wpi.first.wpilibj.XboxController
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.networktables.NetworkTableEntry
 import org.team5419.frc2020.controllers.TeleopController
 import org.team5419.frc2020.controllers.AutoController
@@ -35,7 +33,8 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         +Shooger
 
         shooterVelocity = tab.add("Target Velocity", 6000.0).getEntry()
-        tab.putNumer("Current Velocity", { Shooger.flyWheelVelocity })
+        tab.addNumber("Current Velocity", { Shooger.flyWheelVelocity.value })
+        tab.addNumber("Hood Angle", { Shooger.hoodAngle.value })
     }
 
     override fun robotInit() {

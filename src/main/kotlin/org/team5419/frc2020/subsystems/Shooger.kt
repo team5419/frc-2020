@@ -33,7 +33,7 @@ object Shooger : Subsystem("Shooger") {
         }
 
         masterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-        slaveMotor1.follow(masterMoto./r)
+        slaveMotor1.follow(masterMotor)
         slaveMotor2.follow(masterMotor)
 
         hoodAngle = 0.radians
