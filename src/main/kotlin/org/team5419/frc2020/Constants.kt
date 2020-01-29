@@ -2,6 +2,7 @@ package org.team5419.frc2020
 
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
+import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.math.units.derived.acceleration
 import org.team5419.fault.math.units.derived.velocity
 import org.team5419.fault.math.units.derived.radians
@@ -127,4 +128,11 @@ object SpinConstants {
 
 object IntakeConstants {
     public const val kIntakePort = 9
+}
+
+
+object VisionConstants {
+    public val kCameraHeight = 0.0.meters
+    public val kTargetHeight = 0.0.meters
+    public val kCameraAngle = Rotation2d( 0.0.radians )
 }

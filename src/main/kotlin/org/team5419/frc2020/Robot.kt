@@ -21,11 +21,6 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     private val autoController: AutoController
     private val tab: ShuffleboardTab
 
-    private val bool: NetworkTableEntry
-    private var balls : Double = 3.0
-    private var addBall: Boolean = false
-    // private val auto : NetworkTableEntry
-
     init {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
@@ -40,10 +35,11 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         // +Shooger
         // +Spinner
 
-        bool = tab.add("bool", false).withWidget("Toggle Button").getEntry();
-        tab.addNumber("Stored Cells", { balls })
-        tab.addNumber("Heading", { Drivetrain.angle.value.value }).withWidget(BuiltInWidgets.kGyro)
-        tab.add("AutoSelector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
+        tab.addBoolean("Found Target", { Vision.targetFound })
+        tab.addNumber("Stored Cells", { Vision.horizontalOffset })
+        tab.addNumber("Stored Cells", { Vision.verticalOffset })
+        tab.addNumber("Stored Cells", { Vision.targetArea })
+        tab.addNumber("Stored Cells", { Vision.targetSkew })
     }
 
     override fun robotInit() {
@@ -52,14 +48,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
     override fun robotPeriodic() {
         Drivetrain.periodic()
-        // println(Drivetrain.angle.value)
         Shuffleboard.update()
-        val tempVal = bool.getBoolean(false)
-        if(addBall != tempVal) {
-            addBall = tempVal
-            balls = (balls + 1) % 6
-        }
-
     }
 
     override fun disabledInit() {
