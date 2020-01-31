@@ -29,13 +29,11 @@ object TrajectoryConstants {
 
 object DriveConstants {
     // ports
-    const val kLeftMasterPort = 1
-    const val kLeftSlave1Port = 2
-    const val kLeftSlave2Port = 3
+    const val kLeftMasterPort = 10
+    const val kLeftSlave1Port = 11
 
-    const val kRightMasterPort = 4
-    const val kRightSlave1Port = 5
-    const val kRightSlave2Port = 6
+    const val kRightMasterPort = 8
+    const val kRightSlave1Port = 9
 
     const val kGyroPort = 7
 
@@ -98,7 +96,7 @@ object DriveConstants {
 
 object InputConstants {
     public const val XboxCodrivePort = 0
-    public const val XboxDrivePort = 1
+    public const val XboxDrivePort = 0
 
     public const val SlowTurnMult = 0.4
     public const val SlowMoveMult = 0.4

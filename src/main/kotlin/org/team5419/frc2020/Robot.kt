@@ -1,9 +1,6 @@
 package org.team5419.frc2020
 
 import edu.wpi.first.wpilibj.XboxController
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import org.team5419.frc2020.controllers.TeleopController
 import org.team5419.frc2020.controllers.AutoController
 import org.team5419.frc2020.input.XboxCodriver
@@ -14,36 +11,38 @@ import org.team5419.fault.BerkeliumRobot
 import org.team5419.fault.math.units.seconds
 import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.auto.Routine
+import org.team5419.fault.input.SpaceDriveHelper
+import edu.wpi.first.wpilibj.GenericHID.Hand
+
 
 @SuppressWarnings("MagicNumber")
 class Robot : BerkeliumRobot(0.05.seconds) {
     private val mDriver: XboxController = XboxController(InputConstants.XboxDrivePort)
     private val mCodriver: XboxController = XboxController(InputConstants.XboxCodrivePort)
-    private val teleopController: TeleopController
-    private val autoController: AutoController
-    private val smartDashboard: ShuffleboardTab
+    // private val teleopController: TeleopController
+    private val driveHelper = SpaceDriveHelper(
+        { -mDriver.getY(Hand.kLeft) },
+        { -mDriver.getX(Hand.kRight) },
+        { mDriver.getBumper(Hand.kRight) },
+        { mDriver.getBumper(Hand.kLeft) },
+        InputConstants.JoystickDeadband,
+        InputConstants.QuickTurnMultiplier,
+        InputConstants.SlowMoveMult
+    )
+    // private val autoController: AutoController
 
     init {
-        teleopController = TeleopController(XboxDriver, XboxCodriver)
-        autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
-        smartDashboard = Shuffleboard.getTab("SmartDashboard")
+        // teleopController = TeleopController(mDriver, mCodriver)
+        // autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
 
         // subsystem manager
         +Drivetrain
     }
 
     override fun robotInit() {
-        smartDashboard.apply {
-            add("Drivetrain", Drivetrain).withWidget(BuiltInWidgets.kDifferentialDrive)
-            add("Angle", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
-            // add number of preoaded balls
-            // add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kCameraStream)
-            add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
-        }
     }
 
     override fun robotPeriodic() {
-        Shuffleboard.update()
     }
 
     override fun disabledInit() {
@@ -53,18 +52,20 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     }
 
     override fun autonomousInit() {
-        autoController.start()
+        // autoController.start()
     }
 
     override fun autonomousPeriodic() {
-        autoController.update()
+        // autoController.update()
     }
 
     override fun teleopInit() {
-        teleopController.start()
+        // teleopController.start()
     }
 
     override fun teleopPeriodic() {
-        teleopController.update()
+        // teleopController.update()
+        println(mDriver.getY(Hand.kLeft).toString())
+        Drivetrain.setPercent(driveHelper.output())
     }
 }
