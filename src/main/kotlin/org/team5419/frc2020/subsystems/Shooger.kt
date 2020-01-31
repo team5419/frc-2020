@@ -4,76 +4,93 @@ import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.operations.*
 import org.team5419.fault.math.units.*
-import com.ctre.phoenix.motorcontrol.FeedbackDevice
-import com.ctre.phoenix.motorcontrol.ControlMode
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 import org.team5419.fault.hardware.ctre.BerkeliumSPX
 import org.team5419.frc2020.ShoogerConstants
 import org.team5419.frc2020.HoodConstants
+import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.motorcontrol.can.VictorSPX
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
 
 object Shooger : Subsystem("Shooger") {
 
-    private val masterMotor = BerkeliumSRX(ShoogerConstants.kMasterPort, ShoogerConstants.flywheel)
-    private val slaveMotor1 = BerkeliumSPX(ShoogerConstants.kSlavePort1, ShoogerConstants.flywheel)
-    private val slaveMotor2 = BerkeliumSPX(ShoogerConstants.kSlavePort2, ShoogerConstants.flywheel)
-    public val hoodMotor = BerkeliumSRX(HoodConstants.kPort, ShoogerConstants.flywheel)
+    private val masterMotor = TalonSRX(ShoogerConstants.kMasterPort)
+    private val slaveMotor1 = VictorSPX(ShoogerConstants.kSlavePort1)
+    private val slaveMotor2 = VictorSPX(ShoogerConstants.kSlavePort2)
+    private val feeder = TalonSRX(5)
+    private val hopper = TalonSRX(3)
 
-    public val flyWheelVelocity : SIUnit<AngularVelocity>
-        get() = (masterMotor.talonSRX.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60).radians.velocity
+    public var enableFeeder = true
+    public var feederPercent = 0.0
+    public var enableHopper = true
+    public var hopperPercent = 0.0
+
+
+
+    public val flyWheelVelocity
+        get() = masterMotor.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60
         //  get() = ShoogerConstants.flywheel.fromNativeUnitVelocity(masterMotor.encoder.rawVelocity)
 
-    public var hoodAngle: SIUnit<Radian>
-        get() = HoodConstants.hood.fromNativeUnitPosition(hoodMotor.encoder.rawPosition)
-        set(value) = setLaunchAngle(value)
-
     init{
-        hoodMotor.talonSRX.apply{
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-            config_kP(0, HoodConstants.kP)
-            config_kI(0, HoodConstants.kI)
-            config_kD(0, HoodConstants.kD)
-        }
-
-        masterMotor.talonSRX.apply{
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-            config_kP(0, 1.0)
-            config_kI(0, 0.0)
-            config_kD(0, 0.0)
-            config_kF(0, 1.0)
-        }
-        masterMotor.talonSRX.setSensorPhase(true)
+        masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+        masterMotor.setSensorPhase(true)
 
         slaveMotor1.follow(masterMotor)
         slaveMotor2.follow(masterMotor)
 
-        masterMotor.outputInverted = true
-        slaveMotor1.outputInverted = true
-        slaveMotor2.outputInverted = true
+        masterMotor.setInverted(true)
+        slaveMotor1.setInverted(true)
+        slaveMotor2.setInverted(true)
 
-        hoodAngle = 0.radians
+        masterMotor.apply {
+            config_kP(0, 0.2, 0)
+            config_kI(0, 0.0, 0)
+            config_kD(0, 0.0, 0)
+            config_kF(0, 0.07, 0)
+            config_kP(1, 0.0, 0)
+            config_kI(1, 0.0, 0)
+            config_kD(1, 0.0, 0)
+            config_kF(1, 0.0, 0)
+            config_IntegralZone(0, 0, 0)
+            configClosedLoopPeakOutput(0, 1.0, 0)
+            config_IntegralZone(1, 0, 0)
+            configClosedLoopPeakOutput(1, 0.0, 0)
+            selectProfileSlot(0, 0)
+            selectProfileSlot(1, 1)
+            configClosedLoopPeriod(0, 1)
+            configClosedLoopPeriod(1, 1)
+            setSelectedSensorPosition(0, 0, 0)
+        }
+
+        hopper.setInverted(true)
+        feeder.setInverted(true)
     }
 
-    public fun setLaunchAngle(angle: SIUnit<Radian>){
-        hoodMotor.setPosition(angle)
+    private fun calculateSetpoint(velocity : Double) : Double {
+        return velocity * 4096.0 / 600.0
     }
 
-    public fun setLaunchPercent(percent: Double){
-        hoodMotor.setPercent(percent)
+    public fun shoog (shoogVelocity : Double) {
+        val setpoint = calculateSetpoint(shoogVelocity)
+        masterMotor.set(ControlMode.Velocity, setpoint)
+        println(masterMotor.getSelectedSensorVelocity(0).toDouble() * 600.0 / 4096.0) /* * 10.0 / 4096.0) */
     }
 
-    private fun calculateFeedforward(velocity : SIUnit<AngularVelocity>) : SIUnit<Volt> {
-        return velocity * ShoogerConstants.kV
+    public fun powerFeeder(percent : Double){
+        feeder.set(ControlMode.PercentOutput, percent)
+    }
+    public fun powerHopper(percent: Double){
+        hopper.set(ControlMode.PercentOutput, percent)
     }
 
-    public fun shoog (shoogVelocity : SIUnit<AngularVelocity>) {
-        masterMotor.talonSRX.set(ControlMode.Velocity, shoogVelocity.value / 10.0 * 4096.0 * 60)
-        // masterMotor.talonSRX.set(ControlMode.PercentOutput, 1.0)
-        // val setpoint = calculateFeedforward(shoogVelocity)
-        // masterMotor.setVoltage(setpoint)
+    override fun periodic(){
+        // hopper.set(ControlMode.PercentOutput, if (enableHopper) hopperPercent else 0.0)
+        // feeder.set(ControlMode.PercentOutput, if (enableFeeder) feederPercent else 0.0)
     }
 
-    public fun setPercent (percent: Double) {
-        val velocity = (ShoogerConstants.kMaxVelocity - ShoogerConstants.kMinVelocity) * percent + ShoogerConstants.kMinVelocity
-        shoog(velocity)
-    }
+    // public fun setPercent (percent: Double) {
+    //     val velocity = (ShoogerConstants.kMaxVelocity - ShoogerConstants.kMinVelocity) * percent + ShoogerConstants.kMinVelocity
+    //     shoog(velocity)
+    // }
 }

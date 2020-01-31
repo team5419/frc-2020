@@ -21,6 +21,11 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     private val teleopController: TeleopController
     private val tab: ShuffleboardTab
     private var shooterVelocity : NetworkTableEntry
+    private var hopperPercentEntry : NetworkTableEntry
+    // private var hopperEnableEntry : NetworkTableEntry
+    private var feederPercentEntry : NetworkTableEntry
+    // private var feederEnableEntry : NetworkTableEntry
+
 
     init {
         mDriver = XboxController(0)
@@ -33,8 +38,15 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         +Shooger
 
         shooterVelocity = tab.add("Target Velocity", 6000.0).getEntry()
-        tab.addNumber("Current Velocity", { Shooger.flyWheelVelocity.value })
-        tab.addNumber("Hood Angle", { Shooger.hoodAngle.value })
+        hopperPercentEntry = tab.add("Hopper Percent", -0.4).getEntry()
+        feederPercentEntry = tab.add("Feeder Hopper", 0.5).getEntry()
+        // feederEnableEntry = tab.add("Toogle Feeder", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+        // hopperEnableEntry = tab.add("Toogle Hopper", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+
+        // tab.add("Current Velocity Graph", { Shooger.flyWheelVelocity }).withWidget(BuiltInWidgets.kGraph)
+        tab.addNumber("Current Velocity", { Shooger.flyWheelVelocity })
+
+        // tab.addNumber("Hood Angle", { Shooger.hoodAngle.value })
     }
 
     override fun robotInit() {
@@ -42,7 +54,12 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
     override fun robotPeriodic() {
         Shuffleboard.update()
-        Shooger.shoog(shooterVelocity.getDouble(6000.0).radians.velocity)
+        Shooger.shoog(shooterVelocity.getDouble(0.0))
+        Shooger.powerFeeder(feederPercentEntry.getDouble(0.0))
+        Shooger.powerHopper(hopperPercentEntry.getDouble(0.0))
+
+        // Shooger.enableFeeder = feederEnableEntry.getBoolean(false)
+        // Shooger.enableHopper = hopperEnableEntry.getBoolean(false)
     }
 
     override fun disabledInit() {
