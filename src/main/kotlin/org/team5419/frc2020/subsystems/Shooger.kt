@@ -5,6 +5,7 @@ import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.operations.*
 import org.team5419.fault.math.units.*
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import com.ctre.phoenix.motorcontrol.ControlMode
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 import org.team5419.fault.hardware.ctre.BerkeliumSPX
 import org.team5419.frc2020.ShoogerConstants
@@ -18,7 +19,7 @@ object Shooger : Subsystem("Shooger") {
     public val hoodMotor = BerkeliumSRX(HoodConstants.kPort, ShoogerConstants.flywheel)
 
     public val flyWheelVelocity : SIUnit<AngularVelocity>
-        get() = (masterMotor.talonSRX.getSelectedSensorVelocity(0) * 4092 * 10).radians.velocity
+        get() = (masterMotor.talonSRX.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60).radians.velocity
         //  get() = ShoogerConstants.flywheel.fromNativeUnitVelocity(masterMotor.encoder.rawVelocity)
 
     public var hoodAngle: SIUnit<Radian>
@@ -33,8 +34,14 @@ object Shooger : Subsystem("Shooger") {
             config_kD(0, HoodConstants.kD)
         }
 
-        masterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-        masterMotor.talonSRX.setSensorPhase(false)
+        masterMotor.talonSRX.apply{
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+            config_kP(0, 1.0)
+            config_kI(0, 0.0)
+            config_kD(0, 0.0)
+            config_kF(0, 1.0)
+        }
+        masterMotor.talonSRX.setSensorPhase(true)
 
         slaveMotor1.follow(masterMotor)
         slaveMotor2.follow(masterMotor)
@@ -59,8 +66,10 @@ object Shooger : Subsystem("Shooger") {
     }
 
     public fun shoog (shoogVelocity : SIUnit<AngularVelocity>) {
-        val setpoint = calculateFeedforward(shoogVelocity)
-        masterMotor.setVoltage(setpoint)
+        masterMotor.talonSRX.set(ControlMode.Velocity, shoogVelocity.value / 10.0 * 4096.0 * 60)
+        // masterMotor.talonSRX.set(ControlMode.PercentOutput, 1.0)
+        // val setpoint = calculateFeedforward(shoogVelocity)
+        // masterMotor.setVoltage(setpoint)
     }
 
     public fun setPercent (percent: Double) {
