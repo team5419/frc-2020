@@ -17,8 +17,9 @@ object Shooger : Subsystem("Shooger") {
     private val slaveMotor2 = BerkeliumSPX(ShoogerConstants.kSlavePort2, ShoogerConstants.flywheel)
     public val hoodMotor = BerkeliumSRX(HoodConstants.kPort, ShoogerConstants.flywheel)
 
-    public val flyWheelVelocity
-         get() = ShoogerConstants.flywheel.fromNativeUnitVelocity(masterMotor.encoder.rawVelocity)
+    public val flyWheelVelocity : SIUnit<AngularVelocity>
+        get() = (masterMotor.talonSRX.getSelectedSensorVelocity(0) * 4092 * 10).radians.velocity
+        //  get() = ShoogerConstants.flywheel.fromNativeUnitVelocity(masterMotor.encoder.rawVelocity)
 
     public var hoodAngle: SIUnit<Radian>
         get() = HoodConstants.hood.fromNativeUnitPosition(hoodMotor.encoder.rawPosition)

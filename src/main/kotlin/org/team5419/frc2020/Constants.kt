@@ -128,7 +128,7 @@ object ShoogerConstants {
     public val kMaxVelocity = 6000.0.radians.velocity
     public val kMinVelocity = 0.0.radians.velocity
     public val kV = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
-    public val kTicksPerRotation = (4092.0 / 3).nativeUnits
+    public val kTicksPerRotation = (4092.0 / 3.5).nativeUnits
     public val flywheel = NativeUnitRotationModel(kTicksPerRotation)
 }
 
