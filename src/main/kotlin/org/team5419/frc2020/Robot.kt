@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand
 class Robot : BerkeliumRobot(0.05.seconds) {
     private val mDriver: XboxController = XboxController(InputConstants.XboxDrivePort)
     private val mCodriver: XboxController = XboxController(InputConstants.XboxCodrivePort)
-    // private val teleopController: TeleopController
+    private val teleopController: TeleopController
     private val driveHelper = SpaceDriveHelper(
         { -mDriver.getY(Hand.kLeft) },
         { -mDriver.getX(Hand.kRight) },
@@ -29,13 +29,10 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         InputConstants.QuickTurnMultiplier,
         InputConstants.SlowMoveMult
     )
-    // private val autoController: AutoController
 
     init {
-        // teleopController = TeleopController(mDriver, mCodriver)
-        // autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
+        teleopController = TeleopController(mDriver, mCodriver)
 
-        // subsystem manager
         +Drivetrain
     }
 

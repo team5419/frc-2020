@@ -12,12 +12,12 @@ import org.team5419.fault.input.SpaceDriveHelper
 import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.XboxController
 
-class TeleopController(driver: DriverControls, codriver: CodriverControls) : Controller {
+class TeleopController(driver: XboxController, codriver: XboxController) : Controller {
     private val driveHelper = SpaceDriveHelper(
-        { driver.getThrottle() },
-        { driver.getTurn()     },
-        { driver.quickTurn()   },
-        { driver.slow()        },
+        { driver.getY(Hand.kLeft) },
+        { driver.getX(Hand.kRight) },
+        { driver.getBumper(Hand.kRight) },
+        { driver.getBumper(Hand.kLeft) },
         InputConstants.JoystickDeadband,
         InputConstants.QuickTurnMultiplier,
         InputConstants.SlowMoveMult

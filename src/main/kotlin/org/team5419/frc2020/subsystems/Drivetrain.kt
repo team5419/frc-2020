@@ -61,10 +61,10 @@ object Drivetrain : AbstractTankDrive() {
         rightSlave1.follow(rightMasterMotor)
 
         leftSlave1.talonSRX.setInverted(InvertType.FollowMaster)
-        leftMasterMotor.outputInverted = true
+        leftMasterMotor.outputInverted = false
 
         rightSlave1.talonSRX.setInverted(InvertType.FollowMaster)
-        rightMasterMotor.outputInverted = false
+        rightMasterMotor.outputInverted = true
 
         leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
             FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
