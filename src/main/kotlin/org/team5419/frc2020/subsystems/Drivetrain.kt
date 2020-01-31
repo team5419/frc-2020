@@ -26,9 +26,8 @@ object Drivetrain : AbstractTankDrive() {
     private var currentState = State.Nothing
     private var wantedState = State.Nothing
 
-    // override val differentialDrive = DriveConstants.kDriveModel
-
     override val differentialDrive = DriveConstants.kDriveModel
+
     // override val trajectoryFollower = RamseteFollower(DriveConstants.kBeta, DriveConstants.kZeta)
     override val trajectoryFollower = PurePursuitFollower(0.0, 0.1.seconds)
 

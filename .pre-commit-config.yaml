@@ -6,8 +6,6 @@ repos:
     -   id: check-merge-conflict
     -   id: check-yaml
     -   id: end-of-file-fixer
-    -   id: file-contents-sorter
-        files: .gitignore
     -   id: mixed-line-ending
     -   id: pretty-format-json
         args: [--autofix]

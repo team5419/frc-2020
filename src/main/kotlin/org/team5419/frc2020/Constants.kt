@@ -67,6 +67,8 @@ object DriveConstants {
     const val kDriveKa = kEpsilon
     const val kDriveKs = kEpsilon
 
+    val trackWidth = 2.77.meters
+
     val kLeftDriveGearbox = DCMotorTransmission(
         1 / kDriveKv,
         kWheelRadius.value.pow(2) * kMass.value / (2.0 * kDriveKa),

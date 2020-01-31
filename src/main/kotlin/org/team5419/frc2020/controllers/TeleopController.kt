@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.XboxController
 import org.team5419.fault.Controller
 import org.team5419.fault.input.SpaceDriveHelper
 
-class TeleopController(driver: XboxController, codriver: XboxController) : Controller {
+class TeleopController(val driver: XboxController, val codriver: XboxController) : Controller {
     private val driveHelper = SpaceDriveHelper(
         { driver.getY(Hand.kLeft) },
         { driver.getX(Hand.kRight) },
