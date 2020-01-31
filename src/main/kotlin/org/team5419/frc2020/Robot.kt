@@ -33,7 +33,6 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         +Shooger
 
         shooterVelocity = tab.add("Target Velocity", 6000.0).getEntry()
-        tab.addNumber("Velocity SetPoint" { Shooger.setpoint })
         tab.addNumber("Current Velocity", { Shooger.flyWheelVelocity.value })
         tab.addNumber("Hood Angle", { Shooger.hoodAngle.value })
     }
