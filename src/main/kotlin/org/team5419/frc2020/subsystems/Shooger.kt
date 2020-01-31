@@ -33,9 +33,15 @@ object Shooger : Subsystem("Shooger") {
             config_kD(0, HoodConstants.kD)
         }
 
-        masterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+        masterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)\
+        masterMotor.talonSRX.setPhase(false)
+
         slaveMotor1.follow(masterMotor)
         slaveMotor2.follow(masterMotor)
+
+        masterMotor.outputInverted = true
+        slaveMotor1.outputInverted = true
+        slaveMotor2.outputInverted = true
 
         hoodAngle = 0.radians
     }
@@ -52,8 +58,13 @@ object Shooger : Subsystem("Shooger") {
         return velocity * ShoogerConstants.kV
     }
 
+    var setpoint = 0.0
+
     public fun shoog (shoogVelocity : SIUnit<AngularVelocity>) {
-        masterMotor.setVoltage(calculateFeedforward(shoogVelocity))
+        setpoint = calculateFeedforward(shoogVelocity)
+
+        this.setpoint = Constants.flywheel.fromNativeUnitVelocity(setpoint)
+        masterMotor.setVoltage(setpoint)
     }
 
     public fun setPercent (percent: Double) {
