@@ -9,62 +9,61 @@ import org.team5419.fault.hardware.ctre.BerkeliumSRX
 import org.team5419.fault.hardware.ctre.BerkeliumSPX
 import org.team5419.frc2020.ShoogerConstants
 import org.team5419.frc2020.HoodConstants
+import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.motorcontrol.can.VictorSPX
+
 
 object Shooger : Subsystem("Shooger") {
 
-    private val masterMotor = BerkeliumSRX(ShoogerConstants.kMasterPort, ShoogerConstants.flywheel)
-    private val slaveMotor1 = BerkeliumSPX(ShoogerConstants.kSlavePort1, ShoogerConstants.flywheel)
-    private val slaveMotor2 = BerkeliumSPX(ShoogerConstants.kSlavePort2, ShoogerConstants.flywheel)
-    public val hoodMotor = BerkeliumSRX(HoodConstants.kPort, ShoogerConstants.flywheel)
-
-    public val flyWheelVelocity : SIUnit<AngularVelocity>
-        get() = (masterMotor.talonSRX.getSelectedSensorVelocity(0) * 4092 * 10).radians.velocity
-        //  get() = ShoogerConstants.flywheel.fromNativeUnitVelocity(masterMotor.encoder.rawVelocity)
-
-    public var hoodAngle: SIUnit<Radian>
-        get() = HoodConstants.hood.fromNativeUnitPosition(hoodMotor.encoder.rawPosition)
-        set(value) = setLaunchAngle(value)
+    private val masterMotor = TalonSRX(ShoogerConstants.kMasterPort)
+    private val slaveMotor1 = VictorSPX(ShoogerConstants.kSlavePort1)
+    private val slaveMotor2 = VictorSPX(ShoogerConstants.kSlavePort2)
 
     init{
-        hoodMotor.talonSRX.apply{
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-            config_kP(0, HoodConstants.kP)
-            config_kI(0, HoodConstants.kI)
-            config_kD(0, HoodConstants.kD)
-        }
-
-        masterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-        masterMotor.talonSRX.setSensorPhase(false)
+        masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+        masterMotor.setSensorPhase(true)
 
         slaveMotor1.follow(masterMotor)
         slaveMotor2.follow(masterMotor)
 
-        masterMotor.outputInverted = true
-        slaveMotor1.outputInverted = true
-        slaveMotor2.outputInverted = true
+        masterMotor.setInverted(true)
+        slaveMotor1.setInverted(true)
+        slaveMotor2.setInverted(true)
 
-        hoodAngle = 0.radians
+        masterMotor.apply {
+            config_kP(0, 0.2, 0)
+            config_kI(0, 0.0, 0)
+            config_kD(0, 0.0, 0)
+            config_kF(0, 0.07, 0)
+            config_kP(1, 0.0, 0)
+            config_kI(1, 0.0, 0)
+            config_kD(1, 0.0, 0)
+            config_kF(1, 0.0, 0)
+            config_IntegralZone(0, 0, 0)
+            configClosedLoopPeakOutput(0, 1.0, 0)
+            config_IntegralZone(1, 0, 0)
+            configClosedLoopPeakOutput(1, 0.0, 0)
+            selectProfileSlot(0, 0)
+            selectProfileSlot(1, 1)
+            configClosedLoopPeriod(0, 1)
+            configClosedLoopPeriod(1, 1)
+            setSelectedSensorPosition(0, 0, 0)
+        }
     }
 
-    public fun setLaunchAngle(angle: SIUnit<Radian>){
-        hoodMotor.setPosition(angle)
+    private fun calculateSetpoint(velocity : Double) : Double {
+        return velocity * 4096.0 / 600.0
     }
 
-    public fun setLaunchPercent(percent: Double){
-        hoodMotor.setPercent(percent)
+    public fun shoog (shoogVelocity : Double) {
+        val setpoint = calculateSetpoint(shoogVelocity)
+        masterMotor.set(ControlMode.Velocity, setpoint)
+        println(masterMotor.getSelectedSensorVelocity(0).toDouble() * 600.0 / 4096.0) /* * 10.0 / 4096.0) */
     }
 
-    private fun calculateFeedforward(velocity : SIUnit<AngularVelocity>) : SIUnit<Volt> {
-        return velocity * ShoogerConstants.kV
-    }
-
-    public fun shoog (shoogVelocity : SIUnit<AngularVelocity>) {
-        val setpoint = calculateFeedforward(shoogVelocity)
-        masterMotor.setVoltage(setpoint)
-    }
-
-    public fun setPercent (percent: Double) {
-        val velocity = (ShoogerConstants.kMaxVelocity - ShoogerConstants.kMinVelocity) * percent + ShoogerConstants.kMinVelocity
-        shoog(velocity)
-    }
+    // public fun setPercent (percent: Double) {
+    //     val velocity = (ShoogerConstants.kMaxVelocity - ShoogerConstants.kMinVelocity) * percent + ShoogerConstants.kMinVelocity
+    //     shoog(velocity)
+    // }
 }

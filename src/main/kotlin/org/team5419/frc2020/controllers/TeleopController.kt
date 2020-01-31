@@ -33,15 +33,15 @@ class TeleopController(val driver: XboxController, val codriver: XboxController)
     override fun update() {
         updateDriver()
         updateCodriver()
-        hoodPosition = HoodConstants.hood.fromNativeUnitPosition(Shooger.hoodMotor.encoder.rawPosition)
+        // hoodPosition = HoodConstants.hood.fromNativeUnitPosition(Shooger.hoodMotor.encoder.rawPosition)
     }
 
     fun updateDriver() {
         if (driver.getTriggerAxis(Hand.kRight) > 0.3 && hoodPosition < 90.0) { //>
-            Shooger.setLaunchPercent(hoodMotorPercent + driver.getTriggerAxis(Hand.kRight))
+            // Shooger.setLaunchPercent(hoodMotorPercent + driver.getTriggerAxis(Hand.kRight))
         }
         if (driver.getTriggerAxis(Hand.kLeft) > 0.3 && hoodPosition > -90.0) {
-            Shooger.setLaunchPercent(hoodMotorPercent - driver.getTriggerAxis(Hand.kLeft))
+            // Shooger.setLaunchPercent(hoodMotorPercent - driver.getTriggerAxis(Hand.kLeft))
         }
     }
 

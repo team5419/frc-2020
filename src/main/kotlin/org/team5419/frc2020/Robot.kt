@@ -33,8 +33,8 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         +Shooger
 
         shooterVelocity = tab.add("Target Velocity", 6000.0).getEntry()
-        tab.addNumber("Current Velocity", { Shooger.flyWheelVelocity.value })
-        tab.addNumber("Hood Angle", { Shooger.hoodAngle.value })
+        // tab.addNumber("Current Velocity", { Shooger.flyWheelVelocity.value })
+        // tab.addNumber("Hood Angle", { Shooger.hoodAngle.value })
     }
 
     override fun robotInit() {
@@ -42,7 +42,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
     override fun robotPeriodic() {
         Shuffleboard.update()
-        Shooger.shoog(shooterVelocity.getDouble(6000.0).radians.velocity)
+        Shooger.shoog(shooterVelocity.getDouble(6000.0))
     }
 
     override fun disabledInit() {
