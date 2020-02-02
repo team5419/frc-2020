@@ -25,11 +25,11 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     private val tab: ShuffleboardTab
     private var shooterVelocity : NetworkTableEntry
     private var hopperPercentEntry : NetworkTableEntry
-    // private var hopperEnableEntry : NetworkTableEntry
     private var feederPercentEntry : NetworkTableEntry
     private var isEnabled: Boolean = false
     private var enabledTimer: Timer = Timer()
-    // private var feederEnableEntry : NetworkTableEntry
+    private var feederEnableEntry : NetworkTableEntry
+    private var hopperEnableEntry : NetworkTableEntry
 
 
     init {
@@ -47,8 +47,8 @@ class Robot : BerkeliumRobot(0.01.seconds) {
         shooterVelocity = tab.add("Target Velocity", 0.0).getEntry()
         hopperPercentEntry = tab.add("Hopper Percent", 0.0).getEntry()
         feederPercentEntry = tab.add("Feeder Hopper", 0.0).getEntry()
-        // feederEnableEntry = tab.add("Toogle Feeder", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
-        // hopperEnableEntry = tab.add("Toogle Hopper", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+        feederEnableEntry = tab.add("Toogle Feeder", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+        hopperEnableEntry = tab.add("Toogle Hopper", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
 
         // tab.add("Current Velocity Graph", { Shooger.flyWheelVelocity }).withWidget(BuiltInWidgets.kGraph)
         tab.addNumber("Current Velocity", { Shooger.flyWheelVelocity })
@@ -68,13 +68,14 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     override fun robotPeriodic() {
         Shuffleboard.update()
         Shooger.periodic()
+
+
         Shooger.shoog(shooterVelocity.getDouble(0.0))
         // Shooger.shoogPower(1.0)
-        // Shooger.powerFeeder(feederPercentEntry.getDouble(0.0))
-        Shooger.powerHopper(hopperPercentEntry.getDouble(0.0))
+        // Shooger.powerFeeder(if (feederEnableEntry.getBoolean(true)) feederPercentEntry.getDouble(0.0) else 0.0)
+        Shooger.enableFeeder(feederEnableEntry.getBoolean(true))
+        Shooger.powerHopper(if (hopperEnableEntry.getBoolean(true)) hopperPercentEntry.getDouble(0.0) else 0.0)
 
-        // Shooger.enableFeeder = feederEnableEntry.getBoolean(false)
-        // Shooger.enableHopper = hopperEnableEntry.getBoolean(false)
     }
 
     override fun disabledInit() {

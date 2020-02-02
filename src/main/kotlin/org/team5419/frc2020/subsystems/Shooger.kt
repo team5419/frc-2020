@@ -22,10 +22,7 @@ object Shooger : Subsystem("Shooger") {
     private val feeder = TalonSRX(5)
     private val hopper = TalonSRX(3)
 
-    public var enableFeeder = true
-    public var feederPercent = 0.0
-    public var enableHopper = true
-    public var hopperPercent = 0.0
+    private var enableFeeder = true
 
     private var setpointVelocity = 0.0
 
@@ -100,6 +97,10 @@ object Shooger : Subsystem("Shooger") {
         hopper.set(ControlMode.PercentOutput, percent)
     }
 
+    public fun enableFeeder(bool: Boolean){
+        enableFeeder = bool
+    }
+
     private fun recalculateAcceleration() {
         val time = accelTimer.get()
         accelTimer.stop()
@@ -118,7 +119,7 @@ object Shooger : Subsystem("Shooger") {
         recalculateAcceleration()
         // println(flyWheelAcceleration)
         println(setpointVelocity)
-        if(flyWheelVelocity >= setpointVelocity) {
+        if(enableFeeder && flyWheelVelocity >= setpointVelocity) {
             powerFeeder(1.0)
         } else {
             powerFeeder(0.0)
