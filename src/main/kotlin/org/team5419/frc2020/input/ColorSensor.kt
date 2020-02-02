@@ -7,6 +7,7 @@ import com.revrobotics.ColorMatch
 import com.revrobotics.*
 import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.util.Color
+import edu.wpi.first.wpilibj.util.ColorShim
 import org.team5419.frc2020.InputConstants
 
 public class ColorSensor() {
@@ -23,10 +24,10 @@ public class ColorSensor() {
     val kRed: Color = ColorMatch.makeColor(255.0, 0.0, 0.0)
     val kYellow: Color = ColorMatch.makeColor(255.0, 255.0, 0.0)
 
-    // public fun getRawColor() {
-    //     var rawColor: RawColor = mColorSensorV3.getRawColor()
-    //     return rawColor
-    // }
+    public fun getRawColor(): MutableList<Int> {
+        var rawColor: RawColor = mColorSensorV3.getRawColor()
+        return mutableListOf(rawColor.red, rawColor.green, rawColor.blue, rawColor.ir)
+    }
 
     public fun getColor(): ColorValue {
         var input: Color = mColorSensorV3.getColor()
@@ -64,13 +65,18 @@ public class ColorSensor() {
         mColorMatcher.setConfidenceThreshold(InputConstants.kConfidence)
         colorMatchResult = mColorMatcher.matchClosestColor(input).color
 
-        when (colorMatchResult) {
-            kRed -> println("red")
-            kGreen -> println("green")
-            kBlue -> println("blue")
-            kYellow -> println("yellow")
-            else -> println("unknown")
-        }
+        // when (colorMatchResult) {
+        //     kRed -> println("red")
+        //     kGreen -> println("green")
+        //     kBlue -> println("blue")
+        //     kYellow -> println("yellow")
+        //     else -> println("unknown")
+        // }
 
+        // println(getRawColor())
+        var colorshim: Color = mColorSensorV3.getColor()
+        println("Color Match Result: " + colorMatchResult)
+        println("Color Shim: " + mutableListOf(colorshim.red, colorshim.green, colorshim.blue))
+        println("Raw Color: " + getRawColor())  
     }
 }
