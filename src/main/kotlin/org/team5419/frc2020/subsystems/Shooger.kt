@@ -51,6 +51,10 @@ object Shooger : Subsystem("Shooger") {
         slaveMotor1.setInverted(true)
         slaveMotor2.setInverted(true)
 
+        masterMotor.setNeutralMode(NeutralMode.Brake)
+        slaveMotor1.setNeutralMode(NeutralMode.Brake)
+        slaveMotor2.setNeutralMode(NeutralMode.Brake)
+
         masterMotor.apply {
             config_kP(0, 0.3, 0)
             config_kI(0, 0.0, 0)
