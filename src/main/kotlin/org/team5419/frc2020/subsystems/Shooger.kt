@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.can.VictorSPX
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.Timer
+import com.ctre.phoenix.motorcontrol.NeutralMode
 
 object Shooger : Subsystem("Shooger") {
 
@@ -72,6 +73,7 @@ object Shooger : Subsystem("Shooger") {
 
         hopper.setInverted(false)
         feeder.setInverted(true)
+        feeder.setNeutralMode(NeutralMode.Brake)
     }
 
     private fun calculateSetpoint(velocity : Double) : Double {
