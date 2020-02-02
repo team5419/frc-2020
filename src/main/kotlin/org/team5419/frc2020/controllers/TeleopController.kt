@@ -37,6 +37,8 @@ class TeleopController(val driver: XboxController, val codriver: XboxController)
     }
 
     fun updateDriver() {
+        Shooger.powerFeeder(driver.getY(Hand.kRight)*0.3)
+        println(driver.getTriggerAxis(Hand.kRight))
         if (driver.getTriggerAxis(Hand.kRight) > 0.3 && hoodPosition < 90.0) { //>
             // Shooger.setLaunchPercent(hoodMotorPercent + driver.getTriggerAxis(Hand.kRight))
         }

@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.can.VictorSPX
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import edu.wpi.first.wpilibj.Timer
 
 object Shooger : Subsystem("Shooger") {
 
@@ -26,11 +27,20 @@ object Shooger : Subsystem("Shooger") {
     public var enableHopper = true
     public var hopperPercent = 0.0
 
+    private var setpointVelocity = 0.0
+
 
 
     public val flyWheelVelocity
         get() = masterMotor.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60
         //  get() = ShoogerConstants.flywheel.fromNativeUnitVelocity(masterMotor.encoder.rawVelocity)
+    private val accelTimer = Timer()
+    private var lastVelocity = 0.0
+    public var flyWheelAcceleration = 0.0 // RPM/s
+    public val amperage
+        get() = masterMotor.getStatorCurrent()
+    public val voltage
+        get() = masterMotor.getMotorOutputVoltage()
 
     init{
         masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
@@ -44,10 +54,10 @@ object Shooger : Subsystem("Shooger") {
         slaveMotor2.setInverted(true)
 
         masterMotor.apply {
-            config_kP(0, 0.2, 0)
+            config_kP(0, 0.3, 0)
             config_kI(0, 0.0, 0)
-            config_kD(0, 0.0, 0)
-            config_kF(0, 0.07, 0)
+            config_kD(0, 0.7, 0)
+            config_kF(0, 0.05, 0)
             config_kP(1, 0.0, 0)
             config_kI(1, 0.0, 0)
             config_kD(1, 0.0, 0)
@@ -63,7 +73,7 @@ object Shooger : Subsystem("Shooger") {
             setSelectedSensorPosition(0, 0, 0)
         }
 
-        hopper.setInverted(true)
+        hopper.setInverted(false)
         feeder.setInverted(true)
     }
 
@@ -72,9 +82,15 @@ object Shooger : Subsystem("Shooger") {
     }
 
     public fun shoog (shoogVelocity : Double) {
+        setpointVelocity = shoogVelocity
         val setpoint = calculateSetpoint(shoogVelocity)
         masterMotor.set(ControlMode.Velocity, setpoint)
-        println(masterMotor.getSelectedSensorVelocity(0).toDouble() * 600.0 / 4096.0) /* * 10.0 / 4096.0) */
+        // println(masterMotor.getSelectedSensorVelocity(0).toDouble() * 600.0 / 4096.0) /* * 10.0 / 4096.0) */
+    }
+
+    public fun shoogPower(percent: Double) {
+        masterMotor.set(ControlMode.PercentOutput, percent)
+        // println(masterMotor.getSelectedSensorVelocity(0).toDouble() * 600.0 / 4096.0)
     }
 
     public fun powerFeeder(percent : Double){
@@ -84,13 +100,28 @@ object Shooger : Subsystem("Shooger") {
         hopper.set(ControlMode.PercentOutput, percent)
     }
 
-    override fun periodic(){
-        // hopper.set(ControlMode.PercentOutput, if (enableHopper) hopperPercent else 0.0)
-        // feeder.set(ControlMode.PercentOutput, if (enableFeeder) feederPercent else 0.0)
+    private fun recalculateAcceleration() {
+        val time = accelTimer.get()
+        accelTimer.stop()
+        accelTimer.reset()
+        val velocity = flyWheelVelocity
+        if (time == 0.0) {
+            lastVelocity = velocity
+            accelTimer.start()
+            return
+        }
+        flyWheelAcceleration = (velocity - lastVelocity) / time
+        lastVelocity = velocity
     }
 
-    // public fun setPercent (percent: Double) {
-    //     val velocity = (ShoogerConstants.kMaxVelocity - ShoogerConstants.kMinVelocity) * percent + ShoogerConstants.kMinVelocity
-    //     shoog(velocity)
-    // }
+    override fun periodic(){
+        recalculateAcceleration()
+        // println(flyWheelAcceleration)
+        println(setpointVelocity)
+        if(flyWheelVelocity >= setpointVelocity) {
+            powerFeeder(1.0)
+        } else {
+            powerFeeder(0.0)
+        }
+    }
 }
