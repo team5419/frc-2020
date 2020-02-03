@@ -8,8 +8,7 @@ import org.team5419.fault.math.units.derived.radians
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.kEpsilon
 
-import org.team5419.fault.math.units.native.NativeUnitLengthModel
-import org.team5419.fault.math.units.native.nativeUnits
+import org.team5419.fault.math.units.native.*
 import kotlin.math.PI
 import kotlin.math.pow
 
@@ -125,5 +124,9 @@ object SpinConstants {
 }
 
 object IntakeConstants {
+    public val kDeployTicksPerRotation = (4096 * 81).nativeUnits
+    public val kDeployModel = NativeUnitRotationModel(kDeployTicksPerRotation)
+    public val kIntakeTicksPerRotation = (4096 * 10).nativeUnits
+    public val kIntakeModel = NativeUnitRotationModel(kIntakeTicksPerRotation)
     public const val kIntakePort = 4
 }

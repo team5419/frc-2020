@@ -2,13 +2,18 @@ package org.team5419.frc2020.subsystems
 
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
+import org.team5419.frc2020.IntakeConstants
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.ControlMode
 
 object Intake : Subsystem("Intake") {
     private var doesIntake = false
-    private val intakeMotor = TalonSRX(4)
-    private val deployMotor = TalonSRX(9)
+    private val intakeMotor = BerkeliumSRX(4, IntakeConstants.kIntakeModel)
+    private val deployMotor = BerkeliumSRX(9, IntakeConstants.kIntakeModel)
+
+    init{
+        deployMotor.brakeMode = true
+    }
 
     public var isIntake: Boolean = false
         set (value: Boolean) {
@@ -22,7 +27,7 @@ object Intake : Subsystem("Intake") {
         }
 
     public fun setPercent(percent: Double){
-        intakeMotor.set(ControlMode.PercentOutput, percent)
+        intakeMotor.talonSRX.set(ControlMode.PercentOutput, percent)
     }
 
 }

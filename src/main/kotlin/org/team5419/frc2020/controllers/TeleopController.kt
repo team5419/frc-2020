@@ -32,8 +32,7 @@ class TeleopController(val driver: XboxController, codriver: XboxController) : C
 
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
-        Intake.setPercent(driver.getTriggerAxis(Hand.kLeft))
-
+        Intake.setPercent(if (driver.getTriggerAxis(Hand.kLeft) > 0.2) 1.0 else 0.0)
     }
 
     fun updateCodriver() {
