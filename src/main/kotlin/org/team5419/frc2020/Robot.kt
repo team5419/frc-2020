@@ -20,19 +20,9 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     private val mDriver: XboxController = XboxController(InputConstants.XboxDrivePort)
     private val mCodriver: XboxController = XboxController(InputConstants.XboxCodrivePort)
     private val teleopController: TeleopController
-    private val driveHelper = SpaceDriveHelper(
-        { -mDriver.getY(Hand.kLeft) },
-        { -mDriver.getX(Hand.kRight) },
-        { mDriver.getBumper(Hand.kRight) },
-        { mDriver.getBumper(Hand.kLeft) },
-        InputConstants.JoystickDeadband,
-        InputConstants.QuickTurnMultiplier,
-        InputConstants.SlowMoveMult
-    )
 
     init {
         teleopController = TeleopController(mDriver, mCodriver)
-
         +Drivetrain
     }
 
@@ -57,12 +47,10 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     }
 
     override fun teleopInit() {
-        // teleopController.start()
+        teleopController.start()
     }
 
     override fun teleopPeriodic() {
-        // teleopController.update()
-        println(mDriver.getY(Hand.kLeft).toString())
-        Drivetrain.setPercent(driveHelper.output())
+        teleopController.update()
     }
 }

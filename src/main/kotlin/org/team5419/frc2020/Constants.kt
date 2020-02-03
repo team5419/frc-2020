@@ -125,5 +125,5 @@ object SpinConstants {
 }
 
 object IntakeConstants {
-    public const val kIntakePort = 9
+    public const val kIntakePort = 4
 }
