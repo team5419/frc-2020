@@ -1,23 +1,26 @@
 package org.team5419.frc2020.controllers
 
 import org.team5419.frc2020.InputConstants
-import org.team5419.frc2020.subsystems.Drivetrain
+import org.team5419.frc2020.subsystems.*
+import edu.wpi.first.wpilibj.GenericHID.Hand
+import edu.wpi.first.wpilibj.XboxController
+import org.team5419.fault.Controller
+import org.team5419.fault.input.SpaceDriveHelper
+import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.*
+import org.team5419.frc2020.HoodConstants
+import org.team5419.frc2020.subsystems.Shooger
+
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
 
-import org.team5419.fault.Controller
+class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
-import org.team5419.fault.input.SpaceDriveHelper
-
-import edu.wpi.first.wpilibj.GenericHID.Hand
-import edu.wpi.first.wpilibj.XboxController
-
-class TeleopController(driver: XboxController, codriver: XboxController) : Controller {
     private val driveHelper = SpaceDriveHelper(
-        { driver.getY(Hand.kLeft) },
-        { driver.getX(Hand.kRight) },
-        { driver.getBumper(Hand.kRight) },
-        { driver.getBumper(Hand.kLeft) },
+        { driver.getThrottle() },
+        { driver.getTurn() },
+        { driver.quickTurn() },
+        { driver.slow() },
         InputConstants.JoystickDeadband,
         InputConstants.QuickTurnMultiplier,
         InputConstants.SlowMoveMult
@@ -33,9 +36,13 @@ class TeleopController(driver: XboxController, codriver: XboxController) : Contr
 
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
+
+        Intake.setIntake(if (driver.activateIntake()) 1.0 else 0.0)
+        Intake.setDeploy(if (driver.deployIntake()) 1.0 else if (driver.retractIntake()) -1.0 else 0.0)
     }
 
     fun updateCodriver() {
+
     }
 
     override fun reset() {

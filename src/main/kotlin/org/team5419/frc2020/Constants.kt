@@ -2,14 +2,10 @@ package org.team5419.frc2020
 
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
-import org.team5419.fault.math.units.derived.acceleration
-import org.team5419.fault.math.units.derived.velocity
-import org.team5419.fault.math.units.derived.radians
 import org.team5419.fault.math.units.*
+import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.kEpsilon
-
-import org.team5419.fault.math.units.native.NativeUnitLengthModel
-import org.team5419.fault.math.units.native.nativeUnits
 import kotlin.math.PI
 import kotlin.math.pow
 
@@ -36,6 +32,19 @@ object DriveConstants {
     const val kRightSlave1Port = 9
 
     const val kGyroPort = 7
+
+    // Added Constants - Remove Later If Necessary
+    const val kLeftEncoderPort1 = 1
+    const val kLeftEncoderPort2 = 2
+    const val kLeftEncoderReversed = true
+    const val kRightEncoderPort1 = 4
+    const val kRightEncoderPort2 = 7
+    const val kRightEncoderReversed = false
+
+    const val kEncoderDistancePerPulse = 1000.0
+
+    const val kGyroReversed = false
+    // End
 
     // misc
     const val kEncoderPhase = true
@@ -110,8 +119,24 @@ object InputConstants {
 }
 
 object ShoogerConstants {
-    public const val kMotorPort = 8
-    public const val kV = 500
+    public const val kMasterPort = 9
+    public const val kSlavePort1 = 1
+    public const val kSlavePort2 = 12
+    public val kMaxVelocity = 6000.0.radians.velocity
+    public val kMinVelocity = 0.0.radians.velocity
+    public val kV = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
+    public val kTicksPerRotation = (4092.0 / 3.5).nativeUnits
+    public val flywheel = NativeUnitRotationModel(kTicksPerRotation)
+}
+
+object HoodConstants{
+    public const val kPort = 3
+    public const val kP = 1.0
+    public const val kI = 0.0
+    public const val kD = 0.0
+
+    public val kTicksPerRotation = (4092 / 3).nativeUnits
+    public val hood = NativeUnitRotationModel(kTicksPerRotation)
 }
 
 object ClimberConstants {
@@ -125,5 +150,9 @@ object SpinConstants {
 }
 
 object IntakeConstants {
-    public const val kIntakePort = 9
+    public val kDeployTicksPerRotation = (4096 * 81).nativeUnits
+    public val kDeployModel = NativeUnitRotationModel(kDeployTicksPerRotation)
+    public val kIntakeTicksPerRotation = (4096 * 10).nativeUnits
+    public val kIntakeModel = NativeUnitRotationModel(kIntakeTicksPerRotation)
+    public const val kIntakePort = 4
 }
