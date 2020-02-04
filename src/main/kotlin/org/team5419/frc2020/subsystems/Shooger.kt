@@ -132,7 +132,7 @@ object Shooger : Subsystem("Shooger") {
         return velocity * 4096.0 / 600.0
     }
 
-    public fun shoog(shoogVelocity : Double, useBangBang: Boolean = false) {
+    public fun shoog(shoogVelocity : Double=shooterVelocityEntry.getDouble(0.0), useBangBang: Boolean = false) {
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)
 

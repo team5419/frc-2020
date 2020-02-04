@@ -23,17 +23,14 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     private val teleopController: TeleopController
 
     init {
-        teleopController = TeleopController(mDriver, mCodriver)
+        mDriver = XboxController(0)
+        mCodriver = XboxController(1)
 
+        teleopController = TeleopController(mDriver, mCodriver)
         NetworkTableInstance.getDefault().setUpdateRate(0.01) // maximum update speed, seconds
-        tab = Shuffleboard.getTab("Main")
 
         +Drivetrain
         +Intake
-
-
-        // subsystem manager
-
         +Shooger
     }
 
@@ -42,10 +39,6 @@ class Robot : BerkeliumRobot(0.01.seconds) {
 
     override fun robotPeriodic() {
         Shuffleboard.update()
-
-        Shooger.periodic()
-
-        Shooger.shoog( Shooger.shooterVelocityEntry.getDouble(0.0))
     }
 
     override fun disabledInit() {
