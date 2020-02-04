@@ -128,7 +128,7 @@ object ClimberConstants {
 }
 
 object SpinConstants {
-    public const val kMotorPort = 9
+    public const val kSpinPort = 9
     public val kEncoderTicksPerRotation = 4096.nativeUnits //check
     public val kSpinSpeed = 4.0.radians.velocity
 }

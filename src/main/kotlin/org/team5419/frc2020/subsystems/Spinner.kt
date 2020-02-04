@@ -15,20 +15,37 @@ import edu.wpi.first.wpilibj.DriverStation
 object Spinner : Subsystem("Spinner") {
 
     private val mColorSensor = ColorSensor()
-    private val spinnerMotor = BerkeliumSRX(SpinConstants.kMotorPort, NativeUnitRotationModel(SpinConstants.kEncoderTicksPerRotation))
+    private val spinnerMotor = BerkeliumSRX(SpinConstants.kSpinPort, NativeUnitRotationModel(SpinConstants.kEncoderTicksPerRotation))
+    private var rotationFinished: Boolean
+
 
     init {
         spinnerMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
         spinnerMotor.talonSRX.setSensorPhase(true)
         spinnerMotor.brakeMode = true
+        rotationFinished = false
+    }
+
+    public fun spinColorMotor() {
+        if (!rotationFinished) {
+            rotationControl()
+        } else {
+            colorControl()
+        }
     }
 
     public fun rotationControl() {
         var encoderTicks = SpinConstants.kEncoderTicksPerRotation * 3.5
         if (spinnerMotor.talonSRX.getSelectedSensorPosition(0) <= encoderTicks.value) {
             spinnerMotor.setVelocity(SpinConstants.kSpinSpeed)
+        } else { /* > */
+            rotationFinished = true
         }
+
+
     }
+
+
 
     public fun colorControl() {
         var gameData: String = DriverStation.getInstance().getGameSpecificMessage()

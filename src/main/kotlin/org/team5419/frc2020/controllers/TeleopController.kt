@@ -1,13 +1,13 @@
 package org.team5419.frc2020.controllers
 
 import org.team5419.frc2020.InputConstants
-import org.team5419.frc2020.subsystems.Drivetrain
+import org.team5419.frc2020.subsystems.*
 import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.XboxController
 import org.team5419.fault.Controller
 import org.team5419.fault.input.SpaceDriveHelper
 
-class TeleopController(driver: XboxController, codriver: XboxController) : Controller {
+class TeleopController(val driver: XboxController, val codriver: XboxController) : Controller {
     private val driveHelper = SpaceDriveHelper(
         { driver.getY(Hand.kLeft) },
         { driver.getX(Hand.kRight) },
@@ -28,6 +28,9 @@ class TeleopController(driver: XboxController, codriver: XboxController) : Contr
 
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
+        if (driver.getBumper(Hand.kLeft) || driver.getBumper(Hand.kRight)) {
+            Spinner.spinColorMotor()
+        }
     }
 
     fun updateCodriver() {

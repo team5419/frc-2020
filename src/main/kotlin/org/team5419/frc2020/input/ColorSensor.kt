@@ -19,10 +19,10 @@ public class ColorSensor() {
     val mColorSensorV3: ColorSensorV3 = ColorSensorV3(I2C.Port.kOnboard)
     val mColorMatcher: ColorMatch = ColorMatch()
 
-    val kBlue: Color = ColorMatch.makeColor(0.0, 255.0, 255.0)
-    val kGreen: Color = ColorMatch.makeColor(0.0, 255.0, 0.0)
-    val kRed: Color = ColorMatch.makeColor(255.0, 0.0, 0.0)
-    val kYellow: Color = ColorMatch.makeColor(255.0, 255.0, 0.0)
+    val kBlue: Color = ColorMatch.makeColor(0.122, 0.420, 0.458)
+    val kGreen: Color = ColorMatch.makeColor(0.173, 0.571, 0.257)
+    val kRed: Color = ColorMatch.makeColor(0.524, 0.345, 0.131)
+    val kYellow: Color = ColorMatch.makeColor(0.321, 0.558, 0.120)
 
     public fun getRawColor(): MutableList<Int> {
         var rawColor: RawColor = mColorSensorV3.getRawColor()
@@ -65,18 +65,13 @@ public class ColorSensor() {
         mColorMatcher.setConfidenceThreshold(InputConstants.kConfidence)
         colorMatchResult = mColorMatcher.matchClosestColor(input).color
 
-        // when (colorMatchResult) {
-        //     kRed -> println("red")
-        //     kGreen -> println("green")
-        //     kBlue -> println("blue")
-        //     kYellow -> println("yellow")
-        //     else -> println("unknown")
-        // }
-
-        // println(getRawColor())
-        var colorshim: Color = mColorSensorV3.getColor()
-        println("Color Match Result: " + colorMatchResult)
-        println("Color Shim: " + mutableListOf(colorshim.red, colorshim.green, colorshim.blue))
-        println("Raw Color: " + getRawColor())  
+        println("Code: ")
+        when (colorMatchResult) {
+            kRed -> println("red")
+            kGreen -> println("green")
+            kBlue -> println("blue")
+            kYellow -> println("yellow")
+            else -> println("unknown")
+        }
     }
 }
