@@ -15,18 +15,16 @@ import org.team5419.fault.auto.Routine
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.RobotController
+import org.team5419.frc2020.input.XboxDriver
+import org.team5419.frc2020.input.XboxCodriver
 
 @SuppressWarnings("MagicNumber")
 class Robot : BerkeliumRobot(0.01.seconds) {
-    private val mDriver: XboxController
-    private val mCodriver: XboxController
     private val teleopController: TeleopController
 
     init {
-        mDriver = XboxController(0)
-        mCodriver = XboxController(1)
+        teleopController = TeleopController(XboxDriver, XboxCodriver)
 
-        teleopController = TeleopController(mDriver, mCodriver)
         NetworkTableInstance.getDefault().setUpdateRate(0.01) // maximum update speed, seconds
 
         +Drivetrain
