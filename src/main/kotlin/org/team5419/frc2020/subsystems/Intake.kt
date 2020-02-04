@@ -18,10 +18,10 @@ object Intake : Subsystem("Intake") {
     public var isIntake: Boolean = false
         set (value: Boolean) {
             if(value && !field){
-                setPercent(1.0)
+                setIntake(1.0)
             }
             if(!value && field){
-                setPercent(0.0)
+                setIntake(0.0)
             }
             field = value
         }
@@ -30,8 +30,8 @@ object Intake : Subsystem("Intake") {
         intakeMotor.talonSRX.set(ControlMode.PercentOutput, percent)
     }
 
-    public fun setDeploy(perent: Double){
-
+    public fun setDeploy(percent: Double){
+        deployMotor.talonSRX.set(ControlMode.PercentOutput, percent)
     }
 
 }

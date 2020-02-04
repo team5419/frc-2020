@@ -1,7 +1,8 @@
 package org.team5419.frc2020
 
 import edu.wpi.first.wpilibj.XboxController
-import edu.wpi.first.wpilibj.shuffleboard.*
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableEntry
 import org.team5419.frc2020.controllers.TeleopController
 import org.team5419.frc2020.subsystems.*
@@ -14,12 +15,11 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     private val mDriver: XboxController = XboxController(InputConstants.XboxDrivePort)
     private val mCodriver: XboxController = XboxController(InputConstants.XboxCodrivePort)
     private val teleopController: TeleopController
-    private val tab: ShuffleBoardTab
+    private val tab: ShuffleboardTab
 
     init {
         teleopController = TeleopController(mDriver, mCodriver)
-        tab = ShuffleBoard.getTab("Main")
-
+        tab = Shuffleboard.getTab("Main")
 
         +Drivetrain
         +Intake
