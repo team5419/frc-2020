@@ -91,8 +91,15 @@ object ShoogerConstants {
     public const val FeederPort = 13
     public const val HopperPort = 9
 
-    public val MaxVelocity = 6000.0.radians.velocity
+    public const val FeederPercent = 1.0
+
+    public const val HopperPercent = 1.0
+    public const val HopperLazyPercent = 0.4
+
+    public val TargetVelocity = 6000.0.radians.velocity
     public val TicksPerRotation = (4092.0 / 3.5).nativeUnits
+
+
 
     // WHAT AM I? ->
     // public val V = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)

@@ -76,12 +76,19 @@ object Shooger : Subsystem("Shooger") {
     init {
         feeder.setInverted(true)
         feeder.setNeutralMode(NeutralMode.Brake)
+
         hopper.setInverted(true)
     }
 
     // hood
 
+    // default settings
 
+    var targetVelocity = ShoogerConstants.TargetVelocity.value
+
+    var hopperPercent = ShoogerConstants.HopperPercent
+    var feederPercent = ShoogerConstants.FeederPercent
+    var hopperLazyPercent = ShoogerConstants.HopperLazyPercent
 
     // Shuffleboard
 
@@ -93,19 +100,20 @@ object Shooger : Subsystem("Shooger") {
     public var hopperLazyPercentEntry : NetworkTableEntry
     public var feederPercentEntry : NetworkTableEntry
     public var feedingEnabledEntry : NetworkTableEntry
-    public var bangBangEntry : NetworkTableEntry
+    // public var bangBangEntry : NetworkTableEntry
 
     init {
         tab = Shuffleboard.getTab(tabName)
 
-        shooterVelocityEntry = tab.add("Target Velocity", 0.0).getEntry()
+        shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
 
-        feederPercentEntry = tab.add("Feeder Percent", 0.0).getEntry()
-        hopperPercentEntry = tab.add("Hopper Percent", 0.0).getEntry()
-        hopperLazyPercentEntry = tab.add("Hopper Lazy Percent", 0.0).getEntry()
+        feederPercentEntry = tab.add("Feeder Percent", feederPercent).getEntry()
+        hopperPercentEntry = tab.add("Hopper Percent", hopperPercent).getEntry()
+
+        hopperLazyPercentEntry = tab.add("Hopper Lazy Percent", hopperLazyPercent).getEntry()
 
         feedingEnabledEntry = tab.add("Feeding Enabled", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
-        bangBangEntry = tab.add("Bang Bang Toggle", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+        // bangBangEntry = tab.add("Bang Bang Toggle", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
@@ -132,17 +140,17 @@ object Shooger : Subsystem("Shooger") {
     private var setpointVelocity = 0.0
     var setpoint = 0.0
     var bangBang = false
-    var hopperPercent = 0.0
-    var feederPercent = 0.0
-    var hopperLazyPercent = 0.0
 
-    // actaull funcs
+    // funcs
 
     private fun calculateSetpoint(velocity : Double) : Double {
         return velocity * 4096.0 / 600.0
     }
 
-    public fun shoog(shoogVelocity : Double=shooterVelocityEntry.getDouble(0.0), useBangBang: Boolean = false) {
+    public fun shoog(
+            shoogVelocity : Double=shooterVelocityEntry.getDouble(targetVelocity),
+            useBangBang: Boolean = false
+    ) {
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)
 
@@ -154,24 +162,26 @@ object Shooger : Subsystem("Shooger") {
     }
 
     public fun stop() {
-        masterMotor.set(ControlMode.PercentOutput, 0.0)
-        feeder.set(ControlMode.PercentOutput, 0.0)
-        hopper.set(ControlMode.PercentOutput, 0.0)
+        setpoint = 0.0
+
+        powerShooger(0.0)
+        powerFeeder(0.0)
+        powerHopper(0.0)
     }
 
     public fun powerShooger(percent: Double) {
         masterMotor.set(ControlMode.PercentOutput, percent)
     }
 
-    public fun powerFeeder(percent : Double){
+    public fun powerFeeder(percent : Double) {
         feeder.set(ControlMode.PercentOutput, percent)
     }
 
-    public fun powerHopper(percent: Double){
+    public fun powerHopper(percent: Double) {
         hopper.set(ControlMode.PercentOutput, percent)
     }
 
-    public fun enableFeeding(bool: Boolean){
+    public fun enableFeeding(bool: Boolean) {
         feedingEnabled = bool
     }
 
@@ -189,10 +199,10 @@ object Shooger : Subsystem("Shooger") {
         lastVelocity = velocity
     }
 
-    override fun periodic(){
-        hopperPercent = hopperPercentEntry.getDouble(0.0)
-        feederPercent = hopperPercentEntry.getDouble(0.0)
-        hopperLazyPercent = hopperLazyPercentEntry.getDouble(0.0)
+    override fun periodic() {
+        feederPercent = feederPercentEntry.getDouble(feederPercent)
+        hopperPercent = hopperPercentEntry.getDouble(hopperPercent)
+        hopperLazyPercent = hopperLazyPercentEntry.getDouble(hopperLazyPercent)
 
         recalculateAcceleration()
 
