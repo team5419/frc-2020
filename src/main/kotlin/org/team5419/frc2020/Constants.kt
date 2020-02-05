@@ -33,7 +33,7 @@ object DriveConstants {
     const val leftSlavePort = 11
 
     const val rightMasterPort = 8
-    const val rightSlavePort = 9
+    const val rightSlavePort = 6
 
     const val gyroPort = 7
 
@@ -100,19 +100,24 @@ object DriveConstants {
 object InputConstants {
     public const val XboxCodrivePort = 0
     public const val XboxDrivePort = 0
+
     public const val SlowTurnMult = 0.4
     public const val SlowMoveMult = 0.4
+
     public const val DriverStowTimeout = 2.0
-    public const val QuickTurnMultiplier = 0.4;
+
     public const val TriggerDeadband = 0.1
     public const val JoystickDeadband = 0.07
 }
 
 object ShoogerConstants {
     public const val kMasterPort = 3
-    public const val kSlavePort1 = 13
-    public const val kSlavePort2 = 5
+    public const val kSlavePort1 = 15
+    public const val kSlavePort2 = 16
+
     public const val kFeederPort = 2
+    public const val kHopperPort = -1
+
     public val kMaxVelocity = 6000.0.radians.velocity
     public val kMinVelocity = 0.0.radians.velocity
     public val kV = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
@@ -122,6 +127,7 @@ object ShoogerConstants {
 
 object HoodConstants{
     public const val kPort = 12
+
     public const val kP = 1.0
     public const val kI = 0.0
     public const val kD = 0.0
@@ -135,7 +141,7 @@ object IntakeConstants {
     public val kDeployModel = NativeUnitRotationModel(kDeployTicksPerRotation)
     public val kIntakeTicksPerRotation = (4096 * 10).nativeUnits
     public val kIntakeModel = NativeUnitRotationModel(kIntakeTicksPerRotation)
-    public const val kIntakePort = 14
+    public const val kIntakePort = 2
     public const val kDeployPort = 4
 }
 

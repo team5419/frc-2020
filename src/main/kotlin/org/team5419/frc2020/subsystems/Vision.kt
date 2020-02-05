@@ -25,26 +25,28 @@ object Vision : Limelight (
     public val controller: PIDController = PIDController(kP, kI, kI)
     public var output: Double = 0.0
 
-    val aligned: bool
-        get() {
-            return targetFound && Math.abs(verticalOffset) <= VisionConstants.allowedError
-        }
+    public val tabName = "Vision"
+
+    public val aligned
+        get() = targetFound && Math.abs(verticalOffset) <= VisionConstants.allowedError
+
+    var tab: ShuffleboardTab
 
     init{
+        tab = Shuffleboard.getTab(tabName)
 
-        // tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
-        // tab.addBoolean("Found Target", { targetFound })
-        // tab.addNumber("Horizontal Offset", { horizontalOffset })
-        // tab.addNumber("Vertical Offset", { verticalOffset })
-        // tab.addNumber("Target Area", { targetArea })
-        // tab.addNumber("Target Skew", { targetSkew })
-        // tab.addNumber("PID Output", { output })
-
+        tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
+        tab.addBoolean("Found Target", { targetFound })
+        tab.addNumber("Horizontal Offset", { horizontalOffset })
+        tab.addNumber("Vertical Offset", { verticalOffset })
+        tab.addNumber("Target Area", { targetArea })
+        tab.addNumber("Target Skew", { targetSkew })
+        tab.addNumber("PID Output", { output })
     }
 
     fun periodic() {
         output = controller.calculate(horizontalOffset)
-        // Shuffleboard.update()
-        // Drivetrain.setPercent(output, -output)
+
+        Drivetrain.setPercent(output, -output)
     }
 }

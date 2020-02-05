@@ -22,7 +22,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         { driver.quickTurn() },
         { driver.slow() },
         InputConstants.JoystickDeadband,
-        InputConstants.QuickTurnMultiplier,
+        InputConstants.SlowTurnMult,
         InputConstants.SlowMoveMult
     )
 
@@ -41,7 +41,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         if ( Vision.aligned ) {
             Shooger.shoog()
         } else {
-            Shooger.shoog(0)
+            Shooger.shoog(0.0)
         }
 
         Intake.setIntake(if (driver.activateIntake()) 1.0 else 0.0)

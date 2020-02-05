@@ -21,8 +21,8 @@ object Shooger : Subsystem("Shooger") {
 
     // fly wheel motors\
     private val masterMotor = TalonSRX(ShoogerConstants.kMasterPort)
-    private val slaveMotor1 = TalonSRX(ShoogerConstants.kSlavePort1)
-    private val slaveMotor2 = TalonSRX(ShoogerConstants.kSlavePort2)
+    private val slaveMotor1 = VictorSPX(ShoogerConstants.kSlavePort1)
+    private val slaveMotor2 = VictorSPX(ShoogerConstants.kSlavePort2)
 
     init {
         masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
@@ -65,7 +65,7 @@ object Shooger : Subsystem("Shooger") {
     // feeder and hopper
 
     private val feeder = TalonSRX(ShoogerConstants.kFeederPort)
-    private val hopper = TalonSRX(3)
+    private val hopper = TalonSRX(ShoogerConstants.kHopperPort)
 
     init {
         feeder.setInverted(true)
