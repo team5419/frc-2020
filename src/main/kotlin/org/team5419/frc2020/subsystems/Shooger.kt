@@ -32,17 +32,17 @@ object Shooger : Subsystem("Shooger") {
         slaveMotor2.follow(masterMotor)
 
         masterMotor.setInverted(true)
-        slaveMotor1.setInverted(true)
-        slaveMotor2.setInverted(true)
+        slaveMotor1.setInverted(false)
+        slaveMotor2.setInverted(false)
 
         masterMotor.setNeutralMode(NeutralMode.Coast)
         slaveMotor1.setNeutralMode(NeutralMode.Coast)
         slaveMotor2.setNeutralMode(NeutralMode.Coast)
 
         masterMotor.apply {
-            config_kP(0, 0.5, 0)
+            config_kP(0, 0.3, 0)
             config_kI(0, 0.0, 0)
-            config_kD(0, 0.8, 0)
+            config_kD(0, 0.5, 0)
             config_kF(0, 0.06, 0)
 
             config_kP(1, 0.0, 0)
@@ -70,7 +70,7 @@ object Shooger : Subsystem("Shooger") {
     init {
         feeder.setInverted(true)
         feeder.setNeutralMode(NeutralMode.Brake)
-        hopper.setInverted(false)
+        hopper.setInverted(true)
     }
 
     // hood
@@ -136,7 +136,7 @@ object Shooger : Subsystem("Shooger") {
         return velocity * 4096.0 / 600.0
     }
 
-    public fun shoog(shoogVelocity : Double=shooterVelocityEntry.getDouble(0.0), useBangBang: Boolean = bangBangEntry.getBoolean(false)) {
+    public fun shoog(shoogVelocity : Double=shooterVelocityEntry.getDouble(0.0), useBangBang: Boolean = false) {
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)
 
@@ -145,6 +145,12 @@ object Shooger : Subsystem("Shooger") {
         if (!bangBang) {
             masterMotor.set(ControlMode.Velocity, setpoint)
         }
+    }
+
+    public fun stop() {
+        masterMotor.set(ControlMode.PercentOutput, 0.0)
+        feeder.set(ControlMode.PercentOutput, 0.0)
+        hopper.set(ControlMode.PercentOutput, 0.0)
     }
 
     public fun powerShooger(percent: Double) {
@@ -184,7 +190,11 @@ object Shooger : Subsystem("Shooger") {
 
         recalculateAcceleration()
 
-        if (!bangBang) {
+        if (setpoint == 0.0) {
+            return
+        }
+
+        if (bangBang) {
             if (setpointVelocity <= flyWheelVelocity + 10) {
                 powerShooger(1.0)
             } else {
@@ -193,8 +203,8 @@ object Shooger : Subsystem("Shooger") {
         }
 
         if(feedingEnabled && flyWheelVelocity >= setpointVelocity - 150) {
-            powerFeeder(hopperPercent)
-            powerHopper(feederPercent)
+            powerFeeder(feederPercent)
+            powerHopper(hopperPercent)
         } else {
             powerFeeder(0.0)
             powerHopper(hopperLazyPercent)

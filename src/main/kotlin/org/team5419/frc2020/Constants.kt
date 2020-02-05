@@ -115,8 +115,8 @@ object ShoogerConstants {
     public const val kSlavePort1 = 15
     public const val kSlavePort2 = 16
 
-    public const val kFeederPort = 2
-    public const val kHopperPort = -1
+    public const val kFeederPort = 13
+    public const val kHopperPort = 9
 
     public val kMaxVelocity = 6000.0.radians.velocity
     public val kMinVelocity = 0.0.radians.velocity

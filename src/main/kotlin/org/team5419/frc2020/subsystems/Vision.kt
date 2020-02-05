@@ -51,6 +51,6 @@ object Vision : Limelight (
     fun periodic() {
         output = controller.calculate(horizontalOffset)
 
-        Drivetrain.setPercent(output, -output)
+        // Drivetrain.setPercent(output, -output)
     }
 }
