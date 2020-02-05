@@ -27,11 +27,9 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         tab = Shuffleboard.getTab("Vision")
         println("Init")
 
-        tab.add("Vision PID", Vision.controller).withWidget(BuiltInWidgets.kPIDCommand)
+        tab.add("Vision PID", Vision.controller).withWidget(BuiltInWidgets.kPIDController)
         tab.addBoolean("Found Target", { Vision.targetFound })
         tab.addNumber("PID Output", { Vision.output })
-
-
 
         // subsystem manager
         // +Drivetrain
