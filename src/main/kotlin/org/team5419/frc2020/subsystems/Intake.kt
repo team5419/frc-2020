@@ -8,8 +8,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 
 object Intake : Subsystem("Intake") {
     private var doesIntake = false
-    private val intakeMotor = BerkeliumSRX(IntakeConstants.kIntakePort, IntakeConstants.kIntakeModel)
-    private val deployMotor = BerkeliumSRX(IntakeConstants.kDeployPort, IntakeConstants.kIntakeModel)
+    private val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, IntakeConstants.IntakeModel)
+    private val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, IntakeConstants.IntakeModel)
 
     init{
         deployMotor.brakeMode = true

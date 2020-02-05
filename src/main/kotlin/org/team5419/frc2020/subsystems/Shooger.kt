@@ -20,9 +20,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 object Shooger : Subsystem("Shooger") {
 
     // fly wheel motors
-    private val masterMotor = TalonSRX(ShoogerConstants.kMasterPort)
-    private val slaveMotor1 = VictorSPX(ShoogerConstants.kSlavePort1)
-    private val slaveMotor2 = VictorSPX(ShoogerConstants.kSlavePort2)
+    private val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
+    private val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
+    private val slaveMotor2 = VictorSPX(ShoogerConstants.SlavePort2)
 
     init {
         masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
@@ -40,15 +40,18 @@ object Shooger : Subsystem("Shooger") {
         slaveMotor2.setNeutralMode(NeutralMode.Coast)
 
         masterMotor.apply {
+            // primary PID constants
             config_kP(0, 0.3, 0)
             config_kI(0, 0.0, 0)
             config_kD(0, 0.5, 0)
             config_kF(0, 0.06, 0)
 
+            // seconday PID slot, not used
             config_kP(1, 0.0, 0)
             config_kI(1, 0.0, 0)
             config_kD(1, 0.0, 0)
             config_kF(1, 0.0, 0)
+
             config_IntegralZone(0, 0, 0)
             configClosedLoopPeakOutput(0, 1.0, 0)
             config_IntegralZone(1, 0, 0)
@@ -58,14 +61,16 @@ object Shooger : Subsystem("Shooger") {
             configClosedLoopPeriod(0, 1)
             configClosedLoopPeriod(1, 1)
             setSelectedSensorPosition(0, 0, 0)
+
+            // limit the current to not brown out
             configPeakCurrentLimit(40)
         }
     }
 
     // feeder and hopper
 
-    private val feeder = TalonSRX(ShoogerConstants.kFeederPort)
-    private val hopper = TalonSRX(ShoogerConstants.kHopperPort)
+    private val feeder = TalonSRX(ShoogerConstants.FeederPort)
+    private val hopper = TalonSRX(ShoogerConstants.HopperPort)
 
     init {
         feeder.setInverted(true)

@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.controller.PIDController
 object Vision : Limelight (
     networkTableName = "limelight",
     inverted = false,
-    mTargetHeight = VisionConstants.kTargetHeight,
-    mCameraHeight = VisionConstants.kCameraHeight,
-    mCameraAngle = VisionConstants.kCameraAngle
+    mTargetHeight = VisionConstants.TargetHeight,
+    mCameraHeight = VisionConstants.CameraHeight,
+    mCameraAngle = VisionConstants.CameraAngle
 ) {
     const val kP: Double = 1.0/30.0
     const val kI: Double = 0.0
@@ -26,7 +26,7 @@ object Vision : Limelight (
     public var output: Double = 0.0
 
     init {
-        controller.setTolerance( VisionConstants.tolerance )
+        controller.setTolerance( VisionConstants.Tolerance )
     }
 
     public val tabName = "Vision"

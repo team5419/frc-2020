@@ -3,6 +3,7 @@ package org.team5419.frc2020.subsystems
 import com.ctre.phoenix.motorcontrol.*
 import com.ctre.phoenix.sensors.PigeonIMU
 import edu.wpi.first.wpilibj.Notifier
+import org.team5419.frc2020.RobotConstants
 import org.team5419.frc2020.DriveConstants
 import org.team5419.fault.hardware.ctre.*
 import org.team5419.fault.math.geometry.Rotation2d
@@ -26,16 +27,16 @@ object Drivetrain : AbstractTankDrive() {
     private var wantedState = State.Nothing
 
     override val differentialDrive = DifferentialDrive(
-        DriveConstants.kMass.value,
-        DriveConstants.kMoi,
-        DriveConstants.kAngularDrag,
-        DriveConstants.kWheelRadius.value,
-        DriveConstants.kEffectiveWheelbaseRadius.value,
-        DriveConstants.kLeftDriveGearbox,
-        DriveConstants.kRightDriveGearbox
+        RobotConstants.Mass.value,
+        DriveConstants.Moi,
+        DriveConstants.AngularDrag,
+        DriveConstants.WheelRadius.value,
+        DriveConstants.EffectiveWheelbaseRadius.value,
+        DriveConstants.LeftDriveGearbox,
+        DriveConstants.RightDriveGearbox
     )
 
-    override val trajectoryFollower = RamseteFollower(DriveConstants.kBeta, DriveConstants.kZeta)
+    override val trajectoryFollower = RamseteFollower(DriveConstants.Beta, DriveConstants.Zeta)
 
     override val localization = TankPositionTracker(
         { angle },
@@ -44,14 +45,28 @@ object Drivetrain : AbstractTankDrive() {
     )
 
     // hardware
-    override val leftMasterMotor = BerkeliumSRX(DriveConstants.leftMasterPort, DriveConstants.kNativeGearboxConversion)
-    private val leftSlave1 = BerkeliumSRX(DriveConstants.leftSlavePort, DriveConstants.kNativeGearboxConversion)
 
-    override val rightMasterMotor = BerkeliumSRX(DriveConstants.rightMasterPort, DriveConstants.kNativeGearboxConversion
+    override val leftMasterMotor = BerkeliumSRX(
+        DriveConstants.LeftMasterPort,
+        DriveConstants.NativeGearboxConversion
     )
-    private val rightSlave1 = BerkeliumSRX(DriveConstants.rightSlavePort, DriveConstants.kNativeGearboxConversion)
 
-    public val gyro = PigeonIMU(DriveConstants.gyroPort)
+    private val leftSlave1 = BerkeliumSRX(
+        DriveConstants.LeftSlavePort,
+        DriveConstants.NativeGearboxConversion
+    )
+
+    override val rightMasterMotor = BerkeliumSRX(
+        DriveConstants.RightMasterPort,
+        DriveConstants.NativeGearboxConversion
+    )
+
+    private val rightSlave1 = BerkeliumSRX(
+        DriveConstants.RightSlavePort,
+        DriveConstants.NativeGearboxConversion
+    )
+
+    public val gyro = PigeonIMU(DriveConstants.GyroPort)
 
     init {
         leftSlave1.follow(leftMasterMotor)
@@ -78,13 +93,13 @@ object Drivetrain : AbstractTankDrive() {
             FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
         )
 
-        leftMasterMotor.encoder.encoderPhase = DriveConstants.encoderPhase
-        rightMasterMotor.encoder.encoderPhase = DriveConstants.encoderPhase
+        leftMasterMotor.encoder.encoderPhase = DriveConstants.EncoderPhase
+        rightMasterMotor.encoder.encoderPhase = DriveConstants.EncoderPhase
 
         rightMasterMotor.talonSRX.configRemoteFeedbackFilter(gyro.deviceID, RemoteSensorSource.Pigeon_Yaw, 1, 0)
         rightMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0)
         rightMasterMotor.talonSRX.configSelectedFeedbackCoefficient(
-            DriveConstants.kPigeonConversion.value, 1, 0
+            DriveConstants.PigeonConversion.value, 1, 0
         )
 
         leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
@@ -102,11 +117,11 @@ object Drivetrain : AbstractTankDrive() {
         leftMasterMotor.useMotionProfileForPosition = true
         rightMasterMotor.useMotionProfileForPosition = true
 
-        leftMasterMotor.motionProfileCruiseVelocity = DriveConstants.maxVelocity
-        leftMasterMotor.motionProfileAcceleration = DriveConstants.maxAcceleration
+        leftMasterMotor.motionProfileCruiseVelocity = DriveConstants.MaxVelocity
+        leftMasterMotor.motionProfileAcceleration = DriveConstants.MaxAcceleration
 
-        rightMasterMotor.motionProfileCruiseVelocity = DriveConstants.maxVelocity
-        rightMasterMotor.motionProfileAcceleration = DriveConstants.maxAcceleration
+        rightMasterMotor.motionProfileCruiseVelocity = DriveConstants.MaxVelocity
+        rightMasterMotor.motionProfileAcceleration = DriveConstants.MaxAcceleration
 
         isBraking = false
 
@@ -117,16 +132,16 @@ object Drivetrain : AbstractTankDrive() {
     }
 
     override val leftDistance: SIUnit<Meter>
-        get() = -DriveConstants.kNativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawSensorPosition)
+        get() = -DriveConstants.NativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawSensorPosition)
 
     override val rightDistance: SIUnit<Meter>
-        get() = DriveConstants.kNativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawSensorPosition)
+        get() = DriveConstants.NativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawSensorPosition)
 
     override val leftDistanceError: SIUnit<Meter>
-        get() = -DriveConstants.kNativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawDistanceError)
+        get() = -DriveConstants.NativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawDistanceError)
 
     override val rightDistanceError: SIUnit<Meter>
-        get() = DriveConstants.kNativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
+        get() = DriveConstants.NativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
 
     val angle: Rotation2d
         get() = periodicIO.gyroAngle.toRotation2d()
@@ -221,8 +236,8 @@ object Drivetrain : AbstractTankDrive() {
         periodicIO.leftVoltage = leftMasterMotor.voltageOutput
         periodicIO.rightVoltage = rightMasterMotor.voltageOutput
 
-        periodicIO.leftCurrent = leftMasterMotor.talonSRX.outputCurrent.amps
-        periodicIO.rightCurrent = rightMasterMotor.talonSRX.outputCurrent.amps
+        periodicIO.leftCurrent = leftMasterMotor.talonSRX.getStatorCurrent().amps
+        periodicIO.rightCurrent = rightMasterMotor.talonSRX.getStatorCurrent().amps
 
         periodicIO.leftRawSensorPosition = leftMasterMotor.encoder.rawPosition
         periodicIO.rightRawSensorPosition = rightMasterMotor.encoder.rawPosition

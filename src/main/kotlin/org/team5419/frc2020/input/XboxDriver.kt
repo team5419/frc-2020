@@ -6,27 +6,29 @@ import edu.wpi.first.wpilibj.XboxController
 
 import org.team5419.frc2020.InputConstants
 
-public val Xbox = XboxController(InputConstants.XboxCodrivePort)
+public val driverXbox = XboxController(InputConstants.XboxCodrivePort)
 
 object XboxDriver : DriverControls {
-    override public fun getThrottle() = Xbox.getY( Hand.kLeft )
+    override public fun getThrottle() =
+        driverXbox.getY( Hand.kLeft )
 
-    override public fun getTurn() = Xbox.getX( Hand.kRight )
+    override public fun getTurn() =
+        driverXbox.getX( Hand.kRight )
 
     override public fun quickTurn() =
-        Xbox.getBumper( Hand.kLeft ) ||
-        Xbox.getBumper( Hand.kRight )
+        driverXbox.getBumper( Hand.kLeft ) ||
+        driverXbox.getBumper( Hand.kRight )
 
     override public fun slow() =
-        Xbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
-        Xbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
+        driverXbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
+        driverXbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
 
     override public fun activateIntake() =
-        Xbox.getAButton()
+        driverXbox.getAButton()
 
     override public fun deployIntake() =
-        Xbox.getBButton()
+        driverXbox.getBButton()
 
     override public fun retractIntake() =
-        Xbox.getXButton()
+        driverXbox.getXButton()
 }

@@ -14,92 +14,87 @@ import kotlin.math.PI
 import kotlin.math.pow
 
 object RobotConstants {
-    val kRobotLength = 32.inches
-    val kRobotWidth = 27.5.inches
-    val kBumperThickness = 2.inches
-}
-
-object TrajectoryConstants {
-    val kMaxCentripetalAcceleration = 4.0.feet.acceleration
-    val kMaxAcceleration = 4.0.feet.acceleration
-    val kMaxAngularAcceleration = 2.0.radians.acceleration
-    val kMaxVelocity = 10.0.feet.velocity
+    val Mass = 120.lbs
+    val Length = 32.inches
+    val Width = 27.5.inches
+    val BumperThickness = 2.inches
 }
 
 object DriveConstants {
     // ports
 
-    const val leftMasterPort = 10
-    const val leftSlavePort = 11
+    const val LeftMasterPort = 10
+    const val LeftSlavePort = 11
 
-    const val rightMasterPort = 8
-    const val rightSlavePort = 6
+    const val RightMasterPort = 8
+    const val RightSlavePort = 6
 
-    const val gyroPort = 7
-
+    const val GyroPort = 7
 
     // configuration
 
-    const val encoderPhase = true
+    const val EncoderPhase = true
 
     // path following parameters
 
-    const val kBeta = 1.0 // m^-2
-    const val kZeta = 1.0 // unitless
+    const val Beta = 1.0 // m^-2
+    const val Zeta = 1.0 // unitless
 
-    val maxVelocity = 130.inches.velocity
-    val maxAcceleration = 50.inches.acceleration
+    val MaxVelocity = 10.0.feet.velocity
+    val MaxAcceleration = 4.0.feet.acceleration
+    val MaxCentripetalAcceleration = 4.0.feet.acceleration
+    val MaxAngularAcceleration = 2.0.radians.acceleration
 
     // dimensions and constants
-    val kWheelRadius = 3.inches
-    val kWheelDiameter = kWheelRadius * 2.0
-    val kWheelCir = kWheelDiameter * PI
 
-    val kTrackWidth = 20.inches
-    val kEffectiveWheelbaseRadius = kTrackWidth / 2.0
+    val WheelRadius = 3.inches
+    val WheelDiameter = WheelRadius * 2.0
+    val WheelCircumference = WheelDiameter * PI
 
-    val kMass = 120.lbs
-    val kMoi = 0.0 // kg * m^2
-    val kAngularDrag = 10.0 // (N * m) / (rad / s)  TUNE ME
+    val TrackWidth = 20.inches
+    val EffectiveWheelbaseRadius = TrackWidth / 2.0
 
-    val kTicksPerRotation = 4096.nativeUnits
-    val kPigeonConversion = (3600.0 / 8192.0).nativeUnits
+    val Moi = 0.0 // kg * m^2
+    val AngularDrag = 10.0 // (N * m) / (rad / s)  TUNE ME
 
-    const val kDriveKv = kEpsilon
-    const val kDriveKa = kEpsilon
-    const val kDriveKs = kEpsilon
+    val TicksPerRotation = 4096.nativeUnits
+    val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
-    val kLeftDriveGearbox = DCMotorTransmission(
-        1 / kDriveKv,
-        kWheelRadius.value.pow(2) * kMass.value / (2.0 * kDriveKa),
-        kDriveKs
+    const val DriveKv = kEpsilon
+    const val DriveKa = kEpsilon
+    const val DriveKs = kEpsilon
+
+    val LeftDriveGearbox = DCMotorTransmission(
+        1 / DriveKv,
+        WheelRadius.value.pow(2) * RobotConstants.Mass.value / (2.0 * DriveKa),
+        DriveKs
     )
 
-    val kRightDriveGearbox = DCMotorTransmission(
-        1 / kDriveKv,
-        kWheelRadius.value.pow(2) * kMass.value / (2.0 * kDriveKa),
-        kDriveKs
+    val RightDriveGearbox = DCMotorTransmission(
+        1 / DriveKv,
+        WheelRadius.value.pow(2) * RobotConstants.Mass.value / (2.0 * DriveKa),
+        DriveKs
     )
 
-    val kDriveModel = DifferentialDrive(
-        kMass.value,
-        kMoi,
-        kAngularDrag, // tune me
-        kWheelRadius.value,
-        kEffectiveWheelbaseRadius.value,
-        kLeftDriveGearbox,
-        kRightDriveGearbox
+    val DriveModel = DifferentialDrive(
+        RobotConstants.Mass.value,
+        Moi,
+        AngularDrag, // tune me
+        WheelRadius.value,
+        EffectiveWheelbaseRadius.value,
+        LeftDriveGearbox,
+        RightDriveGearbox
     )
 
-    val kNativeGearboxConversion = NativeUnitLengthModel(
-        kTicksPerRotation,
-        kWheelRadius
+    val NativeGearboxConversion = NativeUnitLengthModel(
+        TicksPerRotation,
+        WheelRadius
     )
 }
 
 object InputConstants {
     public const val XboxCodrivePort = 0
-    public const val XboxDrivePort = 0
+    public const val XboxDrivePort = 1
 
     public const val SlowTurnMult = 0.4
     public const val SlowMoveMult = 0.4
@@ -111,45 +106,46 @@ object InputConstants {
 }
 
 object ShoogerConstants {
-    public const val kMasterPort = 3
-    public const val kSlavePort1 = 15
-    public const val kSlavePort2 = 16
+    public const val MasterPort = 3
+    public const val SlavePort1 = 15
+    public const val SlavePort2 = 16
 
-    public const val kFeederPort = 13
-    public const val kHopperPort = 9
+    public const val FeederPort = 13
+    public const val HopperPort = 9
 
-    public val kMaxVelocity = 6000.0.radians.velocity
-    public val kMinVelocity = 0.0.radians.velocity
-    public val kV = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
-    public val kTicksPerRotation = (4092.0 / 3.5).nativeUnits
-    public val flywheel = NativeUnitRotationModel(kTicksPerRotation)
+    public val MaxVelocity = 6000.0.radians.velocity
+    public val V = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
+    public val TicksPerRotation = (4092.0 / 3.5).nativeUnits
+    public val lywheel = NativeUnitRotationModel(TicksPerRotation)
 }
 
 object HoodConstants{
-    public const val kPort = 12
+    public const val HoodPort = 12
 
-    public const val kP = 1.0
-    public const val kI = 0.0
-    public const val kD = 0.0
+    object PID {
+        public const val P = 1.0
+        public const val I = 0.0
+        public const val D = 0.0
+    }
 
-    public val kTicksPerRotation = (4092 / 3).nativeUnits
-    public val hood = NativeUnitRotationModel(kTicksPerRotation)
+    public val TicksPerRotation = (4092 / 3).nativeUnits
+    public val Hood = NativeUnitRotationModel(TicksPerRotation)
 }
 
 object IntakeConstants {
-    public val kDeployTicksPerRotation = (4096 * 81).nativeUnits
-    public val kDeployModel = NativeUnitRotationModel(kDeployTicksPerRotation)
-    public val kIntakeTicksPerRotation = (4096 * 10).nativeUnits
-    public val kIntakeModel = NativeUnitRotationModel(kIntakeTicksPerRotation)
-    public const val kIntakePort = 2
-    public const val kDeployPort = 4
+    public val DeployTicksPerRotation = (4096 * 81).nativeUnits
+    public val DeployModel = NativeUnitRotationModel(DeployTicksPerRotation)
+    public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
+    public val IntakeModel = NativeUnitRotationModel(IntakeTicksPerRotation)
+    public const val IntakePort = 2
+    public const val DeployPort = 4
 }
 
 
 object VisionConstants {
-    public val kCameraHeight = 0.0.meters
-    public val kTargetHeight = 0.0.meters
-    public val kCameraAngle = Rotation2d( 0.0.radians )
+    public val CameraHeight = 0.0.meters
+    public val TargetHeight = 0.0.meters
+    public val CameraAngle = Rotation2d( 0.0.radians )
 
-    public val tolerance = 10.0
+    public val Tolerance = 10.0
 }
