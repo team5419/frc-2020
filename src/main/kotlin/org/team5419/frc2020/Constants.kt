@@ -2,6 +2,10 @@ package org.team5419.frc2020
 
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
+import org.team5419.fault.math.geometry.Rotation2d
+import org.team5419.fault.math.units.derived.acceleration
+import org.team5419.fault.math.units.derived.velocity
+import org.team5419.fault.math.units.derived.radians
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.native.*
@@ -9,7 +13,6 @@ import org.team5419.fault.math.kEpsilon
 import kotlin.math.PI
 import kotlin.math.pow
 
-@SuppressWarnings("MaxLineLength, WildcardImport")
 object RobotConstants {
     val kRobotLength = 32.inches
     val kRobotWidth = 27.5.inches
@@ -25,36 +28,27 @@ object TrajectoryConstants {
 
 object DriveConstants {
     // ports
-    const val kLeftMasterPort = 10
-    const val kLeftSlave1Port = 11
 
-    const val kRightMasterPort = 8
-    const val kRightSlave1Port = 9
+    const val leftMasterPort = 10
+    const val leftSlavePort = 11
 
-    const val kGyroPort = 7
+    const val rightMasterPort = 8
+    const val rightSlavePort = 6
 
-    // Added Constants - Remove Later If Necessary
-    const val kLeftEncoderPort1 = 1
-    const val kLeftEncoderPort2 = 2
-    const val kLeftEncoderReversed = true
-    const val kRightEncoderPort1 = 4
-    const val kRightEncoderPort2 = 7
-    const val kRightEncoderReversed = false
+    const val gyroPort = 7
 
-    const val kEncoderDistancePerPulse = 1000.0
 
-    const val kGyroReversed = false
-    // End
+    // configuration
 
-    // misc
-    const val kEncoderPhase = true
+    const val encoderPhase = true
 
     // path following parameters
+
     const val kBeta = 1.0 // m^-2
     const val kZeta = 1.0 // unitless
 
-    val kMotionMagicVelocity = 130.inches.velocity
-    val kMotionMagicAcceleration = 50.inches.acceleration
+    val maxVelocity = 130.inches.velocity
+    val maxAcceleration = 50.inches.acceleration
 
     // dimensions and constants
     val kWheelRadius = 3.inches
@@ -112,16 +106,18 @@ object InputConstants {
 
     public const val DriverStowTimeout = 2.0
 
-    public const val QuickTurnMultiplier = 0.4;
-
     public const val TriggerDeadband = 0.1
     public const val JoystickDeadband = 0.07
 }
 
 object ShoogerConstants {
-    public const val kMasterPort = 9
-    public const val kSlavePort1 = 1
-    public const val kSlavePort2 = 12
+    public const val kMasterPort = 3
+    public const val kSlavePort1 = 15
+    public const val kSlavePort2 = 16
+
+    public const val kFeederPort = 13
+    public const val kHopperPort = 9
+
     public val kMaxVelocity = 6000.0.radians.velocity
     public val kMinVelocity = 0.0.radians.velocity
     public val kV = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
@@ -130,7 +126,8 @@ object ShoogerConstants {
 }
 
 object HoodConstants{
-    public const val kPort = 3
+    public const val kPort = 12
+
     public const val kP = 1.0
     public const val kI = 0.0
     public const val kD = 0.0
@@ -139,20 +136,20 @@ object HoodConstants{
     public val hood = NativeUnitRotationModel(kTicksPerRotation)
 }
 
-object ClimberConstants {
-    public const val kMasterPort = 9
-    public const val kSlavePort = 10
-
-}
-
-object SpinConstants {
-    public const val kMotorPort = 9
-}
-
 object IntakeConstants {
     public val kDeployTicksPerRotation = (4096 * 81).nativeUnits
     public val kDeployModel = NativeUnitRotationModel(kDeployTicksPerRotation)
     public val kIntakeTicksPerRotation = (4096 * 10).nativeUnits
     public val kIntakeModel = NativeUnitRotationModel(kIntakeTicksPerRotation)
-    public const val kIntakePort = 4
+    public const val kIntakePort = 2
+    public const val kDeployPort = 4
+}
+
+
+object VisionConstants {
+    public val kCameraHeight = 0.0.meters
+    public val kTargetHeight = 0.0.meters
+    public val kCameraAngle = Rotation2d( 0.0.radians )
+
+    public val tolerance = 10.0
 }

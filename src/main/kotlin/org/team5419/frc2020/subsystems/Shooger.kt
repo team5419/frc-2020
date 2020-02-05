@@ -20,7 +20,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 object Shooger : Subsystem("Shooger") {
 
     // fly wheel motors
-
     private val masterMotor = TalonSRX(ShoogerConstants.kMasterPort)
     private val slaveMotor1 = VictorSPX(ShoogerConstants.kSlavePort1)
     private val slaveMotor2 = VictorSPX(ShoogerConstants.kSlavePort2)
@@ -33,17 +32,17 @@ object Shooger : Subsystem("Shooger") {
         slaveMotor2.follow(masterMotor)
 
         masterMotor.setInverted(true)
-        slaveMotor1.setInverted(true)
-        slaveMotor2.setInverted(true)
+        slaveMotor1.setInverted(false)
+        slaveMotor2.setInverted(false)
 
         masterMotor.setNeutralMode(NeutralMode.Coast)
         slaveMotor1.setNeutralMode(NeutralMode.Coast)
         slaveMotor2.setNeutralMode(NeutralMode.Coast)
 
         masterMotor.apply {
-            config_kP(0, 0.5, 0)
+            config_kP(0, 0.3, 0)
             config_kI(0, 0.0, 0)
-            config_kD(0, 0.8, 0)
+            config_kD(0, 0.5, 0)
             config_kF(0, 0.06, 0)
 
             config_kP(1, 0.0, 0)
@@ -59,19 +58,24 @@ object Shooger : Subsystem("Shooger") {
             configClosedLoopPeriod(0, 1)
             configClosedLoopPeriod(1, 1)
             setSelectedSensorPosition(0, 0, 0)
+            configPeakCurrentLimit(40)
         }
     }
 
     // feeder and hopper
 
-    private val feeder = TalonSRX(5)
-    private val hopper = TalonSRX(3)
+    private val feeder = TalonSRX(ShoogerConstants.kFeederPort)
+    private val hopper = TalonSRX(ShoogerConstants.kHopperPort)
 
     init {
         feeder.setInverted(true)
         feeder.setNeutralMode(NeutralMode.Brake)
-        hopper.setInverted(false)
+        hopper.setInverted(true)
     }
+
+    // hood
+
+
 
     // Shuffleboard
 
@@ -79,12 +83,11 @@ object Shooger : Subsystem("Shooger") {
 
     public val tab: ShuffleboardTab
     public var shooterVelocityEntry : NetworkTableEntry
-
     public var hopperPercentEntry : NetworkTableEntry
     public var hopperLazyPercentEntry : NetworkTableEntry
     public var feederPercentEntry : NetworkTableEntry
-
     public var feedingEnabledEntry : NetworkTableEntry
+    public var bangBangEntry : NetworkTableEntry
 
     init {
         tab = Shuffleboard.getTab(tabName)
@@ -96,6 +99,7 @@ object Shooger : Subsystem("Shooger") {
         hopperLazyPercentEntry = tab.add("Hopper Lazy Percent", 0.0).getEntry()
 
         feedingEnabledEntry = tab.add("Feeding Enabled", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+        bangBangEntry = tab.add("Bang Bang Toggle", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
@@ -143,6 +147,12 @@ object Shooger : Subsystem("Shooger") {
         }
     }
 
+    public fun stop() {
+        masterMotor.set(ControlMode.PercentOutput, 0.0)
+        feeder.set(ControlMode.PercentOutput, 0.0)
+        hopper.set(ControlMode.PercentOutput, 0.0)
+    }
+
     public fun powerShooger(percent: Double) {
         masterMotor.set(ControlMode.PercentOutput, percent)
     }
@@ -176,12 +186,15 @@ object Shooger : Subsystem("Shooger") {
     override fun periodic(){
         hopperPercent = hopperPercentEntry.getDouble(0.0)
         feederPercent = hopperPercentEntry.getDouble(0.0)
-
         hopperLazyPercent = hopperLazyPercentEntry.getDouble(0.0)
 
         recalculateAcceleration()
 
-        if (!bangBang) {
+        if (setpoint == 0.0) {
+            return
+        }
+
+        if (bangBang) {
             if (setpointVelocity <= flyWheelVelocity + 10) {
                 powerShooger(1.0)
             } else {
@@ -190,8 +203,8 @@ object Shooger : Subsystem("Shooger") {
         }
 
         if(feedingEnabled && flyWheelVelocity >= setpointVelocity - 150) {
-            powerFeeder(hopperPercent)
-            powerHopper(feederPercent)
+            powerFeeder(feederPercent)
+            powerHopper(hopperPercent)
         } else {
             powerFeeder(0.0)
             powerHopper(hopperLazyPercent)

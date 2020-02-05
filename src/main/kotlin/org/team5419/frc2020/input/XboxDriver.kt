@@ -9,9 +9,9 @@ import org.team5419.frc2020.InputConstants
 public val Xbox = XboxController(InputConstants.XboxCodrivePort)
 
 object XboxDriver : DriverControls {
-    override public fun getThrottle() = Xbox.getX( Hand.kLeft )
+    override public fun getThrottle() = Xbox.getY( Hand.kLeft )
 
-    override public fun getTurn() = Xbox.getY( Hand.kRight )
+    override public fun getTurn() = Xbox.getX( Hand.kRight )
 
     override public fun quickTurn() =
         Xbox.getBumper( Hand.kLeft ) ||

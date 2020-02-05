@@ -8,8 +8,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 
 object Intake : Subsystem("Intake") {
     private var doesIntake = false
-    private val intakeMotor = BerkeliumSRX(4, IntakeConstants.kIntakeModel)
-    private val deployMotor = BerkeliumSRX(9, IntakeConstants.kIntakeModel)
+    private val intakeMotor = BerkeliumSRX(IntakeConstants.kIntakePort, IntakeConstants.kIntakeModel)
+    private val deployMotor = BerkeliumSRX(IntakeConstants.kDeployPort, IntakeConstants.kIntakeModel)
 
     init{
         deployMotor.brakeMode = true
@@ -18,10 +18,10 @@ object Intake : Subsystem("Intake") {
     public var isIntake: Boolean = false
         set (value: Boolean) {
             if(value && !field){
-                setIntake(1.0)
+                // setIntake(1.0)
             }
             if(!value && field){
-                setIntake(0.0)
+                // setIntake(0.0)
             }
             field = value
         }
