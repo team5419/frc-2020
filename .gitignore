@@ -3,50 +3,6 @@
 !.vscode/settings.json
 !.vscode/tasks.json
 !gradle-wrapper.jar
-# # VS Code Specific Java Settings
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# .nfs files are created when an open file is removed but is still being accessed
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-# BlueJ files
-# Cache of project
-# Compiled Dynamic libraries
-# Compiled Object files
-# Compiled Static libraries
-# Compiled class file
-# Created by https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
-# Directories potentially created on remote AFP share
-# Dump file
-# End of https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
-# Executables
-# Files that might appear in the root of a volume
-# Folder config file
-# Fortran module files
-# General
-# Icon must end with two \r
-# Ignore Gradle GUI config
-# KDE directory preferences
-# Linux trash folder which might appear on any partition or disk
-# Log file
-# Mobile Tools for Java (J2ME)
-# Package Files #
-# Precompiled Headers
-# Prerequisites
-# Recycle Bin used on file shares
-# Thumbnails
-# Windows Installer files
-# Windows shortcuts
-# Windows thumbnail cache files
-# gradle/wrapper/gradle-wrapper.properties
-# team5419 specific
-# temporary files which can be created if a process still has a handle open of a deleted file
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-### C++ ###
-### Gradle ###
-### Java ###
-### Linux ###
-### VisualStudioCode ###
-### Windows ###
-### macOS ###
 $RECYCLE.BIN/
 *.a
 *.app
