@@ -9,6 +9,7 @@ import org.team5419.fault.hardware.ctre.BerkeliumSPX
 import edu.wpi.first.networktables.NetworkTableEntry
 import org.team5419.frc2020.ShoogerConstants
 import edu.wpi.first.wpilibj.shuffleboard.*
+import edu.wpi.first.networktables.EntryListenerFlags
 import org.team5419.frc2020.HoodConstants
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
@@ -72,6 +73,7 @@ object Shooger : Subsystem("Shooger") {
 
     private val feeder = TalonSRX(ShoogerConstants.FeederPort)
     private val hopper = TalonSRX(ShoogerConstants.HopperPort)
+    private val hood = TalonSRX(HoodConstants.HoodPort)
 
     init {
         feeder.setInverted(true)
@@ -85,7 +87,6 @@ object Shooger : Subsystem("Shooger") {
     // default settings
 
     var targetVelocity = ShoogerConstants.TargetVelocity.value
-
     var hopperPercent = ShoogerConstants.HopperPercent
     var feederPercent = ShoogerConstants.FeederPercent
     var hopperLazyPercent = ShoogerConstants.HopperLazyPercent
@@ -95,28 +96,41 @@ object Shooger : Subsystem("Shooger") {
     public val tabName = "Shooger"
 
     public val tab: ShuffleboardTab
-    public var shooterVelocityEntry : NetworkTableEntry
-    public var hopperPercentEntry : NetworkTableEntry
-    public var hopperLazyPercentEntry : NetworkTableEntry
-    public var feederPercentEntry : NetworkTableEntry
-    public var feedingEnabledEntry : NetworkTableEntry
-    // public var bangBangEntry : NetworkTableEntry
+    public val shooterVelocityEntry : NetworkTableEntry
+    public val hopperPercentEntry : NetworkTableEntry
+    public val hopperLazyPercentEntry : NetworkTableEntry
+    public val feederPercentEntry : NetworkTableEntry
+    public val feedingEnabledEntry : NetworkTableEntry
+    // public val bangBangEntry : NetworkTableEntry
 
     init {
         tab = Shuffleboard.getTab(tabName)
 
         shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
+        shooterVelocityEntry.setPersistent()
+        shooterVelocityEntry.addListener( { event ->
+            targetVelocity = if(event.value.isDouble()) event.value.getDouble() else targetVelocity
+            println("Updated Target Velocity: ${targetVelocity}")
+        }, EntryListenerFlags.kUpdate)
 
         feederPercentEntry = tab.add("Feeder Percent", feederPercent).getEntry()
         hopperPercentEntry = tab.add("Hopper Percent", hopperPercent).getEntry()
-
         hopperLazyPercentEntry = tab.add("Hopper Lazy Percent", hopperLazyPercent).getEntry()
-
         feedingEnabledEntry = tab.add("Feeding Enabled", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
         // bangBangEntry = tab.add("Bang Bang Toggle", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
 
+        feederPercentEntry.setPersistent()
+        hopperPercentEntry.setPersistent()
+        hopperLazyPercentEntry.setPersistent()
+
+        feederPercentEntry.addListener( { event -> feederPercent = event.value.getDouble() }, EntryListenerFlags.kUpdate)
+        hopperPercentEntry.addListener( { event -> hopperPercent = event.value.getDouble() }, EntryListenerFlags.kUpdate)
+        hopperLazyPercentEntry.addListener( { event -> hopperLazyPercent = event.value.getDouble() }, EntryListenerFlags.kUpdate)
+        feedingEnabledEntry.addListener({ event -> feedingEnabled = event.value.getBoolean() }, EntryListenerFlags.kUpdate)
+
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
+
     }
 
     // gettes
@@ -200,9 +214,9 @@ object Shooger : Subsystem("Shooger") {
     }
 
     override fun periodic() {
-        feederPercent = feederPercentEntry.getDouble(feederPercent)
-        hopperPercent = hopperPercentEntry.getDouble(hopperPercent)
-        hopperLazyPercent = hopperLazyPercentEntry.getDouble(hopperLazyPercent)
+        // feederPercent = feederPercentEntry.getDouble(feederPercent)
+        // hopperPercent = hopperPercentEntry.getDouble(hopperPercent)
+        // hopperLazyPercent = hopperLazyPercentEntry.getDouble(hopperLazyPercent)
 
         recalculateAcceleration()
 
