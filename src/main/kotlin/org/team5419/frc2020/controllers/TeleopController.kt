@@ -27,6 +27,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     )
 
     override fun start() {
+        println("update")
     }
 
     override fun update() {

@@ -36,6 +36,7 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     }
 
     override fun robotPeriodic() {
+        // Drivetrain.periodic()
         Shuffleboard.update()
     }
 
@@ -55,10 +56,10 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     }
 
     override fun teleopInit() {
-        teleopController.start()
+        // teleopController.start()
     }
 
     override fun teleopPeriodic() {
-        teleopController.update()
+        // teleopController.update()
     }
 }

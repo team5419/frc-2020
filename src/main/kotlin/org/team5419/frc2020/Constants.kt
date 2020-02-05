@@ -2,6 +2,10 @@ package org.team5419.frc2020
 
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
+import org.team5419.fault.math.geometry.Rotation2d
+import org.team5419.fault.math.units.derived.acceleration
+import org.team5419.fault.math.units.derived.velocity
+import org.team5419.fault.math.units.derived.radians
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.native.*
@@ -143,4 +147,11 @@ object IntakeConstants {
     public val kIntakeModel = NativeUnitRotationModel(kIntakeTicksPerRotation)
     public const val kIntakePort = 14
     public const val kDeployPort = 4
+}
+
+
+object VisionConstants {
+    public val kCameraHeight = 0.0.meters
+    public val kTargetHeight = 0.0.meters
+    public val kCameraAngle = Rotation2d( 0.0.radians )
 }

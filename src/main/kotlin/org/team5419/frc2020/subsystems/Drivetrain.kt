@@ -144,6 +144,7 @@ object Drivetrain : AbstractTankDrive() {
 
     fun setOpenLoop(left: Double, right: Double) {
         wantedState = State.OpenLoop
+        println(left.toString() + " " + right.toString())
 
         periodicIO.leftPercent = left
         periodicIO.rightPercent = right
@@ -233,7 +234,8 @@ object Drivetrain : AbstractTankDrive() {
         periodicIO.leftRawSensorVelocity = leftMasterMotor.encoder.rawVelocity
         periodicIO.rightRawSensorVelocity = rightMasterMotor.encoder.rawVelocity
 
-        periodicIO.gyroAngle = gyro.fusedHeading.radians
+        periodicIO.gyroAngle = gyro.fusedHeading.degrees
+        println(gyro.fusedHeading)
 
         val xyz = DoubleArray(3)
         gyro.getRawGyro(xyz)
