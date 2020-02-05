@@ -2,6 +2,10 @@ package org.team5419.frc2020
 
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.physics.DifferentialDrive
+import org.team5419.fault.math.geometry.Rotation2d
+import org.team5419.fault.math.units.derived.acceleration
+import org.team5419.fault.math.units.derived.velocity
+import org.team5419.fault.math.units.derived.radians
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.native.*
@@ -105,22 +109,19 @@ object DriveConstants {
 object InputConstants {
     public const val XboxCodrivePort = 0
     public const val XboxDrivePort = 0
-
     public const val SlowTurnMult = 0.4
     public const val SlowMoveMult = 0.4
-
     public const val DriverStowTimeout = 2.0
-
     public const val QuickTurnMultiplier = 0.4;
-
     public const val TriggerDeadband = 0.1
     public const val JoystickDeadband = 0.07
 }
 
 object ShoogerConstants {
-    public const val kMasterPort = 9
-    public const val kSlavePort1 = 1
-    public const val kSlavePort2 = 12
+    public const val kMasterPort = 3
+    public const val kSlavePort1 = 13
+    public const val kSlavePort2 = 5
+    public const val kFeederPort = 2
     public val kMaxVelocity = 6000.0.radians.velocity
     public val kMinVelocity = 0.0.radians.velocity
     public val kV = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
@@ -129,7 +130,7 @@ object ShoogerConstants {
 }
 
 object HoodConstants{
-    public const val kPort = 3
+    public const val kPort = 12
     public const val kP = 1.0
     public const val kI = 0.0
     public const val kD = 0.0
@@ -138,20 +139,18 @@ object HoodConstants{
     public val hood = NativeUnitRotationModel(kTicksPerRotation)
 }
 
-object ClimberConstants {
-    public const val kMasterPort = 9
-    public const val kSlavePort = 10
-
-}
-
-object SpinConstants {
-    public const val kMotorPort = 9
-}
-
 object IntakeConstants {
     public val kDeployTicksPerRotation = (4096 * 81).nativeUnits
     public val kDeployModel = NativeUnitRotationModel(kDeployTicksPerRotation)
     public val kIntakeTicksPerRotation = (4096 * 10).nativeUnits
     public val kIntakeModel = NativeUnitRotationModel(kIntakeTicksPerRotation)
-    public const val kIntakePort = 4
+    public const val kIntakePort = 14
+    public const val kDeployPort = 4
+}
+
+
+object VisionConstants {
+    public val kCameraHeight = 0.0.meters
+    public val kTargetHeight = 0.0.meters
+    public val kCameraAngle = Rotation2d( 0.0.radians )
 }
