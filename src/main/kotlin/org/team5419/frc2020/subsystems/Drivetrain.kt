@@ -46,14 +46,14 @@ object Drivetrain : AbstractTankDrive() {
     )
 
     // hardware
-    override val leftMasterMotor = BerkeliumSRX(DriveConstants.kLeftMasterPort, DriveConstants.kNativeGearboxConversion)
-    private val leftSlave1 = BerkeliumSRX(DriveConstants.kLeftSlave1Port, DriveConstants.kNativeGearboxConversion)
+    override val leftMasterMotor = BerkeliumSRX(DriveConstants.leftMasterPort, DriveConstants.kNativeGearboxConversion)
+    private val leftSlave1 = BerkeliumSRX(DriveConstants.leftSlavePort, DriveConstants.kNativeGearboxConversion)
 
-    override val rightMasterMotor = BerkeliumSRX(DriveConstants.kRightMasterPort, DriveConstants.kNativeGearboxConversion
+    override val rightMasterMotor = BerkeliumSRX(DriveConstants.rightMasterPort, DriveConstants.kNativeGearboxConversion
     )
-    private val rightSlave1 = BerkeliumSRX(DriveConstants.kRightSlave1Port, DriveConstants.kNativeGearboxConversion)
+    private val rightSlave1 = BerkeliumSRX(DriveConstants.rightSlavePort, DriveConstants.kNativeGearboxConversion)
 
-    public val gyro = PigeonIMU(DriveConstants.kGyroPort)
+    public val gyro = PigeonIMU(DriveConstants.gyroPort)
 
     init {
         leftSlave1.follow(leftMasterMotor)

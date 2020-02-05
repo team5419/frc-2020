@@ -9,7 +9,6 @@ import org.team5419.fault.math.kEpsilon
 import kotlin.math.PI
 import kotlin.math.pow
 
-@SuppressWarnings("MaxLineLength, WildcardImport")
 object RobotConstants {
     val kRobotLength = 32.inches
     val kRobotWidth = 27.5.inches
@@ -25,13 +24,13 @@ object TrajectoryConstants {
 
 object DriveConstants {
     // ports
-    const val kLeftMasterPort = 10
-    const val kLeftSlave1Port = 11
+    const val leftMasterPort = 10
+    const val leftSlavePort = 11
 
-    const val kRightMasterPort = 8
-    const val kRightSlave1Port = 9
+    const val rightMasterPort = 8
+    const val rightSlavePort = 9
 
-    const val kGyroPort = 7
+    const val gyroPort = 7
 
     // Added Constants - Remove Later If Necessary
     const val kLeftEncoderPort1 = 1
