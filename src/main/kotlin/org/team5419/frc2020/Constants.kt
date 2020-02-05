@@ -151,5 +151,5 @@ object VisionConstants {
     public val kTargetHeight = 0.0.meters
     public val kCameraAngle = Rotation2d( 0.0.radians )
 
-    public val allowedError = 10
+    public val tolerance = 10.0
 }

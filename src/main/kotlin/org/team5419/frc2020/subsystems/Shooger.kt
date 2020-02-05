@@ -19,7 +19,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 
 object Shooger : Subsystem("Shooger") {
 
-    // fly wheel motors\
+    // fly wheel motors
     private val masterMotor = TalonSRX(ShoogerConstants.kMasterPort)
     private val slaveMotor1 = VictorSPX(ShoogerConstants.kSlavePort1)
     private val slaveMotor2 = VictorSPX(ShoogerConstants.kSlavePort2)

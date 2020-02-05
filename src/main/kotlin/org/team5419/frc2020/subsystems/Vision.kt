@@ -25,10 +25,14 @@ object Vision : Limelight (
     public val controller: PIDController = PIDController(kP, kI, kI)
     public var output: Double = 0.0
 
+    init {
+        controller.setTolerance( VisionConstants.tolerance )
+    }
+
     public val tabName = "Vision"
 
     public val aligned
-        get() = targetFound && Math.abs(verticalOffset) <= VisionConstants.allowedError
+        get() = targetFound && controller.atSetpoint()
 
     var tab: ShuffleboardTab
 
