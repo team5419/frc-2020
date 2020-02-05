@@ -13,7 +13,6 @@ import org.team5419.fault.math.kEpsilon
 import kotlin.math.PI
 import kotlin.math.pow
 
-@SuppressWarnings("MaxLineLength, WildcardImport")
 object RobotConstants {
     val kRobotLength = 32.inches
     val kRobotWidth = 27.5.inches
@@ -29,36 +28,27 @@ object TrajectoryConstants {
 
 object DriveConstants {
     // ports
-    const val kLeftMasterPort = 10
-    const val kLeftSlave1Port = 11
 
-    const val kRightMasterPort = 8
-    const val kRightSlave1Port = 9
+    const val leftMasterPort = 10
+    const val leftSlavePort = 11
 
-    const val kGyroPort = 7
+    const val rightMasterPort = 8
+    const val rightSlavePort = 9
 
-    // Added Constants - Remove Later If Necessary
-    const val kLeftEncoderPort1 = 1
-    const val kLeftEncoderPort2 = 2
-    const val kLeftEncoderReversed = true
-    const val kRightEncoderPort1 = 4
-    const val kRightEncoderPort2 = 7
-    const val kRightEncoderReversed = false
+    const val gyroPort = 7
 
-    const val kEncoderDistancePerPulse = 1000.0
 
-    const val kGyroReversed = false
-    // End
+    // configuration
 
-    // misc
-    const val kEncoderPhase = true
+    const val encoderPhase = true
 
     // path following parameters
+
     const val kBeta = 1.0 // m^-2
     const val kZeta = 1.0 // unitless
 
-    val kMotionMagicVelocity = 130.inches.velocity
-    val kMotionMagicAcceleration = 50.inches.acceleration
+    val maxVelocity = 130.inches.velocity
+    val maxAcceleration = 50.inches.acceleration
 
     // dimensions and constants
     val kWheelRadius = 3.inches
@@ -154,4 +144,6 @@ object VisionConstants {
     public val kCameraHeight = 0.0.meters
     public val kTargetHeight = 0.0.meters
     public val kCameraAngle = Rotation2d( 0.0.radians )
+
+    public val allowedError = 10
 }

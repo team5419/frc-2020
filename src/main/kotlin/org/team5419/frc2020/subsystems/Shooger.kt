@@ -73,6 +73,10 @@ object Shooger : Subsystem("Shooger") {
         hopper.setInverted(false)
     }
 
+    // hood
+
+
+
     // Shuffleboard
 
     public val tabName = "Shooger"

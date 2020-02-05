@@ -25,6 +25,11 @@ object Vision : Limelight (
     public val controller: PIDController = PIDController(kP, kI, kI)
     public var output: Double = 0.0
 
+    val aligned: bool
+        get() {
+            return targetFound && Math.abs(verticalOffset) <= VisionConstants.allowedError
+        }
+
     init{
 
         // tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)

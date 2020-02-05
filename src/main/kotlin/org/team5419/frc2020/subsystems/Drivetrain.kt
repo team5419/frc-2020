@@ -25,8 +25,6 @@ object Drivetrain : AbstractTankDrive() {
     private var currentState = State.Nothing
     private var wantedState = State.Nothing
 
-    // override val differentialDrive = DriveConstants.kDriveModel
-
     override val differentialDrive = DifferentialDrive(
         DriveConstants.kMass.value,
         DriveConstants.kMoi,
@@ -46,14 +44,14 @@ object Drivetrain : AbstractTankDrive() {
     )
 
     // hardware
-    override val leftMasterMotor = BerkeliumSRX(DriveConstants.kLeftMasterPort, DriveConstants.kNativeGearboxConversion)
-    private val leftSlave1 = BerkeliumSRX(DriveConstants.kLeftSlave1Port, DriveConstants.kNativeGearboxConversion)
+    override val leftMasterMotor = BerkeliumSRX(DriveConstants.leftMasterPort, DriveConstants.kNativeGearboxConversion)
+    private val leftSlave1 = BerkeliumSRX(DriveConstants.leftSlavePort, DriveConstants.kNativeGearboxConversion)
 
-    override val rightMasterMotor = BerkeliumSRX(DriveConstants.kRightMasterPort, DriveConstants.kNativeGearboxConversion
+    override val rightMasterMotor = BerkeliumSRX(DriveConstants.rightMasterPort, DriveConstants.kNativeGearboxConversion
     )
-    private val rightSlave1 = BerkeliumSRX(DriveConstants.kRightSlave1Port, DriveConstants.kNativeGearboxConversion)
+    private val rightSlave1 = BerkeliumSRX(DriveConstants.rightSlavePort, DriveConstants.kNativeGearboxConversion)
 
-    public val gyro = PigeonIMU(DriveConstants.kGyroPort)
+    public val gyro = PigeonIMU(DriveConstants.gyroPort)
 
     init {
         leftSlave1.follow(leftMasterMotor)
@@ -80,8 +78,8 @@ object Drivetrain : AbstractTankDrive() {
             FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
         )
 
-        leftMasterMotor.encoder.encoderPhase = DriveConstants.kEncoderPhase
-        rightMasterMotor.encoder.encoderPhase = DriveConstants.kEncoderPhase
+        leftMasterMotor.encoder.encoderPhase = DriveConstants.encoderPhase
+        rightMasterMotor.encoder.encoderPhase = DriveConstants.encoderPhase
 
         rightMasterMotor.talonSRX.configRemoteFeedbackFilter(gyro.deviceID, RemoteSensorSource.Pigeon_Yaw, 1, 0)
         rightMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0)
@@ -104,11 +102,11 @@ object Drivetrain : AbstractTankDrive() {
         leftMasterMotor.useMotionProfileForPosition = true
         rightMasterMotor.useMotionProfileForPosition = true
 
-        leftMasterMotor.motionProfileCruiseVelocity = DriveConstants.kMotionMagicVelocity
-        leftMasterMotor.motionProfileAcceleration = DriveConstants.kMotionMagicAcceleration
+        leftMasterMotor.motionProfileCruiseVelocity = DriveConstants.maxVelocity
+        leftMasterMotor.motionProfileAcceleration = DriveConstants.maxAcceleration
 
-        rightMasterMotor.motionProfileCruiseVelocity = DriveConstants.kMotionMagicVelocity
-        rightMasterMotor.motionProfileAcceleration = DriveConstants.kMotionMagicAcceleration
+        rightMasterMotor.motionProfileCruiseVelocity = DriveConstants.maxVelocity
+        rightMasterMotor.motionProfileAcceleration = DriveConstants.maxAcceleration
 
         isBraking = false
 
