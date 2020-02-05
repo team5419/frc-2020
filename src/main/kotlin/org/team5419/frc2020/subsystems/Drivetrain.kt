@@ -15,12 +15,35 @@ import org.team5419.fault.math.units.native.nativeUnits
 import org.team5419.fault.subsystems.drivetrain.AbstractTankDrive
 import org.team5419.fault.trajectory.followers.RamseteFollower
 import org.team5419.fault.input.DriveSignal
+import org.team5419.fault.math.physics.DCMotorTransmission
+import org.team5419.fault.math.units.native.NativeUnitLengthModel
 
 object Drivetrain : AbstractTankDrive() {
 
     private const val kPositionSlot = 0
     private const val kVelocitySlot = 1
     private const val kTurnSlot = 2
+
+    val leftDriveGearbox = DCMotorTransmission(
+        1 / DriveConstants.DriveKv,
+        DriveConstants.WheelRadius.value *
+        DriveConstants.WheelRadius.value *
+        RobotConstants.Mass.value / (2.0 * DriveConstants.DriveKa),
+        DriveConstants.DriveKs
+    )
+
+    val rightDriveGearbox = DCMotorTransmission(
+        1 / DriveConstants.DriveKv,
+        DriveConstants.WheelRadius.value *
+        DriveConstants.WheelRadius.value *
+        RobotConstants.Mass.value / (2.0 * DriveConstants.DriveKa),
+        DriveConstants.DriveKs
+    )
+
+    val nativeGearboxConversion = NativeUnitLengthModel(
+        DriveConstants.TicksPerRotation,
+        DriveConstants.WheelRadius
+    )
 
     private val periodicIO = PeriodicIO()
     private var currentState = State.Nothing
@@ -32,8 +55,7 @@ object Drivetrain : AbstractTankDrive() {
         DriveConstants.AngularDrag,
         DriveConstants.WheelRadius.value,
         DriveConstants.EffectiveWheelbaseRadius.value,
-        DriveConstants.LeftDriveGearbox,
-        DriveConstants.RightDriveGearbox
+        leftDriveGearbox, rightDriveGearbox
     )
 
     override val trajectoryFollower = RamseteFollower(DriveConstants.Beta, DriveConstants.Zeta)
@@ -47,23 +69,19 @@ object Drivetrain : AbstractTankDrive() {
     // hardware
 
     override val leftMasterMotor = BerkeliumSRX(
-        DriveConstants.LeftMasterPort,
-        DriveConstants.NativeGearboxConversion
+        DriveConstants.LeftMasterPort, nativeGearboxConversion
     )
 
     private val leftSlave1 = BerkeliumSRX(
-        DriveConstants.LeftSlavePort,
-        DriveConstants.NativeGearboxConversion
+        DriveConstants.LeftSlavePort, nativeGearboxConversion
     )
 
     override val rightMasterMotor = BerkeliumSRX(
-        DriveConstants.RightMasterPort,
-        DriveConstants.NativeGearboxConversion
+        DriveConstants.RightMasterPort, nativeGearboxConversion
     )
 
     private val rightSlave1 = BerkeliumSRX(
-        DriveConstants.RightSlavePort,
-        DriveConstants.NativeGearboxConversion
+        DriveConstants.RightSlavePort, nativeGearboxConversion
     )
 
     public val gyro = PigeonIMU(DriveConstants.GyroPort)
@@ -132,16 +150,16 @@ object Drivetrain : AbstractTankDrive() {
     }
 
     override val leftDistance: SIUnit<Meter>
-        get() = -DriveConstants.NativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawSensorPosition)
+        get() = -nativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawSensorPosition)
 
     override val rightDistance: SIUnit<Meter>
-        get() = DriveConstants.NativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawSensorPosition)
+        get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawSensorPosition)
 
     override val leftDistanceError: SIUnit<Meter>
-        get() = -DriveConstants.NativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawDistanceError)
+        get() = -nativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawDistanceError)
 
     override val rightDistanceError: SIUnit<Meter>
-        get() = DriveConstants.NativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
+        get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
 
     val angle: Rotation2d
         get() = periodicIO.gyroAngle.toRotation2d()

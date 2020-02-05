@@ -5,11 +5,16 @@ import org.team5419.fault.hardware.ctre.BerkeliumSRX
 import org.team5419.frc2020.IntakeConstants
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.ControlMode
+import org.team5419.fault.math.units.native.NativeUnitRotationModel
 
 object Intake : Subsystem("Intake") {
     private var doesIntake = false
-    private val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, IntakeConstants.IntakeModel)
-    private val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, IntakeConstants.IntakeModel)
+
+    public val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
+    public val intakeModel = NativeUnitRotationModel(IntakeConstants.IntakeTicksPerRotation)
+
+    private val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
+    private val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
 
     init{
         deployMotor.brakeMode = true

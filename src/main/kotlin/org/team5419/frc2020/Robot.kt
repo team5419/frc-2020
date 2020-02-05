@@ -23,9 +23,14 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     private val teleopController: TeleopController
 
     init {
+        // autoController = AutoController()
         teleopController = TeleopController(XboxDriver, XboxCodriver)
 
-        NetworkTableInstance.getDefault().setUpdateRate(0.01) // maximum update speed, seconds
+        // maximum update speed for Network tables, seconds
+
+        NetworkTableInstance.getDefault().setUpdateRate(0.01)
+
+        // add subsystems to manager
 
         +Drivetrain
         +Intake

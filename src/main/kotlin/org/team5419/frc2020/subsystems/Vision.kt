@@ -16,12 +16,13 @@ object Vision : Limelight (
     mCameraHeight = VisionConstants.CameraHeight,
     mCameraAngle = VisionConstants.CameraAngle
 ) {
-    const val kP: Double = 1.0/30.0
-    const val kI: Double = 0.0
-    const val kD: Double = 0.0
 
-    // private val pidEntry : NetworkTableEntry
-    // private val tab: ShuffleboardTab
+    // PID
+
+    const val kP: Double = VisionConstants.PID.P
+    const val kI: Double = VisionConstants.PID.I
+    const val kD: Double = VisionConstants.PID.D
+
     public val controller: PIDController = PIDController(kP, kI, kI)
     public var output: Double = 0.0
 
@@ -29,17 +30,17 @@ object Vision : Limelight (
         controller.setTolerance( VisionConstants.Tolerance )
     }
 
-    public val tabName = "Vision"
+    // Shuffleboard initilization
 
-    public val aligned
-        get() = targetFound && controller.atSetpoint()
+    val tabName = "Vision"
 
     var tab: ShuffleboardTab
 
     init{
-        tab = Shuffleboard.getTab(tabName)
+        tab = Shuffleboard.getTab( tabName )
 
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
+
         tab.addBoolean("Found Target", { targetFound })
         tab.addNumber("Horizontal Offset", { horizontalOffset })
         tab.addNumber("Vertical Offset", { verticalOffset })
@@ -47,6 +48,11 @@ object Vision : Limelight (
         tab.addNumber("Target Skew", { targetSkew })
         tab.addNumber("PID Output", { output })
     }
+
+    // getters
+
+    public val aligned
+        get() = targetFound && controller.atSetpoint()
 
     fun periodic() {
         output = controller.calculate(horizontalOffset)

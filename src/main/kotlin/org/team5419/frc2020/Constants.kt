@@ -1,7 +1,6 @@
 package org.team5419.frc2020
 
 import org.team5419.fault.math.physics.DCMotorTransmission
-import org.team5419.fault.math.physics.DifferentialDrive
 import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.math.units.derived.acceleration
 import org.team5419.fault.math.units.derived.velocity
@@ -35,21 +34,26 @@ object DriveConstants {
 
     const val EncoderPhase = true
 
-    // path following parameters
+    val TicksPerRotation = 4096.nativeUnits
+    val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
-    const val Beta = 1.0 // m^-2
-    const val Zeta = 1.0 // unitless
+    // path following parameters
 
     val MaxVelocity = 10.0.feet.velocity
     val MaxAcceleration = 4.0.feet.acceleration
     val MaxCentripetalAcceleration = 4.0.feet.acceleration
     val MaxAngularAcceleration = 2.0.radians.acceleration
 
-    // dimensions and constants
+    // dimensions
 
     val WheelRadius = 3.inches
     val WheelDiameter = WheelRadius * 2.0
     val WheelCircumference = WheelDiameter * PI
+
+    // characterization
+
+    const val Beta = 1.0 // m^-2
+    const val Zeta = 1.0 // unitless
 
     val TrackWidth = 20.inches
     val EffectiveWheelbaseRadius = TrackWidth / 2.0
@@ -57,49 +61,23 @@ object DriveConstants {
     val Moi = 0.0 // kg * m^2
     val AngularDrag = 10.0 // (N * m) / (rad / s)  TUNE ME
 
-    val TicksPerRotation = 4096.nativeUnits
-    val PigeonConversion = (3600.0 / 8192.0).nativeUnits
-
     const val DriveKv = kEpsilon
     const val DriveKa = kEpsilon
     const val DriveKs = kEpsilon
-
-    val LeftDriveGearbox = DCMotorTransmission(
-        1 / DriveKv,
-        WheelRadius.value.pow(2) * RobotConstants.Mass.value / (2.0 * DriveKa),
-        DriveKs
-    )
-
-    val RightDriveGearbox = DCMotorTransmission(
-        1 / DriveKv,
-        WheelRadius.value.pow(2) * RobotConstants.Mass.value / (2.0 * DriveKa),
-        DriveKs
-    )
-
-    val DriveModel = DifferentialDrive(
-        RobotConstants.Mass.value,
-        Moi,
-        AngularDrag, // tune me
-        WheelRadius.value,
-        EffectiveWheelbaseRadius.value,
-        LeftDriveGearbox,
-        RightDriveGearbox
-    )
-
-    val NativeGearboxConversion = NativeUnitLengthModel(
-        TicksPerRotation,
-        WheelRadius
-    )
 }
 
 object InputConstants {
+    // controller ports
+
     public const val XboxCodrivePort = 0
     public const val XboxDrivePort = 1
 
-    public const val SlowTurnMult = 0.4
-    public const val SlowMoveMult = 0.4
+    // slow movments multipliers
 
-    public const val DriverStowTimeout = 2.0
+    public const val SlowTurnMultiplier = 0.4
+    public const val SlowMoveMultiplier = 0.4
+
+    // deadbands
 
     public const val TriggerDeadband = 0.1
     public const val JoystickDeadband = 0.07
@@ -114,9 +92,10 @@ object ShoogerConstants {
     public const val HopperPort = 9
 
     public val MaxVelocity = 6000.0.radians.velocity
-    public val V = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
     public val TicksPerRotation = (4092.0 / 3.5).nativeUnits
-    public val lywheel = NativeUnitRotationModel(TicksPerRotation)
+
+    // WHAT AM I? ->
+    // public val V = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
 }
 
 object HoodConstants{
@@ -129,23 +108,27 @@ object HoodConstants{
     }
 
     public val TicksPerRotation = (4092 / 3).nativeUnits
-    public val Hood = NativeUnitRotationModel(TicksPerRotation)
 }
 
 object IntakeConstants {
     public val DeployTicksPerRotation = (4096 * 81).nativeUnits
-    public val DeployModel = NativeUnitRotationModel(DeployTicksPerRotation)
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
-    public val IntakeModel = NativeUnitRotationModel(IntakeTicksPerRotation)
+
     public const val IntakePort = 2
     public const val DeployPort = 4
 }
 
-
 object VisionConstants {
-    public val CameraHeight = 0.0.meters
-    public val TargetHeight = 0.0.meters
     public val CameraAngle = Rotation2d( 0.0.radians )
+    public val CameraHeight = 0.0.meters
+
+    public val TargetHeight = 0.0.meters
 
     public val Tolerance = 10.0
+
+    object PID {
+        public const val P = 1.0/30.0
+        public const val I = 0.0
+        public const val D = 0.0
+    }
 }

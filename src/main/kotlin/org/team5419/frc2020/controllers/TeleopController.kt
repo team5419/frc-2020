@@ -22,12 +22,11 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         { driver.quickTurn() },
         { driver.slow() },
         InputConstants.JoystickDeadband,
-        InputConstants.SlowTurnMult,
-        InputConstants.SlowMoveMult
+        InputConstants.SlowTurnMultiplier,
+        InputConstants.SlowMoveMultiplier
     )
 
     override fun start() {
-        println("update")
     }
 
     override fun update() {
@@ -38,21 +37,23 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
 
+        Intake.setIntake(if (driver.activateIntake()) 1.0 else 0.0)
+
+        val deployStength = 0.2
+
+        Intake.setDeploy(
+                 if (driver.deployIntake()) deployStength
+            else if (driver.retractIntake()) -deployStength
+            else    0.0
+        )
+    }
+
+    fun updateCodriver() {
         if ( codriver.shoog() ) {
             Shooger.shoog()
         } else {
             Shooger.stop()
         }
-
-        // Intake.setIntake(if (driver.activateIntake()) 1.0 else 0.0)
-
-        // val deployStength = 0.2
-
-        // Intake.setDeploy(if (driver.deployIntake()) deployStength else if (driver.retractIntake()) -deployStength else 0.0)
-    }
-
-    fun updateCodriver() {
-
     }
 
     override fun reset() {
