@@ -38,6 +38,12 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
 
+        if ( Vision.aligned ) {
+            Shooger.shoog()
+        } else {
+            Shooger.shoog(0)
+        }
+
         Intake.setIntake(if (driver.activateIntake()) 1.0 else 0.0)
         Intake.setDeploy(if (driver.deployIntake()) 1.0 else if (driver.retractIntake()) -1.0 else 0.0)
     }
