@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.wpilibj.controller.PIDController
 
-object Vision: Limelight (
+object Vision : Limelight (
     networkTableName = "limelight",
     inverted = false,
     mTargetHeight = VisionConstants.kTargetHeight,
@@ -21,23 +21,25 @@ object Vision: Limelight (
     const val kD: Double = 0.0
 
     // private val pidEntry : NetworkTableEntry
-    private val tab: ShuffleboardTab
-    private val controller: PIDController = PIDController(kP, kI, kI)
-    private var output: Double = 0.0
+    // private val tab: ShuffleboardTab
+    public val controller: PIDController = PIDController(kP, kI, kI)
+    public var output: Double = 0.0
 
     init{
-        tab = Shuffleboard.getTab("Auto")
 
-        tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
-        tab.addBoolean("Found Target", { targetFound })
-        tab.addNumber("Horizontal Offset", { horizontalOffset })
-        tab.addNumber("Vertical Offset", { verticalOffset })
-        tab.addNumber("Target Area", { targetArea })
-        tab.addNumber("Target Skew", { targetSkew })
+        // tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
+        // tab.addBoolean("Found Target", { targetFound })
+        // tab.addNumber("Horizontal Offset", { horizontalOffset })
+        // tab.addNumber("Vertical Offset", { verticalOffset })
+        // tab.addNumber("Target Area", { targetArea })
+        // tab.addNumber("Target Skew", { targetSkew })
+        // tab.addNumber("PID Output", { output })
+
     }
 
     fun periodic() {
         output = controller.calculate(horizontalOffset)
-        Drivetrain.setPercent(output, -output)
+        // Shuffleboard.update()
+        // Drivetrain.setPercent(output, -output)
     }
 }
