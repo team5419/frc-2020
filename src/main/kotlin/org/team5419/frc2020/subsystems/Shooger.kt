@@ -19,11 +19,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 
 object Shooger : Subsystem("Shooger") {
 
-    // fly wheel motors
-
+    // fly wheel motors\
     private val masterMotor = TalonSRX(ShoogerConstants.kMasterPort)
-    private val slaveMotor1 = VictorSPX(ShoogerConstants.kSlavePort1)
-    private val slaveMotor2 = VictorSPX(ShoogerConstants.kSlavePort2)
+    private val slaveMotor1 = TalonSRX(ShoogerConstants.kSlavePort1)
+    private val slaveMotor2 = TalonSRX(ShoogerConstants.kSlavePort2)
 
     init {
         masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
@@ -59,12 +58,13 @@ object Shooger : Subsystem("Shooger") {
             configClosedLoopPeriod(0, 1)
             configClosedLoopPeriod(1, 1)
             setSelectedSensorPosition(0, 0, 0)
+            configPeakCurrentLimit(40)
         }
     }
 
     // feeder and hopper
 
-    private val feeder = TalonSRX(5)
+    private val feeder = TalonSRX(ShoogerConstants.kFeederPort)
     private val hopper = TalonSRX(3)
 
     init {
@@ -79,12 +79,11 @@ object Shooger : Subsystem("Shooger") {
 
     public val tab: ShuffleboardTab
     public var shooterVelocityEntry : NetworkTableEntry
-
     public var hopperPercentEntry : NetworkTableEntry
     public var hopperLazyPercentEntry : NetworkTableEntry
     public var feederPercentEntry : NetworkTableEntry
-
     public var feedingEnabledEntry : NetworkTableEntry
+    public var bangBangEntry : NetworkTableEntry
 
     init {
         tab = Shuffleboard.getTab(tabName)
@@ -96,6 +95,7 @@ object Shooger : Subsystem("Shooger") {
         hopperLazyPercentEntry = tab.add("Hopper Lazy Percent", 0.0).getEntry()
 
         feedingEnabledEntry = tab.add("Feeding Enabled", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+        bangBangEntry = tab.add("Bang Bang Toggle", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
@@ -132,7 +132,7 @@ object Shooger : Subsystem("Shooger") {
         return velocity * 4096.0 / 600.0
     }
 
-    public fun shoog(shoogVelocity : Double=shooterVelocityEntry.getDouble(0.0), useBangBang: Boolean = false) {
+    public fun shoog(shoogVelocity : Double=shooterVelocityEntry.getDouble(0.0), useBangBang: Boolean = bangBangEntry.getBoolean(false)) {
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)
 
@@ -176,7 +176,6 @@ object Shooger : Subsystem("Shooger") {
     override fun periodic(){
         hopperPercent = hopperPercentEntry.getDouble(0.0)
         feederPercent = hopperPercentEntry.getDouble(0.0)
-
         hopperLazyPercent = hopperLazyPercentEntry.getDouble(0.0)
 
         recalculateAcceleration()
