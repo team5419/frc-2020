@@ -3,6 +3,7 @@ package org.team5419.frc2020.subsystems
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.operations.*
+import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.units.*
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 import org.team5419.fault.hardware.ctre.BerkeliumSPX
@@ -22,9 +23,11 @@ object Shooger : Subsystem("Shooger") {
 
     // fly wheel motors
 
-    private val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
-    private val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
-    private val slaveMotor2 = VictorSPX(ShoogerConstants.SlavePort2)
+    val shoogerModel = NativeUnitRotationModel(ShoogerConstants.TicksPerRotation)
+
+    val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
+    val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
+    val slaveMotor2 = VictorSPX(ShoogerConstants.SlavePort2)
 
     init {
         masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
@@ -123,10 +126,25 @@ object Shooger : Subsystem("Shooger") {
         hopperPercentEntry.setPersistent()
         hopperLazyPercentEntry.setPersistent()
 
-        feederPercentEntry.addListener( { event -> feederPercent = event.value.getDouble() }, EntryListenerFlags.kUpdate)
-        hopperPercentEntry.addListener( { event -> hopperPercent = event.value.getDouble() }, EntryListenerFlags.kUpdate)
-        hopperLazyPercentEntry.addListener( { event -> hopperLazyPercent = event.value.getDouble() }, EntryListenerFlags.kUpdate)
-        feedingEnabledEntry.addListener({ event -> feedingEnabled = event.value.getBoolean() }, EntryListenerFlags.kUpdate)
+        feederPercentEntry.addListener(
+            { event -> feederPercent = event.value.getDouble() },
+            EntryListenerFlags.kUpdate
+        )
+
+        hopperPercentEntry.addListener(
+            { event -> hopperPercent = event.value.getDouble() },
+            EntryListenerFlags.kUpdate
+        )
+
+        hopperLazyPercentEntry.addListener(
+            { event -> hopperLazyPercent = event.value.getDouble() },
+            EntryListenerFlags.kUpdate
+        )
+
+        feedingEnabledEntry.addListener(
+            { event -> feedingEnabled = event.value.getBoolean() },
+            EntryListenerFlags.kUpdate
+        )
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })

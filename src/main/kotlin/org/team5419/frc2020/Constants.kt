@@ -92,8 +92,6 @@ object ShoogerConstants {
 
     public val TargetVelocity = 6000.0.radians.velocity
     public val TicksPerRotation = (4092.0 / 3.5).nativeUnits
-    public val ShoogerModel = NativeUnitRotationModel(TicksPerRotation)
-
 
 
     // WHAT AM I? ->
