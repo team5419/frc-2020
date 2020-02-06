@@ -8,13 +8,14 @@ import org.team5419.frc2020.VisionConstants
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.wpilibj.controller.PIDController
+import org.team5419.fault.math.geometry.Rotation2d
 
 object Vision : Limelight (
     networkTableName = "limelight",
     inverted = false,
     mTargetHeight = VisionConstants.TargetHeight,
     mCameraHeight = VisionConstants.CameraHeight,
-    mCameraAngle = VisionConstants.CameraAngle
+    mCameraAngle = Rotation2d( VisionConstants.CameraAngle )
 ) {
 
     // PID

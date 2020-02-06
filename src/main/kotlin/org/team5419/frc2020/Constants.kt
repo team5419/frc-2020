@@ -1,16 +1,10 @@
 package org.team5419.frc2020
 
-import org.team5419.fault.math.physics.DCMotorTransmission
-import org.team5419.fault.math.geometry.Rotation2d
-import org.team5419.fault.math.units.derived.acceleration
-import org.team5419.fault.math.units.derived.velocity
-import org.team5419.fault.math.units.derived.radians
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.kEpsilon
 import kotlin.math.PI
-import kotlin.math.pow
 
 object RobotConstants {
     val Mass = 120.lbs
@@ -126,7 +120,7 @@ object IntakeConstants {
 }
 
 object VisionConstants {
-    public val CameraAngle = Rotation2d( 0.0.radians )
+    public val CameraAngle = 0.0.radians
     public val CameraHeight = 0.0.meters
 
     public val TargetHeight = 0.0.meters
