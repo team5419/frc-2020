@@ -66,16 +66,16 @@ object Shooger : Subsystem("Shooger") {
 
     private val feeder = TalonSRX(ShoogerConstants.kFeederPort)
     private val hopper = TalonSRX(ShoogerConstants.kHopperPort)
+    private val hood = TalonSRX(HoodConstants.kPort)
 
     init {
         feeder.setInverted(true)
         feeder.setNeutralMode(NeutralMode.Brake)
         hopper.setInverted(true)
+        hood.setNeutralMode(NeutralMode.Brake)
     }
 
     // hood
-
-
 
     // Shuffleboard
 
@@ -163,6 +163,10 @@ object Shooger : Subsystem("Shooger") {
 
     public fun powerHopper(percent: Double){
         hopper.set(ControlMode.PercentOutput, percent)
+    }
+
+    public fun powerHood(percent: Double){
+        hood.set(ControlMode.PercentOutput, percent)
     }
 
     public fun enableFeeding(bool: Boolean){
