@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.RobotController
 import org.team5419.frc2020.input.XboxDriver
 import org.team5419.frc2020.input.XboxCodriver
 
+val tab: ShuffleboardTab = Shuffleboard.getTab("Control")
+
 @SuppressWarnings("MagicNumber")
 class Robot : BerkeliumRobot(0.01.seconds) {
     private val teleopController: TeleopController
