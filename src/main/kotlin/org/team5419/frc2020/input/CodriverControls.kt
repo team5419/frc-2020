@@ -3,5 +3,18 @@ package org.team5419.frc2020.input
 public interface CodriverControls {
     public fun shoog() : Boolean
 
-    public fun getIntake(): Boolean
+    public fun enableFeeding() : Boolean
+
+    public fun deployIntake() : Boolean
+
+    public fun retractIntake() : Boolean
+
+    public fun activateIntake() : Boolean
+
+    public fun hood() : Boolean
+
+    public fun deployHood() : Boolean
+
+    public fun retractHood() : Boolean
+
 }

@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.can.VictorSPX
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.Timer
+import edu.wpi.first.wpilibj.AnalogInput
 import com.ctre.phoenix.motorcontrol.NeutralMode
 
 @Suppress("TooManyFunctions")
@@ -75,26 +76,26 @@ object Shooger : Subsystem("Shooger") {
 
     // feeder and hopper
 
-    private val feeder = TalonSRX(ShoogerConstants.FeederPort)
-    private val hopper = TalonSRX(ShoogerConstants.HopperPort)
-    private val hood = TalonSRX(HoodConstants.HoodPort)
+    private val feeder = TalonSRX(ShoogerConstants.kFeederPort)
+    private val hopper = TalonSRX(ShoogerConstants.kHopperPort)
+    private val hood = TalonSRX(HoodConstants.kPort)
 
     init {
         feeder.setInverted(true)
         feeder.setNeutralMode(NeutralMode.Brake)
 
         hopper.setInverted(true)
+        hood.setNeutralMode(NeutralMode.Brake)
     }
 
     // hood
-
     // default settings
 
     var targetVelocity = ShoogerConstants.TargetVelocity.value
     var hopperPercent = ShoogerConstants.HopperPercent
     var feederPercent = ShoogerConstants.FeederPercent
     var hopperLazyPercent = ShoogerConstants.HopperLazyPercent
-
+    private var distanceSensor = AnalogInput(1)
     // Shuffleboard
 
     public val tabName = "Shooger"
@@ -251,6 +252,7 @@ object Shooger : Subsystem("Shooger") {
         // hopperLazyPercent = hopperLazyPercentEntry.getDouble(hopperLazyPercent)
 
         recalculateAcceleration()
+        println()
 
         if (setpoint == 0.0) {
             return

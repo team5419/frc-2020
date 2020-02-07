@@ -35,10 +35,23 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         updateCodriver()
     }
 
+    @Suppress("ComplexMethod")
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
 
-        Intake.setIntake(if (codriver.getIntake()) 1.0 else 0.0)
+        if ( codriver.shoog() ) {
+            Shooger.shoog()
+        } else {
+            Shooger.stop()
+        }
+
+        Intake.setIntake(if (codriver.activateIntake()) 1.0 else 0.0)
+
+        Shooger.powerHood(
+            if (codriver.deployHood()) 0.1
+            else if (codriver.retractHood()) -0.1
+            else 0.0
+        )
 
         val deployStength = 0.2
 
