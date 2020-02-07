@@ -63,8 +63,8 @@ object DriveConstants {
 object InputConstants {
     // controller ports
 
-    public const val XboxCodrivePort = 0
     public const val XboxDrivePort = 1
+    public const val XboxCodrivePort = 0
 
     // slow movments multipliers
 

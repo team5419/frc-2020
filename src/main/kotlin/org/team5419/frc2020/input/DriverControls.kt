@@ -9,9 +9,5 @@ public interface DriverControls {
 
     public fun slow() : Boolean
 
-    public fun deployIntake() : Boolean
 
-    public fun retractIntake() : Boolean
-
-    public fun activateIntake() : Boolean
 }

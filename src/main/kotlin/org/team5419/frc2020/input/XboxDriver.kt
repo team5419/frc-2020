@@ -22,13 +22,4 @@ object XboxDriver : DriverControls {
     override public fun slow() =
         driverXbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
         driverXbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
-
-    override public fun activateIntake() =
-        driverXbox.getAButton()
-
-    override public fun deployIntake() =
-        driverXbox.getBButton()
-
-    override public fun retractIntake() =
-        driverXbox.getXButton()
 }

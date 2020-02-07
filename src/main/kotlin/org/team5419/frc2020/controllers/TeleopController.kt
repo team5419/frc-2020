@@ -36,19 +36,19 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
+    }
 
-        Intake.setIntake(if (driver.activateIntake()) 1.0 else 0.0)
+    fun updateCodriver() {
+        Intake.setIntake(if (codriver.activateIntake()) 1.0 else 0.0)
 
         val deployStength = 0.2
 
         Intake.setDeploy(
-                 if (driver.deployIntake()) deployStength
-            else if (driver.retractIntake()) -deployStength
+                 if (codriver.deployIntake()) deployStength
+            else if (codriver.retractIntake()) -deployStength
             else    0.0
         )
-    }
 
-    fun updateCodriver() {
         if ( codriver.shoog() ) {
             Shooger.shoog()
         } else {

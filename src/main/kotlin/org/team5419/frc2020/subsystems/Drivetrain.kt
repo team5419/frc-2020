@@ -175,7 +175,6 @@ object Drivetrain : AbstractTankDrive() {
 
     fun setOpenLoop(left: Double, right: Double) {
         wantedState = State.OpenLoop
-        println(left.toString() + " " + right.toString())
 
         periodicIO.leftPercent = left
         periodicIO.rightPercent = right
