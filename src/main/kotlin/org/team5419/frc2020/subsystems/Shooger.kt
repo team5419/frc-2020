@@ -67,6 +67,7 @@ object Shooger : Subsystem("Shooger") {
             selectProfileSlot(1, 1)
             configClosedLoopPeriod(0, 1)
             configClosedLoopPeriod(1, 1)
+
             setSelectedSensorPosition(0, 0, 0)
 
             // limit the current to not brown out
@@ -74,7 +75,7 @@ object Shooger : Subsystem("Shooger") {
         }
     }
 
-    // feeder and hopper
+    // feeder, hopper and hood
 
     private val feeder = TalonSRX(ShoogerConstants.kFeederPort)
     private val hopper = TalonSRX(ShoogerConstants.kHopperPort)
@@ -85,10 +86,15 @@ object Shooger : Subsystem("Shooger") {
         feeder.setNeutralMode(NeutralMode.Brake)
 
         hopper.setInverted(true)
-        hood.setNeutralMode(NeutralMode.Brake)
+
+        // hood
+
+        hood.apply {
+            setNeutralMode(NeutralMode.Brake)
+            config_kP( 0, HoodConstants.PID.P, 0)
+        }
     }
 
-    // hood
     // default settings
 
     var targetVelocity = ShoogerConstants.TargetVelocity.value
@@ -150,7 +156,6 @@ object Shooger : Subsystem("Shooger") {
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
-
     }
 
     // gettes
@@ -247,9 +252,9 @@ object Shooger : Subsystem("Shooger") {
     }
 
     override fun periodic() {
-        // feederPercent = feederPercentEntry.getDouble(feederPercent)
-        // hopperPercent = hopperPercentEntry.getDouble(hopperPercent)
-        // hopperLazyPercent = hopperLazyPercentEntry.getDouble(hopperLazyPercent)
+        feederPercent = feederPercentEntry.getDouble(feederPercent)
+        hopperPercent = hopperPercentEntry.getDouble(hopperPercent)
+        hopperLazyPercent = hopperLazyPercentEntry.getDouble(hopperLazyPercent)
 
         recalculateAcceleration()
         println()

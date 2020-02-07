@@ -23,10 +23,10 @@ object Intake : Subsystem("Intake") {
     public var isIntake: Boolean = false
         set (value: Boolean) {
             if(value && !field){
-                // setIntake(1.0)
+                setIntake(1.0)
             }
             if(!value && field){
-                // setIntake(0.0)
+                setIntake(0.0)
             }
             field = value
         }
