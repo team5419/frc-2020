@@ -124,6 +124,8 @@ object Drivetrain : AbstractTankDrive() {
         leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
         rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
         rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
+        rightMasterMotor.brakeMode = true
+        rightMasterMotor.brakeMode = true
 
         rightMasterMotor.talonSRX.configAuxPIDPolarity(true, 0)
         rightMasterMotor.talonSRX.configClosedLoopPeakOutput(kTurnSlot, 1.0, 0)
@@ -265,7 +267,7 @@ object Drivetrain : AbstractTankDrive() {
         periodicIO.rightRawSensorVelocity = rightMasterMotor.encoder.rawVelocity
 
         periodicIO.gyroAngle = gyro.fusedHeading.degrees
-        println(gyro.fusedHeading)
+        // println(gyro.fusedHeading)
 
         val xyz = DoubleArray(3)
         gyro.getRawGyro(xyz)

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.XboxController
 
 import org.team5419.frc2020.InputConstants
 
-public val driverXbox = XboxController(InputConstants.XboxCodrivePort)
+public val driverXbox = XboxController(InputConstants.XboxDrivePort)
 
 object XboxDriver : DriverControls {
     override public fun getThrottle() =

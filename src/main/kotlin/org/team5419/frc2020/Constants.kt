@@ -119,8 +119,8 @@ object VisionConstants {
     public val Tolerance = 10.0
 
     object PID {
-        public const val P = 1.0/30.0
-        public const val I = 0.0
-        public const val D = 0.0
+        public const val P = 0.024
+        public const val I = 0.00
+        public const val D = 100.0
     }
 }

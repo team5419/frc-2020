@@ -173,6 +173,9 @@ object Shooger : Subsystem("Shooger") {
 
     // vars
 
+    public val analogValue
+        get() = masterMotor.getSelectedSensorPosition(1)
+
     private var feedingEnabled = true
     private var lastVelocity = 0.0
     public var flyWheelAcceleration = 0.0 // RPM/s
@@ -257,7 +260,7 @@ object Shooger : Subsystem("Shooger") {
         hopperLazyPercent = hopperLazyPercentEntry.getDouble(hopperLazyPercent)
 
         recalculateAcceleration()
-        println()
+        // println()
 
         if (setpoint == 0.0) {
             return
@@ -279,6 +282,6 @@ object Shooger : Subsystem("Shooger") {
             powerHopper(hopperLazyPercent)
         }
 
-        println(masterMotor.getSelectedSensorPosition(1))
+        // println(masterMotor.getSelectedSensorPosition(1))
     }
 }

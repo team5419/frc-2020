@@ -43,12 +43,15 @@ class Robot : BerkeliumRobot(0.01.seconds) {
         +Shooger
     }
 
+    val vision = Vision()
+
     override fun robotInit() {
         Shooger.start()
     }
 
     override fun robotPeriodic() {
         Shuffleboard.update()
+        // println("analogz; " + Shooger.analogValue)
     }
 
     override fun disabledInit() {
@@ -62,6 +65,7 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     }
 
     override fun autonomousPeriodic() {
+        vision.periodic()
     }
 
     override fun teleopInit() {

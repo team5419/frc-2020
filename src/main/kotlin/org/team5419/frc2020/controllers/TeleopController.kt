@@ -46,7 +46,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         val deployStength = 0.2
 
         Intake.setDeploy(
-                 if (codriver.deployIntake()) deployStength
+            if (codriver.deployIntake()) deployStength
             else if (codriver.retractIntake()) -deployStength
             else    0.0
         )

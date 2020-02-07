@@ -10,7 +10,7 @@ import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.wpilibj.controller.PIDController
 import org.team5419.fault.math.geometry.Rotation2d
 
-object Vision : Limelight (
+class Vision() : Limelight (
     networkTableName = "limelight",
     inverted = false,
     mTargetHeight = VisionConstants.TargetHeight,
@@ -20,9 +20,9 @@ object Vision : Limelight (
 
     // PID
 
-    const val kP: Double = VisionConstants.PID.P
-    const val kI: Double = VisionConstants.PID.I
-    const val kD: Double = VisionConstants.PID.D
+     val kP: Double = VisionConstants.PID.P
+     val kI: Double = VisionConstants.PID.I
+     val kD: Double = VisionConstants.PID.D
 
     public val controller: PIDController = PIDController(kP, kI, kI)
     public var output: Double = 0.0
@@ -56,8 +56,14 @@ object Vision : Limelight (
         get() = targetFound && controller.atSetpoint()
 
     fun periodic() {
+        // output = horizontalOffset * VisionConstants.PID.P//
         output = controller.calculate(horizontalOffset)
+        println("output: ${output}")
 
-        // Drivetrain.setPercent(output, -output)
+        if (horizontalOffset == 0.0) {
+            return
+        }
+
+        Drivetrain.setPercent(output, -output)
     }
 }
