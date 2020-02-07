@@ -33,6 +33,7 @@ object Shooger : Subsystem("Shooger") {
 
     init {
         masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+        masterMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 1, 0)
         masterMotor.setSensorPhase(true)
 
         slaveMotor1.follow(masterMotor)
@@ -101,7 +102,6 @@ object Shooger : Subsystem("Shooger") {
     var hopperPercent = ShoogerConstants.HopperPercent
     var feederPercent = ShoogerConstants.FeederPercent
     var hopperLazyPercent = ShoogerConstants.HopperLazyPercent
-    private var distanceSensor = AnalogInput(1)
     // Shuffleboard
 
     public val tabName = "Shooger"
@@ -278,5 +278,7 @@ object Shooger : Subsystem("Shooger") {
             powerFeeder(0.0)
             powerHopper(hopperLazyPercent)
         }
+
+        println(masterMotor.getSelectedSensorPosition(1))
     }
 }
