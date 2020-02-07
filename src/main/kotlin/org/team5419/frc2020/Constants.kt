@@ -98,7 +98,7 @@ object DriveConstants {
 }
 
 object InputConstants {
-    public const val XboxCodrivePort = 0
+    public const val XboxCodrivePort = 1
     public const val XboxDrivePort = 0
 
     public const val SlowTurnMult = 0.4

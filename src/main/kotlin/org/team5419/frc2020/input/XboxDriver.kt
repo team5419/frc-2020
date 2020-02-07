@@ -21,12 +21,5 @@ object XboxDriver : DriverControls {
         Xbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
         Xbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
 
-    override public fun activateIntake() =
-        Xbox.getAButton()
 
-    override public fun deployIntake() =
-        Xbox.getBButton()
-
-    override public fun retractIntake() =
-        Xbox.getXButton()
 }

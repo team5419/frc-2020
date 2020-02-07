@@ -4,4 +4,14 @@ public interface CodriverControls {
 
     public fun shoog() : Boolean
 
+    public fun enableFeeding() : Boolean
+
+    public fun deployIntake() : Boolean
+
+    public fun retractIntake() : Boolean
+
+    public fun activateIntake() : Boolean
+
+    public fun hood() : Boolean
+
 }
