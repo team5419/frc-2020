@@ -8,6 +8,4 @@ public interface DriverControls {
     public fun quickTurn() : Boolean
 
     public fun slow() : Boolean
-
-
 }
