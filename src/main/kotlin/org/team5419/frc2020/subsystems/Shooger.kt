@@ -78,9 +78,9 @@ object Shooger : Subsystem("Shooger") {
 
     // feeder, hopper and hood
 
-    private val feeder = TalonSRX(ShoogerConstants.kFeederPort)
-    private val hopper = TalonSRX(ShoogerConstants.kHopperPort)
-    private val hood = TalonSRX(HoodConstants.kPort)
+    private val feeder = TalonSRX(ShoogerConstants.FeederPort)
+    private val hopper = TalonSRX(ShoogerConstants.HopperPort)
+    private val hood = TalonSRX(HoodConstants.HoodPort)
 
     init {
         feeder.setInverted(true)
@@ -206,7 +206,7 @@ object Shooger : Subsystem("Shooger") {
     }
 
     public fun start() {
-        powerHopper(1.0)
+        // powerHopper(1.0)
     }
 
     public fun stop() {
