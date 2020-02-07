@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.Timer
 import com.ctre.phoenix.motorcontrol.NeutralMode
 
+@Suppress("TooManyFunctions")
 object Shooger : Subsystem("Shooger") {
 
     // fly wheel motors
@@ -191,7 +192,6 @@ object Shooger : Subsystem("Shooger") {
     ) {
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)
-
         bangBang = useBangBang
 
         if (!bangBang) {
@@ -199,12 +199,16 @@ object Shooger : Subsystem("Shooger") {
         }
     }
 
+    public fun start() {
+        powerHopper(1.0)
+    }
+
     public fun stop() {
         setpoint = 0.0
 
         powerShooger(0.0)
         powerFeeder(0.0)
-        // powerHopper(0.0)
+        powerHopper(0.0)
     }
 
     public fun powerShooger(percent: Double) {
@@ -217,6 +221,10 @@ object Shooger : Subsystem("Shooger") {
 
     public fun powerHopper(percent: Double) {
         hopper.set(ControlMode.PercentOutput, percent)
+    }
+
+    public fun powerHood(percent: Double){
+        hood.set(ControlMode.PercentOutput, percent)
     }
 
     public fun enableFeeding(bool: Boolean) {

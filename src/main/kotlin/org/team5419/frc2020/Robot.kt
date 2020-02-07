@@ -38,6 +38,7 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     }
 
     override fun robotInit() {
+        Shooger.start()
     }
 
     override fun robotPeriodic() {

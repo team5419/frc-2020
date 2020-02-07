@@ -26,6 +26,7 @@ object DriveConstants {
 
     // configuration
     const val EncoderPhase = true
+
     val TicksPerRotation = 4096.nativeUnits
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
