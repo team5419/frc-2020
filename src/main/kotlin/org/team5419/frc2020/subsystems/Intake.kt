@@ -32,6 +32,7 @@ object Intake : Subsystem("Intake") {
         }
 
     public fun setIntake(percent: Double){
+        println("intake: ${percent}")
         intakeMotor.talonSRX.set(ControlMode.PercentOutput, percent)
     }
 

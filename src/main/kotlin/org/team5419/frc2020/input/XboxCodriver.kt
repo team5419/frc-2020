@@ -5,9 +5,11 @@ import org.team5419.frc2020.input.CodriverControls
 import org.team5419.frc2020.InputConstants
 import edu.wpi.first.wpilibj.XboxController
 
-public val dodriverXbox = XboxController(InputConstants.XboxCodrivePort)
+public val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
 
 object XboxCodriver : CodriverControls {
     override public fun shoog() =
         driverXbox.getYButton()
+
+    override public fun getIntake(): Boolean = codriverXbox.getAButton()
 }

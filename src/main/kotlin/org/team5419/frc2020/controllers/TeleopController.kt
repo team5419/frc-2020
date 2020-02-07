@@ -27,6 +27,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     )
 
     override fun start() {
+        Shooger.powerHopper(0.3)
     }
 
     override fun update() {
@@ -37,7 +38,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
 
-        Intake.setIntake(if (driver.activateIntake()) 1.0 else 0.0)
+        Intake.setIntake(if (codriver.getIntake()) 1.0 else 0.0)
 
         val deployStength = 0.2
 

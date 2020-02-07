@@ -179,9 +179,15 @@ object Shooger : Subsystem("Shooger") {
         return velocity * 4096.0 / 600.0
     }
 
+    public fun toogleBrakeMode(isEnabled: Boolean){
+        masterMotor.setNeutralMode(if (isEnabled) NeutralMode.Brake else NeutralMode.Coast)
+        slaveMotor1.setNeutralMode(if (isEnabled) NeutralMode.Brake else NeutralMode.Coast)
+        slaveMotor2.setNeutralMode(if (isEnabled) NeutralMode.Brake else NeutralMode.Coast)
+    }
+
     public fun shoog(
-            shoogVelocity : Double=shooterVelocityEntry.getDouble(targetVelocity),
-            useBangBang: Boolean = false
+        shoogVelocity: Double = shooterVelocityEntry.getDouble(targetVelocity),
+        useBangBang: Boolean = false
     ) {
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)
@@ -198,7 +204,7 @@ object Shooger : Subsystem("Shooger") {
 
         powerShooger(0.0)
         powerFeeder(0.0)
-        powerHopper(0.0)
+        // powerHopper(0.0)
     }
 
     public fun powerShooger(percent: Double) {
