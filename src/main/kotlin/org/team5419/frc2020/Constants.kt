@@ -100,14 +100,15 @@ object ShoogerConstants {
 
 object HoodConstants{
     public const val HoodPort = 12
+    public const val gearRatio = 1/4;
 
     object PID {
         public const val P = 1.0
         public const val I = 0.0
         public const val D = 0.0
     }
-
-    public val TicksPerRotation = (4092 / 3).nativeUnits
+    public val kTicksPerRotation = (4092 / 3).nativeUnits
+    public val hood = NativeUnitRotationModel(kTicksPerRotation)
 }
 
 object IntakeConstants {
