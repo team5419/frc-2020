@@ -1,22 +1,14 @@
 package org.team5419.frc2020.subsystems
 
-import org.team5419.fault.subsystems.Subsystem
-import org.team5419.fault.hardware.ctre.BerkeliumSRX
-import org.team5419.frc2020.DriveConstants
 import org.team5419.frc2020.StorageConstants
 import org.team5419.frc2020.ShoogerConstants
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import org.team5419.fault.math.units.SIUnit
-import org.team5419.fault.math.units.seconds
-import org.team5419.fault.math.units.Second
-import edu.wpi.first.wpilibj.Timer
-import com.ctre.phoenix.motorcontrol.ControlMode
-import edu.wpi.first.wpilibj.AnalogInput
-import edu.wpi.first.networktables.EntryListenerFlags
+import org.team5419.fault.subsystems.Subsystem
 import edu.wpi.first.wpilibj.shuffleboard.*
+import edu.wpi.first.wpilibj.Timer
+import edu.wpi.first.wpilibj.AnalogInput
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.NeutralMode
-
-//import com.revrobotics.Rev2mDistanceSensor.Port
+import com.ctre.phoenix.motorcontrol.ControlMode
 
 enum class StorageMode() { LOAD, PASSIVE, OFF }
 
@@ -42,23 +34,28 @@ object Storage : Subsystem("Storage") {
             field = mode
         }
 
-    // private var
+    // motors
 
     private val feeder = TalonSRX(StorageConstants.FeederPort)
+        .apply {
+            setInverted(true)
+            setNeutralMode(NeutralMode.Brake)
+        }
+
     private val hopper = TalonSRX(StorageConstants.HopperPort)
+        .apply {
+            setInverted(true)
+        }
 
-    init {
-        feeder.setInverted(true)
-        feeder.setNeutralMode(NeutralMode.Brake)
-
-        hopper.setInverted(true)
-    }
+    // default settings
 
     private var hopperPercent = StorageConstants.HopperPercent
     private var feederPercent = StorageConstants.FeederPercent
 
     private var feederLazyPercent = feederPercent
     private var hopperLazyPercent = StorageConstants.HopperLazyPercent
+
+    // distance sensor to find balls
 
     private var distanceSensor: AnalogInput = AnalogInput(1)
     private var range: Double  = 0.0

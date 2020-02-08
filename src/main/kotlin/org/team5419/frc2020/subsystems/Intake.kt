@@ -1,17 +1,13 @@
 package org.team5419.frc2020.subsystems
 
-import org.team5419.fault.subsystems.Subsystem
-import org.team5419.fault.hardware.ctre.BerkeliumSRX
 import org.team5419.frc2020.IntakeConstants
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import com.ctre.phoenix.motorcontrol.ControlMode
+import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.NativeUnitRotationModel
+import org.team5419.fault.hardware.ctre.BerkeliumSRX
 
 object Intake : Subsystem("Intake") {
-    private var doesIntake = false
-
-    public val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
     public val intakeModel = NativeUnitRotationModel(IntakeConstants.IntakeTicksPerRotation)
+    public val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
 
     private val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
     private val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
@@ -32,11 +28,11 @@ object Intake : Subsystem("Intake") {
         }
 
     public fun setIntake(percent: Double){
-        intakeMotor.talonSRX.set(ControlMode.PercentOutput, percent)
+        intakeMotor.setPercent(percent)
     }
 
     public fun setDeploy(percent: Double){
-        deployMotor.talonSRX.set(ControlMode.PercentOutput, percent)
+        deployMotor.setPercent(percent)
     }
 
     // subsystem functions

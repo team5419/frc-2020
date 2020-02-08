@@ -1,17 +1,17 @@
 package org.team5419.frc2020.controllers
 
-import org.team5419.frc2020.InputConstants
-import org.team5419.frc2020.subsystems.*
-import edu.wpi.first.wpilibj.GenericHID.Hand
-import edu.wpi.first.wpilibj.XboxController
-import org.team5419.fault.Controller
-import org.team5419.fault.input.SpaceDriveHelper
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.math.units.*
-import org.team5419.frc2020.HoodConstants
 import org.team5419.frc2020.subsystems.Shooger
+import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
+import org.team5419.frc2020.InputConstants
+import org.team5419.frc2020.HoodConstants
+import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.*
+import org.team5419.fault.input.SpaceDriveHelper
+import org.team5419.fault.Controller
+import edu.wpi.first.wpilibj.XboxController
+import edu.wpi.first.wpilibj.GenericHID.Hand
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
@@ -32,7 +32,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         updateCodriver()
     }
 
-    @Suppress("ComplexMethod")
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
     }

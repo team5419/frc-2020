@@ -16,5 +16,4 @@ public interface CodriverControls {
     public fun deployHood() : Boolean
 
     public fun retractHood() : Boolean
-
 }

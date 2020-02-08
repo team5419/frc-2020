@@ -1,15 +1,12 @@
 package org.team5419.frc2020.subsystems
 
-import edu.wpi.first.wpilibj.Timer
-import org.team5419.fault.hardware.Limelight
-import org.team5419.fault.math.units.*
-import org.team5419.fault.subsystems.Subsystem
 import org.team5419.frc2020.VisionConstants
-import edu.wpi.first.wpilibj.shuffleboard.*
-import edu.wpi.first.networktables.NetworkTableEntry
-import edu.wpi.first.wpilibj.controller.PIDController
+import org.team5419.fault.subsystems.Subsystem
+import org.team5419.fault.math.units.*
 import org.team5419.fault.math.geometry.Rotation2d
-
+import org.team5419.fault.hardware.Limelight
+import edu.wpi.first.wpilibj.shuffleboard.*
+import edu.wpi.first.wpilibj.controller.PIDController
 
 object Vision : Subsystem("Vision") {
     val limelight = Limelight (
@@ -34,11 +31,11 @@ object Vision : Subsystem("Vision") {
         controller.setTolerance( VisionConstants.Tolerance )
     }
 
-    // Shuffleboard
+    // shuffleboard
 
     val tabName = "Vision"
 
-    var tab: ShuffleboardTab
+    val tab: ShuffleboardTab
 
     init{
         tab = Shuffleboard.getTab( tabName )
@@ -52,6 +49,8 @@ object Vision : Subsystem("Vision") {
         tab.addNumber("Target Skew", { limelight.targetSkew })
         tab.addNumber("PID Output", { output })
     }
+
+    // auto alignment
 
     public val aligned
         get() = limelight.targetFound && controller.atSetpoint()

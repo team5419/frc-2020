@@ -1,8 +1,8 @@
 package org.team5419.frc2020
 
-import org.team5419.fault.math.units.*
-import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.native.*
+import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.*
 import org.team5419.fault.math.kEpsilon
 import kotlin.math.PI
 
@@ -25,23 +25,27 @@ object DriveConstants {
     const val GyroPort = 7
 
     // configuration
+
     const val EncoderPhase = true
 
     val TicksPerRotation = 4096.nativeUnits
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
     // path following parameters
+
     val MaxVelocity = 10.0.feet.velocity
     val MaxAcceleration = 4.0.feet.acceleration
     val MaxCentripetalAcceleration = 4.0.feet.acceleration
     val MaxAngularAcceleration = 2.0.radians.acceleration
 
     // dimensions
+
     val WheelRadius = 3.inches
     val WheelDiameter = WheelRadius * 2.0
     val WheelCircumference = WheelDiameter * PI
 
     // characterization
+
     const val Beta = 1.0 // m^-2
     const val Zeta = 1.0 // unitless
 

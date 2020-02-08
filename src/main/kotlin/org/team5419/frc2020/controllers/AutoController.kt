@@ -1,29 +1,21 @@
 package org.team5419.frc2020.controllers
 
-import org.team5419.fault.Controller
-import org.team5419.fault.auto.Routine
+import org.team5419.frc2020.subsystems.*
 import org.team5419.fault.math.geometry.Pose2d
-import org.team5419.frc2020.subsystems.Drivetrain
-import org.team5419.frc2020.tab
-
+import org.team5419.fault.auto.Routine
+import org.team5419.fault.Controller
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.networktables.NetworkTableEntry
 
-public class AutoController(val baseline: Routine, var routines: Array<Routine>) : Controller {
+public class AutoController() : Controller {
+    public val autoSelector = SendableChooser<Routine>()
 
-    private val mRoutines: Array<out Routine>
-    public val mAutoSelector = SendableChooser<Routine>()
-    private var routine: Routine
-    // private val recalculatePosition: NetworkTableEntry
+    public var routine: Routine = Routine()
+
+    public val routines: Array<Routine> = arrayOf<Routine>()
 
     init {
-        mRoutines = routines
-        routine = baseline
-
-        mAutoSelector.setDefaultOption("Baseline", baseline)
-        mRoutines.forEach(
-            { mAutoSelector.addOption(it.name, it) }
-        )
+        routines.forEach({ autoSelector.addOption(it.name, it) })
     }
 
     override fun start() {
@@ -32,6 +24,8 @@ public class AutoController(val baseline: Routine, var routines: Array<Routine>)
 
     override fun update() {
         routine.update()
+
+        Vision.autoAlign()
     }
 
     override fun reset() {

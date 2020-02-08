@@ -1,96 +1,96 @@
 package org.team5419.frc2020.subsystems
 
-import org.team5419.fault.subsystems.Subsystem
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.math.units.operations.*
-import org.team5419.fault.math.units.native.*
-import org.team5419.fault.math.units.*
-import org.team5419.fault.hardware.ctre.BerkeliumSRX
-import org.team5419.fault.hardware.ctre.BerkeliumSPX
-import edu.wpi.first.networktables.NetworkTableEntry
+
+import org.team5419.frc2020.subsystems.StorageMode
+import org.team5419.frc2020.subsystems.Storage
 import org.team5419.frc2020.ShoogerConstants
-import edu.wpi.first.wpilibj.shuffleboard.*
-import edu.wpi.first.networktables.EntryListenerFlags
 import org.team5419.frc2020.HoodConstants
-import com.ctre.phoenix.motorcontrol.ControlMode
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import com.ctre.phoenix.motorcontrol.can.VictorSPX
-import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import org.team5419.fault.subsystems.Subsystem
+import org.team5419.fault.math.units.native.*
+import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.*
+import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput
+import edu.wpi.first.networktables.NetworkTableEntry
+import edu.wpi.first.networktables.EntryListenerFlags
+import com.ctre.phoenix.motorcontrol.can.VictorSPX
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.NeutralMode
-import org.team5419.frc2020.subsystems.Storage
-import org.team5419.frc2020.subsystems.StorageMode
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import com.ctre.phoenix.motorcontrol.ControlMode
 
 object Shooger : Subsystem("Shooger") {
 
     val shoogerModel = NativeUnitRotationModel(ShoogerConstants.TicksPerRotation)
 
     val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
-    val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
-    val slaveMotor2 = VictorSPX(ShoogerConstants.SlavePort2)
+        .apply {
+            setNeutralMode(NeutralMode.Coast)
+            setSensorPhase(true)
+            setInverted(true)
 
-    init {
-        masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-        masterMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 1, 0)
-        masterMotor.setSensorPhase(true)
+            configPeakCurrentLimit(40)
 
-        slaveMotor1.follow(masterMotor)
-        slaveMotor2.follow(masterMotor)
-
-        masterMotor.setInverted(true)
-        slaveMotor1.setInverted(false)
-        slaveMotor2.setInverted(false)
-
-        masterMotor.setNeutralMode(NeutralMode.Coast)
-        slaveMotor1.setNeutralMode(NeutralMode.Coast)
-        slaveMotor2.setNeutralMode(NeutralMode.Coast)
-
-        masterMotor.apply {
             // primary PID constants
             config_kP(0, 0.3, 0)
             config_kI(0, 0.0, 0)
             config_kD(0, 0.5, 0)
             config_kF(0, 0.06, 0)
 
-            // seconday PID slot, not used
+            selectProfileSlot(0, 0)
+
+            configClosedLoopPeakOutput(0, 1.0, 0)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0)
+            config_IntegralZone(0, 0, 0)
+            configClosedLoopPeriod(0, 1)
+
+            setSelectedSensorPosition(0, 0, 0)
+
+            // seconday PID slot
             config_kP(1, 0.0, 0)
             config_kI(1, 0.0, 0)
             config_kD(1, 0.0, 0)
             config_kF(1, 0.0, 0)
 
-            config_IntegralZone(0, 0, 0)
-            configClosedLoopPeakOutput(0, 1.0, 0)
-            config_IntegralZone(1, 0, 0)
-            configClosedLoopPeakOutput(1, 0.0, 0)
-            selectProfileSlot(0, 0)
             selectProfileSlot(1, 1)
-            configClosedLoopPeriod(0, 1)
+
+            configClosedLoopPeakOutput(1, 0.0, 0)
+            configSelectedFeedbackSensor(FeedbackDevice.Analog, 1, 0)
+            config_IntegralZone(1, 0, 0)
             configClosedLoopPeriod(1, 1)
-
-            setSelectedSensorPosition(0, 0, 0)
-
-            // limit the current to not brown out
-            configPeakCurrentLimit(40)
         }
-    }
+
+    val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
+        .apply {
+            follow(masterMotor)
+            setInverted(false)
+            setNeutralMode(NeutralMode.Coast)
+        }
+
+    val slaveMotor2 = VictorSPX(ShoogerConstants.SlavePort2)
+        .apply {
+            follow(masterMotor)
+            setInverted(false)
+            setNeutralMode(NeutralMode.Coast)
+        }
 
     // hood
 
     private val hood = TalonSRX(HoodConstants.HoodPort)
-
-    init {
-        hood.apply {
+        .apply {
             setNeutralMode(NeutralMode.Brake)
-            config_kP( 0, HoodConstants.PID.P, 0)
+
+            config_kP(0, HoodConstants.PID.P, 0)
+            config_kI(0, HoodConstants.PID.I, 0)
+            config_kD(0, HoodConstants.PID.D, 0)
         }
-    }
 
     // default settings
 
     var targetVelocity = ShoogerConstants.TargetVelocity.value
 
-    // Shuffleboard
+    // shuffleboard
 
     public val tabName = "Shooger"
 
@@ -100,6 +100,7 @@ object Shooger : Subsystem("Shooger") {
         tab = Shuffleboard.getTab(tabName)
 
         val shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
+
         shooterVelocityEntry.setPersistent()
         shooterVelocityEntry.addListener( { event ->
             targetVelocity = if (event.value.isDouble()) event.value.getDouble() else targetVelocity
@@ -107,7 +108,15 @@ object Shooger : Subsystem("Shooger") {
             println("Updated Target Velocity: ${targetVelocity}")
         }, EntryListenerFlags.kUpdate)
 
-        // bangBangEntry = tab.add("Bang Bang Toggle", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+        val bangBangEntry = tab
+            .add("Bang Bang Toggle", true)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .getEntry()
+
+        bangBangEntry.addListener({ event ->
+            bangBang = if (event.value.isBoolean()) event.value.isBoolean() else bangBang
+        }, EntryListenerFlags.kUpdate)
+
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
@@ -124,19 +133,19 @@ object Shooger : Subsystem("Shooger") {
     public val voltage
         get() = masterMotor.getMotorOutputVoltage()
 
-    private val accelTimer = Timer()
-
-    // vars
-
     public val analogValue
         get() = masterMotor.getSelectedSensorPosition(1)
 
+    // vars
+
+    private val accelTimer = Timer()
+
     private var feedingEnabled = true
     private var lastVelocity = 0.0
-    public var flyWheelAcceleration = 0.0 // RPM/s
+    private var flyWheelAcceleration = 0.0 // RPM/s
     private var setpointVelocity = 0.0
-    var setpoint = 0.0
-    var bangBang = false
+    private var setpoint = 0.0
+    private var bangBang = false
 
     // public api
 

@@ -1,11 +1,9 @@
 package org.team5419.frc2020.input
 
-import edu.wpi.first.wpilibj.GenericHID.Hand
-import edu.wpi.first.wpilibj.GenericHID
 import org.team5419.frc2020.input.CodriverControls
-
 import org.team5419.frc2020.InputConstants
 import edu.wpi.first.wpilibj.XboxController
+import edu.wpi.first.wpilibj.GenericHID.Hand
 
 public val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
 

@@ -1,8 +1,8 @@
 package org.team5419.frc2020.input
 
-import edu.wpi.first.wpilibj.GenericHID.Hand
 import org.team5419.frc2020.input.DriverControls
 import edu.wpi.first.wpilibj.XboxController
+import edu.wpi.first.wpilibj.GenericHID.Hand
 
 import org.team5419.frc2020.InputConstants
 
