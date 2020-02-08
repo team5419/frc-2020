@@ -101,6 +101,19 @@ object HoodConstants {
 
     public val TicksPerRotation = (4092 / 3).nativeUnits
 }
+object StorageConstants {
+    public const val kLoaderPort = 9
+    public const val kBallInputPort = 10
+
+
+    public const val handPercent = 70.0
+
+    public const val storagePercent = 70.0
+    public const val passiveStoragePercent = 9.0;
+
+
+
+}
 
 object IntakeConstants {
     public val DeployTicksPerRotation = (4096 * 81).nativeUnits
