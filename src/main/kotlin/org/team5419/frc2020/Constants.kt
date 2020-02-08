@@ -78,11 +78,6 @@ object ShoogerConstants {
     public const val FeederPort = 13
     public const val HopperPort = 9
 
-    public const val FeederPercent = 1.0
-
-    public const val HopperPercent = 1.0
-    public const val HopperLazyPercent = 0.4
-
     public val TargetVelocity = 6000.0.radians.velocity
     public val TicksPerRotation = 4092.0.nativeUnits
 
@@ -102,17 +97,18 @@ object HoodConstants {
     public val TicksPerRotation = (4092 / 3).nativeUnits
 }
 object StorageConstants {
-    public const val kLoaderPort = 9
-    public const val kBallInputPort = 10
-
+    public const val FeederPort = 13
+    public const val HopperPort = 9
 
     public const val handPercent = 70.0
 
     public const val storagePercent = 70.0
-    public const val passiveStoragePercent = 9.0;
+    public const val passiveStoragePercent = 9.0
 
+    public const val FeederPercent = 1.0
 
-
+    public const val HopperPercent = 1.0
+    public const val HopperLazyPercent = 0.4
 }
 
 object IntakeConstants {

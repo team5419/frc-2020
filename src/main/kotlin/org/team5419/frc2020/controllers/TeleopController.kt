@@ -10,7 +10,6 @@ import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
 import org.team5419.frc2020.HoodConstants
 import org.team5419.frc2020.subsystems.Shooger
-
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
 
@@ -26,9 +25,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         InputConstants.SlowMoveMultiplier
     )
 
-    override fun start() {
-        Shooger.powerHopper(0.3)
-    }
+    override fun start() { }
 
     override fun update() {
         updateDriver()
@@ -46,7 +43,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         val deployStength = 0.2
 
         Intake.setDeploy(
-            if (codriver.deployIntake()) deployStength
+                 if (codriver.deployIntake()) deployStength
             else if (codriver.retractIntake()) -deployStength
             else    0.0
         )

@@ -27,7 +27,7 @@ public class AutoController(val baseline: Routine, var routines: Array<Routine>)
     }
 
     override fun start() {
-        val initalPose = Drivetrain.robotPosition
+        // val initalPose = Drivetrain.robotPosition
     }
 
     override fun update() {

@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.RobotController
 import org.team5419.frc2020.input.XboxDriver
 import org.team5419.frc2020.input.XboxCodriver
+import org.team5419.fault.subsystems.SubsystemManager
 
 val tab: ShuffleboardTab = Shuffleboard.getTab("Control")
 
@@ -45,23 +46,26 @@ class Robot : BerkeliumRobot(0.01.seconds) {
 
     val vision = Vision()
 
+    fun reset() {
+        teleopController.reset()
+    }
+
     override fun robotInit() {
-        Shooger.start()
     }
 
     override fun robotPeriodic() {
         Shuffleboard.update()
-        // println("analogz; " + Shooger.analogValue)
     }
 
     override fun disabledInit() {
-        Shooger.toogleBrakeMode(true)
+        reset()
     }
 
     override fun disabledPeriodic() {
     }
 
     override fun autonomousInit() {
+        reset()
     }
 
     override fun autonomousPeriodic() {
