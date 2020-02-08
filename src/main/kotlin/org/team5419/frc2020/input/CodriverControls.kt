@@ -9,12 +9,16 @@ public interface CodriverControls {
 
     public fun retractIntake() : Boolean
 
-    public fun activateIntake() : Boolean
+    public fun intake() : Double
+
+    public fun outtake(): Double
 
     public fun hood() : Boolean
 
     public fun deployHood() : Boolean
 
     public fun retractHood() : Boolean
+
+    public fun tooglePassiveStorage(): Boolean
 
 }

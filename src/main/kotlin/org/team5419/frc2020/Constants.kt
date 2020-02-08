@@ -23,7 +23,6 @@ object DriveConstants {
     const val RightSlavePort = 6
 
     const val GyroPort = 7
-
     // configuration
     const val EncoderPhase = true
 
@@ -75,14 +74,6 @@ object ShoogerConstants {
     public const val SlavePort1 = 15
     public const val SlavePort2 = 16
 
-    public const val FeederPort = 13
-    public const val HopperPort = 9
-
-    public const val FeederPercent = 1.0
-
-    public const val HopperPercent = 1.0
-    public const val HopperLazyPercent = 0.4
-
     public val TargetVelocity = 6000.0.radians.velocity
     public val TicksPerRotation = 4092.0.nativeUnits
 
@@ -107,6 +98,7 @@ object IntakeConstants {
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
 
     public const val IntakePort = 2
+    public const val RollerPort = 17
     public const val DeployPort = 4
 }
 
@@ -123,4 +115,16 @@ object VisionConstants {
         public const val I = 0.00
         public const val D = 100.0
     }
+}
+
+object StorageConstants{
+    public const val FeederPort = 13
+    public const val HopperPort = 9
+
+    public const val FeederPercent = 1.0
+    public const val FeederLazyPercent = 0.5
+
+    public const val HopperPercent = 1.0
+    public const val HopperLazyPercent = 0.6
+
 }

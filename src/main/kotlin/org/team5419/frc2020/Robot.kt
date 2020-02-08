@@ -25,7 +25,7 @@ import org.team5419.frc2020.input.XboxCodriver
 val tab: ShuffleboardTab = Shuffleboard.getTab("Control")
 
 @SuppressWarnings("MagicNumber")
-class Robot : BerkeliumRobot(0.01.seconds) {
+class Robot : BerkeliumRobot(0.05.seconds) {
     private val teleopController: TeleopController
 
     init {
@@ -39,6 +39,7 @@ class Robot : BerkeliumRobot(0.01.seconds) {
         // add subsystems to manager
 
         +Drivetrain
+        +Storage
         +Intake
         +Shooger
     }

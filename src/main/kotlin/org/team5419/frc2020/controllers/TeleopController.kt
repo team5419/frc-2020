@@ -13,8 +13,13 @@ import org.team5419.frc2020.subsystems.Shooger
 
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
+import org.team5419.frc2020.input.codriverXbox
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
+
+    private var isPassiveIntake: Boolean = false
+    private var passiveState: Storage.State = Storage.State.DISABLED
+
 
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
@@ -27,7 +32,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     )
 
     override fun start() {
-        Shooger.powerHopper(0.3)
     }
 
     override fun update() {
@@ -40,21 +44,43 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         Drivetrain.setPercent(driveHelper.output())
     }
 
+    @Suppress("ComplexMethod")
     fun updateCodriver() {
-        Intake.setIntake(if (codriver.activateIntake()) 1.0 else 0.0)
+        if(codriver.tooglePassiveStorage()) {
+            if(passiveState == Storage.State.PASSIVE){
+                passiveState = Storage.State.DISABLED
+            }
+            else {
+                passiveState = Storage.State.PASSIVE
+            }
+        }
 
-        val deployStength = 0.2
 
-        Intake.setDeploy(
-            if (codriver.deployIntake()) deployStength
-            else if (codriver.retractIntake()) -deployStength
-            else    0.0
-        )
+        if(codriver.intake() > 0.3){
+            Intake.setIntake(codriver.intake())
+            Storage.state = Storage.State.ENABLED
+        } else if(codriver.outtake() > 0) {
+            Intake.setIntake(-codriver.outtake())
+            Storage.state = passiveState
+        } else{
+            Intake.setIntake(0.0)
+            Storage.state = passiveState
+        }
+
+        // val deployStength = 0.2
+
+        // Intake.setDeploy(
+        //     if (codriver.deployIntake()) deployStength
+        //     else if (codriver.retractIntake()) -deployStength
+        //     else    0.0
+        // )
 
         if ( codriver.shoog() ) {
             Shooger.shoog()
+            Storage.state = Storage.State.ENABLED
         } else {
             Shooger.stop()
+            Storage.state = passiveState
         }
     }
 

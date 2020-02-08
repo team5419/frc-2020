@@ -27,9 +27,11 @@ object Shooger : Subsystem("Shooger") {
 
     val shoogerModel = NativeUnitRotationModel(ShoogerConstants.TicksPerRotation)
 
-    val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
-    val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
-    val slaveMotor2 = VictorSPX(ShoogerConstants.SlavePort2)
+    private val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
+    private val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
+    private val slaveMotor2 = VictorSPX(ShoogerConstants.SlavePort2)
+    private val hood = TalonSRX(HoodConstants.HoodPort)
+
 
     init {
         masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
@@ -74,21 +76,6 @@ object Shooger : Subsystem("Shooger") {
             // limit the current to not brown out
             configPeakCurrentLimit(40)
         }
-    }
-
-    // feeder, hopper and hood
-
-    private val feeder = TalonSRX(ShoogerConstants.FeederPort)
-    private val hopper = TalonSRX(ShoogerConstants.HopperPort)
-    private val hood = TalonSRX(HoodConstants.HoodPort)
-
-    init {
-        feeder.setInverted(true)
-        feeder.setNeutralMode(NeutralMode.Brake)
-
-        hopper.setInverted(true)
-
-        // hood
 
         hood.apply {
             setNeutralMode(NeutralMode.Brake)
@@ -96,22 +83,14 @@ object Shooger : Subsystem("Shooger") {
         }
     }
 
-    // default settings
-
-    var targetVelocity = ShoogerConstants.TargetVelocity.value
-    var hopperPercent = ShoogerConstants.HopperPercent
-    var feederPercent = ShoogerConstants.FeederPercent
-    var hopperLazyPercent = ShoogerConstants.HopperLazyPercent
-    // Shuffleboard
-
+    public var targetVelocity = ShoogerConstants.TargetVelocity.value
     public val tabName = "Shooger"
-
     public val tab: ShuffleboardTab
     public val shooterVelocityEntry : NetworkTableEntry
-    public val hopperPercentEntry : NetworkTableEntry
-    public val hopperLazyPercentEntry : NetworkTableEntry
-    public val feederPercentEntry : NetworkTableEntry
-    public val feedingEnabledEntry : NetworkTableEntry
+    // public val hopperPercentEntry : NetworkTableEntry
+    // public val hopperLazyPercentEntry : NetworkTableEntry
+    // public val feederPercentEntry : NetworkTableEntry
+    // public val feedingEnabledEntry : NetworkTableEntry
     // public val bangBangEntry : NetworkTableEntry
 
     init {
@@ -124,35 +103,35 @@ object Shooger : Subsystem("Shooger") {
             println("Updated Target Velocity: ${targetVelocity}")
         }, EntryListenerFlags.kUpdate)
 
-        feederPercentEntry = tab.add("Feeder Percent", feederPercent).getEntry()
-        hopperPercentEntry = tab.add("Hopper Percent", hopperPercent).getEntry()
-        hopperLazyPercentEntry = tab.add("Hopper Lazy Percent", hopperLazyPercent).getEntry()
-        feedingEnabledEntry = tab.add("Feeding Enabled", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
+        // feederPercentEntry = tab.add("Feeder Percent", feederPercent).getEntry()
+        // hopperPercentEntry = tab.add("Hopper Percent", hopperPercent).getEntry()
+        // hopperLazyPercentEntry = tab.add("Hopper Lazy Percent", hopperLazyPercent).getEntry()
+        // feedingEnabledEntry = tab.add("Feeding Enabled", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
         // bangBangEntry = tab.add("Bang Bang Toggle", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
 
-        feederPercentEntry.setPersistent()
-        hopperPercentEntry.setPersistent()
-        hopperLazyPercentEntry.setPersistent()
+        // feederPercentEntry.setPersistent()
+        // hopperPercentEntry.setPersistent()
+        // hopperLazyPercentEntry.setPersistent()
 
-        feederPercentEntry.addListener(
-            { event -> feederPercent = event.value.getDouble() },
-            EntryListenerFlags.kUpdate
-        )
+        // feederPercentEntry.addListener(
+        //     { event -> feederPercent = event.value.getDouble() },
+        //     EntryListenerFlags.kUpdate
+        // )
 
-        hopperPercentEntry.addListener(
-            { event -> hopperPercent = event.value.getDouble() },
-            EntryListenerFlags.kUpdate
-        )
+        // hopperPercentEntry.addListener(
+        //     { event -> hopperPercent = event.value.getDouble() },
+        //     EntryListenerFlags.kUpdate
+        // )
 
-        hopperLazyPercentEntry.addListener(
-            { event -> hopperLazyPercent = event.value.getDouble() },
-            EntryListenerFlags.kUpdate
-        )
+        // hopperLazyPercentEntry.addListener(
+        //     { event -> hopperLazyPercent = event.value.getDouble() },
+        //     EntryListenerFlags.kUpdate
+        // )
 
-        feedingEnabledEntry.addListener(
-            { event -> feedingEnabled = event.value.getBoolean() },
-            EntryListenerFlags.kUpdate
-        )
+        // feedingEnabledEntry.addListener(
+        //     { event -> feedingEnabled = event.value.getBoolean() },
+        //     EntryListenerFlags.kUpdate
+        // )
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
@@ -176,7 +155,6 @@ object Shooger : Subsystem("Shooger") {
     public val analogValue
         get() = masterMotor.getSelectedSensorPosition(1)
 
-    private var feedingEnabled = true
     private var lastVelocity = 0.0
     public var flyWheelAcceleration = 0.0 // RPM/s
     private var setpointVelocity = 0.0
@@ -184,6 +162,8 @@ object Shooger : Subsystem("Shooger") {
     var bangBang = false
 
     // funcs
+
+    public fun isHungry(): Boolean = flyWheelVelocity >= setpointVelocity - 150
 
     private fun calculateSetpoint(velocity : Double) : Double {
         return velocity * 4096.0 / 600.0
@@ -214,30 +194,15 @@ object Shooger : Subsystem("Shooger") {
 
     public fun stop() {
         setpoint = 0.0
-
         powerShooger(0.0)
-        powerFeeder(0.0)
-        powerHopper(0.0)
     }
 
     public fun powerShooger(percent: Double) {
         masterMotor.set(ControlMode.PercentOutput, percent)
     }
 
-    public fun powerFeeder(percent : Double) {
-        feeder.set(ControlMode.PercentOutput, percent)
-    }
-
-    public fun powerHopper(percent: Double) {
-        hopper.set(ControlMode.PercentOutput, percent)
-    }
-
     public fun powerHood(percent: Double){
         hood.set(ControlMode.PercentOutput, percent)
-    }
-
-    public fun enableFeeding(bool: Boolean) {
-        feedingEnabled = bool
     }
 
     private fun recalculateAcceleration() {
@@ -255,13 +220,8 @@ object Shooger : Subsystem("Shooger") {
     }
 
     override fun periodic() {
-        feederPercent = feederPercentEntry.getDouble(feederPercent)
-        hopperPercent = hopperPercentEntry.getDouble(hopperPercent)
-        hopperLazyPercent = hopperLazyPercentEntry.getDouble(hopperLazyPercent)
 
         recalculateAcceleration()
-        // println()
-
         if (setpoint == 0.0) {
             return
         }
@@ -273,15 +233,5 @@ object Shooger : Subsystem("Shooger") {
                 powerShooger(0.0)
             }
         }
-
-        if(feedingEnabled && flyWheelVelocity >= setpointVelocity - 150) {
-            powerFeeder(feederPercent)
-            powerHopper(hopperPercent)
-        } else {
-            powerFeeder(0.0)
-            powerHopper(hopperLazyPercent)
-        }
-
-        // println(masterMotor.getSelectedSensorPosition(1))
     }
 }

@@ -14,10 +14,13 @@ object Intake : Subsystem("Intake") {
     public val intakeModel = NativeUnitRotationModel(IntakeConstants.IntakeTicksPerRotation)
 
     private val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
+    private val rollerMotor = BerkeliumSRX(IntakeConstants.RollerPort, intakeModel)
+
     private val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
 
     init{
         deployMotor.brakeMode = true
+        rollerMotor.follow(intakeMotor)
     }
 
     public var isIntake: Boolean = false
@@ -33,6 +36,7 @@ object Intake : Subsystem("Intake") {
 
     public fun setIntake(percent: Double){
         intakeMotor.talonSRX.set(ControlMode.PercentOutput, percent)
+        println(percent)
     }
 
     public fun setDeploy(percent: Double){
