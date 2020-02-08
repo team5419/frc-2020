@@ -42,9 +42,8 @@ class Robot : BerkeliumRobot(0.01.seconds) {
         +Drivetrain
         +Intake
         +Shooger
+        +Vision
     }
-
-    val vision = Vision()
 
     fun reset() {
         teleopController.reset()
@@ -69,10 +68,12 @@ class Robot : BerkeliumRobot(0.01.seconds) {
     }
 
     override fun autonomousPeriodic() {
-        vision.periodic()
+        Vision.autoAlign()
     }
 
     override fun teleopInit() {
+        reset()
+
         teleopController.start()
     }
 

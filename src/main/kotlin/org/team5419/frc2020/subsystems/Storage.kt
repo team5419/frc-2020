@@ -22,22 +22,6 @@ enum class StorageMode() { LOAD, PASSIVE, OFF }
 
 object Storage : Subsystem("Storage") {
 
-    private val feeder = TalonSRX(StorageConstants.FeederPort)
-    private val hopper = TalonSRX(StorageConstants.HopperPort)
-
-    init {
-        feeder.setInverted(true)
-        feeder.setNeutralMode(NeutralMode.Brake)
-
-        hopper.setInverted(true)
-    }
-
-    var hopperPercent = StorageConstants.HopperPercent
-    var feederPercent = StorageConstants.FeederPercent
-
-    var feederLazyPercent = feederPercent
-    var hopperLazyPercent = StorageConstants.HopperLazyPercent
-
     var mode = StorageMode.OFF
         set(mode: StorageMode) {
             if (mode == StorageMode.LOAD) {
@@ -58,9 +42,35 @@ object Storage : Subsystem("Storage") {
             field = mode
         }
 
+    // private var
+
+    private val feeder = TalonSRX(StorageConstants.FeederPort)
+    private val hopper = TalonSRX(StorageConstants.HopperPort)
+
+    init {
+        feeder.setInverted(true)
+        feeder.setNeutralMode(NeutralMode.Brake)
+
+        hopper.setInverted(true)
+    }
+
+    private var hopperPercent = StorageConstants.HopperPercent
+    private var feederPercent = StorageConstants.FeederPercent
+
+    private var feederLazyPercent = feederPercent
+    private var hopperLazyPercent = StorageConstants.HopperLazyPercent
+
     private var distanceSensor: AnalogInput = AnalogInput(1)
     private var range: Double  = 0.0
 
+    // subsystem functions
+
+    fun reset() {
+        mode = StorageMode.OFF
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 
     override public fun periodic() {
         range = 5.0 * distanceSensor.getVoltage() / 0.004883

@@ -35,6 +35,5 @@ public class AutoController(val baseline: Routine, var routines: Array<Routine>)
     }
 
     override fun reset() {
-        start()
     }
 }

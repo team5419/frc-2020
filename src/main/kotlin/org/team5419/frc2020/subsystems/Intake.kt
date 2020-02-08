@@ -16,7 +16,7 @@ object Intake : Subsystem("Intake") {
     private val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
     private val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
 
-    init{
+    init {
         deployMotor.brakeMode = true
     }
 
@@ -39,4 +39,12 @@ object Intake : Subsystem("Intake") {
         deployMotor.talonSRX.set(ControlMode.PercentOutput, percent)
     }
 
+    // subsystem functions
+
+    fun reset() {
+        isIntake = false
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 }

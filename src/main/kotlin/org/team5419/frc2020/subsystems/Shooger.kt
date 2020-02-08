@@ -138,11 +138,7 @@ object Shooger : Subsystem("Shooger") {
     var setpoint = 0.0
     var bangBang = false
 
-    // funcs
-
-    private fun calculateSetpoint(velocity : Double) : Double {
-        return velocity * 4096.0 / 600.0
-    }
+    // public api
 
     public fun toogleBrakeMode(isEnabled: Boolean) {
         masterMotor.setNeutralMode( if (isEnabled) NeutralMode.Brake else NeutralMode.Coast )
@@ -165,17 +161,15 @@ object Shooger : Subsystem("Shooger") {
     public fun stop() {
         setpoint = 0.0
 
-        powerShooger(0.0)
+        masterMotor.set(ControlMode.PercentOutput, 0.0)
 
         Storage.mode = StorageMode.OFF
     }
 
-    public fun powerShooger(percent: Double) {
-        masterMotor.set(ControlMode.PercentOutput, percent)
-    }
+    // private api
 
-    public fun powerHood(percent: Double){
-        hood.set(ControlMode.PercentOutput, percent)
+    private fun calculateSetpoint(velocity : Double) : Double {
+        return velocity * 4096.0 / 600.0
     }
 
     private fun recalculateAcceleration() {
@@ -198,6 +192,15 @@ object Shooger : Subsystem("Shooger") {
         lastVelocity = velocity
     }
 
+    // subsystem functions
+
+    fun reset() {
+        stop()
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
+
     override fun periodic() {
         recalculateAcceleration()
 
@@ -213,9 +216,9 @@ object Shooger : Subsystem("Shooger") {
 
         if (bangBang) {
             if (setpointVelocity <= flyWheelVelocity + 10) {
-                powerShooger(1.0)
+                masterMotor.set(ControlMode.PercentOutput, 1.0)
             } else {
-                powerShooger(0.0)
+                masterMotor.set(ControlMode.PercentOutput, 0.0)
             }
         }
     }
