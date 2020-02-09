@@ -19,7 +19,7 @@ fun generateRoutines (initalPose: Pose2d) : Array<Routine> {
 
             Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
             arrayOf<Vector2<Meter>>(),
-            Pose2d(3.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(1.0.meters, 0.0.meters, 0.0.radians),
 
             3.0.meters.velocity,
             3.0.meters.acceleration,

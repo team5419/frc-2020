@@ -306,6 +306,9 @@ object Drivetrain : AbstractTankDrive() {
         }
 
         if (wantedState != currentState) currentState = wantedState
+
+        println( leftDistance )
+        println( rightDistance )
     }
 
     class PeriodicIO {

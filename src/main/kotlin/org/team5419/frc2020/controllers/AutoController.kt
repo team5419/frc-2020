@@ -20,7 +20,7 @@ public class AutoController() : Controller {
     }
 
     override fun start() {
-        // routine = routines[1]
+        routine = routines[1]
 
         routine.start()
     }
@@ -28,7 +28,7 @@ public class AutoController() : Controller {
     override fun update() {
         routine.update()
 
-        Vision.autoAlign()
+        // Vision.autoAlign()
     }
 
     override fun reset() {

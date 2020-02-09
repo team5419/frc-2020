@@ -223,7 +223,7 @@ object Shooger : Subsystem("Shooger") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        recalculateAcceleration()
+        // recalculateAcceleration()
         if (setpoint == 0.0) {
             return
         }

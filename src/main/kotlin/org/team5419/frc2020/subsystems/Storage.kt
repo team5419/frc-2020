@@ -73,10 +73,10 @@ object Storage : Subsystem("Storage") {
         range = 5.0 * distanceSensor.getVoltage() / 0.004883
 
         if (mode == StorageMode.PASSIVE) {
-            feeder.set(
-                ControlMode.PercentOutput,
-                if (range <= 152.0) feederLazyPercent else 0.0
-            )
+            // feeder.set(
+            //     ControlMode.PercentOutput,
+            //     if (range <= 152.0) feederLazyPercent else 0.0
+            // )
         }
     }
 }

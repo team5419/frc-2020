@@ -27,7 +27,9 @@ object DriveConstants {
 
     const val EncoderPhase = true
 
-    val TicksPerRotation = 4096.nativeUnits
+    val GearRatio = (3 / 32)
+
+    val TicksPerRotation = (2048 * GearRatio).nativeUnits
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
     // path following parameters
@@ -45,18 +47,24 @@ object DriveConstants {
 
     // characterization
 
-    const val Beta = 1.0 // m^-2
-    const val Zeta = 1.0 // unitless
+    const val Beta = 2.0 // m^-2
+    const val Zeta = 0.7 // unitless
 
-    val TrackWidth = 20.inches
+    val TrackWidth = 1.781.meters
     val EffectiveWheelbaseRadius = TrackWidth / 2.0
 
     val Moi = 0.0 // kg * m^2
     val AngularDrag = 10.0 // (N * m) / (rad / s)  TUNE ME
 
-    const val DriveKv = kEpsilon
-    const val DriveKa = kEpsilon
-    const val DriveKs = kEpsilon
+    const val DriveKv = 2.2
+    const val DriveKa = 0.174
+    const val DriveKs = 0.328
+
+    object PID {
+        public const val P = 1.0
+        public const val I = 0.0
+        public const val D = 0.0
+    }
 }
 
 object InputConstants {
