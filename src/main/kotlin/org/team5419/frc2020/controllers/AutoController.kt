@@ -1,6 +1,7 @@
 package org.team5419.frc2020.controllers
 
 import org.team5419.frc2020.subsystems.*
+import org.team5419.frc2020.auto.generateRoutines
 import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.auto.Routine
 import org.team5419.fault.Controller
@@ -12,20 +13,21 @@ public class AutoController() : Controller {
 
     public var routine: Routine = Routine()
 
-    public val routines: Array<Routine> = arrayOf<Routine>()
+    public val routines: Array<Routine> = generateRoutines( Drivetrain.robotPosition )
 
     init {
         routines.forEach({ autoSelector.addOption(it.name, it) })
     }
 
     override fun start() {
+        routine = routines[1]
         // val initalPose = Drivetrain.robotPosition
     }
 
     override fun update() {
         routine.update()
 
-        Vision.autoAlign()
+        // Vision.autoAlign()
     }
 
     override fun reset() {

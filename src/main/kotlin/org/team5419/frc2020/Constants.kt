@@ -100,8 +100,6 @@ object StorageConstants {
     public const val FeederPort = 13
     public const val HopperPort = 9
 
-    public const val handPercent = 70.0
-
     public const val storagePercent = 70.0
     public const val passiveStoragePercent = 9.0
 
