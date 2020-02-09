@@ -11,8 +11,7 @@ import org.team5419.fault.trajectory.constraints.TimingConstraint
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.frc2020.DriveConstants
 
-fun generateRoutines (initalPose: Pose2d) : Array<Routine>{
-
+fun generateRoutines (initalPose: Pose2d) : Array<Routine> {
     return arrayOf(
         Routine("Characterization", initalPose, CharacterizationAction(Drivetrain)),
         Routine("Path Fallowing", initalPose, RamseteAction(
