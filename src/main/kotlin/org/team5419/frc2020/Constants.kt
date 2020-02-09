@@ -1,8 +1,8 @@
 package org.team5419.frc2020
 
-import org.team5419.fault.math.units.*
-import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.native.*
+import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.*
 import org.team5419.fault.math.kEpsilon
 import kotlin.math.PI
 
@@ -24,23 +24,27 @@ object DriveConstants {
 
     const val GyroPort = 7
     // configuration
+
     const val EncoderPhase = true
 
     val TicksPerRotation = 4096.nativeUnits
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
     // path following parameters
+
     val MaxVelocity = 10.0.feet.velocity
     val MaxAcceleration = 4.0.feet.acceleration
     val MaxCentripetalAcceleration = 4.0.feet.acceleration
     val MaxAngularAcceleration = 2.0.radians.acceleration
 
     // dimensions
+
     val WheelRadius = 3.inches
     val WheelDiameter = WheelRadius * 2.0
     val WheelCircumference = WheelDiameter * PI
 
     // characterization
+
     const val Beta = 1.0 // m^-2
     const val Zeta = 1.0 // unitless
 
@@ -92,6 +96,20 @@ object HoodConstants {
 
     public val TicksPerRotation = (4092 / 3).nativeUnits
 }
+object StorageConstants {
+    public const val FeederPort = 13
+    public const val HopperPort = 9
+
+    public const val handPercent = 70.0
+
+    public const val storagePercent = 70.0
+    public const val passiveStoragePercent = 9.0
+
+    public const val FeederPercent = 1.0
+
+    public const val HopperPercent = 1.0
+    public const val HopperLazyPercent = 0.4
+}
 
 object IntakeConstants {
     public val DeployTicksPerRotation = (4096 * 81).nativeUnits
@@ -115,16 +133,4 @@ object VisionConstants {
         public const val I = 0.00
         public const val D = 100.0
     }
-}
-
-object StorageConstants{
-    public const val FeederPort = 13
-    public const val HopperPort = 9
-
-    public const val FeederPercent = 1.0
-    public const val FeederLazyPercent = 0.5
-
-    public const val HopperPercent = 1.0
-    public const val HopperLazyPercent = 0.6
-
 }

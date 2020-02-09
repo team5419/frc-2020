@@ -1,66 +1,64 @@
 package org.team5419.frc2020.subsystems
 
-import edu.wpi.first.wpilibj.Timer
-import org.team5419.fault.hardware.Limelight
-import org.team5419.fault.math.units.*
-import org.team5419.fault.subsystems.Subsystem
 import org.team5419.frc2020.VisionConstants
-import edu.wpi.first.wpilibj.shuffleboard.*
-import edu.wpi.first.networktables.NetworkTableEntry
-import edu.wpi.first.wpilibj.controller.PIDController
+import org.team5419.fault.subsystems.Subsystem
+import org.team5419.fault.math.units.*
 import org.team5419.fault.math.geometry.Rotation2d
+import org.team5419.fault.hardware.Limelight
+import edu.wpi.first.wpilibj.shuffleboard.*
+import edu.wpi.first.wpilibj.controller.PIDController
 
-class Vision() : Limelight (
-    networkTableName = "limelight",
-    inverted = false,
-    mTargetHeight = VisionConstants.TargetHeight,
-    mCameraHeight = VisionConstants.CameraHeight,
-    mCameraAngle = Rotation2d( VisionConstants.CameraAngle )
-) {
+object Vision : Subsystem("Vision") {
+    val limelight = Limelight (
+        networkTableName = "limelight",
+        inverted = false,
+        mTargetHeight = VisionConstants.TargetHeight,
+        mCameraHeight = VisionConstants.CameraHeight,
+        mCameraAngle = Rotation2d( VisionConstants.CameraAngle )
+    )
 
-    // PID
+    // PID loop
 
-     val kP: Double = VisionConstants.PID.P
-     val kI: Double = VisionConstants.PID.I
-     val kD: Double = VisionConstants.PID.D
+    public val controller: PIDController = PIDController(
+        VisionConstants.PID.P,
+        VisionConstants.PID.I,
+        VisionConstants.PID.D
+    )
 
-    public val controller: PIDController = PIDController(kP, kI, kI)
     public var output: Double = 0.0
 
     init {
         controller.setTolerance( VisionConstants.Tolerance )
     }
 
-    // Shuffleboard initilization
+    // shuffleboard
 
     val tabName = "Vision"
 
-    var tab: ShuffleboardTab
+    val tab: ShuffleboardTab
 
     init{
         tab = Shuffleboard.getTab( tabName )
 
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
 
-        tab.addBoolean("Found Target", { targetFound })
-        tab.addNumber("Horizontal Offset", { horizontalOffset })
-        tab.addNumber("Vertical Offset", { verticalOffset })
-        tab.addNumber("Target Area", { targetArea })
-        tab.addNumber("Target Skew", { targetSkew })
+        tab.addBoolean("Found Target", { limelight.targetFound })
+        tab.addNumber("Horizontal Offset", { limelight.horizontalOffset })
+        tab.addNumber("Vertical Offset", { limelight.verticalOffset })
+        tab.addNumber("Target Area", { limelight.targetArea })
+        tab.addNumber("Target Skew", { limelight.targetSkew })
         tab.addNumber("PID Output", { output })
     }
 
-    // getters
+    // auto alignment
 
     public val aligned
-        get() = targetFound && controller.atSetpoint()
+        get() = limelight.targetFound && controller.atSetpoint()
 
-    fun periodic() {
-        // output = horizontalOffset * VisionConstants.PID.P//
-        output = controller.calculate(horizontalOffset)
-        println("output: ${output}")
+    public fun autoAlign() {
+        output = controller.calculate(limelight.horizontalOffset)
 
-        if (horizontalOffset == 0.0) {
+        if (limelight.horizontalOffset == 0.0) {
             return
         }
 

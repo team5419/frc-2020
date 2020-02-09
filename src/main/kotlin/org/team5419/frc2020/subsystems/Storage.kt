@@ -1,98 +1,82 @@
 package org.team5419.frc2020.subsystems
 
-
-import org.team5419.fault.subsystems.Subsystem
-import org.team5419.fault.hardware.ctre.BerkeliumSRX
-import org.team5419.fault.math.units.native.NativeUnitRotationModel
-import org.team5419.fault.math.units.native.nativeUnits
 import org.team5419.frc2020.StorageConstants
-
-import org.team5419.fault.math.units.SIUnit
-import org.team5419.fault.math.units.seconds
-import org.team5419.fault.math.units.Second
-
+import org.team5419.frc2020.ShoogerConstants
+import org.team5419.fault.subsystems.Subsystem
+import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
-import com.ctre.phoenix.motorcontrol.NeutralMode
 import edu.wpi.first.wpilibj.AnalogInput
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.motorcontrol.ControlMode
 
-//import com.revrobotics.Rev2mDistanceSensor.Port;
+enum class StorageMode() { LOAD, PASSIVE, OFF }
 
-@SuppressWarnings("TooManyFunctions")
 object Storage : Subsystem("Storage") {
-    //check second parameter
-    private val feederModel = NativeUnitRotationModel(4096.nativeUnits)
-    private val hopperModel = NativeUnitRotationModel(4096.nativeUnits)
-    private val feeder = BerkeliumSRX(StorageConstants.FeederPort, feederModel)
-    private val hopper = BerkeliumSRX(StorageConstants.HopperPort, hopperModel)
 
-    private var distanceSensor: AnalogInput = AnalogInput(1)
-    // private var range: Double = 0.0
-    private fun hasBall(): Boolean = false
-    private val timer = Timer()
+    var mode = StorageMode.OFF
+        set(mode: StorageMode) {
+            if (mode == StorageMode.LOAD) {
+                hopper.set( ControlMode.PercentOutput, hopperPercent )
+                feeder.set( ControlMode.PercentOutput, feederPercent )
+            }
 
-    init {
-        feeder.talonSRX.setInverted(true)
-        feeder.talonSRX.setNeutralMode(NeutralMode.Brake)
-        hopper.talonSRX.setInverted(true)
-        timer.start()
-    }
+            if (mode == StorageMode.PASSIVE) {
+                hopper.set( ControlMode.PercentOutput, 0.0 )
+                feeder.set( ControlMode.PercentOutput, hopperLazyPercent )
+            }
 
-    public var state: State = State.DISABLED
-        set(target: State){
-            target.config()
-            field = target
+            if (mode == StorageMode.OFF) {
+                hopper.set( ControlMode.PercentOutput, 0.0 )
+                feeder.set( ControlMode.PercentOutput, 0.0 )
+            }
+
+            field = mode
         }
 
-    public enum class State(val config: () -> Unit) {
-        DISABLED({
-            powerHopper(0.0)
-            powerFeeder(0.0)
-        }),
-        PASSIVE({
-            powerHopper(StorageConstants.HopperLazyPercent)
-            periodic()
-        }),
-        ENABLED({
-            powerHopper(StorageConstants.HopperPercent)
-            periodic()
-        })
+    // motors
+
+    private val feeder = TalonSRX(StorageConstants.FeederPort)
+        .apply {
+            setInverted(true)
+            setNeutralMode(NeutralMode.Brake)
+        }
+
+    private val hopper = TalonSRX(StorageConstants.HopperPort)
+        .apply {
+            setInverted(true)
+        }
+
+    // default settings
+
+    private var hopperPercent = StorageConstants.HopperPercent
+    private var feederPercent = StorageConstants.FeederPercent
+
+    private var feederLazyPercent = feederPercent
+    private var hopperLazyPercent = StorageConstants.HopperLazyPercent
+
+    // distance sensor to find balls
+
+    private var distanceSensor: AnalogInput = AnalogInput(1)
+    private var range: Double  = 0.0
+
+    // subsystem functions
+
+    fun reset() {
+        mode = StorageMode.OFF
     }
 
-    fun powerHopper(percent: Double) = hopper.setPercent(percent)
-    fun powerFeeder(percent: Double) = feeder.setPercent(percent)
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 
-    @SuppressWarnings("ComplexMethod")
-    override public fun periodic(){
-        println("feeder amperage: ${feeder.talonSRX.getOutputCurrent()}")
-        when(state){
-            State.PASSIVE -> {
-                powerFeeder(0.0)
-                println("disabled")
+    override public fun periodic() {
+        range = 5.0 * distanceSensor.getVoltage() / 0.004883
 
-                // powerFeeder(if (hasBall()) 0.0 else StorageConstants.FeederLazyPercent)
-            }
-            State.ENABLED -> {
-                if(Shooger.isHungry()){
-                    println("enabled")
-                    powerFeeder(1.0)
-                }
-                else {
-                    powerFeeder(0.0)
-                    println("disabled")
-
-                }
-                // if(timer.get() < 0.3 || !Shooger.isHungry()){
-                //     if(!hasBall()) { powerFeeder(StorageConstants.FeederLazyPercent) }
-                //     else { powerFeeder(0.0) }
-                // }
-                // else if(Shooger.isHungry()){
-                //     powerFeeder(1.0)
-                //     timer.reset()
-                // }
-            }
-            State.DISABLED -> {
-                powerFeeder(0.0)
-            }
+        if (mode == StorageMode.PASSIVE) {
+            feeder.set(
+                ControlMode.PercentOutput,
+                if (range <= 152.0) feederLazyPercent else 0.0
+            )
         }
     }
 }
