@@ -87,10 +87,17 @@ object Shooger : Subsystem("Shooger") {
             config_kD(0, HoodConstants.PID.D, 0)
         }
 
-    // default settings
+    // vars
+
+    private val accelTimer = Timer()
+
+    private var lastVelocity = 0.0
+    private var flyWheelAcceleration = 0.0 // RPM/s
+    private var setpointVelocity = 0.0
+    private var setpoint = 0.0
+    private var bangBang = false
 
     var targetVelocity = ShoogerConstants.TargetVelocity.value
-    var feedingEnabled = true
 
     // shuffleboard
 
@@ -109,11 +116,6 @@ object Shooger : Subsystem("Shooger") {
             println("Updated Target Velocity: ${targetVelocity}")
         }, EntryListenerFlags.kUpdate)
 
-        val feedingEnabledEntry = tab.add("Feeding Enabled", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry()
-        feedingEnabledEntry.addListener( { event ->
-            feedingEnabled = if (event.value.isBoolean()) event.value.getBoolean() else feedingEnabled
-        }, EntryListenerFlags.kUpdate)
-
         val bangBangEntry = tab
             .add("Bang Bang Toggle", true)
             .withWidget(BuiltInWidgets.kBooleanBox)
@@ -122,7 +124,6 @@ object Shooger : Subsystem("Shooger") {
         bangBangEntry.addListener({ event ->
             bangBang = if (event.value.isBoolean()) event.value.isBoolean() else bangBang
         }, EntryListenerFlags.kUpdate)
-
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
         tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
@@ -142,17 +143,8 @@ object Shooger : Subsystem("Shooger") {
     public val analogValue
         get() = masterMotor.getSelectedSensorPosition(1)
 
-    // vars
+    // public api //
 
-    private val accelTimer = Timer()
-
-    private var lastVelocity = 0.0
-    private var flyWheelAcceleration = 0.0 // RPM/s
-    private var setpointVelocity = 0.0
-    private var setpoint = 0.0
-    private var bangBang = false
-
-    // public api
     public fun isHungry(): Boolean = flyWheelVelocity >= setpointVelocity - 150
 
     public fun toogleBrakeMode(isEnabled: Boolean) {
@@ -179,11 +171,8 @@ object Shooger : Subsystem("Shooger") {
         Storage.mode = StorageMode.OFF
     }
 
-    public fun powerHood(percent: Double){
-        hood.set(ControlMode.PercentOutput, percent)
-    }
+    // private api //
 
-    // private api
     private fun calculateSetpoint(velocity : Double) : Double {
         return velocity * 4096.0 / 600.0
     }
@@ -228,7 +217,7 @@ object Shooger : Subsystem("Shooger") {
             return
         }
 
-        if(feedingEnabled && flyWheelVelocity >= setpointVelocity - 150) {
+        if ( isHungry() ) {
             Storage.mode = StorageMode.LOAD
         } else {
             Storage.mode = StorageMode.PASSIVE

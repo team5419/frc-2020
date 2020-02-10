@@ -23,6 +23,7 @@ object DriveConstants {
     const val RightSlavePort = 6
 
     const val GyroPort = 7
+
     // configuration
 
     const val EncoderPhase = true
@@ -108,9 +109,6 @@ object StorageConstants {
     public const val FeederPort = 13
     public const val HopperPort = 9
 
-    public const val storagePercent = 70.0
-    public const val passiveStoragePercent = 9.0
-
     public const val FeederPercent = 1.0
 
     public const val HopperPercent = 1.0
@@ -132,7 +130,7 @@ object VisionConstants {
 
     public val TargetHeight = 0.0.meters
 
-    public val Tolerance = 10.0
+    public val Tolerance = 0.1
 
     object PID {
         public const val P = 0.024
