@@ -88,7 +88,6 @@ object Drivetrain : AbstractTankDrive() {
 
     init {
         leftSlave1.follow(leftMasterMotor)
-
         rightSlave1.follow(rightMasterMotor)
 
         leftSlave1.talonSRX.setInverted(InvertType.FollowMaster)
@@ -98,17 +97,17 @@ object Drivetrain : AbstractTankDrive() {
         rightMasterMotor.outputInverted = true
 
         leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
-            FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
+            FeedbackDevice.IntegratedSensor, kPositionSlot, 0
         )
         rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
-            FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
+            FeedbackDevice.IntegratedSensor, kPositionSlot, 0
         )
 
         leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
-            FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
+            FeedbackDevice.IntegratedSensor, kVelocitySlot, 0
         )
         rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
-            FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
+            FeedbackDevice.IntegratedSensor, kVelocitySlot, 0
         )
 
         leftMasterMotor.encoder.encoderPhase = DriveConstants.EncoderPhase
@@ -122,10 +121,13 @@ object Drivetrain : AbstractTankDrive() {
 
         leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
         leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
+
         rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
         rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
+        rightMasterMotor.talonSRX.setSensorPhase(false)
+
         rightMasterMotor.brakeMode = true
-        rightMasterMotor.brakeMode = true
+        leftMasterMotor.brakeMode = true
 
         rightMasterMotor.talonSRX.configAuxPIDPolarity(true, 0)
         rightMasterMotor.talonSRX.configClosedLoopPeakOutput(kTurnSlot, 1.0, 0)
@@ -143,22 +145,24 @@ object Drivetrain : AbstractTankDrive() {
         rightMasterMotor.motionProfileCruiseVelocity = DriveConstants.MaxVelocity
         rightMasterMotor.motionProfileAcceleration = DriveConstants.MaxAcceleration
 
-        isBraking = false
-
         localization.reset()
         Notifier {
             localization.update()
         }.startPeriodic(1.0 / 100.0)
+
+        gyro.setFusedHeading(0.0)
     }
 
     override val leftDistance: SIUnit<Meter>
-        get() = -nativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawSensorPosition)
+        get() = (periodicIO.leftRawSensorPosition.value / 2048.0 * 3 / 32 * 6).inches
+        // get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawSensorPosition)
 
     override val rightDistance: SIUnit<Meter>
-        get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawSensorPosition)
+        get() = (periodicIO.leftRawSensorPosition.value / 2048.0 * 3 / 32 * 6).inches
+        // get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawSensorPosition)
 
     override val leftDistanceError: SIUnit<Meter>
-        get() = -nativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawDistanceError)
+        get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawDistanceError)
 
     override val rightDistanceError: SIUnit<Meter>
         get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
@@ -170,7 +174,7 @@ object Drivetrain : AbstractTankDrive() {
         get() = nativeGearboxConversion.fromNativeUnitVelocity(periodicIO.rightRawSensorVelocity)
 
     val angle: Rotation2d
-        get() = periodicIO.gyroAngle.toRotation2d()
+        get() = -periodicIO.gyroAngle.toRotation2d()
 
     override val angularVelocity: SIUnit<AngularVelocity>
         get() = periodicIO.angularVelocity
@@ -272,12 +276,16 @@ object Drivetrain : AbstractTankDrive() {
         periodicIO.leftRawSensorVelocity = leftMasterMotor.encoder.rawVelocity
         periodicIO.rightRawSensorVelocity = rightMasterMotor.encoder.rawVelocity
 
+
         periodicIO.gyroAngle = gyro.fusedHeading.degrees
         // println(gyro.fusedHeading)
 
         val xyz = DoubleArray(3)
         gyro.getRawGyro(xyz)
         periodicIO.angularVelocity = xyz[1].radians.velocity
+
+        // println("Meters: Left: ${leftDistance.value}, Right: ${rightDistance.value}")
+        // println("Angle: ${angle.degree}")
 
         when (wantedState) {
             State.Nothing -> {
@@ -307,8 +315,6 @@ object Drivetrain : AbstractTankDrive() {
 
         if (wantedState != currentState) currentState = wantedState
 
-        println( leftDistance )
-        println( rightDistance )
     }
 
     class PeriodicIO {

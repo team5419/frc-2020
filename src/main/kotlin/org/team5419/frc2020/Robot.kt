@@ -23,10 +23,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
         // add subsystems to manager
 
-        +Drivetrain
-        +Storage
-        +Intake
-        +Shooger
+        // +Drivetrain
         +Vision
     }
 
@@ -40,6 +37,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
     override fun robotPeriodic() {
         Shuffleboard.update()
+        Drivetrain.periodic()
     }
 
     override fun disabledInit() {
@@ -51,7 +49,6 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
     override fun autonomousInit() {
         reset()
-
         autoController.start()
     }
 
@@ -61,7 +58,6 @@ class Robot : BerkeliumRobot(0.05.seconds) {
 
     override fun teleopInit() {
         reset()
-
         teleopController.start()
     }
 

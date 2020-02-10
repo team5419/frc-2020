@@ -37,7 +37,7 @@ object Vision : Subsystem("Vision") {
 
     val tab: ShuffleboardTab
 
-    init{
+    init {
         tab = Shuffleboard.getTab( tabName )
 
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
