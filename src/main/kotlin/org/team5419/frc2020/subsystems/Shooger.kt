@@ -193,7 +193,6 @@ object Shooger : Subsystem("Shooger") {
         if (time == 0.0) {
             lastVelocity = velocity
             accelTimer.start()
-
             return
         }
 
@@ -229,6 +228,8 @@ object Shooger : Subsystem("Shooger") {
             } else {
                 masterMotor.set(ControlMode.PercentOutput, 0.0)
             }
+        } else {
+            masterMotor.set(ControlMode.Velocity, targetVelocity)
         }
     }
 }

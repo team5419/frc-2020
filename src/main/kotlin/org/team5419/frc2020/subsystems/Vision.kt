@@ -18,7 +18,6 @@ object Vision : Subsystem("Vision") {
     )
 
     // PID loop
-
     public val controller: PIDController = PIDController(
         VisionConstants.PID.P,
         VisionConstants.PID.I,
@@ -27,27 +26,22 @@ object Vision : Subsystem("Vision") {
 
     public var output: Double = 0.0
 
-    init {
-        controller.setTolerance( VisionConstants.Tolerance )
-    }
-
     // shuffleboard
-
     val tabName = "Vision"
 
     val tab: ShuffleboardTab
 
     init{
         tab = Shuffleboard.getTab( tabName )
-
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
-
         tab.addBoolean("Found Target", { limelight.targetFound })
         tab.addNumber("Horizontal Offset", { limelight.horizontalOffset })
         tab.addNumber("Vertical Offset", { limelight.verticalOffset })
         tab.addNumber("Target Area", { limelight.targetArea })
         tab.addNumber("Target Skew", { limelight.targetSkew })
         tab.addNumber("PID Output", { output })
+
+        controller.setTolerance( VisionConstants.Tolerance )
     }
 
     // auto alignment

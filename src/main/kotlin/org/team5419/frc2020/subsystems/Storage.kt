@@ -14,6 +14,7 @@ enum class StorageMode() { LOAD, PASSIVE, OFF }
 
 object Storage : Subsystem("Storage") {
 
+
     var mode = StorageMode.OFF
         set(mode: StorageMode) {
             if (mode == field) return
@@ -37,7 +38,6 @@ object Storage : Subsystem("Storage") {
         }
 
     // motors
-
     private val feeder = TalonSRX(StorageConstants.FeederPort)
         .apply {
             setInverted(true)
@@ -50,7 +50,6 @@ object Storage : Subsystem("Storage") {
         }
 
     // default settings
-
     private var hopperPercent = StorageConstants.HopperPercent
     private var feederPercent = StorageConstants.FeederPercent
 
@@ -58,12 +57,12 @@ object Storage : Subsystem("Storage") {
     private var hopperLazyPercent = StorageConstants.HopperLazyPercent
 
     // distance sensor to find balls
-
     private var distanceSensor: AnalogInput = AnalogInput(1)
-    private var range: Double  = 0.0
+    private val range: Double
+        get() = 5.0 * distanceSensor.getVoltage() / 0.004883
+
 
     // subsystem functions
-
     fun reset() {
         mode = StorageMode.OFF
     }
@@ -72,8 +71,6 @@ object Storage : Subsystem("Storage") {
     override fun teleopReset() = reset()
 
     override public fun periodic() {
-        range = 5.0 * distanceSensor.getVoltage() / 0.004883
-
         if (mode == StorageMode.PASSIVE) {
             feeder.set(
                 ControlMode.PercentOutput,
