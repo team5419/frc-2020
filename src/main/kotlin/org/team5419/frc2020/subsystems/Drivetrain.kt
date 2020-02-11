@@ -95,20 +95,20 @@ object Drivetrain : AbstractTankDrive() {
         leftMasterMotor.outputInverted = false
 
         rightSlave1.talonSRX.setInverted(InvertType.FollowMaster)
-        rightMasterMotor.outputInverted = true
+        rightMasterMotor.outputInverted = false
 
         leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
-            FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
+            FeedbackDevice.IntegratedSensor, kPositionSlot, 0
         )
         rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
-            FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
+            FeedbackDevice.IntegratedSensor, kPositionSlot, 0
         )
 
         leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
-            FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
+            FeedbackDevice.IntegratedSensor, kVelocitySlot, 0
         )
         rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
-            FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
+            FeedbackDevice.IntegratedSensor, kVelocitySlot, 0
         )
 
         leftMasterMotor.encoder.encoderPhase = DriveConstants.EncoderPhase
@@ -307,8 +307,8 @@ object Drivetrain : AbstractTankDrive() {
 
         if (wantedState != currentState) currentState = wantedState
 
-        println( leftDistance )
-        println( rightDistance )
+        println( "left: $leftDistance, right $rightDistance" )
+        // println( rightDistance )
     }
 
     class PeriodicIO {

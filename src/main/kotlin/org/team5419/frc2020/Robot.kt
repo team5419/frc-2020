@@ -39,7 +39,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     }
 
     override fun robotPeriodic() {
-        Shuffleboard.update()
+        // Shuffleboard.update()
     }
 
     override fun disabledInit() {
