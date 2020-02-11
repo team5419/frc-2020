@@ -21,6 +21,8 @@ object Vision : Subsystem("Vision") {
     val horizontalOffset = limelight.horizontalOffset
     val targetFound = limelight.targetFound
 
+    public var output: Double = 0.0
+
     // shuffleboard
     init {
         tab.addBoolean("Found Target", { limelight.targetFound })

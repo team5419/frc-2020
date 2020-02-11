@@ -59,6 +59,8 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
         routine = autoSelector.getSelected()
         println("start action")
         routine.start()
+
+        println("routine start")
     }
 
     override fun update() {

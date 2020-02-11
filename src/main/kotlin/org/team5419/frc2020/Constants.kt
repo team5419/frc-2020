@@ -15,7 +15,6 @@ object RobotConstants {
 
 object DriveConstants {
     // ports
-
     const val LeftMasterPort = 10
     const val LeftSlavePort = 11
 
@@ -23,13 +22,14 @@ object DriveConstants {
     const val RightSlavePort = 6
 
     const val GyroPort = 7
+
     // configuration
 
     const val EncoderPhase = true
 
-    val GearRatio = (3 / 32)
+    val GearRatio = (3.0 / 32.0)
 
-    val TicksPerRotation = (2048 * GearRatio).nativeUnits
+    val TicksPerRotation = (2048.0 * GearRatio).nativeUnits
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
     // path following parameters
@@ -105,12 +105,10 @@ object HoodConstants {
 
     public val TicksPerRotation = (4092 / 3).nativeUnits
 }
+
 object StorageConstants {
     public const val FeederPort = 13
     public const val HopperPort = 9
-
-    public const val storagePercent = 70.0
-    public const val passiveStoragePercent = 9.0
 
     public const val FeederPercent = 1.0
 
@@ -125,6 +123,7 @@ object IntakeConstants {
     public const val IntakePort = 2
     public const val RollerPort = 17
     public const val DeployPort = 4
+    public const val DeployStrength = 0.2
 }
 
 object VisionConstants {

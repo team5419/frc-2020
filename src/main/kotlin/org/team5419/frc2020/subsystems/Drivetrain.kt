@@ -167,7 +167,7 @@ object Drivetrain : AbstractTankDrive() {
     override val rightDistanceError: SIUnit<Meter>
         get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
 
-        override val leftVelocity: SIUnit<LinearVelocity>
+    override val leftVelocity: SIUnit<LinearVelocity>
         get() = nativeGearboxConversion.fromNativeUnitVelocity(periodicIO.leftRawSensorVelocity)
 
     override val rightVelocity: SIUnit<LinearVelocity>
@@ -278,7 +278,6 @@ object Drivetrain : AbstractTankDrive() {
 
 
         periodicIO.gyroAngle = gyro.fusedHeading.degrees
-        // println(gyro.fusedHeading)
 
         val xyz = DoubleArray(3)
         gyro.getRawGyro(xyz)
@@ -306,19 +305,19 @@ object Drivetrain : AbstractTankDrive() {
             }
             State.Turning -> {
                 rightMasterMotor.talonSRX.set(
-                        ControlMode.PercentOutput, 0.0,
-                        DemandType.AuxPID, rightMasterMotor.talonSRX.getSelectedSensorPosition(1) +
-                            periodicIO.angleTarget.value.value
+                    ControlMode.PercentOutput, 0.0,
+                    DemandType.AuxPID, rightMasterMotor.talonSRX.getSelectedSensorPosition(1) +
+                        periodicIO.angleTarget.value.value
                 )
             }
         }
 
         if (wantedState != currentState) currentState = wantedState
-
     }
 
     class PeriodicIO {
         // input
+
         var leftVoltage: SIUnit<Volt> = 0.0.volts
         var rightVoltage: SIUnit<Volt> = 0.0.volts
 
@@ -339,6 +338,7 @@ object Drivetrain : AbstractTankDrive() {
         var turnError: SIUnit<Radian> = 0.0.degrees
 
         // output
+
         var leftPercent = 0.0
         var rightPercent = 0.0
 

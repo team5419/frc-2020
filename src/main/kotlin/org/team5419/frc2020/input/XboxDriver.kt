@@ -22,5 +22,4 @@ object XboxDriver : DriverControls {
     override public fun slow() =
         driverXbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
         driverXbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
-
 }
