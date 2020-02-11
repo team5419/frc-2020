@@ -163,7 +163,7 @@ object Drivetrain : AbstractTankDrive() {
     override val rightDistanceError: SIUnit<Meter>
         get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
 
-        override val leftVelocity: SIUnit<LinearVelocity>
+    override val leftVelocity: SIUnit<LinearVelocity>
         get() = nativeGearboxConversion.fromNativeUnitVelocity(periodicIO.leftRawSensorVelocity)
 
     override val rightVelocity: SIUnit<LinearVelocity>

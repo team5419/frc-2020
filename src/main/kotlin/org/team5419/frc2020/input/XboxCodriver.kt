@@ -12,8 +12,6 @@ object XboxCodriver: CodriverControls {
 
     override public fun hood(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft)>0.2
 
-    override public fun enableFeeding(): Boolean = false //to change
-
     override public fun intake(): Double = codriverXbox.getTriggerAxis(Hand.kLeft)
 
     override public fun outtake(): Double = codriverXbox.getTriggerAxis(Hand.kRight)

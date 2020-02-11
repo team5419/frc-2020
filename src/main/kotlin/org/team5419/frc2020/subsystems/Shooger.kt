@@ -89,10 +89,7 @@ object Shooger : Subsystem("Shooger") {
 
     // vars
 
-    private val accelTimer = Timer()
-
     private var lastVelocity = 0.0
-    private var flyWheelAcceleration = 0.0 // RPM/s
     private var setpointVelocity = 0.0
     private var setpoint = 0.0
     private var bangBang = false
@@ -116,17 +113,7 @@ object Shooger : Subsystem("Shooger") {
             println("Updated Target Velocity: ${targetVelocity}")
         }, EntryListenerFlags.kUpdate)
 
-        val bangBangEntry = tab
-            .add("Bang Bang Toggle", true)
-            .withWidget(BuiltInWidgets.kBooleanBox)
-            .getEntry()
-
-        bangBangEntry.addListener({ event ->
-            bangBang = if (event.value.isBoolean()) event.value.isBoolean() else bangBang
-        }, EntryListenerFlags.kUpdate)
-
-        tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
-        tab.addNumber("Real Acceleration", { Shooger.flyWheelAcceleration })
+        // tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
 
     // gettes
@@ -153,7 +140,9 @@ object Shooger : Subsystem("Shooger") {
         slaveMotor2.setNeutralMode( if (isEnabled) NeutralMode.Brake else NeutralMode.Coast )
     }
 
-    public fun shoog(shoogVelocity: Double = targetVelocity, useBangBang: Boolean = false) {
+    public fun shoog(shoogVelocity: Double = targetVelocity, useBangBang: Boolean = true) {
+        if ( shoogVelocity == setpointVelocity ) return
+
         setpointVelocity = shoogVelocity
 
         setpoint = calculateSetpoint(shoogVelocity)
@@ -167,6 +156,8 @@ object Shooger : Subsystem("Shooger") {
 
     public fun stop() {
         setpoint = 0.0
+        setpointVelocity = 0.0
+
         powerShooger(0.0)
         Storage.mode = StorageMode.OFF
     }
@@ -182,25 +173,6 @@ object Shooger : Subsystem("Shooger") {
 
     }
 
-    private fun recalculateAcceleration() {
-        val time = accelTimer.get()
-
-        accelTimer.stop()
-        accelTimer.reset()
-
-        val velocity = flyWheelVelocity
-
-        if (time == 0.0) {
-            lastVelocity = velocity
-            accelTimer.start()
-            return
-        }
-
-        flyWheelAcceleration = (velocity - lastVelocity) / time
-
-        lastVelocity = velocity
-    }
-
     // subsystem functions
 
     fun reset() {
@@ -211,11 +183,7 @@ object Shooger : Subsystem("Shooger") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        recalculateAcceleration()
-
-        if (setpoint == 0.0) {
-            return
-        }
+        if (setpoint == 0.0) return
 
         if ( isHungry() ) {
             Storage.mode = StorageMode.LOAD

@@ -27,9 +27,9 @@ object DriveConstants {
 
     const val EncoderPhase = true
 
-    val GearRatio = (3 / 32)
+    val GearRatio = (3.0 / 32.0)
 
-    val TicksPerRotation = (2048 * GearRatio).nativeUnits
+    val TicksPerRotation = (2048.0 * GearRatio).nativeUnits
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
     // path following parameters
