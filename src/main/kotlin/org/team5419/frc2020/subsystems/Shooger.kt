@@ -211,7 +211,8 @@ object Shooger : Subsystem("Shooger") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        // recalculateAcceleration()
+        recalculateAcceleration()
+
         if (setpoint == 0.0) {
             return
         }
@@ -228,8 +229,6 @@ object Shooger : Subsystem("Shooger") {
             } else {
                 masterMotor.set(ControlMode.PercentOutput, 0.0)
             }
-        } else {
-            masterMotor.set(ControlMode.Velocity, targetVelocity)
         }
     }
 }
