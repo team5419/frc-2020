@@ -26,8 +26,7 @@ public class AutoController() : Controller {
     public val autoSelector = SendableChooser<Routine>()
 
     private val json: String = "8ball.wpilib.json"
-    private val path: Path = Filesystem.getDeployDirectory().toPath().resolve(json)
-    private val trajectory: Trajectory = TrajectoryUtil.fromPathweaverJson(path)
+
 
     public var routine: Action = NothingAction()
 
@@ -35,31 +34,30 @@ public class AutoController() : Controller {
 
     init {
         // routines.forEach({ autoSelector.addOption(it.name, it) })
+        try {
+            val path: Path = Filesystem.getDeployDirectory().toPath().resolve(json)
+            val trajectory: Trajectory = TrajectoryUtil.fromPathweaverJson(path)
+            routine = RamseteAction(
+                Drivetrain,
+                trajectory,
+                DriveConstants.MaxVelocity,
+                DriveConstants.MaxAcceleration,
+                12.volts,
+                DriveConstants.TrackWidth,
+                DriveConstants.Beta,
+                DriveConstants.Zeta,
+                DriveConstants.DriveKv,
+                DriveConstants.DriveKa,
+                DriveConstants.DriveKs
+            )
+        } catch(e: FileNotFoundException) {
+            println("Path could not be loaded")
+            throw e
+        }
     }
 
     override fun start() {
-        // println("start action")
-
-        routine = RamseteAction(
-            Drivetrain,
-
-            trajectory,
-
-            DriveConstants.MaxVelocity,
-            DriveConstants.MaxAcceleration,
-
-            12.volts,
-
-            DriveConstants.TrackWidth,
-
-            DriveConstants.Beta,
-            DriveConstants.Zeta,
-
-            DriveConstants.DriveKv,
-            DriveConstants.DriveKa,
-            DriveConstants.DriveKs
-        )
-
+        println("start action")
         routine.start()
     }
 
