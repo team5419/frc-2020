@@ -178,7 +178,10 @@ object Drivetrain : AbstractTankDrive() {
     override val turnError: SIUnit<Radian>
         get() = periodicIO.turnError
 
+    fun stop() = setOpenLoop(0.0, 0.0)
+
     override fun setPercent(left: Double, right: Double) = setOpenLoop(left, right)
+
     fun setPercent(signal: DriveSignal) = setOpenLoop(signal.left, signal.right)
 
     fun setOpenLoop(left: Double, right: Double) {

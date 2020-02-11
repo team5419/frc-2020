@@ -6,49 +6,51 @@ import org.team5419.fault.math.units.native.NativeUnitRotationModel
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 
 object Intake : Subsystem("Intake") {
-    public val intakeModel = NativeUnitRotationModel(IntakeConstants.IntakeTicksPerRotation)
-    public val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
+    val intakeModel = NativeUnitRotationModel(IntakeConstants.IntakeTicksPerRotation)
+    val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
 
-    private val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
-    private val rollerMotor = BerkeliumSRX(IntakeConstants.RollerPort, intakeModel)
+    val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
+    val rollerMotor = BerkeliumSRX(IntakeConstants.RollerPort, intakeModel)
 
-    private val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
+    val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
 
     init {
         deployMotor.brakeMode = true
         rollerMotor.follow(intakeMotor)
     }
 
-    public var isIntake: Boolean = false
-        set (value: Boolean) {
-            if (value == field) return
+    // intake
 
-            if(value){
-                setIntake(1.0)
-            }
-
-            if(!value){
-                setIntake(0.0)
-            }
-
-            field = value
-        }
+    private var intakePercent = 0.0
 
     public fun setIntake(percent: Double){
+        if (percent == intakePercent) return
+
+        intakePercent = percent
+
         intakeMotor.setPercent(percent)
     }
+
+    // deploy
 
     public fun deploy() = setDeploy(IntakeConstants.DeployStrength)
     public fun retract() = setDeploy(-IntakeConstants.DeployStrength)
 
+    private var deployPercent = 0.0
+
     public fun setDeploy(percent: Double){
+        if (percent == deployPercent) return
+
+        deployPercent = percent
+
         deployMotor.setPercent(percent)
     }
 
     // subsystem functions
 
     fun reset() {
-        isIntake = false
+        setIntake(0.0)
+        setDeploy(0.0)
     }
 
     override fun autoReset() = reset()

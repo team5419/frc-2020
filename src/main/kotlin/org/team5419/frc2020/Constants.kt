@@ -89,6 +89,8 @@ object ShoogerConstants {
     public val TargetVelocity = 6000.0.radians.velocity
     public val TicksPerRotation = 4092.0.nativeUnits
 
+    public val ShoogTime = 3.0.seconds
+
     // WHAT AM I? ->
     // public val V = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
 }
@@ -122,6 +124,7 @@ object IntakeConstants {
     public const val IntakePort = 2
     public const val RollerPort = 17
     public const val DeployPort = 4
+
     public const val DeployStrength = 0.2
 }
 
