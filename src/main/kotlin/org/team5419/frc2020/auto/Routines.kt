@@ -13,26 +13,26 @@ import org.team5419.frc2020.DriveConstants
 
 fun generateRoutines (initalPose: Pose2d) : Array<Routine> {
     return arrayOf(
-        Routine("Characterization", initalPose, CharacterizationAction(Drivetrain)),
-        Routine("Path Fallowing", initalPose, RamseteAction(
-            Drivetrain,
+        // // Routine("Characterization", initalPose, CharacterizationAction(Drivetrain)),
+        // RamseteAction(
+        //     Drivetrain,
 
-            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            arrayOf<Vector2<Meter>>(),
-            Pose2d(1.0.meters, 0.0.meters, 0.0.radians),
+        //     Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+        //     arrayOf<Vector2<Meter>>(),
+        //     Pose2d(2.0.meters, 0.0.meters, 0.0.radians),
 
-            3.0.meters.velocity,
-            3.0.meters.acceleration,
-            12.volts,
+        //     3.0.meters.velocity,
+        //     3.0.meters.acceleration,
+        //     12.volts,
 
-            DriveConstants.TrackWidth,
+        //     DriveConstants.TrackWidth,
 
-            DriveConstants.Beta,
-            DriveConstants.Zeta,
+        //     DriveConstants.Beta,
+        //     DriveConstants.Zeta,
 
-            DriveConstants.DriveKv,
-            DriveConstants.DriveKa,
-            DriveConstants.DriveKs
-        ))
+        //     DriveConstants.DriveKv,
+        //     DriveConstants.DriveKa,
+        //     DriveConstants.DriveKs
+        // ).toRoutine("Action", initalPose)
     )
 }

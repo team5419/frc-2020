@@ -36,6 +36,7 @@ object DriveConstants {
 
     val MaxVelocity = 10.0.feet.velocity
     val MaxAcceleration = 4.0.feet.acceleration
+
     val MaxCentripetalAcceleration = 4.0.feet.acceleration
     val MaxAngularAcceleration = 2.0.radians.acceleration
 
@@ -97,8 +98,8 @@ object HoodConstants {
     public const val HoodPort = 12
 
     object PID {
-        public const val P = 1.0
-        public const val I = 0.0
+        public const val P = 0.015
+        public const val I = 0.00
         public const val D = 0.0
     }
 
@@ -132,7 +133,7 @@ object VisionConstants {
 
     public val TargetHeight = 0.0.meters
 
-    public val Tolerance = 10.0
+    public val Tolerance = 0.1
 
     object PID {
         public const val P = 0.024
