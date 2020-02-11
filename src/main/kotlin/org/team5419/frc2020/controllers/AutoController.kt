@@ -21,58 +21,54 @@ import org.team5419.fault.trajectory.DefaultTrajectoryGenerator
 import org.team5419.fault.trajectory.constraints.TimingConstraint
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.frc2020.DriveConstants
+import org.team5419.frc2020.auto.*
 
-public class AutoController() : Controller {
+public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
     public val autoSelector = SendableChooser<Routine>()
-
     private val json: String = "8ball.wpilib.json"
-
-
-    public var routine: Action = NothingAction()
-
-    // public val routines: Array<Routine> = generateRoutines( Drivetrain.robotPosition )
+    public var routine: Action
+    public val routines: Array<Routine>
 
     init {
-        // routines.forEach({ autoSelector.addOption(it.name, it) })
-        try {
-            val path: Path = Filesystem.getDeployDirectory().toPath().resolve(json)
-            val trajectory: Trajectory = TrajectoryUtil.fromPathweaverJson(path)
-            routine = RamseteAction(
-                Drivetrain,
-                trajectory,
-                DriveConstants.MaxVelocity,
-                DriveConstants.MaxAcceleration,
-                12.volts,
-                DriveConstants.TrackWidth,
-                DriveConstants.Beta,
-                DriveConstants.Zeta,
-                DriveConstants.DriveKv,
-                DriveConstants.DriveKa,
-                DriveConstants.DriveKs
+        routine = baseline
+        val path: Path = Filesystem.getDeployDirectory().toPath().resolve(json)
+        val trajectory: Trajectory = TrajectoryUtil.fromPathweaverJson(path)
+        val initalPose = Drivetrain.robotPosition
+        routines = arrayOf(
+            Routine("Auto Align", initalPose, AutoAlignAction()),
+            Routine("Path following", initalPose,
+                RamseteAction(
+                    Drivetrain,
+                    trajectory,
+                    DriveConstants.MaxVelocity,
+                    DriveConstants.MaxAcceleration,
+                    12.volts,
+                    DriveConstants.TrackWidth,
+                    DriveConstants.Beta,
+                    DriveConstants.Zeta,
+                    DriveConstants.DriveKv,
+                    DriveConstants.DriveKa,
+                    DriveConstants.DriveKs
+                )
             )
-        } catch(e: FileNotFoundException) {
-            println("Path could not be loaded")
-            throw e
-        }
+        )
+        routines.forEach({ autoSelector.addOption(it.name, it) })
     }
 
     override fun start() {
+        routine = autoSelector.getSelected()
         println("start action")
         routine.start()
     }
 
     override fun update() {
-        // routine.update()
+        routine.update()
 
-        // if (routine.next()) {
-        //     routine.finish()
-
-        //     routine = NothingAction()
-
-        //     println("done with action")
-        // }
-
-        Vision.autoAlign()
+        if (routine.next()) {
+            routine.finish()
+            routine = NothingAction()
+            println("done with action")
+        }
     }
 
     override fun reset() {
