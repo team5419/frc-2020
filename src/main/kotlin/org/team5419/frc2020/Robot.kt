@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
 
-val tab = ShuffleboardTab("Auto")
+val tab = Shuffleboard.getTab("Auto")
 
 @SuppressWarnings("MagicNumber")
 class Robot : BerkeliumRobot(0.05.seconds) {

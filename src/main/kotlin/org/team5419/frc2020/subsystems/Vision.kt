@@ -6,7 +6,6 @@ import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.hardware.Limelight
-import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.controller.PIDController
 
 object Vision : Subsystem("Vision") {
