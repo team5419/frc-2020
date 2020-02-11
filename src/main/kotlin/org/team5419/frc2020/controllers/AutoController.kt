@@ -24,43 +24,40 @@ import org.team5419.frc2020.DriveConstants
 public class AutoController() : Controller {
     public val autoSelector = SendableChooser<Routine>()
 
+    private val json: String = "8ball.wpilib.json"
+
+
+    public var routine: Action = NothingAction()
 
     // public val routines: Array<Routine> = generateRoutines( Drivetrain.robotPosition )
 
     init {
-        public var routine: Action = NothingAction()
-
+        // routines.forEach({ autoSelector.addOption(it.name, it) })
         try {
-            private val json: String = "8ball.wpilib.json"
-            private val path: Path = Filesystem.getDeployDirectory().toPath().resolve(json)
-            private val trajectory: Trajectory = TrajectoryUtil.fromPathweaverJson(path)
-
+            val path: Path = Filesystem.getDeployDirectory().toPath().resolve(json)
+            val trajectory: Trajectory = TrajectoryUtil.fromPathweaverJson(path)
             routine = RamseteAction(
                 Drivetrain,
-
                 trajectory,
-
                 DriveConstants.MaxVelocity,
                 DriveConstants.MaxAcceleration,
-
                 12.volts,
-
                 DriveConstants.TrackWidth,
-
                 DriveConstants.Beta,
                 DriveConstants.Zeta,
-
                 DriveConstants.DriveKv,
                 DriveConstants.DriveKa,
                 DriveConstants.DriveKs
             )
-        }
-        catch(Exception e) {
-            println("path failed to load")
+        } catch(e: FileNotFoundException) {
+            println("Path could not be loaded")
             throw e
         }
+    }
 
-        // routines.forEach({ autoSelector.addOption(it.name, it) })
+    override fun start() {
+        println("start action")
+        routine.start()
     }
 
     override fun start() {
