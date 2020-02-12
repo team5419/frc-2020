@@ -38,6 +38,10 @@ object Intake : Subsystem("Intake") {
         intakeMotor.setPercent(percent)
     }
 
+    public fun stopIntake() {
+        intakeMotor.setPercent(0.0)
+    }
+
     public fun deploy() = setDeploy(IntakeConstants.DeployStrength)
     public fun retract() = setDeploy(-IntakeConstants.DeployStrength)
 

@@ -1,7 +1,7 @@
 package org.team5419.frc2020.auto
 
 import org.team5419.frc2020.tab
-import org.team5419.frc2020.VisionConstants
+import org.team5419.frc2020.VisionConstants.Tolerance
 import org.team5419.frc2020.VisionConstants.PID
 import org.team5419.frc2020.subsystems.*
 import org.team5419.fault.auto.*
@@ -16,9 +16,11 @@ class AutoAlignAction() : Action() {
 
     init{
         positionControl = PIDController(PID.P, PID.I, PID.D)
-        positionControl.setTolerance( VisionConstants.Tolerance )
+
+        positionControl.setTolerance( Tolerance )
+
         Drivetrain.isBraking = true
-        //finishCondition is or not and
+
         finishCondition += { Vision.targetFound && positionControl.atSetpoint() }
 
         tab.add("Vision PID", positionControl).withWidget(BuiltInWidgets.kPIDCommand)
@@ -27,15 +29,17 @@ class AutoAlignAction() : Action() {
 
     override public fun update(){
         error = Vision.horizontalOffset
-        if(error == 0.0) {
+
+        if (error == 0.0) {
             output = 0.0
         } else {
             output = positionControl.calculate(error)
         }
+
         Drivetrain.setPercent(output, -output)
     }
 
     override public fun finish(){
-        Drivetrain.isBraking = false
+        Drivetrain.setPercent(0.0, 0.0)
     }
 }

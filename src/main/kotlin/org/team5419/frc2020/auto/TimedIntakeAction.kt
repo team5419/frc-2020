@@ -18,4 +18,8 @@ public class TimedIntakeAction(timeout: SIUnit<Second>) : Action() {
         Intake.setIntake()
     }
 
+
+    override fun finish() {
+        Intake.stopIntake()
+    }
 }

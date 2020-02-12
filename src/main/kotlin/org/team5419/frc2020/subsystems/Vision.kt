@@ -24,13 +24,12 @@ object Vision : Subsystem("Vision") {
     public var output: Double = 0.0
 
     // shuffleboard
-    init {
-        tab.addBoolean("Found Target", { limelight.targetFound })
-        tab.addNumber("Horizontal Offset", { limelight.horizontalOffset })
-        tab.addNumber("Vertical Offset", { limelight.verticalOffset })
-        tab.addNumber("Target Area", { limelight.targetArea })
-        tab.addNumber("Target Skew", { limelight.targetSkew })
-    }
 
-    // auto alignment
+    init {
+        // tab.addBoolean("Found Target", { limelight.targetFound })
+        // tab.addNumber("Horizontal Offset", { limelight.horizontalOffset })
+        // tab.addNumber("Vertical Offset", { limelight.verticalOffset })
+        // tab.addNumber("Target Area", { limelight.targetArea })
+        // tab.addNumber("Target Skew", { limelight.targetSkew })
+    }
 }

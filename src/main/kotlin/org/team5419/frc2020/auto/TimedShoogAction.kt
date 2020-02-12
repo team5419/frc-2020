@@ -18,4 +18,8 @@ public class TimedShoogAction(timeout: SIUnit<Second>) : Action() {
         Shooger.shoog()
     }
 
+
+    override fun finish() {
+        Shooger.stop()
+    }
 }
