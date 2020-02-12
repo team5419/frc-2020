@@ -115,6 +115,7 @@ object StorageConstants {
 
     public const val HopperPercent = 1.0
     public const val HopperLazyPercent = 0.4
+    public const val SensorThreshold = 350
 }
 
 object IntakeConstants {

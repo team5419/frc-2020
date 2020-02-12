@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.ControlMode
 
@@ -14,26 +15,21 @@ enum class StorageMode() { LOAD, PASSIVE, OFF }
 
 object Storage : Subsystem("Storage") {
 
-
     var mode = StorageMode.OFF
         set(mode: StorageMode) {
             if (mode == field) return
-
             if (mode == StorageMode.LOAD) {
                 hopper.set( ControlMode.PercentOutput, hopperPercent )
                 feeder.set( ControlMode.PercentOutput, feederPercent )
             }
-
             if (mode == StorageMode.PASSIVE) {
                 hopper.set( ControlMode.PercentOutput, 0.0 )
                 feeder.set( ControlMode.PercentOutput, hopperLazyPercent )
             }
-
             if (mode == StorageMode.OFF) {
                 hopper.set( ControlMode.PercentOutput, 0.0 )
                 feeder.set( ControlMode.PercentOutput, 0.0 )
             }
-
             field = mode
         }
 
@@ -42,6 +38,7 @@ object Storage : Subsystem("Storage") {
         .apply {
             setInverted(true)
             setNeutralMode(NeutralMode.Brake)
+            getSelectedSensorPosition(FeedbackDevice.Analog)
         }
 
     private val hopper = TalonSRX(StorageConstants.HopperPort)
@@ -57,9 +54,8 @@ object Storage : Subsystem("Storage") {
     private var hopperLazyPercent = StorageConstants.HopperLazyPercent
 
     // distance sensor to find balls
-    private var distanceSensor: AnalogInput = AnalogInput(1)
-    private val range: Double
-        get() = 5.0 * distanceSensor.getVoltage() / 0.004883
+    private val isLoadedBall: Boolean
+        get() = feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
 
 
     // subsystem functions
@@ -74,7 +70,7 @@ object Storage : Subsystem("Storage") {
         if (mode == StorageMode.PASSIVE) {
             feeder.set(
                 ControlMode.PercentOutput,
-                if (range <= 152.0) feederLazyPercent else 0.0
+                if ( range ) feederLazyPercent else 0.0
             )
         }
     }
