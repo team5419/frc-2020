@@ -20,6 +20,7 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     init {
         routine = baseline
         tab.add("Auto Selector", autoSelector)
+        tab.add("Zero Robot Position",  { refreshRoutines() })
         autoSelector.setDefaultOption("Baseline", baseline)
         refreshRoutines()
     }
