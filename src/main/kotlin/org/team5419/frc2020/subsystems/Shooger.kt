@@ -4,6 +4,7 @@ import org.team5419.frc2020.subsystems.StorageMode
 import org.team5419.frc2020.subsystems.Storage
 import org.team5419.frc2020.ShoogerConstants
 import org.team5419.frc2020.HoodConstants
+import org.team5419.frc2020.tab
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.units.derived.*
@@ -86,11 +87,8 @@ object Shooger : Subsystem("Shooger") {
 
     // shuffleboard
 
-    public val tabName = "Shooger"
-    public val tab: ShuffleboardTab
 
     init {
-        tab = Shuffleboard.getTab(tabName)
 
         val shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
 

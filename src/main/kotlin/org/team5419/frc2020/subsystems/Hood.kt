@@ -3,6 +3,7 @@ package org.team5419.frc2020.subsystems
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 import org.team5419.frc2020.HoodConstants
+import org.team5419.frc2020.tab
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.ControlMode
 import org.team5419.fault.math.units.native.NativeUnitRotationModel
@@ -52,12 +53,9 @@ object Hood : Subsystem("Hood") {
     // shuffleboard
 
     public val tabName = "Hood"
-    public val tab: ShuffleboardTab
 
     init {
-        tab = Shuffleboard.getTab(tabName)
-
-        tab.addNumber("Angle", {hoodAngle})
+        tab.addNumber("Angle", { hoodAngle })
         tab.addNumber("Error", { masterMotor.getClosedLoopError(0).toDouble() })
         tab.addNumber("Position", {masterMotor.getSelectedSensorPosition(0).toDouble()})
         val gotoentry = tab.add("Go to angle", 0.0).getEntry()

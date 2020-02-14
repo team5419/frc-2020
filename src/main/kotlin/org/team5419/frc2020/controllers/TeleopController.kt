@@ -66,7 +66,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         else if(codriver.retractIntake()) { Intake.retract() }
         else {
             Intake.setIntake(0.0)
-            println("stop intake")
         }
 
         if ( codriver.shoog() ) {

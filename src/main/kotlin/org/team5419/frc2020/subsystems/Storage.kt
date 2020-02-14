@@ -2,6 +2,7 @@ package org.team5419.frc2020.subsystems
 
 import org.team5419.frc2020.StorageConstants
 import org.team5419.frc2020.ShoogerConstants
+import org.team5419.frc2020.tab
 import org.team5419.fault.subsystems.Subsystem
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
@@ -57,6 +58,10 @@ object Storage : Subsystem("Storage") {
     // distance sensor to find balls
     private val isLoadedBall: Boolean
         get() = feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
+
+    init{
+        tab.addBoolean("IR Sensor", { isLoadedBall })
+    }
 
     // subsystem functions
     fun reset() {
