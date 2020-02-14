@@ -53,8 +53,6 @@ public class AutoController() : Controller {
         // routine.start()
 
         // println("routine start")
-
-        Hood.setAngle( 18 / 360 * (2 * 3.14159263) )
     }
 
     override fun update() {
