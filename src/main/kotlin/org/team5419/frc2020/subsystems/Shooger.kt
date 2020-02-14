@@ -75,17 +75,6 @@ object Shooger : Subsystem("Shooger") {
             setNeutralMode(NeutralMode.Coast)
         }
 
-    // hood
-
-    private val hood = TalonSRX(HoodConstants.HoodPort)
-        .apply {
-            setNeutralMode(NeutralMode.Brake)
-
-            config_kP(0, HoodConstants.PID.P, 0)
-            config_kI(0, HoodConstants.PID.I, 0)
-            config_kD(0, HoodConstants.PID.D, 0)
-        }
-
     // vars
 
     private var lastVelocity = 0.0

@@ -104,7 +104,11 @@ object HoodConstants {
         public const val D = 0.0
     }
 
-    public val TicksPerRotation = (4092 / 3).nativeUnits
+    public val MaxSpeed = 1.0
+
+    public val TicksPerRotation = 4092.0
+
+    public val GearRatio = 3.0/40.0
 }
 
 object StorageConstants {
