@@ -29,34 +29,36 @@ public class AutoController() : Controller {
     }
 
     override fun start() {
-        routine = RamseteAction(
-            Drivetrain,
+        // routine = RamseteAction(
+        //     Drivetrain,
 
-            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            arrayOf<Vector2<Meter>>(),
-            Pose2d(1.0.meters, 0.0.meters, 0.0.radians),
+        //     Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+        //     arrayOf<Vector2<Meter>>(),
+        //     Pose2d(1.0.meters, 0.0.meters, 0.0.radians),
 
-            3.0.meters.velocity,
-            3.0.meters.acceleration,
-            12.volts,
+        //     3.0.meters.velocity,
+        //     3.0.meters.acceleration,
+        //     12.volts,
 
-            DriveConstants.TrackWidth,
+        //     DriveConstants.TrackWidth,
 
-            DriveConstants.Beta,
-            DriveConstants.Zeta,
+        //     DriveConstants.Beta,
+        //     DriveConstants.Zeta,
 
-            DriveConstants.DriveKv,
-            DriveConstants.DriveKa,
-            DriveConstants.DriveKs
-        )
+        //     DriveConstants.DriveKv,
+        //     DriveConstants.DriveKa,
+        //     DriveConstants.DriveKs
+        // )
 
-        routine.start()
+        // routine.start()
 
-        println("routine start")
+        // println("routine start")
+
+        Hood.setAngle( 18 / 360 * (2 * 3.14159263) )
     }
 
     override fun update() {
-        routine.update()
+        // routine.update()
     }
 
     override fun reset() {

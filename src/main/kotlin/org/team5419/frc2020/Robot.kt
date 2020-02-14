@@ -28,6 +28,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
         +Intake
         +Shooger
         +Vision
+        +Hood
     }
 
     fun reset() {
