@@ -15,13 +15,13 @@ object RobotConstants {
 
 object DriveConstants {
     // ports
-    const val LeftMasterPort = 10
-    const val LeftSlavePort = 11
+    const val LeftMasterPort = 2
+    const val LeftSlavePort = 3
 
-    const val RightMasterPort = 8
-    const val RightSlavePort = 6
+    const val RightMasterPort = 4
+    const val RightSlavePort = 5
 
-    const val GyroPort = 7
+    const val GyroPort = 20
 
     // configuration
 
@@ -82,9 +82,9 @@ object InputConstants {
 }
 
 object ShoogerConstants {
-    public const val MasterPort = 3
-    public const val SlavePort1 = 15
-    public const val SlavePort2 = 16
+    public const val MasterPort = 7
+    public const val SlavePort1 = 17
+    public const val SlavePort2 = 18
 
     public val TargetVelocity = 6000.0.radians.velocity
     public val TicksPerRotation = 4092.0.nativeUnits
@@ -108,7 +108,7 @@ object HoodConstants {
 }
 
 object StorageConstants {
-    public const val FeederPort = 13
+    public const val FeederPort = 11
     public const val HopperPort = 9
 
     public const val FeederPercent = 1.0
@@ -122,9 +122,9 @@ object IntakeConstants {
     public val DeployTicksPerRotation = (4096 * 81).nativeUnits
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
 
-    public const val IntakePort = 2
+    public const val IntakePort = 8
     public const val RollerPort = 17
-    public const val DeployPort = 4
+    public const val DeployPort = 6
 
     public const val DeployStrength = 0.2
 }

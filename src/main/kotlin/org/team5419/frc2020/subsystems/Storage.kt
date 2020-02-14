@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.ControlMode
+import org.team5419.frc2020.subsystems.Shooger
 
 enum class StorageMode() { LOAD, PASSIVE, OFF }
 
@@ -20,11 +21,11 @@ object Storage : Subsystem("Storage") {
             if (mode == field) return
             if (mode == StorageMode.LOAD) {
                 hopper.set( ControlMode.PercentOutput, hopperPercent )
-                feeder.set( ControlMode.PercentOutput, feederPercent )
+                feeder.set( ControlMode.PercentOutput, 0.0 )
             }
             if (mode == StorageMode.PASSIVE) {
-                hopper.set( ControlMode.PercentOutput, 0.0 )
-                feeder.set( ControlMode.PercentOutput, hopperLazyPercent )
+                hopper.set( ControlMode.PercentOutput, hopperLazyPercent )
+                feeder.set( ControlMode.PercentOutput, 0.0 )
             }
             if (mode == StorageMode.OFF) {
                 hopper.set( ControlMode.PercentOutput, 0.0 )
@@ -57,7 +58,6 @@ object Storage : Subsystem("Storage") {
     private val isLoadedBall: Boolean
         get() = feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
 
-
     // subsystem functions
     fun reset() {
         mode = StorageMode.OFF
@@ -67,11 +67,19 @@ object Storage : Subsystem("Storage") {
     override fun teleopReset() = reset()
 
     override public fun periodic() {
+        if (mode == StorageMode.LOAD) {
+            if ( Shooger.isHungry() ) {
+                feeder.set( ControlMode.PercentOutput, feederPercent )
+            } else {
+                feeder.set( ControlMode.PercentOutput, 0.0 )
+            }
+        }
+
         if (mode == StorageMode.PASSIVE) {
-            feeder.set(
-                ControlMode.PercentOutput,
-                if ( isLoadedBall ) feederLazyPercent else 0.0
-            )
+            // feeder.set(
+            //     ControlMode.PercentOutput,
+            //     if ( isLoadedBall ) feederLazyPercent else 0.0
+            // )
         }
     }
 }

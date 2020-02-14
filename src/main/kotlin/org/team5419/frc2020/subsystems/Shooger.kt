@@ -1,6 +1,5 @@
 package org.team5419.frc2020.subsystems
 
-
 import org.team5419.frc2020.subsystems.StorageMode
 import org.team5419.frc2020.subsystems.Storage
 import org.team5419.frc2020.ShoogerConstants
@@ -28,8 +27,8 @@ object Shooger : Subsystem("Shooger") {
     val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
         .apply {
             setNeutralMode(NeutralMode.Coast)
-            setSensorPhase(true)
-            setInverted(true)
+            setSensorPhase(false)
+            setInverted(false)
 
             configPeakCurrentLimit(40)
 
@@ -65,7 +64,7 @@ object Shooger : Subsystem("Shooger") {
     val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
         .apply {
             follow(masterMotor)
-            setInverted(false)
+            setInverted(true)
             setNeutralMode(NeutralMode.Coast)
         }
 
@@ -92,7 +91,7 @@ object Shooger : Subsystem("Shooger") {
     private var lastVelocity = 0.0
     private var setpointVelocity = 0.0
     private var setpoint = 0.0
-    private var bangBang = false
+    private var bangBang = true
 
     var targetVelocity = ShoogerConstants.TargetVelocity.value
 
@@ -106,6 +105,8 @@ object Shooger : Subsystem("Shooger") {
 
         val shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
 
+        targetVelocity = shooterVelocityEntry.getDouble(ShoogerConstants.TargetVelocity.value)
+
         shooterVelocityEntry.setPersistent()
         shooterVelocityEntry.addListener( { event ->
             targetVelocity = if (event.value.isDouble()) event.value.getDouble() else targetVelocity
@@ -113,7 +114,7 @@ object Shooger : Subsystem("Shooger") {
             println("Updated Target Velocity: ${targetVelocity}")
         }, EntryListenerFlags.kUpdate)
 
-        // tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
+        tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
 
     // gettes
@@ -140,7 +141,7 @@ object Shooger : Subsystem("Shooger") {
         slaveMotor2.setNeutralMode( if (isEnabled) NeutralMode.Brake else NeutralMode.Coast )
     }
 
-    public fun shoog(shoogVelocity: Double = targetVelocity, useBangBang: Boolean = true) {
+    public fun shoog(shoogVelocity: Double = targetVelocity, useBangBang: Boolean = false) {
         if ( shoogVelocity == setpointVelocity ) return
 
         setpointVelocity = shoogVelocity
@@ -192,7 +193,7 @@ object Shooger : Subsystem("Shooger") {
         }
 
         if (bangBang) {
-            if (setpointVelocity <= flyWheelVelocity + 10) {
+            if (setpointVelocity >= flyWheelVelocity) {
                 masterMotor.set(ControlMode.PercentOutput, 1.0)
             } else {
                 masterMotor.set(ControlMode.PercentOutput, 0.0)
