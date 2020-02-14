@@ -38,7 +38,7 @@ object Storage : Subsystem("Storage") {
         .apply {
             setInverted(true)
             setNeutralMode(NeutralMode.Brake)
-            getSelectedSensorPosition(FeedbackDevice.Analog)
+            configSelectedFeedbackSensor(FeedbackDevice.Analog)
         }
 
     private val hopper = TalonSRX(StorageConstants.HopperPort)
@@ -70,7 +70,7 @@ object Storage : Subsystem("Storage") {
         if (mode == StorageMode.PASSIVE) {
             feeder.set(
                 ControlMode.PercentOutput,
-                if ( range ) feederLazyPercent else 0.0
+                if ( isLoadedBall ) feederLazyPercent else 0.0
             )
         }
     }
