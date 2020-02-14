@@ -69,8 +69,8 @@ object DriveConstants {
 
 object InputConstants {
     // controller ports
-    public const val XboxCodrivePort = 1
     public const val XboxDrivePort = 0
+    public const val XboxCodrivePort = 1
 
     // slow movments multipliers
     public const val SlowTurnMultiplier = 0.4
@@ -105,13 +105,9 @@ object HoodConstants {
     }
 
     public val MaxSpeed = 0.3
-
     public val MaxAngle = 18.0.degrees.inRadians()
-
     public val AngleOffset = 0.259.radians
-
     public val TicksPerRotation = 4092.0
-
     public val GearRatio = 4.0/1.0
 }
 
@@ -131,11 +127,11 @@ object IntakeConstants {
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
 
     public const val IntakePort = 11
-    public const val DeployPort = 6
+    public const val DeployPort = 8
 
     public const val RollerPort = 30
 
-    public const val DeployStrength = 0.2
+    public const val DeployStrength = 0.4
 }
 
 object VisionConstants {

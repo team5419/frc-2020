@@ -25,28 +25,21 @@ object Hood : Subsystem("Hood") {
             config_kP(0, HoodConstants.PID.P, 0)
             config_kI(0, HoodConstants.PID.I, 0)
             config_kD(0, HoodConstants.PID.D, 0)
-
             // make sure it dosent go to fast
             configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 0)
-
             // limit the current to not brown out
             configPeakCurrentLimit(40)
-
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute)
-
             setSensorPhase(true)
             setInverted(false)
-
             setNeutralMode(NeutralMode.Brake)
-
-            configForwardSoftLimitThreshold(596, 0)
+            configForwardSoftLimitThreshold( angleToNativeUnits( HoodConstants.MaxAngle ).toInt(), 0)
             configForwardSoftLimitEnable(true, 0)
-
-            configReverseSoftLimitThreshold( getAngleInNativeUnits( 0.0 ).toInt(), 0)
+            configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 0)
             configReverseSoftLimitEnable(true, 0)
         }
 
-    fun getAngleInNativeUnits(angle: Double) =
+    fun angleToNativeUnits(angle: Double) =
         angle / (2 * PI) / HoodConstants.GearRatio * HoodConstants.TicksPerRotation - angleOffset
 
 
@@ -65,15 +58,12 @@ object Hood : Subsystem("Hood") {
         tab = Shuffleboard.getTab(tabName)
 
         tab.addNumber("Angle", {hoodAngle})
-
         tab.addNumber("Error", { masterMotor.getClosedLoopError(0).toDouble() })
-
         tab.addNumber("Position", {masterMotor.getSelectedSensorPosition(0).toDouble()})
-
         val gotoentry = tab.add("Go to angle", 0.0).getEntry()
 
         gotoentry.addListener( { event ->
-            if (event.value.isDouble()) println( getAngleInNativeUnits( event.value.getDouble() ) )
+            if (event.value.isDouble()) println( angleToNativeUnits( event.value.getDouble() ) )
             // if (event.value.isDouble()) setAngle( event.value.getDouble() )
         }, EntryListenerFlags.kUpdate)
     }
@@ -82,13 +72,11 @@ object Hood : Subsystem("Hood") {
 
     fun setAngle(angle: Double) {
         if (angle < 0.0 || angle > HoodConstants.MaxAngle) return
-
-        val ticks = getAngleInNativeUnits(angle)
-
+        val ticks = angleToNativeUnits(angle)
         masterMotor.set(ControlMode.Position, 600.0)
     }
 
     override fun periodic() {
-        println(masterMotor.getClosedLoopError(0))
+        // println(masterMotor.getClosedLoopError(0))
     }
 }

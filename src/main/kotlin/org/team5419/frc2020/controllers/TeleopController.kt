@@ -5,19 +5,23 @@ import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.subsystems.StorageMode
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
+import org.team5419.frc2020.input.codriverXbox
 import org.team5419.frc2020.InputConstants
 import org.team5419.frc2020.HoodConstants
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
 import org.team5419.fault.input.SpaceDriveHelper
 import org.team5419.fault.Controller
-import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.GenericHID.Hand
+import edu.wpi.first.wpilibj.XboxController
+
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     private var isPassiveIntake: Boolean = false
     private var passiveState: StorageMode = StorageMode.OFF
+
+    private val controller = XboxController(1)
 
 
     private val driveHelper = SpaceDriveHelper(
@@ -58,8 +62,12 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             Intake.setIntake(0.0)
         }
 
-        if(codriver.deployIntake()) Intake.deploy()
-        else if(codriver.retractIntake()) Intake.retract()
+        if(codriver.deployIntake()) { Intake.deploy() }
+        else if(codriver.retractIntake()) { Intake.retract() }
+        else {
+            Intake.setIntake(0.0)
+            println("stop intake")
+        }
 
         if ( codriver.shoog() ) {
             Shooger.shoog()

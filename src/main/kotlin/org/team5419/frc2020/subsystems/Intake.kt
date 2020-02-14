@@ -25,24 +25,21 @@ object Intake : Subsystem("Intake") {
 
     public fun setIntake(percent: Double){
         if (percent == intakePercent) return
-
         intakePercent = percent
-
         intakeMotor.setPercent(percent)
     }
 
     // deploy
 
-    public fun deploy() = setDeploy(IntakeConstants.DeployStrength)
-    public fun retract() = setDeploy(-IntakeConstants.DeployStrength)
+    public fun deploy() = setDeploy(0.2)
+    public fun retract() = setDeploy(-0.4)
 
     private var deployPercent = 0.0
 
     public fun setDeploy(percent: Double){
+        println("set percent ${percent}")
         if (percent == deployPercent) return
-
         deployPercent = percent
-
         deployMotor.setPercent(percent)
     }
 
