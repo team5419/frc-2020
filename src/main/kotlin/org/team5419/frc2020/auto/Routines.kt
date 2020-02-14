@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
 import edu.wpi.first.wpilibj.trajectory.Trajectory
 import java.nio.file.Path
 
-
 fun generateRoutines (initalPose: Pose2d): Array<Routine> {
     val path: Path = Filesystem.getDeployDirectory().toPath().resolve("8ball.wpilib.json")
     val trajectory: Trajectory = TrajectoryUtil.fromPathweaverJson(path)
@@ -36,6 +35,7 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine> {
                 DriveConstants.DriveKa,
                 DriveConstants.DriveKs
             )
-        )
+        ),
+        Routine("Align and Shoot", initalPose, AlignAndShoogAction())
     )
 }

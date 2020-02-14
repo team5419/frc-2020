@@ -13,15 +13,17 @@ object Vision : Subsystem("Vision") {
     val limelight = Limelight (
         networkTableName = "limelight",
         inverted = false,
+
         mTargetHeight = VisionConstants.TargetHeight,
         mCameraHeight = VisionConstants.CameraHeight,
         mCameraAngle = Rotation2d( VisionConstants.CameraAngle )
     )
 
-    val horizontalOffset = limelight.horizontalOffset
-    val targetFound = limelight.targetFound
+    val targetFound
+        get() = limelight.targetFound
 
-    public var output: Double = 0.0
+    val horizontalOffset
+        get() = limelight.horizontalOffset
 
     // shuffleboard
 

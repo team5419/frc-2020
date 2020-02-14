@@ -90,6 +90,8 @@ object ShoogerConstants {
     public val TargetVelocity = 6000.0.radians.velocity
     public val TicksPerRotation = 4092.0.nativeUnits
 
+    public val ShoogeTime = 3.0.seconds
+
     // WHAT AM I? ->
     // public val V = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
 }
