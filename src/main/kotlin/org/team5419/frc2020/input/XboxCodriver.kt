@@ -20,7 +20,9 @@ object XboxCodriver: CodriverControls {
 
     override public fun retractIntake(): Boolean = codriverXbox.getXButton()
 
-    override public fun deployHood(): Boolean = codriverXbox.getPOV() == 270
+    override public fun deployHoodFar(): Boolean = codriverXbox.getPOV() == 270
+
+    override public fun deployHoodClose(): Boolean = codriverXbox.getPOV() == 270
 
     override public fun retractHood(): Boolean = codriverXbox.getPOV() == 90
 

@@ -106,7 +106,9 @@ object HoodConstants {
 
     public val MaxSpeed = 0.3
     public val MaxAngle = 18.0.degrees.inRadians()
-    public val AngleOffset = 0.259.radians
+
+    // public val AngleOffset = 0.259.radians
+
     public val TicksPerRotation = 4092.0
     public val GearRatio = 4.0/1.0
 }
