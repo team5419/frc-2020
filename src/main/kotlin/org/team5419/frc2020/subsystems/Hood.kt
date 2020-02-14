@@ -20,6 +20,8 @@ import org.team5419.fault.math.units.*
 object Hood : Subsystem("Hood") {
     public val angleOffset = 2253
 
+    private val nativeUnitsToAngle = HoodConstants.GearRatio / HoodConstants.TicksPerRotation * (2 * PI)
+
     private val masterMotor = TalonSRX(HoodConstants.HoodPort)
         .apply {
             // primary PID constants
@@ -41,14 +43,10 @@ object Hood : Subsystem("Hood") {
         }
 
     fun angleToNativeUnits(angle: Double) =
-        angle / (2 * PI) / HoodConstants.GearRatio * HoodConstants.TicksPerRotation - angleOffset
-
-
-    private val hoodPos
-        get() = (masterMotor.getSelectedSensorPosition(0) + angleOffset) / HoodConstants.TicksPerRotation
+        (angle / nativeUnitsToAngle) - angleOffset
 
     public val hoodAngle
-        get(): Double = hoodPos * HoodConstants.GearRatio * (2 * PI)
+        get() = (masterMotor.getSelectedSensorPosition(0) + angleOffset) * nativeUnitsToAngle
 
     // shuffleboard
 
@@ -68,13 +66,20 @@ object Hood : Subsystem("Hood") {
 
     // gettes
 
-    fun setAngle(angle: Double) {
-        if (angle < 0.0 || angle > HoodConstants.MaxAngle) return
-        val ticks = angleToNativeUnits(angle)
-        masterMotor.set(ControlMode.Position, 600.0)
+    public enum class HoodPosititions(public val angle: Double) {
+        FAR(15.0),
+        CLOSE(5.0),
+        RETRACT(0.0)
     }
 
-    override fun periodic() {
-        // println(masterMotor.getClosedLoopError(0))
+    fun goto(angle: HoodPosititions) {
+        goto( angle.angle )
+    }
+
+    fun goto(angle: Double) {
+        if (angle < 0.0 || angle > HoodConstants.MaxAngle) return
+        val ticks = angleToNativeUnits(angle)
+
+        masterMotor.set(ControlMode.Position, ticks)
     }
 }

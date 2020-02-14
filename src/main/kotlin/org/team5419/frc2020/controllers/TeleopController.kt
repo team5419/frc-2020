@@ -64,15 +64,19 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         if(codriver.deployIntake()) { Intake.deploy() }
         else if(codriver.retractIntake()) { Intake.retract() }
-        else {
-            Intake.setIntake(0.0)
-        }
+        else { Intake.setIntake(0.0) }
 
         if ( codriver.shoog() ) {
             Shooger.shoog()
         } else {
             Shooger.stop()
         }
+
+        if ( codriver.deployHoodFar() ) Hood.goto( Hood.HoodPosititions.FAR )
+
+        if (codriver.deployHoodClose() ) Hood.goto( Hood.HoodPosititions.CLOSE )
+
+        if (codriver.retractHood() ) Hood.goto( Hood.HoodPosititions.RETRACT )
     }
 
     override fun reset() {
