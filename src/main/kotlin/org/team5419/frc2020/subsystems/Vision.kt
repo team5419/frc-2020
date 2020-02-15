@@ -23,12 +23,13 @@ object Vision : Subsystem("Vision") {
     // PID loop
 
     public val controller: PIDController = PIDController(
-            VisionConstants.PID.P,
-            VisionConstants.PID.I,
-            VisionConstants.PID.D
+        VisionConstants.PID.P,
+        VisionConstants.PID.I,
+        VisionConstants.PID.D
     ).apply { setTolerance( VisionConstants.Tolerance ) }
 
     init{
+        // add the pid controllet to shuffleboard
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
     }
 
@@ -38,22 +39,19 @@ object Vision : Subsystem("Vision") {
         get() = limelight.targetFound && controller.atSetpoint()
 
     public fun autoAlign() {
+        // do we need to allign?
+        if ( !limelight.targetFound || aligned ) return
+
+        // get the pid loop output
         var output = controller.calculate(limelight.horizontalOffset)
 
-        if (limelight.horizontalOffset == 0.0) {
-            return
-        }
+        // limit the output
+        if (output > VisionConstants.MaxAutoAlignSpeed)
+            output = VisionConstants.MaxAutoAlignSpeed
+        if (output < -VisionConstants.MaxAutoAlignSpeed)
+            output = -VisionConstants.MaxAutoAlignSpeed
 
-        var max = 0.4
-
-        if (output > max) {
-            output = max
-        }
-
-        if (output < -max) {
-            output = -max
-        }
-
+        // let drive baby
         Drivetrain.setPercent(output, -output)
     }
 }

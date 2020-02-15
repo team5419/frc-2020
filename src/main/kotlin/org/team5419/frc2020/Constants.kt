@@ -144,6 +144,8 @@ object VisionConstants {
 
     public val Tolerance = 0.1
 
+    public val MaxAutoAlignSpeed = 0.5
+
     object PID {
         public const val P = 0.024
         public const val I = 0.0

@@ -74,14 +74,15 @@ object Shooger : Subsystem("Shooger") {
             setNeutralMode(NeutralMode.Coast)
         }
 
-    // vars
-
-    private var lastVelocity = 0.0
-    private var setpointVelocity = 0.0
-    private var setpoint = 0.0
-    private var bangBang = false
+    // settings
 
     private var targetVelocity = ShoogerConstants.TargetVelocity.value
+    private var bangBang = false
+
+    // mode
+
+    private var setpointVelocity = 0.0
+    private var setpoint = 0.0
 
     // shuffleboard
 

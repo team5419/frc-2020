@@ -21,18 +21,22 @@ object Storage : Subsystem("Storage") {
     var mode = StorageMode.OFF
         set(mode: StorageMode) {
             if (mode == field) return
+
             if (mode == StorageMode.LOAD) {
                 hopper.set( ControlMode.PercentOutput, hopperPercent )
                 feeder.set( ControlMode.PercentOutput, feederPercent )
             }
+
             if (mode == StorageMode.PASSIVE) {
                 hopper.set( ControlMode.PercentOutput, hopperLazyPercent )
                 feeder.set( ControlMode.PercentOutput, 0.0 )
             }
+
             if (mode == StorageMode.OFF) {
                 hopper.set( ControlMode.PercentOutput, 0.0 )
                 feeder.set( ControlMode.PercentOutput, 0.0 )
             }
+
             field = mode
         }
 
