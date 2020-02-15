@@ -52,32 +52,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     @Suppress("ComplexMethod")
     fun updateCodriver() {
-        // if(codriver.tooglePassiveStorage()) {
-        //     passiveState =
-        //         if (passiveState == StorageMode.PASSIVE) StorageMode.OFF
-        //         else StorageMode.PASSIVE
-        // }
+        if ( codriver.deployIntake() ) Intake.deploy()
+        if ( codriver.retractIntake() ) Intake.retract()
 
-        if(codriver.intake() > 0.3){
-            Intake.setIntake(codriver.intake())
-            Storage.mode = StorageMode.PASSIVE
-        } else if(codriver.outtake() > 0) {
-            Intake.setIntake(-codriver.outtake())
-            Storage.mode = StorageMode.PASSIVE
-        } else{
-            Intake.setIntake(0.0)
-            Storage.mode = StorageMode.OFF
-        }
-
-        if(codriver.deployIntake()) { Intake.deploy() }
-        else if(codriver.retractIntake()) { Intake.retract() }
-        else { Intake.setDeploy(0.0) }
-
-        if ( codriver.shoog() ) {
-            Shooger.shoog()
-        } else {
-            Shooger.stop()
-        }
+        if ( codriver.shoog() ) Shooger.shoog() else Shooger.stop()
 
         if ( codriver.deployHoodFar() ) Hood.goto( Hood.HoodPosititions.FAR )
 

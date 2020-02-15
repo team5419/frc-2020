@@ -51,18 +51,10 @@ object Hood : Subsystem("Hood") {
 
     // shuffleboard
 
-    public val tabName = "Hood"
-
     init {
         tab.addNumber("Angle", { hoodAngle })
         tab.addNumber("Error", { masterMotor.getClosedLoopError(0).toDouble() })
         tab.addNumber("Position", {masterMotor.getSelectedSensorPosition(0).toDouble()})
-        val gotoentry = tab.add("Go to angle", 0.0).getEntry()
-
-        gotoentry.addListener( { event ->
-            if (event.value.isDouble()) println( angleToNativeUnits( event.value.getDouble() ) )
-            // if (event.value.isDouble()) setAngle( event.value.getDouble() )
-        }, EntryListenerFlags.kUpdate)
     }
 
     // gettes

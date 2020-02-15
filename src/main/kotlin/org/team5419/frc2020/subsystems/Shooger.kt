@@ -81,12 +81,11 @@ object Shooger : Subsystem("Shooger") {
     private var lastVelocity = 0.0
     private var setpointVelocity = 0.0
     private var setpoint = 0.0
-    private var bangBang = true
+    private var bangBang = false
 
-    var targetVelocity = ShoogerConstants.TargetVelocity.value
+    private var targetVelocity = ShoogerConstants.TargetVelocity.value
 
     // shuffleboard
-
 
     init {
         val shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
@@ -121,22 +120,14 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isHungry(): Boolean = flyWheelVelocity >= setpointVelocity - 150
 
-    public fun toogleBrakeMode(isEnabled: Boolean) {
-        masterMotor.setNeutralMode( if (isEnabled) NeutralMode.Brake else NeutralMode.Coast )
-        slaveMotor1.setNeutralMode( if (isEnabled) NeutralMode.Brake else NeutralMode.Coast )
-        slaveMotor2.setNeutralMode( if (isEnabled) NeutralMode.Brake else NeutralMode.Coast )
-    }
+    public fun isActive(): Boolean = setpoint != 0.0
 
-    public fun shoog(shoogVelocity: Double = targetVelocity, useBangBang: Boolean = false) {
+    public fun shoog(shoogVelocity: Double = targetVelocity) {
         if ( shoogVelocity == setpointVelocity ) return
 
         setpointVelocity = shoogVelocity
 
         setpoint = calculateSetpoint(shoogVelocity)
-
-        bangBang = useBangBang
-
-        // Storage.mode = StorageMode.LOAD
 
         if (!bangBang) {
             masterMotor.set(ControlMode.Velocity, setpoint)
@@ -148,7 +139,6 @@ object Shooger : Subsystem("Shooger") {
         setpointVelocity = 0.0
 
         powerShooger(0.0)
-        // Storage.mode = StorageMode.OFF
     }
 
     // private api //
@@ -159,7 +149,6 @@ object Shooger : Subsystem("Shooger") {
 
     private fun powerShooger(percent: Double){
         masterMotor.set(ControlMode.PercentOutput, percent)
-
     }
 
     // subsystem functions
@@ -172,15 +161,7 @@ object Shooger : Subsystem("Shooger") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        if (setpoint == 0.0) return
-
-        if ( isHungry() ) {
-            Storage.mode = StorageMode.LOAD
-        } else {
-            Storage.mode = StorageMode.PASSIVE
-        }
-
-        if (bangBang) {
+        if (isActive() && bangBang) {
             if (setpointVelocity >= flyWheelVelocity) {
                 masterMotor.set(ControlMode.PercentOutput, 1.0)
             } else {

@@ -5,51 +5,57 @@ import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.NativeUnitRotationModel
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 
+public enum class IntakeMode {
+    STORED,
+    DEPLOYED
+}
+
 object Intake : Subsystem("Intake") {
     val intakeModel = NativeUnitRotationModel(IntakeConstants.IntakeTicksPerRotation)
     val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
 
     val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
-    val rollerMotor = BerkeliumSRX(IntakeConstants.RollerPort, intakeModel)
-
     val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
-
-    init {
-        deployMotor.brakeMode = true
-        rollerMotor.follow(intakeMotor)
-    }
-
-    // intake
-
-    private var intakePercent = 0.0
-
-    public fun setIntake(percent: Double){
-        if (percent == intakePercent) return
-        intakePercent = percent
-        intakeMotor.setPercent(percent)
-    }
 
     // deploy
 
-    public fun deploy() = setDeploy(0.2)
-    public fun retract() = setDeploy(-0.4)
+    public var mode = IntakeMode.STORED
+        set(mode: IntakeMode) {
+            if (mode == field) return
 
-    private var deployPercent = 0.0
+            if ( mode == IntakeMode.DEPLOYED ) {
+                intakeMotor.setPercent(  0.0 )
+                deployMotor.setPercent( -0.2 )
+            }
 
-    public fun setDeploy(percent: Double){
-        println("set percent ${percent}")
-        if (percent == deployPercent) return
-        deployPercent = percent
-        deployMotor.setPercent(percent)
-    }
+            if ( mode == IntakeMode.STORED ) {
+                intakeMotor.setPercent( 1.0 )
+                deployMotor.setPercent( 0.4 )
+            }
+
+            field = mode
+        }
+
+    public fun deploy() = { mode = IntakeMode.DEPLOYED }
+    public fun retract() = { mode = IntakeMode.STORED }
+    public fun isActive() = mode == IntakeMode.DEPLOYED
 
     // subsystem functions
 
     fun reset() {
-        setIntake(0.0)
-        setDeploy(0.0)
+        mode = IntakeMode.STORED
     }
 
     override fun autoReset() = reset()
     override fun teleopReset() = reset()
+
+    override fun periodic() {
+        if ( mode == IntakeMode.DEPLOYED ) {
+
+        }
+
+        if ( mode == IntakeMode.STORED ) {
+
+        }
+    }
 }

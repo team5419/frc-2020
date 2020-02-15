@@ -36,6 +36,7 @@ object Storage : Subsystem("Storage") {
         }
 
     // motors
+
     private val feeder = TalonSRX(StorageConstants.FeederPort)
         .apply {
             setInverted(true)
@@ -63,28 +64,22 @@ object Storage : Subsystem("Storage") {
         tab.addBoolean("IR Sensor", { isLoadedBall })
     }
 
-    // subsystem functions
-    fun reset() {
-        mode = StorageMode.OFF
-    }
-
-    override fun autoReset() = reset()
-    override fun teleopReset() = reset()
-
     override public fun periodic() {
-        // if (mode == StorageMode.LOAD) {
-        //     if ( Shooger.isHungry() ) {
-        //         feeder.set( ControlMode.PercentOutput, feederPercent )
-        //     } else {
-        //         feeder.set( ControlMode.PercentOutput, 0.0 )
-        //     }
-        // }
+        // figure out what mode should we be in?
+        if ( Shooger.isHungry() ) {
+            mode = StorageMode.LOAD
+        } else if ( Shooger.isActive() || Intake.isActive() ) {
+            mode = StorageMode.PASSIVE
+        } else {
+            mode = StorageMode.OFF
+        }
 
+        // do we need to partally load?
         if (mode == StorageMode.PASSIVE) {
-            // feeder.set(
-            //     ControlMode.PercentOutput,
-            //     if ( isLoadedBall ) feederLazyPercent else 0.0
-            // )
+            feeder.set(
+                ControlMode.PercentOutput,
+                if ( isLoadedBall ) feederLazyPercent else 0.0
+            )
         }
     }
 }
