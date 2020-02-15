@@ -2,7 +2,6 @@ package org.team5419.frc2020.controllers
 
 import org.team5419.frc2020.subsystems.Shooger
 import org.team5419.frc2020.subsystems.*
-import org.team5419.frc2020.subsystems.StorageMode
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
 import org.team5419.frc2020.InputConstants
@@ -33,7 +32,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         updateCodriver()
     }
 
-    fun updateDriver() {
+    private fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
 
         if (driver.align()) {
@@ -41,18 +40,26 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         }
     }
 
-    @Suppress("ComplexMethod")
-    fun updateCodriver() {
+    private fun updateCodriver() {
+        // intake
+
         if ( codriver.deployIntake() ) Intake.deploy()
         if ( codriver.retractIntake() ) Intake.retract()
 
+        // shooger
+
         if ( codriver.shoog() ) Shooger.shoog() else Shooger.stop()
 
-        if ( codriver.deployHoodFar() ) Hood.goto( Hood.HoodPosititions.FAR )
+        // hood
 
-        if ( codriver.deployHoodClose() ) Hood.goto( Hood.HoodPosititions.CLOSE )
+        if ( codriver.deployHoodFar() )
+            Hood.goto( Hood.HoodPosititions.FAR )
 
-        if (codriver.retractHood() ) Hood.goto( Hood.HoodPosititions.RETRACT )
+        if ( codriver.deployHoodClose() )
+            Hood.goto( Hood.HoodPosititions.CLOSE )
+
+        if (codriver.retractHood() )
+            Hood.goto( Hood.HoodPosititions.RETRACT )
     }
 
     override fun reset() {

@@ -1,5 +1,6 @@
 package org.team5419.frc2020.subsystems
 
+import org.team5419.frc2020.tab
 import org.team5419.frc2020.VisionConstants
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.*
@@ -9,6 +10,8 @@ import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.controller.PIDController
 
 object Vision : Subsystem("Vision") {
+    // config limelight
+
     val limelight = Limelight (
         networkTableName = "limelight",
         inverted = false,
@@ -20,27 +23,13 @@ object Vision : Subsystem("Vision") {
     // PID loop
 
     public val controller: PIDController = PIDController(
-        VisionConstants.PID.P,
-        VisionConstants.PID.I,
-        VisionConstants.PID.D
-    )
-
-    init {
-        controller.setTolerance( VisionConstants.Tolerance )
-    }
-
-    public var output: Double = 0.0
-
-    // shuffleboard
-
-    val tabName = "Vision"
-
-    val tab: ShuffleboardTab
+            VisionConstants.PID.P,
+            VisionConstants.PID.I,
+            VisionConstants.PID.D
+    ).apply { setTolerance( VisionConstants.Tolerance ) }
 
     init{
-        tab = Shuffleboard.getTab( tabName )
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
-        tab.addNumber("PID Output", { output })
     }
 
     // auto alignment
@@ -49,7 +38,7 @@ object Vision : Subsystem("Vision") {
         get() = limelight.targetFound && controller.atSetpoint()
 
     public fun autoAlign() {
-        output = controller.calculate(limelight.horizontalOffset)
+        var output = controller.calculate(limelight.horizontalOffset)
 
         if (limelight.horizontalOffset == 0.0) {
             return

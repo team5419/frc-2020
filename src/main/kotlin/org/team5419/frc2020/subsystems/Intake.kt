@@ -5,19 +5,21 @@ import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.NativeUnitRotationModel
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 
-public enum class IntakeMode {
-    STORED,
-    DEPLOYED
-}
-
 object Intake : Subsystem("Intake") {
+    // motors
+
     val intakeModel = NativeUnitRotationModel(IntakeConstants.IntakeTicksPerRotation)
     val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
 
     val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
     val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
 
-    // deploy
+    // intake mode
+
+    public enum class IntakeMode {
+        STORED,
+        DEPLOYED
+    }
 
     public var mode = IntakeMode.STORED
         set(mode: IntakeMode) {
@@ -35,6 +37,8 @@ object Intake : Subsystem("Intake") {
 
             field = mode
         }
+
+    // public api
 
     public fun deploy() = { mode = IntakeMode.DEPLOYED }
     public fun retract() = { mode = IntakeMode.STORED }

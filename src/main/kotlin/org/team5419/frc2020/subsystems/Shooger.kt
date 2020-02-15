@@ -1,10 +1,9 @@
 package org.team5419.frc2020.subsystems
 
-import org.team5419.frc2020.subsystems.StorageMode
+import org.team5419.frc2020.tab
 import org.team5419.frc2020.subsystems.Storage
 import org.team5419.frc2020.ShoogerConstants
 import org.team5419.frc2020.HoodConstants
-import org.team5419.frc2020.tab
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.units.derived.*
@@ -22,8 +21,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 
 @Suppress("TooManyFunctions")
 object Shooger : Subsystem("Shooger") {
-
-    val shoogerModel = NativeUnitRotationModel(ShoogerConstants.TicksPerRotation)
+    // shooger motors
 
     val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
         .apply {
@@ -116,7 +114,7 @@ object Shooger : Subsystem("Shooger") {
     public val analogValue
         get() = masterMotor.getSelectedSensorPosition(1)
 
-    // public api //
+    // public api
 
     public fun isHungry(): Boolean = flyWheelVelocity >= setpointVelocity - 150
 
@@ -141,7 +139,7 @@ object Shooger : Subsystem("Shooger") {
         powerShooger(0.0)
     }
 
-    // private api //
+    // private api
 
     private fun calculateSetpoint(velocity : Double) : Double {
         return velocity * 4096.0 / 600.0

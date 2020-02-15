@@ -1,21 +1,22 @@
 package org.team5419.frc2020.subsystems
 
+import org.team5419.frc2020.tab
+import org.team5419.frc2020.subsystems.Shooger
 import org.team5419.frc2020.StorageConstants
 import org.team5419.frc2020.ShoogerConstants
-import org.team5419.frc2020.tab
 import org.team5419.fault.subsystems.Subsystem
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.ControlMode
-import org.team5419.frc2020.subsystems.Shooger
-
-enum class StorageMode() { LOAD, PASSIVE, OFF }
 
 object Storage : Subsystem("Storage") {
+    // storage mode
+
+    enum class StorageMode() { LOAD, PASSIVE, OFF }
 
     var mode = StorageMode.OFF
         set(mode: StorageMode) {
@@ -50,6 +51,7 @@ object Storage : Subsystem("Storage") {
         }
 
     // default settings
+
     private var hopperPercent = StorageConstants.HopperPercent
     private var feederPercent = StorageConstants.FeederPercent
 
@@ -57,12 +59,15 @@ object Storage : Subsystem("Storage") {
     private var hopperLazyPercent = StorageConstants.HopperLazyPercent
 
     // distance sensor to find balls
+
     private val isLoadedBall: Boolean
         get() = feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
 
     init{
         tab.addBoolean("IR Sensor", { isLoadedBall })
     }
+
+    // subsystem functions
 
     override public fun periodic() {
         // figure out what mode should we be in?
