@@ -71,9 +71,28 @@ object Storage : Subsystem("Storage") {
         tab.addBoolean("IR Sensor", { isLoadedBall })
     }
 
+    // reverse
+
+    private var reverse = false
+
+    public fun revers() = { reverse = true }
+
     // subsystem functions
 
     override public fun periodic() {
+        // if its reversed then make it go backwards
+        if (reverse) {
+            // make it go backwards
+            feeder.set(ControlMode.PercentOutput, -1.0)
+            hopper.set(ControlMode.PercentOutput, -1.0)
+
+            // reset the reverse flag
+            reverse = false
+
+            // we done need to do the rest of the function
+            return
+        }
+
         // figure out what mode should we be in?
         if ( Shooger.isHungry() ) {
             mode = StorageMode.LOAD

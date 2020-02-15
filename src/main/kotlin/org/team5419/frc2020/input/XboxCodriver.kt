@@ -18,6 +18,8 @@ object XboxCodriver: CodriverControls {
 
     override public fun storeIntake(): Boolean = codriverXbox.getXButton()
 
+    override public fun reverseIntake(): Boolean = codriverXbox.getYButton()
+
     // hood functions
 
     override public fun deployHoodFar(): Boolean = codriverXbox.getPOV() == 0

@@ -64,9 +64,7 @@ object Hood : Subsystem("Hood") {
 
     fun hoodAngle() = hoodMotor.getSelectedSensorPosition(0) * nativeUnitsToAngle
 
-    fun goto(angle: HoodPosititions) {
-        goto( angle.angle )
-    }
+    fun goto(angle: HoodPosititions) = goto( angle.angle )
 
     fun goto(angle: Double) {
         assert(angle >= 0.0 && angle <= HoodConstants.MaxAngle)

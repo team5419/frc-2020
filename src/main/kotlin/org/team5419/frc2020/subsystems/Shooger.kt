@@ -79,7 +79,7 @@ object Shooger : Subsystem("Shooger") {
     private var targetVelocity = ShoogerConstants.TargetVelocity.value
     private var bangBang = false
 
-    // mode
+    // state
 
     private var setpointVelocity = 0.0
     private var setpoint = 0.0
@@ -142,13 +142,11 @@ object Shooger : Subsystem("Shooger") {
 
     // private api
 
-    private fun calculateSetpoint(velocity : Double) : Double {
-        return velocity * 4096.0 / 600.0
-    }
+    private fun calculateSetpoint(velocity : Double) =
+        velocity * 4096.0 / 600.0
 
-    private fun powerShooger(percent: Double){
+    private fun powerShooger(percent: Double) =
         masterMotor.set(ControlMode.PercentOutput, percent)
-    }
 
     // subsystem functions
 
