@@ -10,19 +10,19 @@ private val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
 object XboxCodriver: CodriverControls {
     override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
 
-    override public fun intake(): Double = codriverXbox.getTriggerAxis(Hand.kLeft)
+    // intake functions
 
-    override public fun outtake(): Double = codriverXbox.getTriggerAxis(Hand.kRight)
+    override public fun intake(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft) > 0.3
 
-    override public fun deployIntake(): Boolean = codriverXbox.getBButton()
+    override public fun outtake(): Boolean = codriverXbox.getTriggerAxis(Hand.kRight) > 0.3
 
-    override public fun retractIntake(): Boolean = codriverXbox.getXButton()
+    override public fun storeIntake(): Boolean = codriverXbox.getXButton()
+
+    // hood functions
 
     override public fun deployHoodFar(): Boolean = codriverXbox.getPOV() == 0
 
     override public fun deployHoodClose(): Boolean = codriverXbox.getPOV() == 90
 
     override public fun retractHood(): Boolean = codriverXbox.getPOV() == 180
-
-    override public fun tooglePassiveStorage(): Boolean = codriverXbox.getBumperPressed(Hand.kLeft)
 }

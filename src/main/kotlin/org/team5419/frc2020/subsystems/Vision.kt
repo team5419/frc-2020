@@ -21,15 +21,14 @@ object Vision : Subsystem("Vision") {
     )
 
     // PID loop
-
     public val controller: PIDController = PIDController(
         VisionConstants.PID.P,
         VisionConstants.PID.I,
         VisionConstants.PID.D
     ).apply { setTolerance( VisionConstants.Tolerance ) }
 
+    // add the pid controllet to shuffleboard
     init{
-        // add the pid controllet to shuffleboard
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
     }
 

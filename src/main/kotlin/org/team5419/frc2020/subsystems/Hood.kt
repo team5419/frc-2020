@@ -20,7 +20,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 object Hood : Subsystem("Hood") {
     // motor
 
-    private val masterMotor = TalonSRX(HoodConstants.HoodPort)
+    private val hoodMotor = TalonSRX(HoodConstants.HoodPort)
         .apply {
             // config PID constants
             config_kP(0, HoodConstants.PID.P, 0)
@@ -48,15 +48,7 @@ object Hood : Subsystem("Hood") {
             setSelectedSensorPosition(0, 0, 0)
         }
 
-    // shuffleboard
-
-    init {
-        tab.addNumber("Angle", { hoodAngle() })
-        tab.addNumber("Error", { masterMotor.getClosedLoopError(0).toDouble() })
-        tab.addNumber("Position", {masterMotor.getSelectedSensorPosition(0).toDouble() })
-    }
-
-    // gettes
+    // hood positions
 
     public enum class HoodPosititions(public val angle: Double) {
         FAR(15.0),
@@ -70,7 +62,7 @@ object Hood : Subsystem("Hood") {
 
     fun angleToNativeUnits(angle: Double) = angle / nativeUnitsToAngle
 
-    fun hoodAngle() = masterMotor.getSelectedSensorPosition(0) * nativeUnitsToAngle
+    fun hoodAngle() = hoodMotor.getSelectedSensorPosition(0) * nativeUnitsToAngle
 
     fun goto(angle: HoodPosititions) {
         goto( angle.angle )
@@ -81,6 +73,6 @@ object Hood : Subsystem("Hood") {
 
         val ticks = angleToNativeUnits(angle)
 
-        masterMotor.set(ControlMode.Position, ticks)
+        hoodMotor.set(ControlMode.Position, ticks)
     }
 }

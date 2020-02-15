@@ -18,20 +18,26 @@ object Intake : Subsystem("Intake") {
 
     public enum class IntakeMode {
         STORED,
-        DEPLOYED
+        INTAKE,
+        OUTTAKE
     }
 
     public var mode = IntakeMode.STORED
         set(mode: IntakeMode) {
-            if (mode == field) return
+            if ( mode == field ) return
 
-            if ( mode == IntakeMode.DEPLOYED ) {
-                intakeMotor.setPercent(  0.0 )
+            if ( mode == IntakeMode.INTAKE ) {
+                intakeMotor.setPercent(  1.0 )
+                deployMotor.setPercent( -0.2 )
+            }
+
+            if ( mode == IntakeMode.OUTTAKE ) {
+                intakeMotor.setPercent( -1.0 )
                 deployMotor.setPercent( -0.2 )
             }
 
             if ( mode == IntakeMode.STORED ) {
-                intakeMotor.setPercent( 1.0 )
+                intakeMotor.setPercent( 0.0 )
                 deployMotor.setPercent( 0.4 )
             }
 
@@ -40,9 +46,12 @@ object Intake : Subsystem("Intake") {
 
     // public api
 
-    public fun deploy() = { mode = IntakeMode.DEPLOYED }
-    public fun retract() = { mode = IntakeMode.STORED }
-    public fun isActive() = mode == IntakeMode.DEPLOYED
+    public fun intake() = { mode = IntakeMode.INTAKE }
+    public fun outtake() = { mode = IntakeMode.OUTTAKE }
+
+    public fun store() = { mode = IntakeMode.STORED }
+
+    public fun isActive() = mode == IntakeMode.INTAKE
 
     // subsystem functions
 
@@ -54,7 +63,11 @@ object Intake : Subsystem("Intake") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        if ( mode == IntakeMode.DEPLOYED ) {
+        if ( mode == IntakeMode.INTAKE ) {
+
+        }
+
+        if ( mode == IntakeMode.OUTTAKE ) {
 
         }
 

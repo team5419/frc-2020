@@ -43,8 +43,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     private fun updateCodriver() {
         // intake
 
-        if ( codriver.deployIntake() ) Intake.deploy()
-        if ( codriver.retractIntake() ) Intake.retract()
+        if ( codriver.outtake() ) Intake.outtake()
+        if ( codriver.intake() ) Intake.intake()
+
+        if ( codriver.storeIntake() ) Intake.store()
 
         // shooger
 

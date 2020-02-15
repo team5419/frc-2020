@@ -3,19 +3,19 @@ package org.team5419.frc2020.input
 public interface CodriverControls {
     public fun shoog() : Boolean
 
-    public fun deployIntake() : Boolean
+    // intake function
 
-    public fun retractIntake() : Boolean
+    public fun intake(): Boolean
 
-    public fun intake() : Double
+    public fun outtake(): Boolean
 
-    public fun outtake(): Double
+    public fun storeIntake(): Boolean
+
+    // hood functions
 
     public fun deployHoodFar(): Boolean
 
     public fun deployHoodClose(): Boolean
 
     public fun retractHood() : Boolean
-
-    public fun tooglePassiveStorage(): Boolean
 }
