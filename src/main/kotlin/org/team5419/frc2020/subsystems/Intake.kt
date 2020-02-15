@@ -42,12 +42,15 @@ object Intake : Subsystem("Intake") {
         intakeMotor.setPercent(0.0)
     }
 
-    public fun deploy() = setDeploy(IntakeConstants.DeployStrength)
-    public fun retract() = setDeploy(-IntakeConstants.DeployStrength)
+    public fun deploy() = deployMotor.setPosition(IntakeConstants.DeployAngle)
+    public fun retract() = deployMotor.setPosition(IntakeConstants.RetractAngle)
 
     public fun setDeploy(percent: Double){
         deployMotor.setPercent(percent)
     }
+
+    public fun isAtSetPoint(): Boolean =
+        deployMotor.talonSRX.getClosedLoopError(0) < IntakeConstants.ClosedLoopTolerence
 
     // subsystem functions
 

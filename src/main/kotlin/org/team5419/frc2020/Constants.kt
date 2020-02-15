@@ -126,6 +126,10 @@ object IntakeConstants {
     public const val RollerPort = 17
     public const val DeployPort = 4
     public const val DeployStrength = 0.2
+    public const val ClosedLoopTolerence = 10
+
+    public val DeployAngle = 90.degrees
+    public val RetractAngle = 0.degrees
 }
 
 object VisionConstants {
