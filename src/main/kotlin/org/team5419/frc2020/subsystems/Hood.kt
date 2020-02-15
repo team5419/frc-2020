@@ -18,7 +18,7 @@ import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
 
 object Hood : Subsystem("Hood") {
-    public val angleOffset = 2253
+    public val angleOffset = 0
 
     private val nativeUnitsToAngle = HoodConstants.GearRatio / HoodConstants.TicksPerRotation * (2 * PI)
 
@@ -32,14 +32,15 @@ object Hood : Subsystem("Hood") {
             configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 0)
             // limit the current to not brown out
             configPeakCurrentLimit(40)
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
             setSensorPhase(true)
             setInverted(false)
-            setNeutralMode(NeutralMode.Brake)
+            // setNeutralMode(NeutralMode.Brake)
             configForwardSoftLimitThreshold( angleToNativeUnits( HoodConstants.MaxAngle ).toInt(), 0)
             configForwardSoftLimitEnable(true, 0)
             configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 0)
             configReverseSoftLimitEnable(true, 0)
+            setSelectedSensorPosition(0, 0, 0)
         }
 
     fun angleToNativeUnits(angle: Double) =

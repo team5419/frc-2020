@@ -5,12 +5,10 @@ import org.team5419.frc2020.InputConstants
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.GenericHID.Hand
 
-public val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
+private val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
 
 object XboxCodriver: CodriverControls {
     override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
-
-    override public fun hood(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft)>0.2
 
     override public fun intake(): Double = codriverXbox.getTriggerAxis(Hand.kLeft)
 
@@ -20,11 +18,11 @@ object XboxCodriver: CodriverControls {
 
     override public fun retractIntake(): Boolean = codriverXbox.getXButton()
 
-    override public fun deployHoodFar(): Boolean = codriverXbox.getPOV() == 270
+    override public fun deployHoodFar(): Boolean = codriverXbox.getPOV() == 0
 
-    override public fun deployHoodClose(): Boolean = codriverXbox.getPOV() == 270
+    override public fun deployHoodClose(): Boolean = codriverXbox.getPOV() == 90
 
-    override public fun retractHood(): Boolean = codriverXbox.getPOV() == 90
+    override public fun retractHood(): Boolean = codriverXbox.getPOV() == 180
 
     override public fun tooglePassiveStorage(): Boolean = codriverXbox.getBumperPressed(Hand.kLeft)
 }

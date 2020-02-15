@@ -5,7 +5,6 @@ import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.subsystems.StorageMode
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
-import org.team5419.frc2020.input.codriverXbox
 import org.team5419.frc2020.InputConstants
 import org.team5419.frc2020.HoodConstants
 import org.team5419.fault.math.units.derived.*
@@ -37,34 +36,42 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     override fun start() { }
 
     override fun update() {
+        // Storage.mode = StorageMode.OFF
+
         updateDriver()
         updateCodriver()
     }
 
     fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
+
+        if (driver.align()) {
+            Vision.autoAlign()
+        }
     }
 
     @Suppress("ComplexMethod")
     fun updateCodriver() {
-        if(codriver.tooglePassiveStorage()) {
-            passiveState =
-                if (passiveState == StorageMode.PASSIVE) StorageMode.OFF
-                else StorageMode.PASSIVE
-        }
-
+        // if(codriver.tooglePassiveStorage()) {
+        //     passiveState =
+        //         if (passiveState == StorageMode.PASSIVE) StorageMode.OFF
+        //         else StorageMode.PASSIVE
+        // }
 
         if(codriver.intake() > 0.3){
             Intake.setIntake(codriver.intake())
+            Storage.mode = StorageMode.PASSIVE
         } else if(codriver.outtake() > 0) {
             Intake.setIntake(-codriver.outtake())
+            Storage.mode = StorageMode.PASSIVE
         } else{
             Intake.setIntake(0.0)
+            Storage.mode = StorageMode.OFF
         }
 
         if(codriver.deployIntake()) { Intake.deploy() }
         else if(codriver.retractIntake()) { Intake.retract() }
-        else { Intake.setIntake(0.0) }
+        else { Intake.setDeploy(0.0) }
 
         if ( codriver.shoog() ) {
             Shooger.shoog()

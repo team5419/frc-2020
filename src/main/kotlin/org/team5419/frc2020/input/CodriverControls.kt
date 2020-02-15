@@ -11,11 +11,9 @@ public interface CodriverControls {
 
     public fun outtake(): Double
 
-    public fun hood() : Boolean
+    public fun deployHoodFar(): Boolean
 
-    public fun deployHoodFar(): Boolean = codriverXbox.getPOV() == 270
-
-    public fun deployHoodClose(): Boolean = codriverXbox.getPOV() == 270
+    public fun deployHoodClose(): Boolean
 
     public fun retractHood() : Boolean
 

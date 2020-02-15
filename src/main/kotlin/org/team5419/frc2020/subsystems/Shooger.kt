@@ -89,7 +89,6 @@ object Shooger : Subsystem("Shooger") {
 
 
     init {
-
         val shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
 
         targetVelocity = shooterVelocityEntry.getDouble(ShoogerConstants.TargetVelocity.value)
@@ -137,6 +136,8 @@ object Shooger : Subsystem("Shooger") {
 
         bangBang = useBangBang
 
+        // Storage.mode = StorageMode.LOAD
+
         if (!bangBang) {
             masterMotor.set(ControlMode.Velocity, setpoint)
         }
@@ -147,7 +148,7 @@ object Shooger : Subsystem("Shooger") {
         setpointVelocity = 0.0
 
         powerShooger(0.0)
-        Storage.mode = StorageMode.OFF
+        // Storage.mode = StorageMode.OFF
     }
 
     // private api //

@@ -22,7 +22,7 @@ object Storage : Subsystem("Storage") {
             if (mode == field) return
             if (mode == StorageMode.LOAD) {
                 hopper.set( ControlMode.PercentOutput, hopperPercent )
-                feeder.set( ControlMode.PercentOutput, 0.0 )
+                feeder.set( ControlMode.PercentOutput, feederPercent )
             }
             if (mode == StorageMode.PASSIVE) {
                 hopper.set( ControlMode.PercentOutput, hopperLazyPercent )
@@ -72,13 +72,13 @@ object Storage : Subsystem("Storage") {
     override fun teleopReset() = reset()
 
     override public fun periodic() {
-        if (mode == StorageMode.LOAD) {
-            if ( Shooger.isHungry() ) {
-                feeder.set( ControlMode.PercentOutput, feederPercent )
-            } else {
-                feeder.set( ControlMode.PercentOutput, 0.0 )
-            }
-        }
+        // if (mode == StorageMode.LOAD) {
+        //     if ( Shooger.isHungry() ) {
+        //         feeder.set( ControlMode.PercentOutput, feederPercent )
+        //     } else {
+        //         feeder.set( ControlMode.PercentOutput, 0.0 )
+        //     }
+        // }
 
         if (mode == StorageMode.PASSIVE) {
             // feeder.set(

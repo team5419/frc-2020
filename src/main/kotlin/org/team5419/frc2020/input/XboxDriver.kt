@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand
 
 import org.team5419.frc2020.InputConstants
 
-public val driverXbox = XboxController(InputConstants.XboxDrivePort)
+private val driverXbox = XboxController(InputConstants.XboxDrivePort)
 
 object XboxDriver : DriverControls {
     override public fun getThrottle() =
@@ -22,4 +22,6 @@ object XboxDriver : DriverControls {
     override public fun slow() =
         driverXbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
         driverXbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
+
+    override public fun align(): Boolean = driverXbox.getAButton()
 }

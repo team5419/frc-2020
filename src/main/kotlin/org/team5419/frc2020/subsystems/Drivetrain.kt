@@ -124,8 +124,8 @@ object Drivetrain : AbstractTankDrive() {
         leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
         rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
         rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
-        rightMasterMotor.brakeMode = true
-        rightMasterMotor.brakeMode = true
+        rightMasterMotor.brakeMode = false
+        rightMasterMotor.brakeMode = false
 
         rightMasterMotor.talonSRX.configAuxPIDPolarity(true, 0)
         rightMasterMotor.talonSRX.configClosedLoopPeakOutput(kTurnSlot, 1.0, 0)
@@ -142,8 +142,6 @@ object Drivetrain : AbstractTankDrive() {
 
         rightMasterMotor.motionProfileCruiseVelocity = DriveConstants.MaxVelocity
         rightMasterMotor.motionProfileAcceleration = DriveConstants.MaxAcceleration
-
-        isBraking = false
 
         localization.reset()
         Notifier {

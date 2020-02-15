@@ -55,6 +55,16 @@ object Vision : Subsystem("Vision") {
             return
         }
 
+        var max = 0.4
+
+        if (output > max) {
+            output = max
+        }
+
+        if (output < -max) {
+            output = -max
+        }
+
         Drivetrain.setPercent(output, -output)
     }
 }

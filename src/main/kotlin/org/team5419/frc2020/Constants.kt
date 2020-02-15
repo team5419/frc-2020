@@ -86,7 +86,7 @@ object ShoogerConstants {
     public const val SlavePort1 = 17
     public const val SlavePort2 = 18
 
-    public val TargetVelocity = 6000.0.radians.velocity
+    public val TargetVelocity = 4000.0.radians.velocity
     public val TicksPerRotation = 4092.0.nativeUnits
 
     public val ShoogTime = 3.0.seconds
@@ -99,13 +99,13 @@ object HoodConstants {
     public const val HoodPort = 12
 
     object PID {
-        public const val P = 1.0
+        public const val P = 8.0
         public const val I = 0.0
         public const val D = 0.0
     }
 
-    public val MaxSpeed = 0.3
-    public val MaxAngle = 18.0.degrees.inRadians()
+    public val MaxSpeed = 1.0
+    public val MaxAngle = 18.0
 
     // public val AngleOffset = 0.259.radians
 
@@ -114,7 +114,7 @@ object HoodConstants {
 }
 
 object StorageConstants {
-    public const val FeederPort = 11
+    public const val FeederPort = 10
     public const val HopperPort = 9
 
     public const val FeederPercent = 1.0
@@ -146,7 +146,7 @@ object VisionConstants {
 
     object PID {
         public const val P = 0.024
-        public const val I = 0.00
-        public const val D = 100.0
+        public const val I = 0.0
+        public const val D = 0.0
     }
 }
