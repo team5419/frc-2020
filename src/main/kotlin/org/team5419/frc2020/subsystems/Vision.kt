@@ -4,6 +4,7 @@ import org.team5419.frc2020.tab
 import org.team5419.frc2020.VisionConstants
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.*
+import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.hardware.Limelight
 import edu.wpi.first.wpilibj.shuffleboard.*
@@ -53,7 +54,7 @@ object Vision : Subsystem("Vision") {
         if (output < -VisionConstants.MaxAutoAlignSpeed)
             output = -VisionConstants.MaxAutoAlignSpeed
 
-        // let drive baby
-        Drivetrain.setPercent(output, -output)
+        // lets drive baby
+        Drivetrain.setVelocity(output.meters.velocity, -output.meters.velocity, 0.0.volts, 0.0.volts)
     }
 }
