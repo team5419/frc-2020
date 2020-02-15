@@ -16,13 +16,6 @@ import edu.wpi.first.wpilibj.XboxController
 
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
-
-    private var isPassiveIntake: Boolean = false
-    private var passiveState: StorageMode = StorageMode.OFF
-
-    private val controller = XboxController(1)
-
-
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
@@ -33,11 +26,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         InputConstants.SlowMoveMultiplier
     )
 
-    override fun start() { }
+    override fun start() {}
 
     override fun update() {
-        // Storage.mode = StorageMode.OFF
-
         updateDriver()
         updateCodriver()
     }
@@ -59,7 +50,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         if ( codriver.deployHoodFar() ) Hood.goto( Hood.HoodPosititions.FAR )
 
-        if (codriver.deployHoodClose() ) Hood.goto( Hood.HoodPosititions.CLOSE )
+        if ( codriver.deployHoodClose() ) Hood.goto( Hood.HoodPosititions.CLOSE )
 
         if (codriver.retractHood() ) Hood.goto( Hood.HoodPosititions.RETRACT )
     }

@@ -24,37 +24,42 @@ object Hood : Subsystem("Hood") {
 
     private val masterMotor = TalonSRX(HoodConstants.HoodPort)
         .apply {
-            // primary PID constants
+            // config PID constants
             config_kP(0, HoodConstants.PID.P, 0)
             config_kI(0, HoodConstants.PID.I, 0)
             config_kD(0, HoodConstants.PID.D, 0)
+
             // make sure it dosent go to fast
             configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 0)
+
             // limit the current to not brown out
             configPeakCurrentLimit(40)
+
+            // config the sensor and direction
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
             setSensorPhase(true)
             setInverted(false)
-            // setNeutralMode(NeutralMode.Brake)
+
+            // config the soft limits
             configForwardSoftLimitThreshold( angleToNativeUnits( HoodConstants.MaxAngle ).toInt(), 0)
             configForwardSoftLimitEnable(true, 0)
             configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 0)
             configReverseSoftLimitEnable(true, 0)
+
+            // reset the sensor
             setSelectedSensorPosition(0, 0, 0)
         }
 
-    fun angleToNativeUnits(angle: Double) =
-        (angle / nativeUnitsToAngle) - angleOffset
+    fun angleToNativeUnits(angle: Double) = (angle / nativeUnitsToAngle) - angleOffset
 
-    public val hoodAngle
-        get() = (masterMotor.getSelectedSensorPosition(0) + angleOffset) * nativeUnitsToAngle
+    fun hoodAngle() = (masterMotor.getSelectedSensorPosition(0) + angleOffset) * nativeUnitsToAngle
 
     // shuffleboard
 
     init {
-        tab.addNumber("Angle", { hoodAngle })
+        tab.addNumber("Angle", { hoodAngle() })
         tab.addNumber("Error", { masterMotor.getClosedLoopError(0).toDouble() })
-        tab.addNumber("Position", {masterMotor.getSelectedSensorPosition(0).toDouble()})
+        tab.addNumber("Position", {masterMotor.getSelectedSensorPosition(0).toDouble() })
     }
 
     // gettes
