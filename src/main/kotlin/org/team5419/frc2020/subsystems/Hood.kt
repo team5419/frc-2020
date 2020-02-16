@@ -22,30 +22,33 @@ object Hood : Subsystem("Hood") {
 
     private val hoodMotor = TalonSRX(HoodConstants.HoodPort)
         .apply {
+            // reset
+            configFactoryDefault(100)
+
             // config PID constants
-            config_kP(0, HoodConstants.PID.P, 0)
-            config_kI(0, HoodConstants.PID.I, 0)
-            config_kD(0, HoodConstants.PID.D, 0)
+            config_kP(0, HoodConstants.PID.P, 100)
+            config_kI(0, HoodConstants.PID.I, 100)
+            config_kD(0, HoodConstants.PID.D, 100)
 
             // make sure it dosent go to fast
-            configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 0)
+            configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 100)
 
             // limit the current to not brown out
-            configPeakCurrentLimit(40)
+            configPeakCurrentLimit(40, 100)
 
             // config the sensor and direction
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
             setSensorPhase(true)
             setInverted(false)
 
             // config the soft limits
-            configForwardSoftLimitThreshold( angleToNativeUnits( HoodConstants.MaxAngle ).toInt(), 0)
-            configForwardSoftLimitEnable(true, 0)
-            configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 0)
-            configReverseSoftLimitEnable(true, 0)
+            configForwardSoftLimitThreshold( angleToNativeUnits( HoodConstants.MaxAngle ).toInt(), 100)
+            configForwardSoftLimitEnable(true, 100)
+            configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 100)
+            configReverseSoftLimitEnable(true, 100)
 
             // reset the sensor
-            setSelectedSensorPosition(0, 0, 0)
+            setSelectedSensorPosition(0, 0, 100)
         }
 
     // hood positions
