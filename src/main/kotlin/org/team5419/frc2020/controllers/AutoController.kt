@@ -14,7 +14,7 @@ import org.team5419.fault.auto.*
 import org.team5419.fault.math.geometry.Pose2d
 
 public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
-    public val autoSelector = SendableChooser<Routine>()
+    public var autoSelector = SendableChooser<Routine>()
     public var routine: Action
 
     init {
@@ -26,6 +26,7 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
     private fun refreshRoutines() {
+        autoSelector = SendableChooser<Routine>() //clear old routines
         generateRoutines(Drivetrain.robotPosition).iterator().forEach({
             autoSelector.addOption(it.name, it)
         })
