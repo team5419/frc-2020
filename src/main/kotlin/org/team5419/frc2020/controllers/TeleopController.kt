@@ -33,6 +33,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateDriver() {
+        Drivetrain.setPercent(driveHelper.output())
+
         if (driver.align()) {
             Vision.autoAlign()
 
@@ -44,8 +46,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 Vision.offset -= 2
             }
         }
-
-        Drivetrain.setPercent(driveHelper.output())
     }
 
     @Suppress("ComplexMethod")
