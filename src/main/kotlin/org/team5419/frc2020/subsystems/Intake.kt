@@ -46,10 +46,10 @@ object Intake : Subsystem("Intake") {
 
     // public api
 
-    public fun intake() = { mode = IntakeMode.INTAKE }
-    public fun outtake() = { mode = IntakeMode.OUTTAKE }
+    public fun intake() { mode = IntakeMode.INTAKE }
+    public fun outtake() { mode = IntakeMode.OUTTAKE }
 
-    public fun store() = { mode = IntakeMode.STORED }
+    public fun store() { mode = IntakeMode.STORED }
 
     public fun isActive() = mode == IntakeMode.INTAKE
 
