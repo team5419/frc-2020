@@ -18,22 +18,28 @@ object Intake : Subsystem("Intake") {
 
     public enum class IntakeMode {
         STORED,
+        DEPLOY,
+
         INTAKE,
-        OUTTAKE
+        OUTTAKE,
+
+        OFF
     }
 
     public var mode = IntakeMode.STORED
         set(mode: IntakeMode) {
+            println(mode)
+
             if ( mode == field ) return
 
             if ( mode == IntakeMode.INTAKE ) {
-                intakeMotor.setPercent(  1.0 )
-                deployMotor.setPercent( -0.2 )
+                intakeMotor.setPercent( 1.0 )
+                deployMotor.setPercent( 0.0 )
             }
 
             if ( mode == IntakeMode.OUTTAKE ) {
                 intakeMotor.setPercent( -1.0 )
-                deployMotor.setPercent( -0.2 )
+                deployMotor.setPercent( 0.0 )
             }
 
             if ( mode == IntakeMode.STORED ) {
@@ -41,15 +47,29 @@ object Intake : Subsystem("Intake") {
                 deployMotor.setPercent( 0.4 )
             }
 
+            if ( mode == IntakeMode.DEPLOY ) {
+                intakeMotor.setPercent( 0.0 )
+                deployMotor.setPercent( -0.4 )
+            }
+
+            if ( mode == IntakeMode.OFF ) {
+                intakeMotor.setPercent( 0.0 )
+                deployMotor.setPercent( 0.0 )
+            }
+
+
             field = mode
         }
 
     // public api
 
-    public fun intake() = { mode = IntakeMode.INTAKE }
-    public fun outtake() = { mode = IntakeMode.OUTTAKE }
+    public fun intake() { mode == IntakeMode.INTAKE }
 
-    public fun store() = { mode = IntakeMode.STORED }
+    public fun outtake() { mode == IntakeMode.OUTTAKE }
+
+    public fun turnOff() { mode == IntakeMode.OFF }
+
+    public fun store() { mode = IntakeMode.STORED }
 
     public fun isActive() = mode == IntakeMode.INTAKE
 
@@ -63,16 +83,5 @@ object Intake : Subsystem("Intake") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        if ( mode == IntakeMode.INTAKE ) {
-
-        }
-
-        if ( mode == IntakeMode.OUTTAKE ) {
-
-        }
-
-        if ( mode == IntakeMode.STORED ) {
-
-        }
     }
 }

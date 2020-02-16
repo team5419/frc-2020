@@ -40,13 +40,14 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         }
     }
 
+    @Suppress("ComplexMethod")
     private fun updateCodriver() {
         // intake
 
-        if ( codriver.outtake() ) Intake.outtake()
-        if ( codriver.intake() ) Intake.intake()
-
-        if ( codriver.storeIntake() ) Intake.store()
+             if ( codriver.outtake() ) Intake.outtake()
+        else if ( codriver.intake() ) Intake.intake()
+        else if ( codriver.storeIntake() ) Intake.store()
+        else Intake.turnOff()
 
         // shooger
 

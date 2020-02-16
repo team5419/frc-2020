@@ -45,6 +45,7 @@ object Storage : Subsystem("Storage") {
     private val feeder = TalonSRX(StorageConstants.FeederPort)
         .apply {
             setInverted(true)
+            setSensorPhase(false)
             setNeutralMode(NeutralMode.Brake)
             configSelectedFeedbackSensor(FeedbackDevice.Analog)
         }
@@ -64,10 +65,12 @@ object Storage : Subsystem("Storage") {
 
     // distance sensor to find balls
 
-    private val isLoadedBall: Boolean
-        get() = feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
 
-    init{
+    private val isLoadedBall: Boolean
+        get() = -feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
+
+    init {
+        // tab.addNumber("IR pos", { -feeder.getSelectedSensorPosition(0).toDouble() })
         tab.addBoolean("IR Sensor", { isLoadedBall })
     }
 
