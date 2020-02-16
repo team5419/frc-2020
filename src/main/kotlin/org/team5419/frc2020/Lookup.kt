@@ -25,7 +25,7 @@ object Lookup {
                     return null
                 }
 
-                val prevEntery = table.get(i)
+                val prevEntery = table.get(i - 1)
 
                 return LookupEntry(
                     distance,
