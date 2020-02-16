@@ -17,28 +17,32 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
 import edu.wpi.first.wpilibj.trajectory.Trajectory
 import java.nio.file.Path
 
-fun generateRoutines (initalPose: Pose2d): Array<Routine> = arrayOf<Routine> (
-        Routine("Max Score", initalPose, SerialAction(
+fun generateRoutines (initalPose: Pose2d): Array<Routine>{
+    return arrayOf<Routine> (
+        Routine("Max Score", initalPose,
             AlignAndShoogAction(),
             ParallelAction(
                 DeployIntakeAction(),
                 TimedIntakeAction(10.seconds),
-                HopperAction(StorageMode.PASSIVE)
+                HopperAction(StorageMode.PASSIVE),
                 RamseteAction(
                     Drivetrain,
                     initalPose,
+                    arrayOf<Vector2<Meter>>(),
                     initalPose,
                     DriveConstants.MaxVelocity,
                     DriveConstants.MaxAcceleration,
                     12.volts,
-                    DriveConstants.beta,
-                    DriveConstants.zeta,
-                    DriveConstants.kA,
-                    DriveConstants.kV,
-                    DriveConstants.kS,
+                    DriveConstants.TrackWidth,
+                    DriveConstants.Beta,
+                    DriveConstants.Zeta,
+                    DriveConstants.DriveKs,
+                    DriveConstants.DriveKv,
+                    DriveConstants.DriveKa
                 )
             )
-        )),
+        ),
         Routine("Auto Align", initalPose, AutoAlignAction()),
         Routine("Align and Shoot", initalPose, AlignAndShoogAction())
     )
+}
