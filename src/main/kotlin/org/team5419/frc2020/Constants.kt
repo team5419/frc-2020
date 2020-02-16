@@ -99,12 +99,12 @@ object HoodConstants {
     public const val HoodPort = 12
 
     object PID {
-        public const val P = 2.0
+        public const val P = 4.0
         public const val I = 0.0
         public const val D = 0.0
     }
 
-    public val MaxSpeed = 0.5
+    public val MaxSpeed = 0.6
     public val MaxAngle = 18.0
 
     // public val AngleOffset = 0.259.radians

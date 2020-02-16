@@ -55,7 +55,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // storage
 
-        codriver.reverseIntake()
+        if ( codriver.reverseIntake() ) Storage.revers()
 
         // hood
 

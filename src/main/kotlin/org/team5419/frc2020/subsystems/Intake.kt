@@ -18,15 +18,13 @@ object Intake : Subsystem("Intake") {
 
     public enum class IntakeMode {
         STORED,
-        DEPLOY,
-
         INTAKE,
         OUTTAKE,
-
+        LOCK,
         OFF
     }
 
-    public var mode = IntakeMode.STORED
+    public var mode = IntakeMode.OFF
         set(mode: IntakeMode) {
             println(mode)
 
@@ -34,20 +32,15 @@ object Intake : Subsystem("Intake") {
 
             if ( mode == IntakeMode.INTAKE ) {
                 intakeMotor.setPercent( 1.0 )
-                deployMotor.setPercent( 0.0 )
+                deployMotor.setPercent( 0.1 )
             }
 
             if ( mode == IntakeMode.OUTTAKE ) {
                 intakeMotor.setPercent( -1.0 )
-                deployMotor.setPercent( 0.0 )
+                deployMotor.setPercent( 0.1 )
             }
 
             if ( mode == IntakeMode.STORED ) {
-                intakeMotor.setPercent( 0.0 )
-                deployMotor.setPercent( 0.4 )
-            }
-
-            if ( mode == IntakeMode.DEPLOY ) {
                 intakeMotor.setPercent( 0.0 )
                 deployMotor.setPercent( -0.4 )
             }
@@ -57,26 +50,37 @@ object Intake : Subsystem("Intake") {
                 deployMotor.setPercent( 0.0 )
             }
 
+            if ( mode == IntakeMode.LOCK ) {
+                intakeMotor.setPercent( 0.0 )
+                deployMotor.setPercent( -0.2 )
+            }
+
 
             field = mode
         }
 
     // public api
 
-    public fun intake() { mode == IntakeMode.INTAKE }
+    public fun intake() { mode = IntakeMode.INTAKE }
 
-    public fun outtake() { mode == IntakeMode.OUTTAKE }
-
-    public fun turnOff() { mode == IntakeMode.OFF }
+    public fun outtake() { mode = IntakeMode.OUTTAKE }
 
     public fun store() { mode = IntakeMode.STORED }
+
+    public fun turnOff() {
+        if (mode == IntakeMode.STORED || mode == IntakeMode.LOCK) {
+            mode = IntakeMode.LOCK
+        } else {
+            mode = IntakeMode.OFF
+        }
+    }
 
     public fun isActive() = mode == IntakeMode.INTAKE
 
     // subsystem functions
 
     fun reset() {
-        mode = IntakeMode.STORED
+        mode = IntakeMode.OFF
     }
 
     override fun autoReset() = reset()

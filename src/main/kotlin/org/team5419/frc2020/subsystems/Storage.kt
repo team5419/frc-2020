@@ -18,7 +18,7 @@ object Storage : Subsystem("Storage") {
 
     enum class StorageMode() { LOAD, PASSIVE, OFF }
 
-    var mode = StorageMode.OFF
+    private var mode = StorageMode.OFF
         set(mode: StorageMode) {
             if (mode == field) return
 
@@ -78,7 +78,7 @@ object Storage : Subsystem("Storage") {
 
     private var reverse = false
 
-    public fun revers() = { reverse = true }
+    public fun revers() { reverse = true }
 
     // subsystem functions
 
@@ -86,13 +86,13 @@ object Storage : Subsystem("Storage") {
         // if its reversed then make it go backwards
         if (reverse) {
             // make it go backwards
-            feeder.set(ControlMode.PercentOutput, -1.0)
-            hopper.set(ControlMode.PercentOutput, -1.0)
+            feeder.set(ControlMode.PercentOutput, -0.5)
+            hopper.set(ControlMode.PercentOutput, -0.5)
 
             // reset the reverse flag
             reverse = false
 
-            // we done need to do the rest of the function
+            // we dont want to do the rest of the function
             return
         }
 
