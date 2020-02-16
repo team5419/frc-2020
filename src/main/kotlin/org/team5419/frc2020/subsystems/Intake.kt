@@ -14,13 +14,13 @@ object Intake : Subsystem("Intake") {
     val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
     val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
 
+    var isActive: Boolean = false
+
     // intake mode
 
     public enum class IntakeMode {
-        STORED,
         INTAKE,
         OUTTAKE,
-        LOCK,
         OFF
     }
 
@@ -29,51 +29,30 @@ object Intake : Subsystem("Intake") {
             println(mode)
             if ( mode == field ) return
             when(mode){
-                IntakeMode.INTAKE -> {
-                    intakeMotor.setPercent( 1.0 )
-                    deployMotor.setPercent( 0.1 )
-
-                } IntakeMode.OUTTAKE -> {
-                    intakeMotor.setPercent( -1.0 )
-                    deployMotor.setPercent( 0.1 )
-
-                } IntakeMode.STORED -> {
-                    intakeMotor.setPercent( 0.0 )
-                    deployMotor.setPercent( -0.4 )
-
-                } IntakeMode.OFF -> {
-                    intakeMotor.setPercent( 0.0 )
-                    deployMotor.setPercent( 0.0 )
-
-                } IntakeMode.LOCK -> {
-                    intakeMotor.setPercent( 0.0 )
-                    deployMotor.setPercent( -0.2 )
-
-                }
+                IntakeMode.INTAKE -> { intakeMotor.setPercent( 1.0 ) }
+                IntakeMode.OUTTAKE -> { intakeMotor.setPercent( -1.0 ) }
+                IntakeMode.OFF -> { intakeMotor.setPercent( 0.0 ) }
             }
-
             field = mode
         }
 
     // public api
 
-    public fun intake() { mode = IntakeMode.INTAKE }
+    public fun store() { deployMotor.setPercent(-0.2) }
+    public fun deploy() { deployMotor.setPercent(0.1) }
 
-    public fun outtake() { mode = IntakeMode.OUTTAKE }
-
-    public fun store() { mode = IntakeMode.STORED }
-
-    public fun turnOff() {
-        if (mode == IntakeMode.STORED || mode == IntakeMode.LOCK) {
-            mode = IntakeMode.LOCK
-        } else {
-            mode = IntakeMode.OFF
-        }
-    }
+    // public fun turnOff() {
+    //     if (mode == IntakeMode.STORED || mode == IntakeMode.LOCK) {
+    //         mode = IntakeMode.LOCK
+    //     } else {
+    //         mode = IntakeMode.OFF
+    //     }
+    // }
 
     public fun isActive() = mode == IntakeMode.INTAKE
 
     // subsystem functions
+
     fun reset() {
         mode = IntakeMode.OFF
     }
