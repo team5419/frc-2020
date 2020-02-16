@@ -28,10 +28,14 @@ object Lookup {
 
                 val prevEntery = table.get(i - 1)
 
+                val percent = (distance - entry.distance) / (prevEntery.distance - entry.distance)
+
+                val invertedPercent = percent - 1.0
+
                 return LookupEntry(
                     distance,
-                    ( entry.angle + prevEntery.angle ) / 2,
-                    ( entry.velocity + prevEntery.velocity ) / 2
+                    entry.angle * percent + prevEntery.angle * invertedPercent,
+                    entry.velocity * percent + prevEntery.velocity * invertedPercent
                 )
             }
         }
