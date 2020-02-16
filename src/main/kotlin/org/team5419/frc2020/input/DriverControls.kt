@@ -5,9 +5,9 @@ public interface DriverControls {
 
     public fun getTurn() : Double
 
-    public fun quickTurn() : Boolean
+    public fun slowTurn() : Boolean
 
-    public fun slow() : Boolean
+    public fun slowMove() : Boolean
 
     public fun align(): Boolean
 }

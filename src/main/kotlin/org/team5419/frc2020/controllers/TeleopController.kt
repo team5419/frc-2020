@@ -13,13 +13,12 @@ import org.team5419.fault.Controller
 import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.XboxController
 
-
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
-        { driver.quickTurn() },
-        { driver.slow() },
+        { driver.slowTurn() },
+        { driver.slowMove() },
         InputConstants.JoystickDeadband,
         InputConstants.SlowTurnMultiplier,
         InputConstants.SlowMoveMultiplier
@@ -33,10 +32,14 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateDriver() {
-        Drivetrain.setPercent(driveHelper.output())
-
         if (driver.align()) {
-            Vision.autoAlign()
+            Vision.autoAlign(
+                driver.getTurn() * InputConstants.SlowTurnMultiplier
+            )
+
+
+        } else {
+            Drivetrain.setPercent(driveHelper.output())
         }
     }
 

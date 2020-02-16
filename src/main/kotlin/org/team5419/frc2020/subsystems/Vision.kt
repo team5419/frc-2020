@@ -21,6 +21,8 @@ object Vision : Subsystem("Vision") {
         mCameraAngle = Rotation2d( VisionConstants.CameraAngle )
     )
 
+    public var offset = VisionConstants.TargetOffset
+
     // PID loop
     public val controller: PIDController =
         PIDController(
@@ -41,12 +43,12 @@ object Vision : Subsystem("Vision") {
     public val aligned
         get() = limelight.targetFound && controller.atSetpoint()
 
-    public fun autoAlign() {
+    public fun autoAlign(plus: Double=0.0) {
         // do we need to allign?
         if ( !limelight.targetFound || aligned ) return
 
         // get the pid loop output
-        var output = controller.calculate(limelight.horizontalOffset)
+        var output = controller.calculate(limelight.horizontalOffset + offset)
 
         // limit the output
         if (output > VisionConstants.MaxAutoAlignSpeed)
@@ -55,6 +57,7 @@ object Vision : Subsystem("Vision") {
             output = -VisionConstants.MaxAutoAlignSpeed
 
         // lets drive baby
-        Drivetrain.setVelocity(output.meters.velocity, -output.meters.velocity, 0.0.volts, 0.0.volts)
+        var velocity = (output + plus).meters.velocity
+        Drivetrain.setVelocity(velocity, -velocity, 0.0.volts, 0.0.volts)
     }
 }

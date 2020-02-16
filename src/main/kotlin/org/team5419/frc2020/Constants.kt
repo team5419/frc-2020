@@ -142,6 +142,8 @@ object VisionConstants {
 
     public val TargetHeight = 0.0.meters
 
+    public val TargetOffset = 0.0
+
     public val Tolerance = 0.1
 
     public val MaxAutoAlignSpeed = 0.5
