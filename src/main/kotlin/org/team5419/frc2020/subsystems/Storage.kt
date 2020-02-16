@@ -13,34 +13,38 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.ControlMode
 
+enum class StorageMode() { LOAD, PASSIVE, REVERSE, OFF }
+
 object Storage : Subsystem("Storage") {
     // storage mode
 
-    enum class StorageMode() { LOAD, PASSIVE, OFF }
-
-    private var mode = StorageMode.OFF
-        set(mode: StorageMode) {
-            if (mode == field) return
-
-            if (mode == StorageMode.LOAD) {
-                hopper.set( ControlMode.PercentOutput, hopperPercent )
-                feeder.set( ControlMode.PercentOutput, feederPercent )
+    var mode = StorageMode.OFF
+    set(mode: StorageMode) {
+        if (mode == field) return
+        when(mode){
+                Storage.LOAD -> {
+                    hopper.set( ControlMode.PercentOutput, hopperPercent )
+                    feeder.set( ControlMode.PercentOutput, feederPercent )
+                }
+                Storage.PASSIVE -> {
+                    hopper.set( ControlMode.PercentOutput, hopperLazyPercent )
+                    feeder.set( ControlMode.PercentOutput, 0.0 )
+                }
+                Storage.REVERSE -> {
+                    hopper.set( ControlMode.PercentOutput, -0.5)
+                    feeder.set( ControlMode.PercentOutput, -0.5)
+                }
+                Storage.OFF -> {
+                    hopper.set( ControlMode.PercentOutput, 0.0 )
+                    feeder.set( ControlMode.PercentOutput, 0.0 )
+                }
             }
-
-            if (mode == StorageMode.PASSIVE) {
-                hopper.set( ControlMode.PercentOutput, hopperLazyPercent )
-                feeder.set( ControlMode.PercentOutput, 0.0 )
-            }
-
-            if (mode == StorageMode.OFF) {
-                hopper.set( ControlMode.PercentOutput, 0.0 )
-                feeder.set( ControlMode.PercentOutput, 0.0 )
-            }
-
+            lastMode = feild
             field = mode
         }
 
-    // motors
+        var lastMode = mode
+        // motors
 
     private val feeder = TalonSRX(StorageConstants.FeederPort)
         .apply {
@@ -74,32 +78,30 @@ object Storage : Subsystem("Storage") {
         tab.addBoolean("IR Sensor", { isLoadedBall })
     }
 
-    // reverse
-
-    private var reverse = false
-
-    public fun revers() { reverse = true }
-
     // subsystem functions
 
     override public fun periodic() {
         // if its reversed then make it go backwards
-        if (reverse) {
-            // make it go backwards
-            feeder.set(ControlMode.PercentOutput, -0.5)
-            hopper.set(ControlMode.PercentOutput, -0.5)
+        // if (reverse) {
+        //     // make it go backwards
+        //     feeder.set(ControlMode.PercentOutput, -0.5)
+        //     hopper.set(ControlMode.PercentOutput, -0.5)
 
-            // reset the reverse flag
-            reverse = false
+        //     // reset the reverse flag
+        //     reverse = false
 
-            // we dont want to do the rest of the function
-            return
+        //     // we dont want to do the rest of the function
+        //     return
+        // }
+
+        if (mode == StorageMode.REVERSE ){
+
         }
 
         // figure out what mode should we be in?
         if ( Shooger.isHungry() ) {
             mode = StorageMode.LOAD
-        } else if ( Shooger.isActive() || Intake.isActive() ) {
+        } else if ( Shooger.isActive() ) {
             mode = StorageMode.PASSIVE
         } else {
             mode = StorageMode.OFF

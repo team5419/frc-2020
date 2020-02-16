@@ -1,7 +1,7 @@
 package org.team5419.frc2020.controllers
 
-import org.team5419.frc2020.subsystems.Shooger
 import org.team5419.frc2020.subsystems.*
+import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
 import org.team5419.frc2020.InputConstants
@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.XboxController
 
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
+    private var isPassiveStorage: Boolean = false
+
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
@@ -44,18 +46,32 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     private fun updateCodriver() {
         // intake
 
-             if ( codriver.outtake() ) Intake.outtake()
-        else if ( codriver.intake() ) Intake.intake()
-        else if ( codriver.storeIntake() ) Intake.store()
-        else Intake.turnOff()
+        if ( codriver.outtake() ) {
+            Intake.outtake()
+        } else if ( codriver.intake() ) {
+            Intake.intake()
+            Storage.mode = StorageMode.PASSIVE
+            isPassiveStorage = true
+        } else if ( codriver.storeIntake() ){
+            Intake.store()
+        } else {
+            Intake.turnOff()
+        }
 
         // shooger
-
         if ( codriver.shoog() ) Shooger.shoog() else Shooger.stop()
 
         // storage
-
-        if ( codriver.reverseIntake() ) Storage.revers()
+        if( codriver.toogleStorage() ) {
+            isPassiveStorage = !isPassiveStorage
+            if(isPassiveStorage) {
+                Storage.mode = StorageMode.PASSIVE
+            } else Storage.mode = StorageMode.OFF
+        } else if ( codriver.reverseStorage() ) {
+            Storage.mode = StorageMode.REVERSE
+        } else if( Storage.mode == StorageMode.REVERSE ) {
+            Storage.mode = Storage.lastMode
+        }
 
         // hood
 

@@ -27,34 +27,30 @@ object Intake : Subsystem("Intake") {
     public var mode = IntakeMode.OFF
         set(mode: IntakeMode) {
             println(mode)
-
             if ( mode == field ) return
+            when(mode){
+                IntakeMode.INTAKE -> {
+                    intakeMotor.setPercent( 1.0 )
+                    deployMotor.setPercent( 0.1 )
 
-            if ( mode == IntakeMode.INTAKE ) {
-                intakeMotor.setPercent( 1.0 )
-                deployMotor.setPercent( 0.1 )
+                } IntakeMode.OUTTAKE -> {
+                    intakeMotor.setPercent( -1.0 )
+                    deployMotor.setPercent( 0.1 )
+
+                } IntakeMode.STORED -> {
+                    intakeMotor.setPercent( 0.0 )
+                    deployMotor.setPercent( -0.4 )
+
+                } IntakeMode.OFF -> {
+                    intakeMotor.setPercent( 0.0 )
+                    deployMotor.setPercent( 0.0 )
+
+                } IntakeMode.LOCK -> {
+                    intakeMotor.setPercent( 0.0 )
+                    deployMotor.setPercent( -0.2 )
+
+                }
             }
-
-            if ( mode == IntakeMode.OUTTAKE ) {
-                intakeMotor.setPercent( -1.0 )
-                deployMotor.setPercent( 0.1 )
-            }
-
-            if ( mode == IntakeMode.STORED ) {
-                intakeMotor.setPercent( 0.0 )
-                deployMotor.setPercent( -0.4 )
-            }
-
-            if ( mode == IntakeMode.OFF ) {
-                intakeMotor.setPercent( 0.0 )
-                deployMotor.setPercent( 0.0 )
-            }
-
-            if ( mode == IntakeMode.LOCK ) {
-                intakeMotor.setPercent( 0.0 )
-                deployMotor.setPercent( -0.2 )
-            }
-
 
             field = mode
         }
@@ -78,7 +74,6 @@ object Intake : Subsystem("Intake") {
     public fun isActive() = mode == IntakeMode.INTAKE
 
     // subsystem functions
-
     fun reset() {
         mode = IntakeMode.OFF
     }
@@ -86,6 +81,5 @@ object Intake : Subsystem("Intake") {
     override fun autoReset() = reset()
     override fun teleopReset() = reset()
 
-    override fun periodic() {
-    }
+    override fun periodic() {}
 }
