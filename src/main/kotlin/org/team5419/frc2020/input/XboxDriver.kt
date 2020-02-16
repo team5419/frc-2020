@@ -15,13 +15,19 @@ object XboxDriver : DriverControls {
     override public fun getTurn() =
         driverXbox.getX( Hand.kRight )
 
-    override public fun quickTurn() =
+    override public fun slowTurn() =
         driverXbox.getBumper( Hand.kLeft ) ||
         driverXbox.getBumper( Hand.kRight )
 
-    override public fun slow() =
+    override public fun slowMove() =
         driverXbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
         driverXbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
 
+    // alignment functions
+
     override public fun align(): Boolean = driverXbox.getAButton()
+
+    override public fun adjustOffsetLeft(): Boolean = driverXbox.getBumper(Hand.kLeft)
+
+    override public fun adjustOffsetRight(): Boolean = driverXbox.getBumper(Hand.kRight)
 }

@@ -90,9 +90,6 @@ object ShoogerConstants {
     public val TicksPerRotation = 4092.0.nativeUnits
 
     public val ShoogTime = 3.0.seconds
-
-    // WHAT AM I? ->
-    // public val V = SIUnit<Frac<Volt, AngularVelocity>>(12.0/6000.0/2/PI)
 }
 
 object HoodConstants {
@@ -106,8 +103,6 @@ object HoodConstants {
 
     public val MaxSpeed = 0.6
     public val MaxAngle = 18.0
-
-    // public val AngleOffset = 0.259.radians
 
     public val TicksPerRotation = 4092.0
     public val GearRatio = 4.0/1.0
@@ -145,6 +140,8 @@ object VisionConstants {
     public val Tolerance = 0.1
 
     public val MaxAutoAlignSpeed = 0.5
+
+    public val TargetOffset = 0.0
 
     object PID {
         public const val P = 0.024

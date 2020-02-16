@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.controller.PIDController
 
 object Vision : Subsystem("Vision") {
     // config limelight
-
     val limelight = Limelight (
         networkTableName = "limelight",
         inverted = false,
@@ -20,6 +19,8 @@ object Vision : Subsystem("Vision") {
         mCameraHeight = VisionConstants.CameraHeight,
         mCameraAngle = Rotation2d( VisionConstants.CameraAngle )
     )
+
+    public var offset = VisionConstants.TargetOffset
 
     // PID loop
     public val controller: PIDController =
@@ -46,7 +47,7 @@ object Vision : Subsystem("Vision") {
         if ( !limelight.targetFound || aligned ) return
 
         // get the pid loop output
-        var output = controller.calculate(limelight.horizontalOffset)
+        var output = controller.calculate(limelight.horizontalOffset + offset)
 
         // limit the output
         if (output > VisionConstants.MaxAutoAlignSpeed)

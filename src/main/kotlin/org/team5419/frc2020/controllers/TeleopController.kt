@@ -18,8 +18,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
-        { driver.quickTurn() },
-        { driver.slow() },
+        { driver.slowTurn() || driver.align() },
+        { driver.slowMove() },
         InputConstants.JoystickDeadband,
         InputConstants.SlowTurnMultiplier,
         InputConstants.SlowMoveMultiplier
@@ -33,11 +33,19 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateDriver() {
-        Drivetrain.setPercent(driveHelper.output())
-
         if (driver.align()) {
             Vision.autoAlign()
+
+            if ( driver.adjustOffsetRight() ) {
+                Vision.offset += 2
+            }
+
+            if ( driver.adjustOffsetLeft() ) {
+                Vision.offset -= 2
+            }
         }
+
+        Drivetrain.setPercent(driveHelper.output())
     }
 
     @Suppress("ComplexMethod")
