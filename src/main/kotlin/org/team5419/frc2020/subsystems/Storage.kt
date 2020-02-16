@@ -42,7 +42,7 @@ object Storage : Subsystem("Storage") {
 
     // motors
 
-    private val feeder = TalonSRX(StorageConstants.FeederPort)
+    public val feeder = TalonSRX(StorageConstants.FeederPort)
         .apply {
             setInverted(true)
             setSensorPhase(false)
@@ -50,7 +50,7 @@ object Storage : Subsystem("Storage") {
             configSelectedFeedbackSensor(FeedbackDevice.Analog)
         }
 
-    private val hopper = TalonSRX(StorageConstants.HopperPort)
+    public val hopper = TalonSRX(StorageConstants.HopperPort)
         .apply {
             setInverted(true)
         }
@@ -60,7 +60,7 @@ object Storage : Subsystem("Storage") {
     private var hopperPercent = StorageConstants.HopperPercent
     private var feederPercent = StorageConstants.FeederPercent
 
-    private var feederLazyPercent = feederPercent
+    private var feederLazyPercent = 0.3
     private var hopperLazyPercent = StorageConstants.HopperLazyPercent
 
     // distance sensor to find balls
@@ -70,36 +70,45 @@ object Storage : Subsystem("Storage") {
         get() = -feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
 
     init {
-        // tab.addNumber("IR pos", { -feeder.getSelectedSensorPosition(0).toDouble() })
+        tab.addNumber("feeder amperage", { feeder.getStatorCurrent() })
+        tab.addNumber("IR pos", { -feeder.getSelectedSensorPosition(0).toDouble() })
         tab.addBoolean("IR Sensor", { isLoadedBall })
     }
 
     // reverse
 
-    private var reverse = false
+    private var reverse = 0
 
-    public fun revers() { reverse = true }
+    public fun revers() { reverse = 2 }
 
     // subsystem functions
 
+    @Suppress("ComplexMethod")
     override public fun periodic() {
         // if its reversed then make it go backwards
-        if (reverse) {
+        if (reverse == 2) {
             // make it go backwards
             feeder.set(ControlMode.PercentOutput, -0.5)
             hopper.set(ControlMode.PercentOutput, -0.5)
 
             // reset the reverse flag
-            reverse = false
+            reverse = 1
 
             // we dont want to do the rest of the function
             return
         }
 
+        if (reverse == 1) {
+            feeder.set(ControlMode.PercentOutput, 0.0)
+            hopper.set(ControlMode.PercentOutput, 0.0)
+
+            reverse = 0
+        }
+
         // figure out what mode should we be in?
         if ( Shooger.isHungry() ) {
             mode = StorageMode.LOAD
-        } else if ( Shooger.isActive() || Intake.isActive() ) {
+        } else if ( Intake.isActive() ) {
             mode = StorageMode.PASSIVE
         } else {
             mode = StorageMode.OFF
@@ -109,7 +118,7 @@ object Storage : Subsystem("Storage") {
         if (mode == StorageMode.PASSIVE) {
             feeder.set(
                 ControlMode.PercentOutput,
-                if ( isLoadedBall ) feederLazyPercent else 0.0
+                if ( !isLoadedBall ) feederLazyPercent else 0.0
             )
         }
     }

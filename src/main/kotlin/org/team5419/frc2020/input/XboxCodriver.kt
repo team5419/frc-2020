@@ -18,6 +18,7 @@ object XboxCodriver: CodriverControls {
 
     override public fun storeIntake(): Boolean = codriverXbox.getXButton()
 
+    // actually reverse storage
     override public fun reverseIntake(): Boolean = codriverXbox.getYButton()
 
     // hood functions

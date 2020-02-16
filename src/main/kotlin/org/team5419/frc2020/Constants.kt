@@ -101,7 +101,7 @@ object HoodConstants {
         public const val D = 0.0
     }
 
-    public val MaxSpeed = 0.6
+    public val MaxSpeed = 0.3
     public val MaxAngle = 18.0
 
     public val TicksPerRotation = 4092.0
@@ -116,7 +116,7 @@ object StorageConstants {
 
     public const val HopperPercent = 1.0
     public const val HopperLazyPercent = 0.3
-    public const val SensorThreshold = 450
+    public const val SensorThreshold = 500 //3500
 }
 
 object IntakeConstants {

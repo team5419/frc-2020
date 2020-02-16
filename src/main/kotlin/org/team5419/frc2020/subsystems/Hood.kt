@@ -53,10 +53,21 @@ object Hood : Subsystem("Hood") {
 
     // hood positions
 
-    public enum class HoodPosititions(public val angle: Double) {
+    public enum class HoodPosititions(public var angle: Double) {
         FAR(15.0),
         CLOSE(5.0),
         RETRACT(0.0)
+    }
+
+    init {
+        val hoodAngleEntry = tab.add("Target Hood", HoodPosititions.FAR.angle).getEntry()
+        hoodAngleEntry.setPersistent()
+        hoodAngleEntry.addListener( { event ->
+            if ( event.value.isDouble() )
+                HoodPosititions.FAR.angle = event.value.getDouble()
+        }, EntryListenerFlags.kUpdate)
+
+        HoodPosititions.FAR.angle = hoodAngleEntry.getDouble(HoodPosititions.FAR.angle)
     }
 
     // public api

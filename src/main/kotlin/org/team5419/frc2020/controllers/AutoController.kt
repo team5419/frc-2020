@@ -17,6 +17,8 @@ import org.team5419.fault.trajectory.constraints.TimingConstraint
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.frc2020.DriveConstants
 
+import com.ctre.phoenix.motorcontrol.ControlMode
+
 public class AutoController() : Controller {
     public val autoSelector = SendableChooser<Routine>()
 
@@ -57,9 +59,10 @@ public class AutoController() : Controller {
 
     override fun update() {
         // routine.update()
+        Storage.feeder.set( ControlMode.PercentOutput, 1.0 )
     }
 
     override fun reset() {
-        start()
+        // start()
     }
 }

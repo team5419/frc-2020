@@ -7,6 +7,7 @@ import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.hardware.Limelight
+import org.team5419.fault.hardware.Limelight.LightMode
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.controller.PIDController
 
@@ -19,6 +20,10 @@ object Vision : Subsystem("Vision") {
         mCameraHeight = VisionConstants.CameraHeight,
         mCameraAngle = Rotation2d( VisionConstants.CameraAngle )
     )
+
+    init {
+        limelight.lightMode = LightMode.Off
+    }
 
     public var offset = VisionConstants.TargetOffset
 
@@ -43,6 +48,9 @@ object Vision : Subsystem("Vision") {
         get() = limelight.targetFound && controller.atSetpoint()
 
     public fun autoAlign() {
+        // turn light off
+        on()
+
         // do we need to allign?
         if ( !limelight.targetFound || aligned ) return
 
@@ -57,5 +65,13 @@ object Vision : Subsystem("Vision") {
 
         // lets drive baby
         Drivetrain.setVelocity(output.meters.velocity, -output.meters.velocity, 0.0.volts, 0.0.volts)
+    }
+
+    public fun on() {
+        limelight.lightMode = LightMode.On
+    }
+
+    public fun off() {
+        limelight.lightMode = LightMode.Off
     }
 }

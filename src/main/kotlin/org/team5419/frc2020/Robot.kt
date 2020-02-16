@@ -12,7 +12,7 @@ import edu.wpi.first.networktables.NetworkTableInstance
 @SuppressWarnings("MagicNumber")
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
-class Robot : BerkeliumRobot(0.05.seconds) {
+class Robot : BerkeliumRobot(0.02.seconds) {
     private val autoController: AutoController
     private val teleopController: TeleopController
 

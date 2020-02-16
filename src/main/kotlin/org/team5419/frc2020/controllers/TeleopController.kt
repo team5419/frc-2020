@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.XboxController
 
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
+    private var isPassiveIntake: Boolean = false;
+
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
@@ -45,6 +47,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             if ( driver.adjustOffsetLeft() ) {
                 Vision.offset -= 2
             }
+        } else {
+            Vision.off()
         }
     }
 

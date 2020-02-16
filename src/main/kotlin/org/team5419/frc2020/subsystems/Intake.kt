@@ -31,12 +31,12 @@ object Intake : Subsystem("Intake") {
             if ( mode == field ) return
 
             if ( mode == IntakeMode.INTAKE ) {
-                intakeMotor.setPercent( 1.0 )
+                intakeMotor.setPercent( -1.0 )
                 deployMotor.setPercent( 0.1 )
             }
 
             if ( mode == IntakeMode.OUTTAKE ) {
-                intakeMotor.setPercent( -1.0 )
+                intakeMotor.setPercent( 1.0 )
                 deployMotor.setPercent( 0.1 )
             }
 
@@ -54,7 +54,6 @@ object Intake : Subsystem("Intake") {
                 intakeMotor.setPercent( 0.0 )
                 deployMotor.setPercent( -0.2 )
             }
-
 
             field = mode
         }
