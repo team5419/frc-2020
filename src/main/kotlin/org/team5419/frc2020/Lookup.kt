@@ -1,6 +1,7 @@
 data class LookupEntry(val distance: Double, val angle: Double, val velocity: Double)
 
 object Lookup {
+    // largest entery at 0
     private val table = mutableListOf<LookupEntry>()
 
     fun add(distance: Double, angle: Double, velocity: Double) {
