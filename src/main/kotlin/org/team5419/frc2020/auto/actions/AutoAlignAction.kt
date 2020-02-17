@@ -9,9 +9,7 @@ import edu.wpi.first.wpilibj.controller.PIDController
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 
 class AutoAlignAction() : Action() {
-    init{
-        Drivetrain.isBraking = true
-
+    init {
         finishCondition += { Vision.aligned }
     }
 
@@ -23,7 +21,5 @@ class AutoAlignAction() : Action() {
         Vision.off()
 
         Drivetrain.setPercent(0.0, 0.0)
-
-        Drivetrain.isBraking = false
     }
 }

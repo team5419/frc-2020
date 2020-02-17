@@ -32,9 +32,9 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
         autoSelector.setDefaultOption("Baseline", baseline)
 
         // add all the routies
-        generateRoutines(Drivetrain.robotPosition).iterator().forEach({
-            autoSelector.addOption(it.name, it)
-        })
+        // generateRoutines(Drivetrain.robotPosition).iterator().forEach({
+        //     autoSelector.addOption(it.name, it)
+        // })
     }
 
     override fun start() {
