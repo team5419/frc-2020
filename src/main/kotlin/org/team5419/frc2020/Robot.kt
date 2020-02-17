@@ -9,11 +9,9 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
 
-val tab = Shuffleboard.getTab("Auto")
-
-@SuppressWarnings("MagicNumber")
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
+@SuppressWarnings("MagicNumber")
 class Robot : BerkeliumRobot(0.02.seconds) {
     private val autoController: AutoController
     private val teleopController: TeleopController

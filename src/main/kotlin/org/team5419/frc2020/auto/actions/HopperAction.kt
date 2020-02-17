@@ -1,7 +1,7 @@
 package org.team5419.frc2020.auto.actions
 
 import org.team5419.frc2020.subsystems.*
-import org.team5419.frc2020.subsystems.StorageMode
+import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.fault.auto.*
 import org.team5419.fault.math.units.*
 import edu.wpi.first.wpilibj.controller.PIDController

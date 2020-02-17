@@ -12,6 +12,7 @@ import org.team5419.fault.math.physics.DifferentialDrive
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.localization.TankPositionTracker
 import org.team5419.fault.math.geometry.Rotation2d
+import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.input.DriveSignal
 import org.team5419.fault.hardware.ctre.*
 import edu.wpi.first.wpilibj.Notifier
@@ -65,6 +66,9 @@ object Drivetrain : Subsystem("DriveTrain") {
         { leftDistance.value },
         { rightDistance.value }
     )
+
+    val robotPosition: Pose2d
+        get() = localization.robotPosition
 
     // hardware
 
