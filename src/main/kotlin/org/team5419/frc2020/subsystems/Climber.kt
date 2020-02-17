@@ -15,12 +15,13 @@ object Climber : Subsystem("Climber") {
     private val climbMotor = BerkeliumSRX(ClimbConstants.climberPort, climbModel)
 
     init{
+        exendMotor.talonSRX.configFactoryDefault(100)
+        climbMotor.talonSRX.configFactoryDefault(100)
 
     }
 
     fun exend() = exendMotor.setPercent(1.0)
     fun retract() = exendMotor.setPercent(-1.0)
     fun climb() = climbMotor.setPercent(1.0)
-
 
 }
