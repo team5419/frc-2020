@@ -22,21 +22,21 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
             AlignAndShoogAction(),
             ParallelAction(
                 TimedIntakeAction(10.seconds)
-                ,RamseteAction(
-                    Drivetrain,
-                    initalPose,
-                    arrayOf<Vector2<Meter>>(),
-                    initalPose,
-                    DriveConstants.MaxVelocity,
-                    DriveConstants.MaxAcceleration,
-                    12.volts,
-                    DriveConstants.TrackWidth,
-                    DriveConstants.Beta,
-                    DriveConstants.Zeta,
-                    DriveConstants.DriveKs,
-                    DriveConstants.DriveKv,
-                    DriveConstants.DriveKa
-                )
+                // ,RamseteAction(
+                //     Drivetrain,
+                //     initalPose,
+                //     arrayOf<Vector2<Meter>>(),
+                //     initalPose,
+                //     DriveConstants.MaxVelocity,
+                //     DriveConstants.MaxAcceleration,
+                //     12.volts,
+                //     DriveConstants.TrackWidth,
+                //     DriveConstants.Beta,
+                //     DriveConstants.Zeta,
+                //     DriveConstants.DriveKs,
+                //     DriveConstants.DriveKv,
+                //     DriveConstants.DriveKa
+                // )
             )
         ),
         Routine("Auto Align", initalPose, AutoAlignAction()),

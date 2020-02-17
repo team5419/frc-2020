@@ -87,13 +87,13 @@ object Drivetrain : AbstractTankDrive() {
     public val gyro = PigeonIMU(DriveConstants.GyroPort)
 
     init {
-        leftMasterMotor.talonSRX.configFactoryDefault(100)
-        rightMasterMotor.talonSRX.configFactoryDefault(100)
+        // leftMasterMotor.talonSRX.configFactoryDefault(100)
+        // rightMasterMotor.talonSRX.configFactoryDefault(100)
 
-        leftSlave1.talonSRX.configFactoryDefault(100)
+        // leftSlave1.talonSRX.configFactoryDefault(100)
         leftSlave1.follow(leftMasterMotor)
 
-        rightSlave1.talonSRX.configFactoryDefault(100)
+        // rightSlave1.talonSRX.configFactoryDefault(100)
         rightSlave1.follow(rightMasterMotor)
 
 

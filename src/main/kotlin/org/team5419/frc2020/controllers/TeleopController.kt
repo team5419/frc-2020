@@ -71,14 +71,14 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // hood
 
-        if ( codriver.deployHoodFar() )
-            Hood.goto( Hood.HoodPosititions.FAR )
+        // if ( codriver.deployHoodFar() )
+        //     Hood.goto( Hood.HoodPosititions.FAR )
 
-        if ( codriver.deployHoodClose() )
-            Hood.goto( Hood.HoodPosititions.CLOSE )
+        // if ( codriver.deployHoodClose() )
+        //     Hood.goto( Hood.HoodPosititions.CLOSE )
 
-        if (codriver.retractHood() )
-            Hood.goto( Hood.HoodPosititions.RETRACT )
+        // if (codriver.retractHood() )
+        //     Hood.goto( Hood.HoodPosititions.RETRACT )
     }
 
     override fun reset() {

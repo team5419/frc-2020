@@ -20,7 +20,7 @@ object Storage : Subsystem("Storage") {
 
     private var mode = StorageMode.OFF
         set(mode: StorageMode) {
-            if (mode == field) return
+            // if (mode == field) return
 
             if (mode == StorageMode.LOAD) {
                 hopper.set( ControlMode.PercentOutput, hopperPercent )
@@ -99,8 +99,9 @@ object Storage : Subsystem("Storage") {
         }
 
         if (reverse == 1) {
-            feeder.set(ControlMode.PercentOutput, 0.0)
-            hopper.set(ControlMode.PercentOutput, 0.0)
+            mode = mode
+            // feeder.set(ControlMode.PercentOutput, 0.0)
+            // hopper.set(ControlMode.PercentOutput, 0.0)
 
             reverse = 0
         }
@@ -108,7 +109,7 @@ object Storage : Subsystem("Storage") {
         // figure out what mode should we be in?
         if ( Shooger.isHungry() ) {
             mode = StorageMode.LOAD
-        } else if ( Intake.isActive() ) {
+        } else if ( Intake.isActive() || Shooger.isActive() ) {
             mode = StorageMode.PASSIVE
         } else {
             mode = StorageMode.OFF

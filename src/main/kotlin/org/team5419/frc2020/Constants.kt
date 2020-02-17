@@ -18,8 +18,8 @@ object DriveConstants {
     const val LeftMasterPort = 2
     const val LeftSlavePort = 3
 
-    const val RightMasterPort = 4
-    const val RightSlavePort = 5
+    const val RightMasterPort = 5
+    const val RightSlavePort = 4
 
     const val GyroPort = 20
 
