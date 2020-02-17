@@ -141,12 +141,12 @@ object VisionConstants {
 
     public val Tolerance = 0.1
 
-    public val MaxAutoAlignSpeed = 0.5
+    public val MaxAutoAlignSpeed = DriveConstants.MaxVelocity
 
     public val TargetOffset = 0.0
 
     object PID {
-        public const val P = 0.024
+        public const val P = 2.4
         public const val I = 0.0
         public const val D = 0.0
     }
