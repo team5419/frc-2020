@@ -22,19 +22,26 @@ object Storage : Subsystem("Storage") {
         set(mode: StorageMode) {
             if (mode == field) return
 
-            if (mode == StorageMode.LOAD) {
-                hopper.set( ControlMode.PercentOutput, hopperPercent )
-                feeder.set( ControlMode.PercentOutput, feederPercent )
-            }
+            when (mode) {
+                StorageMode.LOAD -> {
+                    hopper.set( ControlMode.PercentOutput, hopperPercent )
+                    feeder.set( ControlMode.PercentOutput, feederPercent )
+                }
 
-            if (mode == StorageMode.PASSIVE) {
-                hopper.set( ControlMode.PercentOutput, hopperLazyPercent )
-                feeder.set( ControlMode.PercentOutput, 0.0 )
-            }
+                StorageMode.PASSIVE -> {
+                    hopper.set( ControlMode.PercentOutput, hopperLazyPercent )
+                    feeder.set( ControlMode.PercentOutput, 0.0 )
+                }
 
-            if (mode == StorageMode.OFF) {
-                hopper.set( ControlMode.PercentOutput, 0.0 )
-                feeder.set( ControlMode.PercentOutput, 0.0 )
+                StorageMode.OFF -> {
+                    hopper.set( ControlMode.PercentOutput, 0.0 )
+                    feeder.set( ControlMode.PercentOutput, 0.0 )
+                }
+
+                StorageMode.REVERSE -> {
+                    hopper.set( ControlMode.PercentOutput, -0.5 )
+                    feeder.set( ControlMode.PercentOutput, -0.5 )
+                }
             }
 
             lastMode = field
@@ -59,6 +66,18 @@ object Storage : Subsystem("Storage") {
             setInverted(true)
         }
 
+    // reverse
+
+    public fun reverse() {
+        mode = StorageMode.REVERSE
+    }
+
+    public fun reset() {
+        if (mode == StorageMode.REVERSE) {
+            mode = lastMode
+        }
+    }
+
     // default settings
 
     private var hopperPercent = StorageConstants.HopperPercent
@@ -82,9 +101,9 @@ object Storage : Subsystem("Storage") {
 
     @Suppress("ComplexMethod")
     override public fun periodic() {
-        // if its reversed then make it go backwards
+        // if its reversed then we want to overide the any outher logic
         if (mode == StorageMode.REVERSE ) {
-            mode = lastMode
+            return
         }
 
         // figure out what mode should we be in?

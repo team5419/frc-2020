@@ -61,7 +61,6 @@ object Hood : Subsystem("Hood") {
 
     init {
         val hoodAngleEntry = tab.add("Target Hood", HoodPosititions.FAR.angle).getEntry()
-        hoodAngleEntry.setPersistent()
         hoodAngleEntry.addListener( { event ->
             if ( event.value.isDouble() )
                 HoodPosititions.FAR.angle = event.value.getDouble()

@@ -5,6 +5,7 @@ import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.NativeUnitRotationModel
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
 
+@Suppress("TooManyFunctions")
 object Intake : Subsystem("Intake") {
     // motors
 
@@ -22,7 +23,7 @@ object Intake : Subsystem("Intake") {
         OFF
     }
 
-    public var mode = IntakeMode.OFF
+    public var intakeMode = IntakeMode.OFF
         set(mode: IntakeMode) {
             if ( mode == field ) return
 
@@ -35,23 +36,84 @@ object Intake : Subsystem("Intake") {
             field = mode
         }
 
+    // deploy modes
+
+    public enum class DeployMode {
+        DEPLOY,
+        STORE,
+        LOCK,
+        OFF
+    }
+
+    public var deployMode = DeployMode.OFF
+        set(mode: DeployMode) {
+            if ( mode == field ) return
+
+            when (mode) {
+                DeployMode.DEPLOY -> { deployMotor.setPercent(  0.2 ) }
+                DeployMode.STORE  -> { deployMotor.setPercent( -0.4 ) }
+                DeployMode.LOCK   -> { deployMotor.setPercent( -0.2 ) }
+                DeployMode.OFF    -> { deployMotor.setPercent(  0.0 ) }
+            }
+
+            field = mode
+        }
+
     // deploy functions
 
-    public fun store()  = deployMotor.setPercent( -0.2 )
-    public fun deploy() = deployMotor.setPercent(  0.1 )
+    public fun store() {
+        deployMode = DeployMode.STORE
+
+        // turn off the intake, were storing it
+        intakeMode = IntakeMode.OFF
+    }
+
+    public fun deploy() {
+        deployMode = DeployMode.DEPLOY
+    }
+
+    public fun stopDeploy() {
+        if ( deployMode == DeployMode.STORE || deployMode == DeployMode.STORE ) {
+            deployMode = DeployMode.STORE
+        } else {
+            deployMode = DeployMode.OFF
+        }
+    }
 
     // intake functions
 
-    public fun intake()  { mode = IntakeMode.INTAKE }
-    public fun outtake() { mode = IntakeMode.OUTTAKE }
-    public fun stop()    { mode = IntakeMode.OFF }
+    public fun intake() {
+        intakeMode = IntakeMode.INTAKE
 
-    public fun isActive() = mode == IntakeMode.INTAKE
+        // cant intake if were down
+        deployMode = DeployMode.DEPLOY
+    }
+
+    public fun outtake() {
+        intakeMode = IntakeMode.OUTTAKE
+
+        // cant intake if were down
+        deployMode = DeployMode.DEPLOY
+    }
+
+    public fun stopIntake() {
+        intakeMode = IntakeMode.OFF
+    }
+
+    public fun isActive() = intakeMode == IntakeMode.INTAKE
+
+    // combined functions
+
+    public fun stop() {
+        stopDeploy()
+        stopIntake()
+    }
 
     // subsystem functions
 
     fun reset() {
-        stop()
+        deployMode = DeployMode.OFF
+        intakeMode = IntakeMode.OFF
     }
 
     override fun autoReset() = reset()
