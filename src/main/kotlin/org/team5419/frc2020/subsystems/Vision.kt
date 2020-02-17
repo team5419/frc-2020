@@ -27,7 +27,7 @@ object Vision : Subsystem("Vision") {
 
     public var offset = VisionConstants.TargetOffset
 
-    // PID loop
+    // PID loop controller
     public val controller: PIDController =
         PIDController(
             VisionConstants.PID.P,
@@ -37,7 +37,7 @@ object Vision : Subsystem("Vision") {
             setTolerance( VisionConstants.Tolerance )
         }
 
-    // add the pid controllet to shuffleboard
+    // add the pid controller to shuffleboard
     init {
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
     }
@@ -51,7 +51,7 @@ object Vision : Subsystem("Vision") {
         get() = limelight.horizontalOffset
 
     public fun autoAlign() {
-        // turn light off
+        // turn lights on
         on()
 
         // do we need to allign?
@@ -71,10 +71,10 @@ object Vision : Subsystem("Vision") {
     }
 
     public fun on() {
-        // limelight.lightMode = LightMode.On
+        limelight.lightMode = LightMode.On
     }
 
     public fun off() {
-        // limelight.lightMode = LightMode.Off
+        limelight.lightMode = LightMode.Off
     }
 }

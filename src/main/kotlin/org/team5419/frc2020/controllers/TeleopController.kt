@@ -1,7 +1,7 @@
 package org.team5419.frc2020.controllers
 
-import org.team5419.frc2020.subsystems.Shooger
 import org.team5419.frc2020.subsystems.*
+import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
 import org.team5419.frc2020.InputConstants
@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.XboxController
 
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
-    private var isPassiveIntake: Boolean = false;
-
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
@@ -59,26 +57,22 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
              if ( codriver.outtake() ) Intake.outtake()
         else if ( codriver.intake() ) Intake.intake()
         else if ( codriver.storeIntake() ) Intake.store()
-        else Intake.turnOff()
+        else Intake.stop()
 
         // shooger
 
         if ( codriver.shoog() ) Shooger.shoog() else Shooger.stop()
 
-        // storage
-
-        if ( codriver.reverseIntake() ) Storage.revers()
-
         // hood
 
-        // if ( codriver.deployHoodFar() )
-        //     Hood.goto( Hood.HoodPosititions.FAR )
+        if ( codriver.deployHoodFar() )
+            Hood.goto( Hood.HoodPosititions.FAR )
 
-        // if ( codriver.deployHoodClose() )
-        //     Hood.goto( Hood.HoodPosititions.CLOSE )
+        if ( codriver.deployHoodClose() )
+            Hood.goto( Hood.HoodPosititions.CLOSE )
 
-        // if (codriver.retractHood() )
-        //     Hood.goto( Hood.HoodPosititions.RETRACT )
+        if (codriver.retractHood() )
+            Hood.goto( Hood.HoodPosititions.RETRACT )
     }
 
     override fun reset() {

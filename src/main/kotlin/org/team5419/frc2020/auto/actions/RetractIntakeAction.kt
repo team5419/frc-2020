@@ -12,5 +12,5 @@ public class RetractIntakeAction () : Action() {
 
     override fun start() = Intake.store()
 
-    override fun finish() = Intake.turnOff()
+    override fun finish() = Intake.stop()
 }
