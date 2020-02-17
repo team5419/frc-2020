@@ -152,3 +152,8 @@ object VisionConstants {
         public const val D = 0.0
     }
 }
+
+object ClimbConstants {
+    public const val exendPort = -1
+    public const val climberPort = -1
+}
