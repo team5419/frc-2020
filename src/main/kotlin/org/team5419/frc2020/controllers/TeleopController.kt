@@ -20,7 +20,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
-        { driver.slowTurn() || driver.align() },
+        { driver.slowTurn() },
         { driver.slowMove() },
         InputConstants.JoystickDeadband,
         InputConstants.SlowTurnMultiplier,

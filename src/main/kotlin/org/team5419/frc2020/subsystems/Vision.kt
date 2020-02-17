@@ -71,10 +71,10 @@ object Vision : Subsystem("Vision") {
     }
 
     public fun on() {
-        limelight.lightMode = LightMode.On
+        // limelight.lightMode = LightMode.On
     }
 
     public fun off() {
-        limelight.lightMode = LightMode.Off
+        // limelight.lightMode = LightMode.Off
     }
 }

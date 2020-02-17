@@ -14,43 +14,47 @@ import org.team5419.fault.auto.*
 import org.team5419.fault.math.geometry.Pose2d
 
 public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
-    // public var autoSelector = SendableChooser<Routine>()
-    // public var routine: Action
+    public var autoSelector = SendableChooser<Routine>()
+    public var routine: Action = baseline
 
     init {
-        // routine = baseline
-        // tab.add("Auto Selector", autoSelector)
-        // tab.add("Zero Robot Position",  { refreshRoutines() })
-        // autoSelector.setDefaultOption("Baseline", baseline)
-        // refreshRoutines()
+        tab.add("Auto Selector", autoSelector)
+        tab.add("Zero Robot Position",  { refreshRoutines() })
+
+        refreshRoutines()
     }
 
     private fun refreshRoutines() {
-        // autoSelector = SendableChooser<Routine>() //clear old routines
-        // generateRoutines(Drivetrain.robotPosition).iterator().forEach({
-        //     autoSelector.addOption(it.name, it)
-        // })
+        //clear old routines
+        autoSelector = SendableChooser<Routine>()
+
+        // added the baseline as the default action
+        autoSelector.setDefaultOption("Baseline", baseline)
+
+        // add all the routies
+        generateRoutines(Drivetrain.robotPosition).iterator().forEach({
+            autoSelector.addOption(it.name, it)
+        })
     }
 
     override fun start() {
-        // routine = autoSelector.getSelected()
-        // println("start action")
-        // routine.start()
+        routine = autoSelector.getSelected()
+        routine.start()
 
-        // println("routine start")
+        println("routine start")
     }
 
     override fun update() {
-        // routine.update()
+        routine.update()
 
-        // if (routine.next()) {
-        //     routine.finish()
-        //     routine = NothingAction()
-        //     println("done with action")
-        // }
+        if (routine.next()) {
+            routine.finish()
+            routine = NothingAction()
+            println("done with action")
+        }
     }
 
     override fun reset() {
-        // start()
+        start()
     }
 }

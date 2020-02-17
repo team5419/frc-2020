@@ -15,11 +15,11 @@ object XboxDriver : DriverControls {
     override public fun getTurn() =
         driverXbox.getX( Hand.kRight )
 
-    override public fun slowTurn() =
+    override public fun slowMove() =
         driverXbox.getBumper( Hand.kLeft ) ||
         driverXbox.getBumper( Hand.kRight )
 
-    override public fun slowMove() =
+    override public fun slowTurn() =
         driverXbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
         driverXbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
 
