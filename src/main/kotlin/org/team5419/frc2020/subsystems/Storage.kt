@@ -18,7 +18,7 @@ object Storage : Subsystem("Storage") {
 
     enum class StorageMode() { LOAD, PASSIVE, REVERSE, OFF }
 
-    private var mode = StorageMode.OFF
+    public var mode = StorageMode.OFF
         set(mode: StorageMode) {
             if (mode == field) return
 

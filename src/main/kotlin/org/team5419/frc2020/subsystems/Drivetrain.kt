@@ -8,10 +8,10 @@ import org.team5419.fault.math.units.native.nativeUnits
 import org.team5419.fault.math.units.native.NativeUnitLengthModel
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
-import org.team5419.fault.math.physics.DifferentialDrive
 import org.team5419.fault.math.physics.DCMotorTransmission
 import org.team5419.fault.math.localization.TankPositionTracker
 import org.team5419.fault.math.geometry.Rotation2d
+import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.input.DriveSignal
 import org.team5419.fault.hardware.ctre.*
 import edu.wpi.first.wpilibj.Notifier
@@ -30,22 +30,24 @@ object Drivetrain : Subsystem("DriveTrain") {
         DriveConstants.LeftMasterPort, nativeGearboxConversion
     )
 
-    private val leftSlave1 = BerkeliumSRX(
-        DriveConstants.LeftSlavePort, nativeGearboxConversion
-    )
+    private val leftSlave = BerkeliumSRX(DriveConstants.LeftSlavePort, nativeGearboxConversion)
 
     val rightMasterMotor = BerkeliumSRX(
         DriveConstants.RightMasterPort, nativeGearboxConversion
     )
 
-    private val rightSlave1 = BerkeliumSRX(
-        DriveConstants.RightSlavePort, nativeGearboxConversion
-    )
+    private val rightSlave = BerkeliumSRX(DriveConstants.RightSlavePort, nativeGearboxConversion)
 
     public val gyro = PigeonIMU(DriveConstants.GyroPort)
 
+    public val position = TankPositionTracker(
+        { angle },
+        { leftDistance },
+        { rightDistance }
+    )
+
     init {
-        leftSlave1.talonSRX.apply {
+        leftSlave.talonSRX.apply {
             configFactoryDefault(100)
 
             // fallow the master
@@ -53,7 +55,7 @@ object Drivetrain : Subsystem("DriveTrain") {
             setInverted(InvertType.FollowMaster)
         }
 
-        rightSlave1.talonSRX.apply {
+        rightSlave.talonSRX.apply {
             configFactoryDefault(100)
 
             // fallow the master
@@ -82,32 +84,20 @@ object Drivetrain : Subsystem("DriveTrain") {
         }
     }
 
-    // val leftDistance: SIUnit<Meter>
-    //     get() = -nativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawSensorPosition)
+    val leftDistance: SIUnit<Meter>
+        get() = leftMasterMotor.encoder.position
 
-    // val rightDistance: SIUnit<Meter>
-    //     get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawSensorPosition)
+    val rightDistance: SIUnit<Meter>
+        get() = rightMasterMotor.encoder.position
 
-    // val leftDistanceError: SIUnit<Meter>
-    //     get() = -nativeGearboxConversion.fromNativeUnitPosition(periodicIO.leftRawDistanceError)
+    val leftVelocity: SIUnit<LinearVelocity>
+        get() = leftMasterMotor.encoder.velocity
 
-    // val rightDistanceError: SIUnit<Meter>
-    //     get() = nativeGearboxConversion.fromNativeUnitPosition(periodicIO.rightRawDistanceError)
+    val rightVelocity: SIUnit<LinearVelocity>
+        get() = rightMasterMotor.encoder.velocity
 
-    // val leftVelocity: SIUnit<LinearVelocity>
-    //     get() = nativeGearboxConversion.fromNativeUnitVelocity(periodicIO.leftRawSensorVelocity)
-
-    // val rightVelocity: SIUnit<LinearVelocity>
-    //     get() = nativeGearboxConversion.fromNativeUnitVelocity(periodicIO.rightRawSensorVelocity)
-
-    // val angle: Rotation2d
-    //     get() = periodicIO.gyroAngle.toRotation2d()
-
-    // val angularVelocity: SIUnit<AngularVelocity>
-    //     get() = periodicIO.angularVelocity
-
-    // val turnError: SIUnit<Radian>
-    //     get() = periodicIO.turnError
+    val angle: Rotation2d
+        get() = -gyro.fusedHeading.degrees.toRotation2d()
 
     fun stop() = setOpenLoop(0.0, 0.0)
 
@@ -123,6 +113,16 @@ object Drivetrain : Subsystem("DriveTrain") {
     fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>) {
         leftMasterMotor.setVelocity(leftVelocity)
         rightMasterMotor.setVelocity(rightVelocity)
+    }
+
+    fun setVelocity(
+        leftVelocity: SIUnit<LinearVelocity>,
+        rightVelocity: SIUnit<LinearVelocity>,
+        leftFF: SIUnit<Volt>,
+        rightFF: SIUnit<Volt>
+    ) {
+        leftMasterMotor.setVelocity(leftVelocity, leftFF)
+        rightMasterMotor.setVelocity(rightVelocity, rightFF)
     }
 
     override fun periodic() {}

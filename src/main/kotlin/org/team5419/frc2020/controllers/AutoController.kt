@@ -15,12 +15,13 @@ import org.team5419.fault.math.geometry.Pose2d
 
 public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
     public var autoSelector = SendableChooser<Routine>()
-    public var routine: Action = baseline
+    public var routine: Action
 
     init {
+        routine = baseline
         tab.add("Auto Selector", autoSelector)
         tab.add("Zero Robot Position",  { refreshRoutines() })
-
+        autoSelector.setDefaultOption("Baseline", baseline)
         refreshRoutines()
     }
 
@@ -32,9 +33,9 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
         autoSelector.setDefaultOption("Baseline", baseline)
 
         // add all the routies
-        // generateRoutines(Drivetrain.robotPosition).iterator().forEach({
-        //     autoSelector.addOption(it.name, it)
-        // })
+        generateRoutines(Drivetrain.position.robotPosition).iterator().forEach({
+            autoSelector.addOption(it.name, it)
+        })
     }
 
     override fun start() {

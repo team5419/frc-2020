@@ -110,7 +110,6 @@ object Intake : Subsystem("Intake") {
     }
 
     // subsystem functions
-
     fun reset() {
         deployMode = DeployMode.OFF
         intakeMode = IntakeMode.OFF
