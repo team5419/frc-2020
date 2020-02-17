@@ -1,15 +1,21 @@
 package org.team5419.frc2020.input
 
 public interface CodriverControls {
+    // shooger functions
+
     public fun shoog() : Boolean
 
-    // intake function
+    public fun loadShooger() : Boolean?
+
+    // intake functions
 
     public fun intake(): Boolean
 
     public fun outtake(): Boolean
 
     public fun storeIntake(): Boolean
+
+    // storage functions
 
     public fun reverseStorage(): Boolean
 

@@ -8,7 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID.Hand
 private val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
 
 object XboxCodriver: CodriverControls {
+    // shooger functions
+
     override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
+
+    override public fun loadShooger(): Boolean? = null
 
     // intake functions
 

@@ -85,6 +85,7 @@ object Shooger : Subsystem("Shooger") {
 
     private var setpointVelocity = 0.0
     private var setpoint = 0.0
+    private var active = false
 
     // shuffleboard
 
@@ -108,22 +109,15 @@ object Shooger : Subsystem("Shooger") {
     public val flyWheelVelocity
         get() = masterMotor.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60
 
-    public val amperage
-        get() = masterMotor.getStatorCurrent()
-
-    public val voltage
-        get() = masterMotor.getMotorOutputVoltage()
-
-    public val analogValue
-        get() = masterMotor.getSelectedSensorPosition(1)
-
     // public api
 
     public fun isHungry(): Boolean = isActive() && flyWheelVelocity >= setpointVelocity - 150
 
-    public fun isActive(): Boolean = setpoint != 0.0
+    public fun isActive(): Boolean = active
 
-    public fun shoog(shoogVelocity: Double = targetVelocity) {
+    public fun shoog(active: Boolean? = null, shoogVelocity: Double = targetVelocity) {
+        this.active = active ?: true
+
         if ( shoogVelocity == setpointVelocity ) return
 
         setpointVelocity = shoogVelocity
@@ -138,6 +132,8 @@ object Shooger : Subsystem("Shooger") {
     public fun stop() {
         setpoint = 0.0
         setpointVelocity = 0.0
+
+        active = false
 
         powerShooger(0.0)
     }

@@ -65,7 +65,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // shooger
 
-        if ( codriver.shoog() ) Shooger.shoog() else Shooger.stop()
+        if ( codriver.shoog() )
+            Shooger.shoog( codriver.loadShooger() )
+        else Shooger.stop()
 
         // hood
 
