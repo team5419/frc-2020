@@ -103,48 +103,48 @@ object Drivetrain : AbstractTankDrive() {
         rightSlave1.talonSRX.setInverted(InvertType.FollowMaster)
         rightMasterMotor.outputInverted = true
 
-        // leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
-        //     FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
-        // )
-        // rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
-        //     FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
-        // )
+        leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
+            FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
+        )
+        rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
+            FeedbackDevice.CTRE_MagEncoder_Relative, kPositionSlot, 0
+        )
 
-        // leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
-        //     FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
-        // )
-        // rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
-        //     FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
-        // )
+        leftMasterMotor.talonSRX.configSelectedFeedbackSensor(
+            FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
+        )
+        rightMasterMotor.talonSRX.configSelectedFeedbackSensor(
+            FeedbackDevice.CTRE_MagEncoder_Relative, kVelocitySlot, 0
+        )
 
-        // leftMasterMotor.encoder.encoderPhase = DriveConstants.EncoderPhase
-        // rightMasterMotor.encoder.encoderPhase = DriveConstants.EncoderPhase
+        leftMasterMotor.encoder.encoderPhase = DriveConstants.EncoderPhase
+        rightMasterMotor.encoder.encoderPhase = DriveConstants.EncoderPhase
 
-        // rightMasterMotor.talonSRX.configRemoteFeedbackFilter(gyro.deviceID, RemoteSensorSource.Pigeon_Yaw, 1, 0)
-        // rightMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0)
-        // rightMasterMotor.talonSRX.configSelectedFeedbackCoefficient(
-        //     DriveConstants.PigeonConversion.value, 1, 0
-        // )
+        rightMasterMotor.talonSRX.configRemoteFeedbackFilter(gyro.deviceID, RemoteSensorSource.Pigeon_Yaw, 1, 0)
+        rightMasterMotor.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0)
+        rightMasterMotor.talonSRX.configSelectedFeedbackCoefficient(
+            DriveConstants.PigeonConversion.value, 1, 0
+        )
 
-        // leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
-        // leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
-        // rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
-        // rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
-        // rightMasterMotor.brakeMode = false
-        // rightMasterMotor.brakeMode = false
+        leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
+        leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
+        rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
+        rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
+        rightMasterMotor.brakeMode = false
+        rightMasterMotor.brakeMode = false
 
-        // rightMasterMotor.talonSRX.configAuxPIDPolarity(true, 0)
-        // rightMasterMotor.talonSRX.configClosedLoopPeakOutput(kTurnSlot, 1.0, 0)
-        // rightMasterMotor.talonSRX.configAllowableClosedloopError(kTurnSlot, 0, 0)
+        rightMasterMotor.talonSRX.configAuxPIDPolarity(true, 0)
+        rightMasterMotor.talonSRX.configClosedLoopPeakOutput(kTurnSlot, 1.0, 0)
+        rightMasterMotor.talonSRX.configAllowableClosedloopError(kTurnSlot, 0, 0)
 
-        // leftMasterMotor.useMotionProfileForPosition = true
-        // rightMasterMotor.useMotionProfileForPosition = true
+        leftMasterMotor.useMotionProfileForPosition = true
+        rightMasterMotor.useMotionProfileForPosition = true
 
-        // leftMasterMotor.motionProfileCruiseVelocity = DriveConstants.MaxVelocity
-        // leftMasterMotor.motionProfileAcceleration = DriveConstants.MaxAcceleration
+        leftMasterMotor.motionProfileCruiseVelocity = DriveConstants.MaxVelocity
+        leftMasterMotor.motionProfileAcceleration = DriveConstants.MaxAcceleration
 
-        // rightMasterMotor.motionProfileCruiseVelocity = DriveConstants.MaxVelocity
-        // rightMasterMotor.motionProfileAcceleration = DriveConstants.MaxAcceleration
+        rightMasterMotor.motionProfileCruiseVelocity = DriveConstants.MaxVelocity
+        rightMasterMotor.motionProfileAcceleration = DriveConstants.MaxAcceleration
 
         localization.reset()
         Notifier {

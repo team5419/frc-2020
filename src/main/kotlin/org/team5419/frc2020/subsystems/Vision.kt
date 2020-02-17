@@ -47,6 +47,9 @@ object Vision : Subsystem("Vision") {
     public val aligned
         get() = limelight.targetFound && controller.atSetpoint()
 
+    public val horizontalOffset
+        get() = limelight.horizontalOffset
+
     public fun autoAlign() {
         // turn light off
         on()
