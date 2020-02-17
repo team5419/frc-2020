@@ -37,6 +37,9 @@ class Robot : BerkeliumRobot(0.02.seconds) {
     fun reset() {
         teleopController.reset()
         autoController.reset()
+
+        // turn limelight off
+        Vision.off()
     }
 
     override fun robotInit() {

@@ -96,7 +96,7 @@ object HoodConstants {
     public const val HoodPort = 12
 
     object PID {
-        public const val P = 4.0
+        public const val P = 2.0
         public const val I = 0.0
         public const val D = 0.0
     }

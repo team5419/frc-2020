@@ -21,10 +21,6 @@ object Vision : Subsystem("Vision") {
         mCameraAngle = Rotation2d( VisionConstants.CameraAngle )
     )
 
-    init {
-        limelight.lightMode = LightMode.Off
-    }
-
     public var offset = VisionConstants.TargetOffset
 
     // PID loop controller
@@ -54,20 +50,20 @@ object Vision : Subsystem("Vision") {
         // turn lights on
         on()
 
-        // do we need to allign?
-        if ( !limelight.targetFound || aligned ) return
+        // // do we need to allign?
+        // if ( !limelight.targetFound || aligned ) return
 
-        // get the pid loop output
-        var output = controller.calculate(limelight.horizontalOffset + offset)
+        // // get the pid loop output
+        // var output = controller.calculate(limelight.horizontalOffset + offset)
 
-        // limit the output
-        if (output > VisionConstants.MaxAutoAlignSpeed)
-            output = VisionConstants.MaxAutoAlignSpeed
-        if (output < -VisionConstants.MaxAutoAlignSpeed)
-            output = -VisionConstants.MaxAutoAlignSpeed
+        // // limit the output
+        // if (output > VisionConstants.MaxAutoAlignSpeed)
+        //     output = VisionConstants.MaxAutoAlignSpeed
+        // if (output < -VisionConstants.MaxAutoAlignSpeed)
+        //     output = -VisionConstants.MaxAutoAlignSpeed
 
-        // lets drive baby
-        Drivetrain.setVelocity(output.meters.velocity, -output.meters.velocity, 0.0.volts, 0.0.volts)
+        // // lets drive baby
+        // Drivetrain.setVelocity(output.meters.velocity, -output.meters.velocity, 0.0.volts, 0.0.volts)
     }
 
     public fun on() {

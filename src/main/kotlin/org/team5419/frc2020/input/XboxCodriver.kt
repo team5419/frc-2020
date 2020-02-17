@@ -12,7 +12,7 @@ object XboxCodriver: CodriverControls {
 
     override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
 
-    override public fun loadShooger(): Boolean? = null
+    override public fun loadShooger(): Boolean = codriverXbox.getBumper(Hand.kLeft)
 
     // intake functions
 
@@ -32,5 +32,5 @@ object XboxCodriver: CodriverControls {
 
     override public fun retractHood(): Boolean = codriverXbox.getPOV() == 180
 
-    override public fun toogleStorage(): Boolean = codriverXbox.getBumperPressed(Hand.kLeft)
+    override public fun toogleStorage(): Boolean = codriverXbox.getAButton()
 }
