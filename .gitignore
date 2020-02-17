@@ -82,3 +82,5 @@ gradle-app.setting
 hs_err_pid*
 lib/
 virtualenv_run/
+
+PathWeaver/output

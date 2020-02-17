@@ -143,7 +143,7 @@ object Drivetrain : Subsystem("DriveTrain") {
         get() = nativeGearboxConversion.fromNativeUnitVelocity(periodicIO.rightRawSensorVelocity)
 
     val angle: Rotation2d
-        get() = periodicIO.gyroAngle.toRotation2d()
+        get() = -periodicIO.gyroAngle.toRotation2d()
 
     val angularVelocity: SIUnit<AngularVelocity>
         get() = periodicIO.angularVelocity
@@ -248,11 +248,15 @@ object Drivetrain : Subsystem("DriveTrain") {
         periodicIO.leftRawSensorVelocity = leftMasterMotor.encoder.rawVelocity
         periodicIO.rightRawSensorVelocity = rightMasterMotor.encoder.rawVelocity
 
+
         periodicIO.gyroAngle = gyro.fusedHeading.degrees
 
         val xyz = DoubleArray(3)
         gyro.getRawGyro(xyz)
         periodicIO.angularVelocity = xyz[1].radians.velocity
+
+        // println("Meters: Left: ${leftDistance.value}, Right: ${rightDistance.value}")
+        // println("Angle: ${angle.degree}")
 
         when (wantedState) {
             State.Nothing -> {

@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
 
+val tab = Shuffleboard.getTab("Auto")
+
 @SuppressWarnings("MagicNumber")
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
@@ -26,10 +28,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
         // add subsystems to manager
 
-        +Drivetrain
-        +Storage
-        +Intake
-        +Shooger
+        // +Drivetrain
         +Vision
         +Hood
     }
@@ -46,7 +45,8 @@ class Robot : BerkeliumRobot(0.02.seconds) {
     }
 
     override fun robotPeriodic() {
-        // Shuffleboard.update()
+        Shuffleboard.update()
+        Drivetrain.periodic()
     }
 
     override fun disabledInit() {
@@ -58,7 +58,6 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
     override fun autonomousInit() {
         reset()
-
         autoController.start()
     }
 
@@ -68,7 +67,6 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
     override fun teleopInit() {
         reset()
-
         teleopController.start()
     }
 

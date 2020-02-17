@@ -109,6 +109,9 @@ object Intake : Subsystem("Intake") {
         stopIntake()
     }
 
+    public fun isAtSetPoint(): Boolean =
+        deployMotor.talonSRX.getClosedLoopError(0) < IntakeConstants.ClosedLoopTolerence
+
     // subsystem functions
 
     fun reset() {

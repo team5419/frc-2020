@@ -36,6 +36,7 @@ object DriveConstants {
 
     val MaxVelocity = 10.0.feet.velocity
     val MaxAcceleration = 4.0.feet.acceleration
+
     val MaxCentripetalAcceleration = 4.0.feet.acceleration
     val MaxAngularAcceleration = 2.0.radians.acceleration
 
