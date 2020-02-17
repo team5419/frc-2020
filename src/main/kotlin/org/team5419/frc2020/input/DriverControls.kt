@@ -18,4 +18,8 @@ public interface DriverControls {
     public fun adjustOffsetLeft(): Boolean
 
     public fun adjustOffsetRight(): Boolean
+
+    //
+
+    public fun retractHood(): Boolean
 }

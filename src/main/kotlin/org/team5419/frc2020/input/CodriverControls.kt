@@ -11,7 +11,7 @@ public interface CodriverControls {
 
     public fun storeIntake(): Boolean
 
-    public fun reverseIntake(): Boolean
+    public fun reverseStorage(): Boolean
 
     // hood functions
 

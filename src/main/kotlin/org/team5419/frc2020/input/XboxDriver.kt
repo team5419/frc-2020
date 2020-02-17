@@ -30,4 +30,8 @@ object XboxDriver : DriverControls {
     override public fun adjustOffsetLeft(): Boolean = driverXbox.getBumper(Hand.kLeft)
 
     override public fun adjustOffsetRight(): Boolean = driverXbox.getBumper(Hand.kRight)
+
+    // hood functions
+
+    override public fun retractHood(): Boolean = driverXbox.getYButton()
 }

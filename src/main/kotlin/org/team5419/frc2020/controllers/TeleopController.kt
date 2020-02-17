@@ -28,8 +28,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     override fun start() {}
 
     override fun update() {
-        updateDriver()
         updateCodriver()
+        updateDriver()
     }
 
     private fun updateDriver() {
@@ -59,6 +59,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         else if ( codriver.storeIntake() ) Intake.store()
         else Intake.stop()
 
+        // storage
+
+        if ( codriver.reverseStorage() ) Storage.reverse() else Storage.reset()
+
         // shooger
 
         if ( codriver.shoog() ) Shooger.shoog() else Shooger.stop()
@@ -71,7 +75,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         if ( codriver.deployHoodClose() )
             Hood.goto( Hood.HoodPosititions.CLOSE )
 
-        if (codriver.retractHood() )
+        if ( codriver.retractHood() || driver.retractHood() )
             Hood.goto( Hood.HoodPosititions.RETRACT )
     }
 
