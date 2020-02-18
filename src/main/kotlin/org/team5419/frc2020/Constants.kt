@@ -27,14 +27,14 @@ object DriveConstants {
 
     const val EncoderPhase = true
 
-    val GearRatio = (3.0 / 32.0)
+    val GearRatio = (10.3333 / 1.0)
 
-    val TicksPerRotation = (2048.0 * GearRatio).nativeUnits
+    val TicksPerRotation = (2048.0 * GearRatio)
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
     // path following parameters
 
-    val MaxVelocity = 10.0.feet.velocity
+    val MaxVelocity = 1.0.meters.velocity
     val MaxAcceleration = 4.0.feet.acceleration
 
     val MaxCentripetalAcceleration = 4.0.feet.acceleration
@@ -62,9 +62,10 @@ object DriveConstants {
     const val DriveKs = 0.328
 
     object PID {
-        public const val P = 1.0
+        public const val P = 0.2
         public const val I = 0.0
         public const val D = 0.0
+        public const val F = 0.05
     }
 }
 

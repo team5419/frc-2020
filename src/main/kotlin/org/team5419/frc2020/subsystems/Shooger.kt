@@ -33,7 +33,6 @@ object Shooger : Subsystem("Shooger") {
 
             // configPeakCurrentLimit(40)
 
-            // primary PID constants
             config_kP(0, 0.3, 100)
             config_kI(0, 0.0, 100)
             config_kD(0, 0.5, 100)
@@ -43,23 +42,8 @@ object Shooger : Subsystem("Shooger") {
 
             configClosedLoopPeakOutput(0, 1.0, 100)
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
-            config_IntegralZone(0, 0, 100)
-            configClosedLoopPeriod(0, 1)
 
             setSelectedSensorPosition(0, 0, 100)
-
-            // seconday PID slot
-            config_kP(1, 0.0, 100)
-            config_kI(1, 0.0, 100)
-            config_kD(1, 0.0, 100)
-            config_kF(1, 0.0, 100)
-
-            selectProfileSlot(1, 1)
-
-            configClosedLoopPeakOutput(1, 0.0, 100)
-            configSelectedFeedbackSensor(FeedbackDevice.Analog, 1, 100)
-            config_IntegralZone(1, 0, 100)
-            configClosedLoopPeriod(1, 1)
         }
 
     val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
@@ -156,7 +140,7 @@ object Shooger : Subsystem("Shooger") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        if (isActive() && bangBang) {
+        if (setpoint != 0.0 && bangBang) {
             if (setpointVelocity >= flyWheelVelocity) {
                 masterMotor.set(ControlMode.PercentOutput, 1.0)
             } else {

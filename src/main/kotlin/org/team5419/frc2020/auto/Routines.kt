@@ -1,6 +1,7 @@
 package org.team5419.frc2020.auto
 
 import org.team5419.fault.auto.*
+import org.team5419.frc2020.auto.actions.RamseteAction
 import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.math.geometry.Vector2
 import org.team5419.fault.math.geometry.Pose2dWithCurvature
@@ -18,12 +19,26 @@ import java.nio.file.Path
 
 fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
+        Routine("Fallow path", initalPose, RamseteAction(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+            arrayOf<Vector2<Meter>>(),
+            Pose2d(1.0.meters, 0.0.meters, 0.0.radians),
+
+            DriveConstants.MaxVelocity,
+            DriveConstants.MaxAcceleration,
+            12.volts,
+            DriveConstants.TrackWidth,
+            DriveConstants.Beta,
+            DriveConstants.Zeta,
+            DriveConstants.DriveKs,
+            DriveConstants.DriveKv,
+            DriveConstants.DriveKa
+        )),
         Routine("Max Score", initalPose,
             AlignAndShoogAction(),
             ParallelAction(
                 TimedIntakeAction(10.seconds)
                 // ,RamseteAction(
-                //     Drivetrain,
                 //     initalPose,
                 //     arrayOf<Vector2<Meter>>(),
                 //     initalPose,
