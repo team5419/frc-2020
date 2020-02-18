@@ -59,11 +59,6 @@ object Vision : Subsystem("Vision") {
         // get the pid loop output
         var output = controller.calculate(limelight.horizontalOffset + offset)
 
-        println("target:")
-        println(!limelight.targetFound)
-
-        println("aligned: ")
-        println(aligned)
 
         // do we need to allign?
         if ( !limelight.targetFound || aligned ) return
@@ -72,7 +67,9 @@ object Vision : Subsystem("Vision") {
         if (output >  maxSpeed) output =  maxSpeed
         if (output < -maxSpeed) output = -maxSpeed
 
-        println(output)
+        println("Found Target: ${limelight.targetFound}")
+        println("Aligned: ${aligned}")
+        println("PID Output: ${output}")
 
         // lets drive baby
         Drivetrain.setVelocity(-output.meters.velocity, output.meters.velocity)
