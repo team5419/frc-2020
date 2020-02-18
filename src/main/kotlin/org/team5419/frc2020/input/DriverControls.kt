@@ -11,6 +11,8 @@ public interface DriverControls {
 
     public fun slowMove() : Boolean
 
+    public fun invertDrivetrain() : Boolean
+
     // auto alignment functions
 
     public fun align(): Boolean

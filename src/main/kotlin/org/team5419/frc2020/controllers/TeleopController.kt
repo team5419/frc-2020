@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.XboxController
 
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
+
+    var flipDrivetrain = 1;
+
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
@@ -33,6 +36,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateDriver() {
+
+        if(driver.invertDrivetrain())
+            Drivetrain.invert()
+
         Drivetrain.setPercent(driveHelper.output())
 
         if (driver.align()) {

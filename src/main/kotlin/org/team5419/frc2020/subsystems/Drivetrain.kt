@@ -50,6 +50,8 @@ object Drivetrain : Subsystem("DriveTrain") {
     val robotPosition
         get() = position.robotPosition
 
+    private var inverted = 1;
+
     init {
         leftSlave.apply {
             configFactoryDefault(100)
@@ -139,13 +141,15 @@ object Drivetrain : Subsystem("DriveTrain") {
 
     fun stop() = setOpenLoop(0.0, 0.0)
 
+    fun invert() { inverted *= -1 }
+
     fun setPercent(left: Double, right: Double) = setOpenLoop(left, right)
 
     fun setPercent(signal: DriveSignal) = setOpenLoop(signal.left, signal.right)
 
     fun setOpenLoop(left: Double, right: Double) {
-        leftMasterMotor.set(ControlMode.PercentOutput, left)
-        rightMasterMotor.set(ControlMode.PercentOutput, right)
+        leftMasterMotor.set(ControlMode.PercentOutput, left * inverted)
+        rightMasterMotor.set(ControlMode.PercentOutput, right * inverted)
     }
 
     fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>) {

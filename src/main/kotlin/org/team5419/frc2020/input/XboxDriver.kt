@@ -23,15 +23,17 @@ object XboxDriver : DriverControls {
         driverXbox.getTriggerAxis(Hand.kLeft) >= InputConstants.TriggerDeadband ||
         driverXbox.getTriggerAxis(Hand.kRight) >= InputConstants.TriggerDeadband
 
+    override public fun invertDrivetrain() = driverXbox.getAButtonPressed()
+
     // alignment functions
 
     override public fun align(): Boolean = driverXbox.getAButton()
 
-    override public fun adjustOffsetLeft(): Boolean = driverXbox.getBumper(Hand.kLeft)
+    override public fun adjustOffsetLeft(): Boolean = driverXbox.getBButton()
 
-    override public fun adjustOffsetRight(): Boolean = driverXbox.getBumper(Hand.kRight)
+    override public fun adjustOffsetRight(): Boolean = driverXbox.getXButton()
 
     // hood functions
 
-    override public fun retractHood(): Boolean = driverXbox.getYButton()
+    override public fun retractHood(): Boolean = driverXbox.getPOV() == 180
 }
