@@ -1,24 +1,23 @@
 package org.team5419.frc2020.auto.actions
 
 import org.team5419.frc2020.subsystems.Drivetrain
-import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
+import org.team5419.fault.math.units.*
 import org.team5419.fault.math.geometry.Vector2
 import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.auto.Action
-import edu.wpi.first.wpilibj.controller.RamseteController
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward
-import edu.wpi.first.wpilibj.geometry.Pose2d as WPILibPose2d
-import edu.wpi.first.wpilibj.geometry.Rotation2d as WPILibRotation2d
-import edu.wpi.first.wpilibj.geometry.Translation2d as WPILibTranslation2d
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator
+import kotlin.math.PI
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveKinematicsConstraint
-import kotlin.math.PI
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics
+import edu.wpi.first.wpilibj.geometry.Translation2d as WPILibTranslation2d
+import edu.wpi.first.wpilibj.geometry.Rotation2d as WPILibRotation2d
+import edu.wpi.first.wpilibj.geometry.Pose2d as WPILibPose2d
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward
+import edu.wpi.first.wpilibj.controller.RamseteController
 
 // refrences:
 // https://github.com/wpilibsuite/allwpilib/blob/master/wpilibNewCommands/src/main/java/edu/wpi/first/wpilibj2/command/RamseteCommand.java
@@ -102,8 +101,6 @@ public class RamseteAction(
     var prevTime = 0.0.seconds
     var prevSpeed = DifferentialDriveWheelSpeeds(0.0, 0.0)
 
-    val odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(Drivetrain.angle))
-
     init {
         finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
     }
@@ -112,14 +109,8 @@ public class RamseteAction(
         val time = getTime()
         val dt = time - prevTime
 
-        odometry.update(
-            WPILibRotation2d.fromDegrees(Drivetrain.angle),
-            Drivetrain.leftDistance.inMeters(),
-            Drivetrain.rightDistance.inMeters()
-        )
-
         val chassisSpeed = controller.calculate(
-            odometry.getPoseMeters(),
+            Drivetrain.pose,
 
             trajectory.sample(time.inSeconds())
         )

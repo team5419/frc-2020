@@ -15,21 +15,16 @@ import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.input.DriveSignal
 import org.team5419.fault.hardware.ctre.*
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry
+import edu.wpi.first.wpilibj.geometry.Rotation2d as WPILibRotation2d
 import edu.wpi.first.wpilibj.Notifier
 import com.ctre.phoenix.sensors.PigeonIMU
-import com.ctre.phoenix.motorcontrol.*
-
-import com.ctre.phoenix.motorcontrol.*
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.ctre.phoenix.motorcontrol.*
 
 @Suppress("TooManyFunctions")
 object Drivetrain : Subsystem("DriveTrain") {
     // hardware
-
-    // val nativeGearboxConversion = NativeUnitLengthModel(
-    //     DriveConstants.TicksPerRotation,
-    //     DriveConstants.WheelRadius
-    // )
 
     val leftMasterMotor = TalonFX(DriveConstants.LeftMasterPort)
 
@@ -110,6 +105,15 @@ object Drivetrain : Subsystem("DriveTrain") {
         tab.addNumber("drive angle", { angle })
     }
 
+    // odometry
+
+    val odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(Drivetrain.angle))
+
+    val pose
+        get() = odometry.getPoseMeters()
+
+    // getters
+
     fun nativeUnitsToMeters(units: Int) =
         (DriveConstants.WheelCircumference * units.toDouble() / DriveConstants.TicksPerRotation)
 
@@ -174,5 +178,11 @@ object Drivetrain : Subsystem("DriveTrain") {
         // )
     }
 
-    override fun periodic() {}
+    override fun periodic() {
+        odometry.update(
+            WPILibRotation2d.fromDegrees(Drivetrain.angle),
+            Drivetrain.leftDistance.inMeters(),
+            Drivetrain.rightDistance.inMeters()
+        )
+    }
 }

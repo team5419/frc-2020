@@ -1,12 +1,12 @@
 package org.team5419.frc2020.auto.actions
 
 import org.team5419.frc2020.tab
+import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.VisionConstants.Tolerance
 import org.team5419.frc2020.VisionConstants.PID
-import org.team5419.frc2020.subsystems.*
 import org.team5419.fault.auto.*
-import edu.wpi.first.wpilibj.controller.PIDController
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
+import edu.wpi.first.wpilibj.controller.PIDController
 
 class AutoAlignAction() : Action() {
     init {
