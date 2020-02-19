@@ -15,6 +15,7 @@ object RobotConstants {
 
 object DriveConstants {
     // ports
+
     const val LeftMasterPort = 2
     const val LeftSlavePort = 3
 
@@ -34,7 +35,7 @@ object DriveConstants {
 
     // path following parameters
 
-    val MaxVelocity = 1.0.meters.velocity
+    val MaxVelocity = 4.0.meters.velocity
     val MaxAcceleration = 4.0.feet.acceleration
 
     val MaxCentripetalAcceleration = 4.0.feet.acceleration
