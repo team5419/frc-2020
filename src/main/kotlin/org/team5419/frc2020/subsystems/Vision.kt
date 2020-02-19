@@ -74,7 +74,7 @@ object Vision : Subsystem("Vision") {
 
         println(output)
 
-        // lets drive baby
+        // lets drive, baby
         Drivetrain.setVelocity(-output.meters.velocity, output.meters.velocity)
     }
 
