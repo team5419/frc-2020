@@ -22,4 +22,8 @@ public interface DriverControls {
     // hood functions
 
     public fun retractHood(): Boolean
+    //Climber functions
+    public fun exend(): Boolean
+    public fun retract(): Boolean
+    public fun climb(): Boolean
 }
