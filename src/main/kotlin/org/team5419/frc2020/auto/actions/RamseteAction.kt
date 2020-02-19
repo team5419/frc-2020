@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveKinematicsConstraint
 import kotlin.math.PI
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry
 
 // refrences:
 // https://github.com/wpilibsuite/allwpilib/blob/master/wpilibNewCommands/src/main/java/edu/wpi/first/wpilibj2/command/RamseteCommand.java
@@ -101,6 +102,8 @@ public class RamseteAction(
     var prevTime = 0.0.seconds
     var prevSpeed = DifferentialDriveWheelSpeeds(0.0, 0.0)
 
+    val odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(Drivetrain.angle))
+
     init {
         finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
     }
@@ -109,12 +112,14 @@ public class RamseteAction(
         val time = getTime()
         val dt = time - prevTime
 
+        odometry.update(
+            WPILibRotation2d.fromDegrees(Drivetrain.angle),
+            Drivetrain.leftDistance.inMeters(),
+            Drivetrain.rightDistance.inMeters()
+        )
+
         val chassisSpeed = controller.calculate(
-            WPILibPose2d(
-                Drivetrain.leftDistance.inMeters(),
-                Drivetrain.rightDistance.inMeters(),
-                WPILibRotation2d(0.0) //Drivetrain.angle / 360.0 * (2 * PI))
-            ),
+            odometry.getPoseMeters(),
 
             trajectory.sample(time.inSeconds())
         )

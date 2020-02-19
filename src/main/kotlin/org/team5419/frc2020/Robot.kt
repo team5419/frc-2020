@@ -80,7 +80,6 @@ class Robot : BerkeliumRobot(0.02.seconds) {
     }
 
     override fun testInit() {
-        Drivetrain.setVelocity( 0.5.meters.velocity,  0.5.meters.velocity )
     }
 
     override fun testPeriodic() {
