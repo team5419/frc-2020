@@ -47,7 +47,7 @@ public class AutoController()  : Controller {
     var routine : Action = RamseteAction(
         Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
         arrayOf<Vector2<Meter>>(),
-        Pose2d(1.0.meters, 0.0.meters, 0.0.degrees),
+        Pose2d(2.0.meters, 1.0.meters, 0.0.degrees),
 
         DriveConstants.MaxVelocity,
         DriveConstants.MaxAcceleration,

@@ -76,8 +76,6 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kF( 0, DriveConstants.PID.F , 100 )
 
             setSelectedSensorPosition( 0, 0, 100)
-
-            configClosedLoopPeakOutput(0, 0.3, 100)
         }
 
         rightMasterMotor.apply {
@@ -92,8 +90,6 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kF( 0, DriveConstants.PID.F , 100 )
 
             setSelectedSensorPosition( 0, 0, 100)
-
-            configClosedLoopPeakOutput(0, 0.3, 100)
         }
 
         gyro.apply {
@@ -107,7 +103,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
     // odometry
 
-    val odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(Drivetrain.angle))
+    val odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(angle))
 
     val pose
         get() = odometry.getPoseMeters()
@@ -141,7 +137,7 @@ object Drivetrain : Subsystem("DriveTrain") {
         get() = nativeUnitsToMetersPerSecond(rightMasterMotor.getSelectedSensorVelocity(0))
 
     val angle: Double
-        get() = gyro.getFusedHeading()
+        get() = -gyro.getFusedHeading()
 
     fun stop() = setOpenLoop(0.0, 0.0)
 

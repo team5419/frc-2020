@@ -22,7 +22,7 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
         Routine("Fallow path", initalPose, RamseteAction(
             Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
             arrayOf<Vector2<Meter>>(),
-            Pose2d(1.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(2.0.meters, 2.0.meters, 0.0.radians),
 
             DriveConstants.MaxVelocity,
             DriveConstants.MaxAcceleration,
