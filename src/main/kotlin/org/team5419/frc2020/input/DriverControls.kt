@@ -1,5 +1,6 @@
 package org.team5419.frc2020.input
 
+@Suppress("TooManyFunctions")
 public interface DriverControls {
     // driver helper functions
 
@@ -22,8 +23,12 @@ public interface DriverControls {
     // hood functions
 
     public fun retractHood(): Boolean
-    //Climber functions
+
+    // climber functions
+
     public fun exend(): Boolean
+
     public fun retract(): Boolean
+
     public fun climb(): Boolean
 }

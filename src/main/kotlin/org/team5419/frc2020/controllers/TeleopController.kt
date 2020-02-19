@@ -31,7 +31,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         updateCodriver()
         updateDriver()
     }
-
+    @Suppress("ComplexMethod")
     private fun updateDriver() {
         Drivetrain.setPercent(driveHelper.output())
 
@@ -47,6 +47,20 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             }
         } else {
             Vision.off()
+        }
+
+        // climber
+
+        if (driver.climb()) {
+            Climber.climb()
+        }
+        else if (driver.exend()){
+            Climber.exend()
+        }
+        else if (driver.retract()){
+            Climber.retract()
+        }else{
+            Climber.stopMoving()
         }
     }
 

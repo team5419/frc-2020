@@ -24,4 +24,8 @@ object Climber : Subsystem("Climber") {
     fun retract() = exendMotor.setPercent(-1.0)
     fun climb() = climbMotor.setPercent(1.0)
 
+    fun stopMoving() {
+        climbMotor.setPercent(0.0)
+        exendMotor.setPercent(0.0)
+    }
 }

@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand
 import org.team5419.frc2020.InputConstants
 
 private val driverXbox = XboxController(InputConstants.XboxDrivePort)
-
+@Suppress("TooManyFunctions")
 object XboxDriver : DriverControls {
     override public fun getThrottle() =
         driverXbox.getY( Hand.kLeft )
@@ -35,7 +35,8 @@ object XboxDriver : DriverControls {
 
     override public fun retractHood(): Boolean = driverXbox.getYButton()
 
-    //Climber
+    // climber functions
+
     override public fun exend(): Boolean = driverXbox.getStartButton()
     override public fun retract(): Boolean = driverXbox.getBackButton()
     override public fun climb(): Boolean = driverXbox.getXButton()
