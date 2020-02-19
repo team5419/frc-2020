@@ -34,4 +34,9 @@ object XboxDriver : DriverControls {
     // hood functions
 
     override public fun retractHood(): Boolean = driverXbox.getYButton()
+
+    //Climber
+    override public fun exend(): Boolean = driverXbox.getStartButton()
+    override public fun retract(): Boolean = driverXbox.getBackButton()
+    override public fun climb(): Boolean = driverXbox.getXButton()
 }
