@@ -37,11 +37,14 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
         Routine("Max Score", initalPose,
             AlignAndShoogAction(),
             ParallelAction(
-                TimedIntakeAction(10.seconds),
+                SerialAction(
+                    DeployIntakeAction(),
+                    TimedIntakeAction(10.seconds)
+                ),
                 RamseteAction(
-                    Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-                    arrayOf<Vector2<Meter>>(),
                     initalPose,
+                    arrayOf<Vector2<Meter>>(),
+                    Pose2d(2.0.meters, 2.0.meters, 0.0.radians),
                     DriveConstants.MaxVelocity,
                     DriveConstants.MaxAcceleration,
                     12.volts,
