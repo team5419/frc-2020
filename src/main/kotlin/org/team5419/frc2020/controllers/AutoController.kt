@@ -20,11 +20,10 @@ import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.geometry.Vector2
 
-public class AutoController()  : Controller {
-
-    val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())
-    public var routine: Action = baseline
+public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
     public var autoSelector = SendableChooser<Routine>()
+
+    public var routine: Action = baseline
 
     init {
         tab.add("Auto Selector", autoSelector)
@@ -46,7 +45,6 @@ public class AutoController()  : Controller {
             autoSelector.addOption(it.name, it)
         })
     }
-
 
     override fun start() {
         routine.start()
