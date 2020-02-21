@@ -54,6 +54,9 @@ object Drivetrain : Subsystem("DriveTrain") {
             // fallow the master
             follow(leftMasterMotor)
             setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
         }
 
         rightSlave.apply {
@@ -62,6 +65,9 @@ object Drivetrain : Subsystem("DriveTrain") {
             // fallow the master
             follow(rightMasterMotor)
             setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
         }
 
         leftMasterMotor.apply {
@@ -75,7 +81,10 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kD( 0, DriveConstants.PID.D , 100 )
             config_kF( 0, DriveConstants.PID.F , 100 )
 
-            setSelectedSensorPosition( 0, 0, 100)
+            setSelectedSensorPosition(0, 0, 100)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
         }
 
         rightMasterMotor.apply {
@@ -89,7 +98,10 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kD( 0, DriveConstants.PID.D , 100 )
             config_kF( 0, DriveConstants.PID.F , 100 )
 
-            setSelectedSensorPosition( 0, 0, 100)
+            setSelectedSensorPosition(0, 0, 100)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
         }
 
         gyro.apply {
