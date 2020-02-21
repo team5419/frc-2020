@@ -81,7 +81,6 @@ object Shooger : Subsystem("Shooger") {
         shooterVelocityEntry.setPersistent()
         shooterVelocityEntry.addListener( { event ->
             targetVelocity = if (event.value.isDouble()) event.value.getDouble() else targetVelocity
-
             println("Updated Target Velocity: ${targetVelocity}")
         }, EntryListenerFlags.kUpdate)
 
@@ -95,7 +94,9 @@ object Shooger : Subsystem("Shooger") {
 
     // public api
 
-    public fun isHungry(): Boolean = isActive() && flyWheelVelocity >= setpointVelocity - 150
+    public fun isHungry(): Boolean = isActive() && isSpedUp()
+
+    public fun isSpedUp(): Boolean = flyWheelVelocity >= setpointVelocity - 150
 
     public fun isActive(): Boolean = active
 

@@ -5,9 +5,10 @@ import org.team5419.frc2020.InputConstants
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.GenericHID.Hand
 
-private val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
+public val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
 
 object XboxCodriver: CodriverControls {
+
     // shooger functions
 
     override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand
 
 import org.team5419.frc2020.InputConstants
 
-private val driverXbox = XboxController(InputConstants.XboxDrivePort)
+public val driverXbox = XboxController(InputConstants.XboxDrivePort)
 
 @Suppress("TooManyFunctions")
 object XboxDriver : DriverControls {
@@ -18,11 +18,11 @@ object XboxDriver : DriverControls {
 
     override public fun fastTurn() = driverXbox.getBumper( Hand.kRight )
 
-    override public fun invertDrivetrain(): Boolean = driverXbox.getAButtonPressed()
+    override public fun invertDrivetrain(): Boolean = driverXbox.getXButtonPressed()
 
     // alignment functions
 
-    override public fun align(): Boolean = driverXbox.getYButton()
+    override public fun align(): Boolean = driverXbox.getAButton()
 
     override public fun adjustOffsetLeft(): Double = driverXbox.getTriggerAxis(Hand.kLeft)
 
@@ -30,8 +30,7 @@ object XboxDriver : DriverControls {
 
     // hood functions
 
-    override public fun retractHood(): Boolean = driverXbox.getPOV() == 180
-
+    override public fun retractHood(): Boolean = driverXbox.getBButton()
     // climb
 
     override public fun climb(): Boolean = driverXbox.getPOV() == 90
