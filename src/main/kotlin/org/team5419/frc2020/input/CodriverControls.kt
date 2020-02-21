@@ -5,7 +5,7 @@ public interface CodriverControls {
 
     public fun shoog() : Boolean
 
-    public fun loadShooger() : Boolean?
+    public fun loadShooger() : Boolean
 
     // intake functions
 

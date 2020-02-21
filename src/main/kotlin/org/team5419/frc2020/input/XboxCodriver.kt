@@ -12,7 +12,7 @@ object XboxCodriver: CodriverControls {
 
     override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
 
-    override public fun loadShooger(): Boolean? = null //codriverXbox.getBumper(Hand.kLeft)
+    override public fun loadShooger(): Boolean = codriverXbox.getBumper(Hand.kLeft)
 
     // intake functions
 
