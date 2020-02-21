@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand
 
 public val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
 
+@Suppress("TooManyFunctions")
 object XboxCodriver: CodriverControls {
 
     // shooger functions
@@ -34,4 +35,14 @@ object XboxCodriver: CodriverControls {
     override public fun retractHood(): Boolean = codriverXbox.getPOV() == 180
 
     override public fun toogleStorage(): Boolean = codriverXbox.getAButton()
+
+    // climb
+
+    override public fun climb(): Boolean = codriverXbox.getAButton()
+
+    override public fun unclimb(): Boolean = codriverXbox.getAButton()
+
+    override public fun winch(): Boolean = codriverXbox.getRawButton(6)
+
+    override public fun unwinch(): Boolean = codriverXbox.getRawButton(7)
 }

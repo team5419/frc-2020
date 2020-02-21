@@ -31,6 +31,7 @@ object XboxDriver : DriverControls {
     // hood functions
 
     override public fun retractHood(): Boolean = driverXbox.getBButton()
+
     // climb
 
     override public fun climb(): Boolean = driverXbox.getPOV() == 90

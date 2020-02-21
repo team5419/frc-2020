@@ -1,5 +1,6 @@
 package org.team5419.frc2020.input
 
+@Suppress("TooManyFunctions")
 public interface CodriverControls {
     // shooger functions
 
@@ -28,4 +29,15 @@ public interface CodriverControls {
     public fun retractHood() : Boolean
 
     public fun toogleStorage(): Boolean
+
+    // climb
+
+    public fun climb(): Boolean
+
+    public fun unclimb(): Boolean
+
+    public fun winch(): Boolean
+
+    public fun unwinch(): Boolean
+
 }
