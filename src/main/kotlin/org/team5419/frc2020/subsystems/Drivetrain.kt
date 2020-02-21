@@ -165,6 +165,8 @@ object Drivetrain : Subsystem("DriveTrain") {
     }
 
     fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>) {
+        // might need to reset kF
+
         leftMasterMotor.set(ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity.value))
         rightMasterMotor.set(ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity.value))
     }
@@ -175,15 +177,16 @@ object Drivetrain : Subsystem("DriveTrain") {
         leftFF: SIUnit<Volt>,
         rightFF: SIUnit<Volt>
     ) {
-        setVelocity(leftVelocity, rightVelocity)
-        // leftMasterMotor.set(
-        //     ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity.value),
-        //     DemandType.ArbitraryFeedForward, leftFF.value
-        // )
-        // rightMasterMotor.set(
-        //     ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity.value),
-        //     DemandType.ArbitraryFeedForward, leftFF.value
-        // )
+        // might need to set kF to zero
+
+        leftMasterMotor.set(
+             ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity.value),
+             DemandType.ArbitraryFeedForward, leftFF.value / 12.0
+        )
+        rightMasterMotor.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity.value),
+             DemandType.ArbitraryFeedForward, leftFF.value / 12.0
+        )
     }
 
     override fun periodic() {
