@@ -20,7 +20,7 @@ import java.nio.file.Path
 fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
 
-        Routine("Fallow path", initalPose, RamseteAction(
+        Routine("Follow path", initalPose, RamseteAction(
             Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
             arrayOf<Vector2<Meter>>(),
             Pose2d(2.0.meters, 1.0.meters, 0.0.degrees),
