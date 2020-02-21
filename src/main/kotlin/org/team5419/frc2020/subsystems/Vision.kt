@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.controller.PIDController
 
 object Vision : Subsystem("Vision") {
     // config limelight
-    val limelight = Limelight (
+    val limelight = Limelight(
         networkTableName = "limelight",
         inverted = false,
 
