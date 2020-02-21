@@ -180,12 +180,12 @@ object Drivetrain : Subsystem("DriveTrain") {
         // might need to set kF to zero
 
         leftMasterMotor.set(
-             ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity.value),
-             DemandType.ArbitraryFeedForward, leftFF.value / 12.0
+            ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity.value),
+            DemandType.ArbitraryFeedForward, leftFF.value / 12.0
         )
         rightMasterMotor.set(
             ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity.value),
-             DemandType.ArbitraryFeedForward, leftFF.value / 12.0
+            DemandType.ArbitraryFeedForward, rightFF.value / 12.0
         )
     }
 
