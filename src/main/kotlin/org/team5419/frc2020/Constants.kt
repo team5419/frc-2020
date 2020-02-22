@@ -125,10 +125,10 @@ object StorageConstants {
 }
 
 object IntakeConstants {
-    public val DeployTicksPerRotation = (4096 * 81).nativeUnits
+    public val DeployTicksPerRotation = (4096).nativeUnits
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
-    public val StorePosition = 30.degrees
-    public val DeployPosition = 0.degrees
+    public val StorePosition = 3.037282.radians
+    public val DeployPosition = 0.radians
 
     public const val IntakePort = 8
     public const val DeployPort = 11

@@ -61,10 +61,12 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             }
 
             if ( Vision.aligned ){
-                codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
-                codriverXbox.setRumble(RumbleType.kRightRumble, 0.3)
+                driverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
+                driverXbox.setRumble(RumbleType.kRightRumble, 0.3)
             }
         } else {
+            driverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
+            driverXbox.setRumble(RumbleType.kRightRumble, 0.0)
             Vision.off()
         }
 
@@ -101,8 +103,12 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             Hood.goto( Hood.HoodPosititions.RETRACT )
 
         if ( Shooger.isSpedUp() ) {
-            driverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
-            driverXbox.setRumble(RumbleType.kRightRumble, 0.3)
+            println(true)
+            codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
+            codriverXbox.setRumble(RumbleType.kRightRumble, 0.3)
+        } else {
+            codriverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
+            codriverXbox.setRumble(RumbleType.kRightRumble, 0.0)
         }
     }
 

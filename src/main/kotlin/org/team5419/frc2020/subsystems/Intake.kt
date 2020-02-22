@@ -1,5 +1,6 @@
 package org.team5419.frc2020.subsystems
 
+import org.team5419.frc2020.tab
 import org.team5419.frc2020.IntakeConstants
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.NativeUnitRotationModel
@@ -15,7 +16,20 @@ object Intake : Subsystem("Intake") {
 
     val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
     val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel).apply {
-        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+        talonSRX.configFactoryDefault()
+        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder)
+        talonSRX.setSelectedSensorPosition(0,0,100)
+        talonSRX.setSensorPhase(false)
+        talonSRX.setInverted(true)
+        talonSRX.configClosedLoopPeakOutput(0, .6)
+        talonSRX.config_kD(0, 10.0)
+        talonSRX.config_kP(0, 1.0)
+
+
+    }
+
+    init{
+        tab.addNumber("Intake Pos", { deployMotor.talonSRX.getClosedLoopError(0).toDouble() })
     }
 
     // intake modes
@@ -31,7 +45,7 @@ object Intake : Subsystem("Intake") {
             if ( mode == field ) return
 
             when (mode) {
-                IntakeMode.INTAKE  -> { intakeMotor.setPercent( 1.0 ) }
+                IntakeMode.INTAKE  -> { intakeMotor.setPercent( 0.5 ) }
                 IntakeMode.OUTTAKE -> { intakeMotor.setPercent(  -1.0 ) }
                 IntakeMode.OFF     -> { intakeMotor.setPercent(  0.0 ) }
             }
@@ -123,5 +137,6 @@ object Intake : Subsystem("Intake") {
     override fun autoReset() = reset()
     override fun teleopReset() = reset()
 
-    override fun periodic() {}
+    override fun periodic() {
+    }
 }
