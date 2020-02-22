@@ -24,6 +24,10 @@ object Intake : Subsystem("Intake") {
         talonSRX.configClosedLoopPeakOutput(0, .6)
         talonSRX.config_kD(0, 10.0)
         talonSRX.config_kP(0, 1.0)
+        talonSRX.configForwardSoftLimitThreshold(
+            radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
+        )
+        talonSRX.configForwardSoftLimitEnable(true)
 
 
     }
@@ -81,6 +85,9 @@ object Intake : Subsystem("Intake") {
         }
 
     // deploy functions
+    fun radiansToNativeUnits(radians: Double): Int = (radians / Math.PI / 2 * 4096).toInt()
+
+    fun nativeUnitsToRadians(ticks: Int): Double = ticks / 4096 * 2 * Math.PI
 
     public fun store() {
         deployMode = DeployMode.STORE
@@ -97,7 +104,7 @@ object Intake : Subsystem("Intake") {
         if( deployMode != DeployMode.STORE ){
             deployMode = DeployMode.OFF
         }
-    }
+    }wheel
 
     // intake functions
 
