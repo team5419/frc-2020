@@ -12,15 +12,15 @@ object XboxCodriver: CodriverControls {
 
     // shooger functions
 
-    override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
+    override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight) || codriverXbox.getBumper(Hand.kLeft)
 
     override public fun loadShooger(): Boolean = codriverXbox.getBumper(Hand.kLeft)
 
     // intake functions
 
-    override public fun intake(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft) > 0.3
+    override public fun intake(): Boolean = codriverXbox.getTriggerAxis(Hand.kRight) > 0.3
 
-    override public fun outtake(): Boolean = codriverXbox.getTriggerAxis(Hand.kRight) > 0.3
+    override public fun outtake(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft) > 0.3
 
     override public fun storeIntake(): Boolean = !intake() && !outtake()
 

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d as WPILibRotation2d
 import edu.wpi.first.wpilibj.geometry.Pose2d as WPILibPose2d
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward
 import edu.wpi.first.wpilibj.controller.RamseteController
+import org.team5419.frc2020.DriveConstants
 
 // refrences:
 // https://github.com/wpilibsuite/allwpilib/blob/master/wpilibNewCommands/src/main/java/edu/wpi/first/wpilibj2/command/RamseteCommand.java
@@ -30,18 +31,18 @@ public class RamseteAction(
 
     val finalPose: Pose2d,
 
-    val maxVelocity: SIUnit<LinearVelocity>,
-    val maxAcceleration: SIUnit<LinearAcceleration>,
-    val maxVoltage: SIUnit<Volt>,
+    val maxVelocity: SIUnit<LinearVelocity> = DriveConstants.MaxVelocity,
+    val maxAcceleration: SIUnit<LinearAcceleration> = DriveConstants.MaxAcceleration,
+    val maxVoltage: SIUnit<Volt> = 12.volts,
 
-    val trackWidth: SIUnit<Meter>,
+    val trackWidth: SIUnit<Meter> = DriveConstants.TrackWidth,
 
-    val beta: Double,
-    val zeta: Double,
+    val beta: Double = DriveConstants.Beta,
+    val zeta: Double = DriveConstants.Zeta,
 
-    val kS: Double,
-    val kV: Double,
-    val kA: Double
+    val kS: Double = DriveConstants.DriveKs,
+    val kV: Double = DriveConstants.DriveKv,
+    val kA: Double = DriveConstants.DriveKa
 ) : Action() {
 
     val driveKinematics = DifferentialDriveKinematics(trackWidth.inMeters())
@@ -102,7 +103,7 @@ public class RamseteAction(
     var prevSpeed = DifferentialDriveWheelSpeeds(0.0, 0.0)
 
     init {
-        finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
+        // finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
     }
 
     override fun update() {

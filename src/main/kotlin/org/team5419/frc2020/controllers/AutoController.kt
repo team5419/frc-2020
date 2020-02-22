@@ -47,22 +47,26 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
     override fun start() {
-        routine.start()
+        // routine = autoSelector.getSelected()
 
-        println("routine start")
+        // routine.start()
+
+        // println("routine start")
+
+        Drivetrain.setVelocity(1.0.meters.velocity, 1.0.meters.velocity)
     }
 
     override fun update() {
-        routine.update()
+        // routine.update()
 
-        if (routine.next()) {
-            routine.finish()
-            routine = NothingAction()
-            println("done with action")
-        }
+        // if (routine.next()) {
+        //     routine.finish()
+        //     routine = NothingAction()
+        //     println("done with action")
+        // }
     }
 
     override fun reset() {
-        start()
+        // start()
     }
 }

@@ -70,11 +70,13 @@ object Drivetrain : Subsystem("DriveTrain") {
             enableVoltageCompensation(true)
         }
 
+        val inverted = false
+
         leftMasterMotor.apply {
             configFactoryDefault(100)
 
             setSensorPhase(false)
-            setInverted(false)
+            setInverted(inverted)
 
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
@@ -91,7 +93,7 @@ object Drivetrain : Subsystem("DriveTrain") {
             configFactoryDefault(100)
 
             setSensorPhase(true)
-            setInverted(true)
+            setInverted(!inverted)
 
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )

@@ -40,9 +40,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateDriver() {
-
         if( driver.align() ) isAlign = !isAlign
-
 
         if(driver.invertDrivetrain())
             Drivetrain.invert()
@@ -60,9 +58,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 Vision.offset -= driver.adjustOffsetLeft() * 4
             }
 
-            if ( Vision.aligned ){
-                driverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
-                driverXbox.setRumble(RumbleType.kRightRumble, 0.3)
+            if ( Vision.aligned ) {
+                codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
+                codriverXbox.setRumble(RumbleType.kRightRumble, 0.3)
             }
         } else {
             driverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
@@ -103,13 +101,14 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             Hood.goto( Hood.HoodPosititions.RETRACT )
 
         if ( Shooger.isSpedUp() ) {
-            println(true)
             codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
             codriverXbox.setRumble(RumbleType.kRightRumble, 0.3)
         } else {
             codriverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
             codriverXbox.setRumble(RumbleType.kRightRumble, 0.0)
         }
+
+        println( Shooger.isActive() )
     }
 
     override fun reset() {
