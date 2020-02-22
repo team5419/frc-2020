@@ -5,22 +5,24 @@ import org.team5419.frc2020.InputConstants
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.GenericHID.Hand
 
-private val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
+public val codriverXbox = XboxController(InputConstants.XboxCodrivePort)
 
+@Suppress("TooManyFunctions")
 object XboxCodriver: CodriverControls {
+
     // shooger functions
 
-    override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
+    override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight) || codriverXbox.getBumper(Hand.kLeft)
 
-    override public fun loadShooger(): Boolean? = null //codriverXbox.getBumper(Hand.kLeft)
+    override public fun loadShooger(): Boolean = codriverXbox.getBumper(Hand.kLeft)
 
     // intake functions
 
-    override public fun intake(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft) > 0.3
+    override public fun intake(): Boolean = codriverXbox.getTriggerAxis(Hand.kRight) > 0.3
 
-    override public fun outtake(): Boolean = codriverXbox.getTriggerAxis(Hand.kRight) > 0.3
+    override public fun outtake(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft) > 0.3
 
-    override public fun storeIntake(): Boolean = codriverXbox.getXButton()
+    override public fun storeIntake(): Boolean = !intake() && !outtake()
 
     override public fun reverseStorage(): Boolean = codriverXbox.getYButton()
 
@@ -33,4 +35,14 @@ object XboxCodriver: CodriverControls {
     override public fun retractHood(): Boolean = codriverXbox.getPOV() == 180
 
     override public fun toogleStorage(): Boolean = codriverXbox.getAButton()
+
+    // climb
+
+    override public fun climb(): Boolean = codriverXbox.getAButton()
+
+    override public fun unclimb(): Boolean = codriverXbox.getAButton()
+
+    override public fun winch(): Boolean = codriverXbox.getRawButton(6)
+
+    override public fun unwinch(): Boolean = codriverXbox.getRawButton(7)
 }

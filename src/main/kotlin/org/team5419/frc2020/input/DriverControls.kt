@@ -1,5 +1,6 @@
 package org.team5419.frc2020.input
 
+@Suppress("TooManyFunctions")
 public interface DriverControls {
     // driver helper functions
 
@@ -7,19 +8,31 @@ public interface DriverControls {
 
     public fun getTurn() : Double
 
-    public fun slowTurn() : Boolean
-
     public fun slowMove() : Boolean
+
+    public fun fastTurn() : Boolean
+
+    public fun invertDrivetrain() : Boolean
 
     // auto alignment functions
 
     public fun align(): Boolean
 
-    public fun adjustOffsetLeft(): Boolean
+    public fun adjustOffsetLeft(): Double
 
-    public fun adjustOffsetRight(): Boolean
+    public fun adjustOffsetRight(): Double
 
     // hood functions
 
     public fun retractHood(): Boolean
+
+    // climb
+
+    public fun climb(): Boolean
+
+    public fun unclimb(): Boolean
+
+    public fun winch(): Boolean
+
+    public fun unwinch(): Boolean
 }

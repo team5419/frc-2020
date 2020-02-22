@@ -15,6 +15,7 @@ object RobotConstants {
 
 object DriveConstants {
     // ports
+
     const val LeftMasterPort = 2
     const val LeftSlavePort = 3
 
@@ -34,7 +35,7 @@ object DriveConstants {
 
     // path following parameters
 
-    val MaxVelocity = 1.0.meters.velocity
+    val MaxVelocity = 4.0.meters.velocity
     val MaxAcceleration = 4.0.feet.acceleration
 
     val MaxCentripetalAcceleration = 4.0.feet.acceleration
@@ -98,12 +99,12 @@ object HoodConstants {
     public const val HoodPort = 12
 
     object PID {
-        public const val P = 2.0
+        public const val P = 3.0
         public const val I = 0.0
-        public const val D = 0.0
+        public const val D = 45.0
     }
 
-    public val MaxSpeed = 0.3
+    public val MaxSpeed = 0.5
     public val MaxAngle = 18.0
 
     public val TicksPerRotation = 4092.0
@@ -124,13 +125,15 @@ object StorageConstants {
 }
 
 object IntakeConstants {
-    public val DeployTicksPerRotation = (4096 * 81).nativeUnits
+    public val DeployTicksPerRotation = (4096).nativeUnits
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
+    public val StorePosition = 3.037282.radians
+    public val DeployPosition = 0.radians
 
-    public const val IntakePort = 11
-    public const val DeployPort = 8
+    public const val IntakePort = 8
+    public const val DeployPort = 11
 
-    public const val RollerPort = 30
+    // public const val RollerPort = 30
 
     public const val DeployStrength = 0.4
 }
@@ -143,12 +146,12 @@ object VisionConstants {
 
     public val Tolerance = 0.1
 
-    public val MaxAutoAlignSpeed = DriveConstants.MaxVelocity
+    public val MaxAutoAlignSpeed = 0.3
 
     public val TargetOffset = 0.0
 
     object PID {
-        public const val P = 2.4
+        public const val P = 0.018
         public const val I = 0.0
         public const val D = 0.0
     }

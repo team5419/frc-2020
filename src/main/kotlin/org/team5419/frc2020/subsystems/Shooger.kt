@@ -31,7 +31,7 @@ object Shooger : Subsystem("Shooger") {
             setSensorPhase(false)
             setInverted(false)
 
-            // configPeakCurrentLimit(40)
+            configPeakCurrentLimit(40)
 
             config_kP(0, 0.3, 100)
             config_kI(0, 0.0, 100)
@@ -81,7 +81,6 @@ object Shooger : Subsystem("Shooger") {
         shooterVelocityEntry.setPersistent()
         shooterVelocityEntry.addListener( { event ->
             targetVelocity = if (event.value.isDouble()) event.value.getDouble() else targetVelocity
-
             println("Updated Target Velocity: ${targetVelocity}")
         }, EntryListenerFlags.kUpdate)
 
@@ -95,7 +94,9 @@ object Shooger : Subsystem("Shooger") {
 
     // public api
 
-    public fun isHungry(): Boolean = isActive() && flyWheelVelocity >= setpointVelocity - 150
+    public fun isHungry(): Boolean = isActive() && isSpedUp()
+
+    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 150
 
     public fun isActive(): Boolean = active
 

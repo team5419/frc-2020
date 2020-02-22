@@ -8,10 +8,13 @@ import org.team5419.fault.BerkeliumRobot
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
-
+import com.ctre.phoenix.motorcontrol.can.VictorSPX
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
+import org.team5419.fault.hardware.ctre.*
+import com.ctre.phoenix.motorcontrol.*
 
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
@@ -37,6 +40,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
         +Storage
         +Vision
     }
+
 
     fun reset() {
         teleopController.reset()
@@ -80,7 +84,6 @@ class Robot : BerkeliumRobot(0.02.seconds) {
     }
 
     override fun testInit() {
-        Drivetrain.setVelocity( 0.5.meters.velocity,  0.5.meters.velocity )
     }
 
     override fun testPeriodic() {

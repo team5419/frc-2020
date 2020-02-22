@@ -15,21 +15,16 @@ import org.team5419.fault.math.geometry.Rotation2d
 import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.input.DriveSignal
 import org.team5419.fault.hardware.ctre.*
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry
+import edu.wpi.first.wpilibj.geometry.Rotation2d as WPILibRotation2d
 import edu.wpi.first.wpilibj.Notifier
 import com.ctre.phoenix.sensors.PigeonIMU
-import com.ctre.phoenix.motorcontrol.*
-
-import com.ctre.phoenix.motorcontrol.*
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.ctre.phoenix.motorcontrol.*
 
 @Suppress("TooManyFunctions")
 object Drivetrain : Subsystem("DriveTrain") {
     // hardware
-
-    // val nativeGearboxConversion = NativeUnitLengthModel(
-    //     DriveConstants.TicksPerRotation,
-    //     DriveConstants.WheelRadius
-    // )
 
     val leftMasterMotor = TalonFX(DriveConstants.LeftMasterPort)
 
@@ -50,6 +45,8 @@ object Drivetrain : Subsystem("DriveTrain") {
     val robotPosition
         get() = position.robotPosition
 
+    private var inverted = 1;
+
     init {
         leftSlave.apply {
             configFactoryDefault(100)
@@ -57,6 +54,9 @@ object Drivetrain : Subsystem("DriveTrain") {
             // fallow the master
             follow(leftMasterMotor)
             setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
         }
 
         rightSlave.apply {
@@ -65,38 +65,45 @@ object Drivetrain : Subsystem("DriveTrain") {
             // fallow the master
             follow(rightMasterMotor)
             setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
         }
+
+        val inverted = false
 
         leftMasterMotor.apply {
             configFactoryDefault(100)
 
             setSensorPhase(false)
-            setInverted(false)
+            setInverted(inverted)
 
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
             config_kF( 0, DriveConstants.PID.F , 100 )
 
-            setSelectedSensorPosition( 0, 0, 100)
+            setSelectedSensorPosition(0, 0, 100)
 
-            configClosedLoopPeakOutput(0, 0.3, 100)
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
         }
 
         rightMasterMotor.apply {
             configFactoryDefault(100)
 
             setSensorPhase(true)
-            setInverted(true)
+            setInverted(!inverted)
 
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
             config_kF( 0, DriveConstants.PID.F , 100 )
 
-            setSelectedSensorPosition( 0, 0, 100)
+            setSelectedSensorPosition(0, 0, 100)
 
-            configClosedLoopPeakOutput(0, 0.3, 100)
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
         }
 
         gyro.apply {
@@ -107,6 +114,15 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         tab.addNumber("drive angle", { angle })
     }
+
+    // odometry
+
+    val odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(angle))
+
+    val pose
+        get() = odometry.getPoseMeters()
+
+    // getters
 
     fun nativeUnitsToMeters(units: Int) =
         (DriveConstants.WheelCircumference * units.toDouble() / DriveConstants.TicksPerRotation)
@@ -135,20 +151,24 @@ object Drivetrain : Subsystem("DriveTrain") {
         get() = nativeUnitsToMetersPerSecond(rightMasterMotor.getSelectedSensorVelocity(0))
 
     val angle: Double
-        get() = gyro.getFusedHeading()
+        get() = -gyro.getFusedHeading()
 
     fun stop() = setOpenLoop(0.0, 0.0)
+
+    fun invert() { inverted *= -1 }
 
     fun setPercent(left: Double, right: Double) = setOpenLoop(left, right)
 
     fun setPercent(signal: DriveSignal) = setOpenLoop(signal.left, signal.right)
 
     fun setOpenLoop(left: Double, right: Double) {
-        leftMasterMotor.set(ControlMode.PercentOutput, left)
-        rightMasterMotor.set(ControlMode.PercentOutput, right)
+        leftMasterMotor.set(ControlMode.PercentOutput, left * inverted)
+        rightMasterMotor.set(ControlMode.PercentOutput, right * inverted)
     }
 
     fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>) {
+        // might need to reset kF
+
         leftMasterMotor.set(ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity.value))
         rightMasterMotor.set(ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity.value))
     }
@@ -159,16 +179,23 @@ object Drivetrain : Subsystem("DriveTrain") {
         leftFF: SIUnit<Volt>,
         rightFF: SIUnit<Volt>
     ) {
-        setVelocity(leftVelocity, rightVelocity)
-        // leftMasterMotor.set(
-        //     ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity.value),
-        //     DemandType.ArbitraryFeedForward, leftFF.value
-        // )
-        // rightMasterMotor.set(
-        //     ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity.value),
-        //     DemandType.ArbitraryFeedForward, leftFF.value
-        // )
+        // might need to set kF to zero
+
+        leftMasterMotor.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity.value),
+            DemandType.ArbitraryFeedForward, leftFF.value / 12.0
+        )
+        rightMasterMotor.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity.value),
+            DemandType.ArbitraryFeedForward, rightFF.value / 12.0
+        )
     }
 
-    override fun periodic() {}
+    override fun periodic() {
+        odometry.update(
+            WPILibRotation2d.fromDegrees(Drivetrain.angle),
+            Drivetrain.leftDistance.inMeters(),
+            Drivetrain.rightDistance.inMeters()
+        )
+    }
 }

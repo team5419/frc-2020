@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.controller.PIDController
 
 object Vision : Subsystem("Vision") {
     // config limelight
-    val limelight = Limelight (
+    val limelight = Limelight(
         networkTableName = "limelight",
         inverted = false,
 
@@ -27,7 +27,7 @@ object Vision : Subsystem("Vision") {
 
     public var offset = VisionConstants.TargetOffset
 
-    public val maxSpeed = VisionConstants.MaxAutoAlignSpeed.value
+    public val maxSpeed = VisionConstants.MaxAutoAlignSpeed//.value
 
     // PID loop controller
     public val controller: PIDController =
@@ -42,6 +42,8 @@ object Vision : Subsystem("Vision") {
     // add the pid controller to shuffleboard
     init {
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
+
+        tab.addNumber("area", { limelight.targetArea })
     }
 
     // auto alignment
@@ -67,12 +69,13 @@ object Vision : Subsystem("Vision") {
         if (output >  maxSpeed) output =  maxSpeed
         if (output < -maxSpeed) output = -maxSpeed
 
-        println("Found Target: ${limelight.targetFound}")
-        println("Aligned: ${aligned}")
-        println("PID Output: ${output}")
+        val flip = 1
 
-        // lets drive baby
-        Drivetrain.setVelocity(-output.meters.velocity, output.meters.velocity)
+        // lets drive, baby
+        Drivetrain.setPercent(
+            (flip * output),
+            (-flip * output)
+        )
     }
 
     public fun on() {

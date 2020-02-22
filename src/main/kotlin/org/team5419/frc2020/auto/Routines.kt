@@ -19,42 +19,12 @@ import java.nio.file.Path
 
 fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
-        Routine("Fallow path", initalPose, RamseteAction(
+        Routine("Follow path", initalPose, RamseteAction(
             Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            arrayOf<Vector2<Meter>>(),
-            Pose2d(1.0.meters, 0.0.meters, 0.0.radians),
-
-            DriveConstants.MaxVelocity,
-            DriveConstants.MaxAcceleration,
-            12.volts,
-            DriveConstants.TrackWidth,
-            DriveConstants.Beta,
-            DriveConstants.Zeta,
-            DriveConstants.DriveKs,
-            DriveConstants.DriveKv,
-            DriveConstants.DriveKa
-        )),
-        Routine("Max Score", initalPose,
-            AlignAndShoogAction(),
-            ParallelAction(
-                TimedIntakeAction(10.seconds)
-                // ,RamseteAction(
-                //     initalPose,
-                //     arrayOf<Vector2<Meter>>(),
-                //     initalPose,
-                //     DriveConstants.MaxVelocity,
-                //     DriveConstants.MaxAcceleration,
-                //     12.volts,
-                //     DriveConstants.TrackWidth,
-                //     DriveConstants.Beta,
-                //     DriveConstants.Zeta,
-                //     DriveConstants.DriveKs,
-                //     DriveConstants.DriveKv,
-                //     DriveConstants.DriveKa
-                // )
-            )
-        ),
-        Routine("Auto Align", initalPose, AutoAlignAction()),
-        Routine("Align and Shoot", initalPose, AlignAndShoogAction())
+            arrayOf<Vector2<Meter>>(
+                // Vector2<Meter>(2.0.meters, 1.0.meters)
+            ),
+            Pose2d(4.0.meters, 1.0.meters, 0.0.degrees)
+        ))
     )
 }
