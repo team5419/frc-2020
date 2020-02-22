@@ -31,7 +31,7 @@ object Shooger : Subsystem("Shooger") {
             setSensorPhase(false)
             setInverted(false)
 
-            // configPeakCurrentLimit(40)
+            configPeakCurrentLimit(40)
 
             config_kP(0, 0.3, 100)
             config_kI(0, 0.0, 100)

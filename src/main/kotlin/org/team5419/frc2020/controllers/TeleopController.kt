@@ -40,7 +40,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateDriver() {
-        if( driver.align() ) isAlign = !isAlign
+        if( driver.align() ) {
+            println("toggling")
+            isAlign = !isAlign
+        }
 
         if(driver.invertDrivetrain())
             Drivetrain.invert()
@@ -48,15 +51,15 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         Drivetrain.setPercent(driveHelper.output())
 
         if ( isAlign ) {
-            Vision.autoAlign()
-
             if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
-                Vision.offset += driver.adjustOffsetRight() * 4
+                Vision.offset += driver.adjustOffsetRight()
             }
 
             if ( driver.adjustOffsetLeft() >= InputConstants.TriggerDeadband ) {
-                Vision.offset -= driver.adjustOffsetLeft() * 4
+                Vision.offset -= driver.adjustOffsetLeft()
             }
+
+            Vision.autoAlign()
 
             if ( Vision.aligned ) {
                 codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)

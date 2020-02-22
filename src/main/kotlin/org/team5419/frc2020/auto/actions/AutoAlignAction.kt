@@ -10,6 +10,7 @@ class AutoAlignAction() : Action() {
     }
 
     override public fun update() {
+        println("aligning")
         Vision.autoAlign()
     }
 

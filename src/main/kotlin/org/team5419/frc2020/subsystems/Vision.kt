@@ -27,7 +27,7 @@ object Vision : Subsystem("Vision") {
 
     public var offset = VisionConstants.TargetOffset
 
-    public val maxSpeed = VisionConstants.MaxAutoAlignSpeed.value
+    public val maxSpeed = VisionConstants.MaxAutoAlignSpeed//.value
 
     // PID loop controller
     public val controller: PIDController =
@@ -42,6 +42,8 @@ object Vision : Subsystem("Vision") {
     // add the pid controller to shuffleboard
     init {
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
+
+        tab.addBoolean("is aligned", { this.aligned })
     }
 
     // auto alignment
@@ -59,11 +61,6 @@ object Vision : Subsystem("Vision") {
         // get the pid loop output
         var output = controller.calculate(limelight.horizontalOffset + offset)
 
-        println("target:")
-        println(!limelight.targetFound)
-
-        println("aligned: ")
-        println(aligned)
 
         // do we need to allign?
         if ( !limelight.targetFound || aligned ) return
@@ -72,10 +69,17 @@ object Vision : Subsystem("Vision") {
         if (output >  maxSpeed) output =  maxSpeed
         if (output < -maxSpeed) output = -maxSpeed
 
-        println(output)
+        val flip = 1
+
+        println("output ${output}")
+        println("aligned ${aligned}")
+        println("offset ${limelight.horizontalOffset + offset}")
 
         // lets drive, baby
-        Drivetrain.setVelocity(-output.meters.velocity, output.meters.velocity)
+        Drivetrain.setPercent(
+            (flip * output),
+            (-flip * output)
+        )
     }
 
     public fun on() {

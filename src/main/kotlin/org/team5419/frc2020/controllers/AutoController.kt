@@ -48,13 +48,12 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
     override fun start() {
-        routine = // SerialAction(
+        routine
             RamseteAction(
                 Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
                 arrayOf<Vector2<Meter>>(),
                 Pose2d(1.0.meters, 0.0.meters, 0.0.degrees)
             )
-        // )
 
         println("starting action")
 
