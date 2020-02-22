@@ -6,5 +6,5 @@ import org.team5419.fault.auto.SerialAction
 
 class AlignAndShoogAction : SerialAction(
     AutoAlignAction(),
-    TimedShoogAction( ShoogerConstants.ShoogTime )
+    TimedShoogAction()
 ) {}
