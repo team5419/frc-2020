@@ -2,6 +2,7 @@ package org.team5419.frc2020.controllers
 
 import org.team5419.frc2020.auto.generateRoutines
 import org.team5419.frc2020.auto.*
+import org.team5419.fault.auto.SerialAction
 import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.DriveConstants
 import org.team5419.frc2020.auto.actions.*
@@ -47,26 +48,30 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
     override fun start() {
-        // routine = autoSelector.getSelected()
+        routine = // SerialAction(
+            RamseteAction(
+                Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+                arrayOf<Vector2<Meter>>(),
+                Pose2d(1.0.meters, 0.0.meters, 0.0.degrees)
+            )
+        // )
 
-        // routine.start()
+        println("starting action")
 
-        // println("routine start")
-
-        Drivetrain.setVelocity(1.0.meters.velocity, 1.0.meters.velocity)
+        routine.start()
     }
 
     override fun update() {
-        // routine.update()
+        routine.update()
 
-        // if (routine.next()) {
-        //     routine.finish()
-        //     routine = NothingAction()
-        //     println("done with action")
-        // }
+        if (routine.next()) {
+            routine.finish()
+            routine = NothingAction()
+            println("done with action")
+        }
     }
 
     override fun reset() {
-        // start()
+        start()
     }
 }

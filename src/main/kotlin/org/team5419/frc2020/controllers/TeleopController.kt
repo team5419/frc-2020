@@ -107,8 +107,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             codriverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
             codriverXbox.setRumble(RumbleType.kRightRumble, 0.0)
         }
-
-        println( Shooger.isActive() )
     }
 
     override fun reset() {
