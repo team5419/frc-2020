@@ -151,7 +151,7 @@ object VisionConstants {
     public val TargetOffset = 0.0
 
     object PID {
-        public const val P = 0.018
+        public const val P = 0.02
         public const val I = 0.0
         public const val D = 0.0
     }

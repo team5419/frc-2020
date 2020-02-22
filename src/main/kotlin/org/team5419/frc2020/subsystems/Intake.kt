@@ -102,6 +102,7 @@ object Intake : Subsystem("Intake") {
     // intake functions
 
     public fun intake() {
+        println("intake")
         intakeMode = IntakeMode.INTAKE
 
         // cant intake if were down

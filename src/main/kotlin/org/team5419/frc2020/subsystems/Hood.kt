@@ -54,7 +54,7 @@ object Hood : Subsystem("Hood") {
     // hood positions
 
     public enum class HoodPosititions(public var angle: Double) {
-        FAR(15.0),
+        FAR(15.5),
         CLOSE(5.0),
         RETRACT(0.0)
     }

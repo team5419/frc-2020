@@ -14,13 +14,13 @@ object XboxCodriver: CodriverControls {
 
     override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight) || codriverXbox.getBumper(Hand.kLeft)
 
-    override public fun loadShooger(): Boolean = codriverXbox.getBumper(Hand.kLeft)
+    override public fun loadShooger(): Boolean = codriverXbox.getBumper(Hand.kRight)
 
     // intake functions
 
-    override public fun intake(): Boolean = codriverXbox.getTriggerAxis(Hand.kRight) > 0.3
+    override public fun intake(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft) > 0.3
 
-    override public fun outtake(): Boolean = codriverXbox.getTriggerAxis(Hand.kLeft) > 0.3
+    override public fun outtake(): Boolean = codriverXbox.getTriggerAxis(Hand.kRight) > 0.3
 
     override public fun storeIntake(): Boolean = !intake() && !outtake()
 
@@ -38,7 +38,7 @@ object XboxCodriver: CodriverControls {
 
     // climb
 
-    override public fun climb(): Boolean = codriverXbox.getAButton()
+    override public fun climb(): Boolean = codriverXbox.getYButton()
 
     override public fun unclimb(): Boolean = codriverXbox.getAButton()
 

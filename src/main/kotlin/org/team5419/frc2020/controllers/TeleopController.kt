@@ -40,6 +40,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateDriver() {
+        println("throttle ${driver.getThrottle()}")
+        println("wheel ${driver.getTurn()}")
+        println("output ${driveHelper.output()}")
+
         if( driver.align() ) {
             println("toggling")
             isAlign = !isAlign
@@ -48,7 +52,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         if(driver.invertDrivetrain())
             Drivetrain.invert()
 
-        Drivetrain.setPercent(driveHelper.output())
+        // Drivetrain.setPercent(driveHelper.output())
 
         if ( isAlign ) {
             if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
@@ -77,6 +81,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     @Suppress("ComplexMethod")
     private fun updateCodriver() {
         // intake
+        println("intake ${codriver.intake()}")
 
              if ( codriver.outtake() ) Intake.outtake()
         else if ( codriver.intake() ) Intake.intake()
