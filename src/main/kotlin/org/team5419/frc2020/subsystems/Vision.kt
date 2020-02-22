@@ -43,7 +43,7 @@ object Vision : Subsystem("Vision") {
     init {
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
 
-        tab.addBoolean("is aligned", { this.aligned })
+        tab.addNumber("area", { limelight.targetArea })
     }
 
     // auto alignment
@@ -70,10 +70,6 @@ object Vision : Subsystem("Vision") {
         if (output < -maxSpeed) output = -maxSpeed
 
         val flip = 1
-
-        println("output ${output}")
-        println("aligned ${aligned}")
-        println("offset ${limelight.horizontalOffset + offset}")
 
         // lets drive, baby
         Drivetrain.setPercent(
