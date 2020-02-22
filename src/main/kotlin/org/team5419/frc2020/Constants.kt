@@ -99,12 +99,12 @@ object HoodConstants {
     public const val HoodPort = 12
 
     object PID {
-        public const val P = 2.0
+        public const val P = 3.0
         public const val I = 0.0
-        public const val D = 0.0
+        public const val D = 45.0
     }
 
-    public val MaxSpeed = 0.3
+    public val MaxSpeed = 0.5
     public val MaxAngle = 18.0
 
     public val TicksPerRotation = 4092.0
@@ -128,10 +128,10 @@ object IntakeConstants {
     public val DeployTicksPerRotation = (4096 * 81).nativeUnits
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
 
-    public const val IntakePort = 11
-    public const val DeployPort = 8
+    public const val IntakePort = 8
+    public const val DeployPort = 11
 
-    public const val RollerPort = 30
+    // public const val RollerPort = 30
 
     public const val DeployStrength = 0.4
 }
