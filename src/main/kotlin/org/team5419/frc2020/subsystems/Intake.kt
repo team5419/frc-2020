@@ -4,6 +4,7 @@ import org.team5419.frc2020.IntakeConstants
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.NativeUnitRotationModel
 import org.team5419.fault.hardware.ctre.BerkeliumSRX
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
 
 @Suppress("TooManyFunctions")
 object Intake : Subsystem("Intake") {
@@ -13,7 +14,9 @@ object Intake : Subsystem("Intake") {
     val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
 
     val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
-    val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel)
+    val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel).apply {
+        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+    }
 
     // intake modes
 
@@ -41,7 +44,6 @@ object Intake : Subsystem("Intake") {
     public enum class DeployMode {
         DEPLOY,
         STORE,
-        LOCK,
         OFF
     }
 
@@ -50,10 +52,15 @@ object Intake : Subsystem("Intake") {
             if ( mode == field ) return
 
             when (mode) {
-                DeployMode.DEPLOY -> { deployMotor.setPercent(  0.2 ) }
-                DeployMode.STORE  -> { deployMotor.setPercent( -0.4 ) }
-                DeployMode.LOCK   -> { deployMotor.setPercent( -0.2 ) }
-                DeployMode.OFF    -> { deployMotor.setPercent(  0.0 ) }
+                DeployMode.DEPLOY -> {
+                    deployMotor.setPosition(IntakeConstants.DeployPosition)
+                }
+                DeployMode.STORE -> {
+                    deployMotor.setPosition(IntakeConstants.StorePosition)
+                }
+                DeployMode.OFF -> {
+                    deployMotor.setPercent(  0.0 )
+                }
             }
 
             field = mode
@@ -73,9 +80,7 @@ object Intake : Subsystem("Intake") {
     }
 
     public fun stopDeploy() {
-        if ( deployMode == DeployMode.STORE || deployMode == DeployMode.STORE ) {
-            deployMode = DeployMode.STORE
-        } else {
+        if( deployMode != DeployMode.STORE ){
             deployMode = DeployMode.OFF
         }
     }

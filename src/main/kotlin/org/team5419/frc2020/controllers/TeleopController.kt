@@ -77,8 +77,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
              if ( codriver.outtake() ) Intake.outtake()
         else if ( codriver.intake() ) Intake.intake()
-        else if ( codriver.storeIntake() ) Intake.store()
-        else Intake.stop()
+        else Intake.store()
 
         // storage
 
@@ -101,7 +100,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         if ( codriver.retractHood() || driver.retractHood() )
             Hood.goto( Hood.HoodPosititions.RETRACT )
 
-        if ( Shooger.isSpedUp() ){
+        if ( Shooger.isSpedUp() ) {
             driverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
             driverXbox.setRumble(RumbleType.kRightRumble, 0.3)
         }
