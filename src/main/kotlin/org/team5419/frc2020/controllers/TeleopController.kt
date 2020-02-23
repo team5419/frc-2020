@@ -33,7 +33,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         InputConstants.SlowMoveMultiplier
     )
 
-    override fun start() {}
+    override fun start() {
+        Hood.goto(HoodPosititions.RETRACT)
+    }
 
     override fun update() {
         updateCodriver()
@@ -71,8 +73,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             Vision.autoAlign()
 
             if ( Vision.aligned ) {
-                codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
-                codriverXbox.setRumble(RumbleType.kRightRumble, 0.3)
+                codriverXbox.setRumble(RumbleType.kLeftRumble, 0.1)
+                codriverXbox.setRumble(RumbleType.kRightRumble, 0.1)
             }
         }
 
@@ -99,14 +101,13 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // hood
 
-        if ( codriver.deployHoodFar() )
+        if ( codriver.deployHoodFar() ){
             Hood.goto( Hood.HoodPosititions.FAR )
-
-        if ( codriver.deployHoodClose() )
+        } else if ( codriver.deployHoodClose() ){
             Hood.goto( Hood.HoodPosititions.CLOSE )
-
-        if ( codriver.retractHood() || driver.retractHood() )
+        } else if ( codriver.retractHood() || driver.retractHood() ){
             Hood.goto( Hood.HoodPosititions.RETRACT )
+        }
 
         if ( Shooger.isSpedUp() ) {
             codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
