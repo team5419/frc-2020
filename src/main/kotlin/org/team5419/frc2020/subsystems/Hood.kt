@@ -53,11 +53,17 @@ object Hood : Subsystem("Hood") {
 
     // hood positions
 
-    public enum class HoodPosititions(public var angle: Double) {
-        FAR(15.5),
-        CLOSE(5.0),
-        RETRACT(0.0)
+    public enum class HoodPosititions(public var angle: Double, public var velocity: Double) {
+        FAR(HoodConstants.FarHoodAngle, 4800.0),
+        CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
+        RETRACT(0.0, 4800.0)
     }
+
+    var mode: HoodPosititions = HoodPosititions.RETRACT
+        set(value: HoodPosititions){
+            if(value == field) return
+            goto(value)
+        }
 
     init {
         val hoodAngleEntry = tab.add("Target Hood", HoodPosititions.FAR.angle).getEntry()
@@ -71,13 +77,18 @@ object Hood : Subsystem("Hood") {
 
     // public api
 
+
     private val nativeUnitsToAngle = HoodConstants.GearRatio / HoodConstants.TicksPerRotation * (2 * PI)
 
     fun angleToNativeUnits(angle: Double) = angle / nativeUnitsToAngle
 
     fun hoodAngle() = hoodMotor.getSelectedSensorPosition(0) * nativeUnitsToAngle
 
-    fun goto(angle: HoodPosititions) = goto( angle.angle )
+    fun goto(angle: HoodPosititions) {
+        mode = angle
+
+        goto( angle.angle )
+    }
 
     fun goto(angle: Double) {
         assert(angle >= 0.0 && angle <= HoodConstants.MaxAngle)

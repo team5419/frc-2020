@@ -96,7 +96,7 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
-    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 150
+    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 100
 
     public fun isActive(): Boolean = active
 

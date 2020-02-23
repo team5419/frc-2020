@@ -98,11 +98,17 @@ object ShoogerConstants {
 object HoodConstants {
     public const val HoodPort = 12
 
+    public const val FarHoodAngle = 15.5
+    public const val CloseHoodAngle = 2.5
+
     object PID {
         public const val P = 3.0
         public const val I = 0.0
         public const val D = 45.0
     }
+
+    // public const val FarHoodAngle
+    // public const val
 
     public val MaxSpeed = 0.5
     public val MaxAngle = 18.0
@@ -146,12 +152,12 @@ object VisionConstants {
 
     public val Tolerance = 0.1
 
-    public val MaxAutoAlignSpeed = 0.3
+    public val MaxAutoAlignSpeed = 0.2
 
     public val TargetOffset = 0.0
 
     object PID {
-        public const val P = 0.02
+        public const val P = 0.018
         public const val I = 0.0
         public const val D = 0.0
     }
