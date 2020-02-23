@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d as WPILibRotation2d
 import edu.wpi.first.wpilibj.Notifier
 import com.ctre.phoenix.sensors.PigeonIMU
 import com.ctre.phoenix.motorcontrol.can.TalonFX
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import com.ctre.phoenix.motorcontrol.*
 
 @Suppress("TooManyFunctions")
@@ -41,6 +43,18 @@ object Drivetrain : Subsystem("DriveTrain") {
         { leftDistance.value },
         { rightDistance.value }
     )
+
+    public var brakeMode = false
+        set(value: Boolean) {
+            if(value == field) return
+            if(value) {
+                leftMasterMotor.setNeutralMode(NeutralMode.Brake)
+                rightMasterMotor.setNeutralMode(NeutralMode.Brake)
+            } else {
+                leftMasterMotor.setNeutralMode(NeutralMode.Coast)
+                rightMasterMotor.setNeutralMode(NeutralMode.Coast)
+            }
+        }
 
     val robotPosition
         get() = position.robotPosition
@@ -112,7 +126,6 @@ object Drivetrain : Subsystem("DriveTrain") {
             setFusedHeading(0.0, 100)
         }
 
-        tab.addNumber("drive angle", { angle })
     }
 
     // odometry

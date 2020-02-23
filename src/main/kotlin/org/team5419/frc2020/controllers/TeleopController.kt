@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.XboxController
 
 
 
+
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     var isAlign = false
@@ -43,6 +44,14 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         if( driver.align() ) {
             isAlign = !isAlign
+            if(isAlign){
+                Drivetrain.brakeMode = true
+            } else {
+                driverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
+                driverXbox.setRumble(RumbleType.kRightRumble, 0.0)
+                Vision.off()
+                Drivetrain.brakeMode = false
+            }
         }
 
         // if(driver.invertDrivetrain())
@@ -52,11 +61,11 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         if ( isAlign ) {
             if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
-                Vision.offset += driver.adjustOffsetRight()
+                Vision.offset += driver.adjustOffsetRight() / 10
             }
 
             if ( driver.adjustOffsetLeft() >= InputConstants.TriggerDeadband ) {
-                Vision.offset -= driver.adjustOffsetLeft()
+                Vision.offset -= driver.adjustOffsetLeft() / 10
             }
 
             Vision.autoAlign()
@@ -65,10 +74,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
                 codriverXbox.setRumble(RumbleType.kRightRumble, 0.3)
             }
-        } else {
-            driverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
-            driverXbox.setRumble(RumbleType.kRightRumble, 0.0)
-            Vision.off()
         }
 
 

@@ -60,10 +60,6 @@ object Hood : Subsystem("Hood") {
     }
 
     var mode: HoodPosititions = HoodPosititions.RETRACT
-        set(value: HoodPosititions){
-            if(value == field) return
-            goto(value)
-        }
 
     init {
         val hoodAngleEntry = tab.add("Target Hood", HoodPosititions.FAR.angle).getEntry()

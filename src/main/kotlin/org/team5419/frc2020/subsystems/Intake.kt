@@ -33,7 +33,7 @@ object Intake : Subsystem("Intake") {
     }
 
     init{
-        tab.addNumber("Intake Pos", { deployMotor.talonSRX.getClosedLoopError(0).toDouble() })
+        // tab.addNumber("Intake Pos", { deployMotor.talonSRX.getClosedLoopError(0).toDouble() })
     }
 
     // intake modes
