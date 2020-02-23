@@ -96,7 +96,7 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
-    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 150
+    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 30
 
     public fun isActive(): Boolean = active
 
@@ -142,7 +142,7 @@ object Shooger : Subsystem("Shooger") {
 
     override fun periodic() {
         if (setpoint != 0.0 && bangBang) {
-            if (setpointVelocity >= flyWheelVelocity) {
+            if (setpointVelocity + ShoogerConstants.BangBangTolerance >= flyWheelVelocity) {
                 masterMotor.set(ControlMode.PercentOutput, 1.0)
             } else {
                 masterMotor.set(ControlMode.PercentOutput, 0.0)

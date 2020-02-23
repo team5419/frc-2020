@@ -89,6 +89,8 @@ object ShoogerConstants {
     public const val SlavePort1 = 17
     public const val SlavePort2 = 18
 
+    public const val BangBangTolerance = 50
+
     public val TargetVelocity = 4000.0.radians.velocity
     public val TicksPerRotation = 4092.0.nativeUnits
 
@@ -97,6 +99,9 @@ object ShoogerConstants {
 
 object HoodConstants {
     public const val HoodPort = 12
+
+    public const val FarHoodAngle = 15.5
+    public const val CloseHoodAngle = 3.0
 
     object PID {
         public const val P = 3.0
@@ -146,12 +151,12 @@ object VisionConstants {
 
     public val Tolerance = 0.1
 
-    public val MaxAutoAlignSpeed = 0.3
+    public val MaxAutoAlignSpeed = 0.2
 
     public val TargetOffset = 0.0
 
     object PID {
-        public const val P = 0.018
+        public const val P = 0.019
         public const val I = 0.0
         public const val D = 0.0
     }

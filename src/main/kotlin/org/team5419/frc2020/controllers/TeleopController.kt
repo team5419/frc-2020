@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.XboxController
 
 
 
+
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     var isAlign = false
@@ -40,23 +41,31 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateDriver() {
+
         if( driver.align() ) {
-            println("toggling")
             isAlign = !isAlign
+            if(isAlign){
+                Drivetrain.brakeMode = true
+            } else {
+                driverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
+                driverXbox.setRumble(RumbleType.kRightRumble, 0.0)
+                Vision.off()
+                Drivetrain.brakeMode = false
+            }
         }
 
-        if(driver.invertDrivetrain())
-            Drivetrain.invert()
+        // if(driver.invertDrivetrain())
+        //     Drivetrain.invert()
 
         Drivetrain.setPercent(driveHelper.output())
 
         if ( isAlign ) {
             if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
-                Vision.offset += driver.adjustOffsetRight()
+                Vision.offset += driver.adjustOffsetRight() / 10
             }
 
             if ( driver.adjustOffsetLeft() >= InputConstants.TriggerDeadband ) {
-                Vision.offset -= driver.adjustOffsetLeft()
+                Vision.offset -= driver.adjustOffsetLeft() / 10
             }
 
             Vision.autoAlign()
@@ -65,10 +74,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
                 codriverXbox.setRumble(RumbleType.kRightRumble, 0.3)
             }
-        } else {
-            driverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
-            driverXbox.setRumble(RumbleType.kRightRumble, 0.0)
-            Vision.off()
         }
 
 
@@ -89,7 +94,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         // shooger
 
         if ( codriver.shoog() )
-            Shooger.shoog( codriver.loadShooger() )
+            Shooger.shoog( codriver.loadShooger(), Hood.mode.velocity )
         else Shooger.stop()
 
         // hood

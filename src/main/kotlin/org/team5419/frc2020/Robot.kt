@@ -5,6 +5,7 @@ import org.team5419.frc2020.input.*
 import org.team5419.frc2020.controllers.*
 import org.team5419.fault.math.units.seconds
 import org.team5419.fault.BerkeliumRobot
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
@@ -19,7 +20,7 @@ import com.ctre.phoenix.motorcontrol.*
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
 @SuppressWarnings("TooManyFunctions")
-class Robot : BerkeliumRobot(0.02.seconds) {
+class Robot : BerkeliumRobot(0.01.seconds) {
     private val autoController: AutoController
     private val teleopController: TeleopController
 
@@ -54,8 +55,6 @@ class Robot : BerkeliumRobot(0.02.seconds) {
     }
 
     override fun robotPeriodic() {
-        Shuffleboard.update()
-        Drivetrain.periodic()
     }
 
     override fun disabledInit() {

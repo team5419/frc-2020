@@ -15,7 +15,7 @@ object Intake : Subsystem("Intake") {
     val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
 
     val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
-    val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel).apply {
+    val deployMotor = BerkeliumSRX(100, deployModel).apply {
         talonSRX.configFactoryDefault()
         talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder)
         talonSRX.setSelectedSensorPosition(0,0,100)
@@ -24,12 +24,16 @@ object Intake : Subsystem("Intake") {
         talonSRX.configClosedLoopPeakOutput(0, .6)
         talonSRX.config_kD(0, 10.0)
         talonSRX.config_kP(0, 1.0)
+        talonSRX.configForwardSoftLimitThreshold(
+            radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
+        )
+        talonSRX.configForwardSoftLimitEnable(true)
 
 
     }
 
     init{
-        tab.addNumber("Intake Pos", { deployMotor.talonSRX.getClosedLoopError(0).toDouble() })
+        // tab.addNumber("Intake Pos", { deployMotor.talonSRX.getClosedLoopError(0).toDouble() })
     }
 
     // intake modes
@@ -81,6 +85,9 @@ object Intake : Subsystem("Intake") {
         }
 
     // deploy functions
+    fun radiansToNativeUnits(radians: Double): Int = (radians / Math.PI / 2 * 4096).toInt()
+
+    fun nativeUnitsToRadians(ticks: Int): Double = ticks / 4096 * 2 * Math.PI
 
     public fun store() {
         deployMode = DeployMode.STORE

@@ -2,7 +2,6 @@ package org.team5419.frc2020.subsystems
 
 import org.team5419.frc2020.tab
 import org.team5419.frc2020.VisionConstants
-import org.team5419.frc2020.tab
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
