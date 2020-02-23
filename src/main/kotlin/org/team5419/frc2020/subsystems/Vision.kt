@@ -43,9 +43,13 @@ object Vision : Subsystem("Vision") {
         tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
 
         tab.addNumber("area", { limelight.targetArea })
+        tab.addBoolean("Aligned", { aligned })
+
     }
 
     // auto alignment
+
+    public fun calculate() = controller.calculate(limelight.horizontalOffset + offset)
 
     public val aligned
         get() = limelight.targetFound && controller.atSetpoint()
@@ -54,12 +58,12 @@ object Vision : Subsystem("Vision") {
         get() = limelight.horizontalOffset
 
     public fun autoAlign() {
+
         // turn lights on
         on()
 
         // get the pid loop output
-        var output = controller.calculate(limelight.horizontalOffset + offset)
-
+        var output = calculate()
 
         // do we need to allign?
         if ( !limelight.targetFound || aligned ) return

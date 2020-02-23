@@ -103,7 +103,7 @@ public class RamseteAction(
     var prevSpeed = DifferentialDriveWheelSpeeds(0.0, 0.0)
 
     init {
-        // finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
+        finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
     }
 
     override fun update() {

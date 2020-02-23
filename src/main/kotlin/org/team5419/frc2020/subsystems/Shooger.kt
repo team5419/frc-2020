@@ -100,7 +100,7 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isActive(): Boolean = active
 
-    public fun shoog(active: Boolean? = null, shoogVelocity: Double = targetVelocity) {
+    public fun shoog(active: Boolean? = null, shoogVelocity: Double = Hood.mode.velocity) {
         this.active = active ?: true
 
         if ( shoogVelocity == setpointVelocity ) return

@@ -20,7 +20,7 @@ import com.ctre.phoenix.motorcontrol.*
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
 @SuppressWarnings("TooManyFunctions")
-class Robot : BerkeliumRobot(0.01.seconds) {
+class Robot : BerkeliumRobot(0.02.seconds) {
     private val autoController: AutoController
     private val teleopController: TeleopController
 

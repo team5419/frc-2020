@@ -6,7 +6,12 @@ import org.team5419.fault.auto.Action
 
 class AutoAlignAction() : Action() {
     init {
+        Vision.calculate()
         finishCondition.set({ Vision.aligned })
+    }
+
+    override public fun start(){
+        Vision.calculate()
     }
 
     override public fun update() {
