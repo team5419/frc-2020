@@ -4,7 +4,7 @@ import org.team5419.frc2020.subsystems.Intake
 import org.team5419.fault.math.units.seconds
 import org.team5419.fault.auto.Action
 
-public class DeployIntakeAction() : Action() {
+public class DeployIntakeAction(deploy: Boolean) : Action() {
     init {
         withTimeout(0.5.seconds)
     }

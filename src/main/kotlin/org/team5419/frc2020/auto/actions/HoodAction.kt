@@ -6,9 +6,6 @@ import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.fault.auto.Action
 
 class HoodAction(val pos: HoodPosititions) : Action() {
-    init {
-        finishCondition.set({ true })
-    }
 
     override public fun start() {
         Hood.goto(pos)

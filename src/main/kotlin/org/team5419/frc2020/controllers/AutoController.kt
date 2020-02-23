@@ -22,17 +22,15 @@ import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.geometry.Vector2
 
 public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
-    public var autoSelector = SendableChooser<Routine>()
+    private var autoSelector = SendableChooser<Routine>()
 
-    public var routine: Action = baseline
+    private var routine: Routine = baseline
+
 
     init {
         tab.add("Auto Selector", autoSelector)
         autoSelector.setDefaultOption("Baseline", baseline)
         refreshRoutines()
-
-        val refreshRoutinesEntry = tab.add("Zero Robot Position", true).getEntry()
-        refreshRoutinesEntry.addListener( { refreshRoutines() }, EntryListenerFlags.kUpdate)
     }
 
     private fun refreshRoutines() {
@@ -42,16 +40,13 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
 
         // add all the routies
         generateRoutines(Drivetrain.position.robotPosition).iterator().forEach({
-            println("routine")
             autoSelector.addOption(it.name, it)
         })
     }
 
     override fun start() {
-        routine = autoSelector.getSelected()
-
+        routine = autoSelector.getSelected()? ?: baseline
         println("starting action")
-
         routine.start()
     }
 
@@ -60,7 +55,7 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
 
         if (routine.next()) {
             routine.finish()
-            routine = NothingAction()
+            // routine = NothingAction()
             println("done with action")
         }
     }

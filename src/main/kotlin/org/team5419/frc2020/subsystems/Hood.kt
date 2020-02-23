@@ -61,6 +61,12 @@ object Hood : Subsystem("Hood") {
     }
 
     var mode: HoodPosititions = HoodPosititions.RETRACT
+        set(value: HoodPosititions){
+            if (field == mode) return
+            field = mode
+            goto(value.angle)
+            Shooger.targetVelocity = value.velocity
+        }
 
     init {
         val hoodAngleEntry = tab.add("Target Hood", HoodPosititions.FAR.angle).getEntry()
@@ -83,8 +89,6 @@ object Hood : Subsystem("Hood") {
 
     fun goto(angle: HoodPosititions) {
         mode = angle
-
-        goto( angle.angle )
     }
 
     fun goto(angle: Double) {

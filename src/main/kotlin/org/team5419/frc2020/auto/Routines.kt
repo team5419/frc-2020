@@ -20,13 +20,7 @@ import java.nio.file.Path
 
 fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
-
-        Routine("Follow path", initalPose, RamseteAction(
-            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            arrayOf<Vector2<Meter>>(),
-            Pose2d(4.0.meters, 1.0.meters, 0.0.degrees)
-        )),
-        Routine("Target", initalPose,
+        Routine("Trech", initalPose,
             HoodAction(HoodPosititions.AUTO),
             TimedShoogAction(5.seconds),
             HoodAction(HoodPosititions.RETRACT),
@@ -35,13 +29,13 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
                 arrayOf<Vector2<Meter>>(),
                 Pose2d(2.0.meters, -1.55.meters, 0.0.degrees)
             ),
-            StartIntakeAction(),
+            IntakeAction(true),
             RamseteAction(
                 Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
                 arrayOf<Vector2<Meter>>(),
                 Pose2d(8.0.meters, -1.50.meters, 0.0.degrees)
             ),
-            StopIntakeAction(),
+            IntakeAction(false),
             HoodAction(HoodPosititions.FAR),
             AutoAlignAction(),
             TimedShoogAction(6.seconds)
