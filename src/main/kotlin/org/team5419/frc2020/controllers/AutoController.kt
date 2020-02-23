@@ -23,9 +23,7 @@ import org.team5419.fault.math.geometry.Vector2
 
 public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
     private var autoSelector = SendableChooser<Routine>()
-
     private var routine: Routine = baseline
-
 
     init {
         tab.add("Auto Selector", autoSelector)
@@ -45,7 +43,7 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
     override fun start() {
-        routine = autoSelector.getSelected()? ?: baseline
+        routine = autoSelector.getSelected() ?: baseline
         println("starting action")
         routine.start()
     }

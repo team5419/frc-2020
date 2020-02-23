@@ -62,11 +62,10 @@ object Shooger : Subsystem("Shooger") {
 
     // settings
 
-    private var targetVelocity = ShoogerConstants.TargetVelocity.value
+    public var targetVelocity = ShoogerConstants.TargetVelocity.value
     private var bangBang = true
 
     // state
-
     private var setpointVelocity = 0.0
     private var setpoint = 0.0
     private var active = false
@@ -104,9 +103,7 @@ object Shooger : Subsystem("Shooger") {
         this.active = active ?: true
 
         if ( shoogVelocity == setpointVelocity ) return
-
         setpointVelocity = shoogVelocity
-
         setpoint = calculateSetpoint(shoogVelocity)
 
         if (!bangBang) {

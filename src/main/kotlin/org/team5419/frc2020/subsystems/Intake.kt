@@ -28,8 +28,6 @@ object Intake : Subsystem("Intake") {
             radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
         )
         talonSRX.configForwardSoftLimitEnable(true)
-
-
     }
 
     init{
@@ -127,6 +125,9 @@ object Intake : Subsystem("Intake") {
     }
 
     public fun isActive() = intakeMode == IntakeMode.INTAKE
+
+    public fun isAtSetPoint() =
+        deployMotor.talonSRX.getClosedLoopError() < 30
 
     // combined functions
 
