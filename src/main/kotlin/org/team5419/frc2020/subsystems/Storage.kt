@@ -111,7 +111,7 @@ object Storage : Subsystem("Storage") {
             mode = StorageMode.LOAD
         } else if ( Intake.isActive() || Shooger.isActive() ) {
             mode = StorageMode.PASSIVE
-        } else {
+        } else if( Shooger.shouldStopFeeding() ) {
             mode = StorageMode.OFF
         }
 

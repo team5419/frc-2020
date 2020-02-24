@@ -99,6 +99,8 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 50
 
+    public fun shouldStopFeeding(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 100
+
     public fun isActive(): Boolean = active
 
     public fun shoog(active: Boolean? = null, shoogVelocity: Double = Hood.mode.velocity) {
