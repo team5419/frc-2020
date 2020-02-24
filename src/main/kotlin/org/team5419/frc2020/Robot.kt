@@ -34,6 +34,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
         // add subsystems to manager
 
+        +Climber
         +Drivetrain
         +Hood
         +Intake
