@@ -74,7 +74,7 @@ object Shooger : Subsystem("Shooger") {
     private var setpoint = 0.0
     private var active = false
 
-    private val average = MovingAverageFilter(10)
+    // private val average = MovingAverageFilter(10)
 
     // shuffleboard
 
@@ -97,7 +97,7 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
-    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && average.average >= setpointVelocity
+    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 50
 
     public fun isActive(): Boolean = active
 
@@ -143,10 +143,10 @@ object Shooger : Subsystem("Shooger") {
 
     override fun periodic() {
         println(masterMotor.getClosedLoopError(0))
-        println(average.average)
+        println(flyWheelVelocity)
         // average += flyWheelVelocity
         // if (setpoint != 0.0 && bangBang) {
-        //     if (setpointVelocity + ShoogerConstants.BangBangTolerance >= average.average) {
+        //     if (setpointVelocity + ShoogerConstants.BangBangTolerance >= flyWheelVelocity) {
         //         masterMotor.set(ControlMode.PercentOutput, 1.0)
         //     } else {
         //         masterMotor.set(ControlMode.PercentOutput, 0.0)
