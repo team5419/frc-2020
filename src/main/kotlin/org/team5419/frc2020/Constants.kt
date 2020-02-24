@@ -144,6 +144,10 @@ object IntakeConstants {
     public const val DeployStrength = 0.4
 }
 
+object ClimberConstants {
+    public val ClimberPort = 15
+}
+
 object VisionConstants {
     public val CameraAngle = 0.0.radians
     public val CameraHeight = 0.0.meters
