@@ -56,6 +56,7 @@ object Hood : Subsystem("Hood") {
 
     public enum class HoodPosititions(public var angle: Double, public var velocity: Double) {
         FAR(HoodConstants.FarHoodAngle, 4800.0),
+        TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
         CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
         AUTO(12.0, 3500.0),
         RETRACT(0.0, 4800.0)

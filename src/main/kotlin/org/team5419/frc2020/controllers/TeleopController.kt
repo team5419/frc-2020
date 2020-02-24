@@ -34,7 +34,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     )
 
     override fun start() {
-        Hood.goto(HoodPosititions.RETRACT)
     }
 
     override fun update() {
@@ -101,11 +100,17 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // hood
 
-        if ( codriver.deployHoodFar() ){
+        if ( codriver.deployHoodFar() && Hood.mode != Hood.HoodPosititions.FAR){
+            println("goto far")
             Hood.goto( Hood.HoodPosititions.FAR )
-        } else if ( codriver.deployHoodClose() ){
+        } else if ( codriver.deployHoodTruss() && Hood.mode != Hood.HoodPosititions.TRUSS ){
+            println("goto truss")
+            Hood.goto( Hood.HoodPosititions.TRUSS )
+        } else if ( codriver.deployHoodClose() && Hood.mode != Hood.HoodPosititions.CLOSE ){
+            println("goto close")
             Hood.goto( Hood.HoodPosititions.CLOSE )
-        } else if ( codriver.retractHood() || driver.retractHood() ){
+        } else if ( (codriver.retractHood() || driver.retractHood())  && Hood.mode != Hood.HoodPosititions.RETRACT ){
+            println("goto")
             Hood.goto( Hood.HoodPosititions.RETRACT )
         }
 

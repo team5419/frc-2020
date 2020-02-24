@@ -32,6 +32,8 @@ object XboxCodriver: CodriverControls {
 
     override public fun deployHoodClose(): Boolean = codriverXbox.getPOV() == 90
 
+    override public fun deployHoodTruss(): Boolean = codriverXbox.getPOV() == 270
+
     override public fun retractHood(): Boolean = codriverXbox.getPOV() == 180
 
     override public fun toogleStorage(): Boolean = codriverXbox.getAButton()

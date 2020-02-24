@@ -8,6 +8,7 @@ import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
+import org.team5419.fault.util.MovingAverageFilter
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput
@@ -33,10 +34,10 @@ object Shooger : Subsystem("Shooger") {
 
             configPeakCurrentLimit(40)
 
-            config_kP(0, 0.3, 100)
+            config_kP(0, 1.0, 100)
             config_kI(0, 0.0, 100)
-            config_kD(0, 0.5, 100)
-            config_kF(0, 0.06, 100)
+            config_kD(0, 0.0, 100)
+            config_kF(0, 0.0, 100)
 
             selectProfileSlot(0, 0)
 
@@ -44,6 +45,8 @@ object Shooger : Subsystem("Shooger") {
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
 
             setSelectedSensorPosition(0, 0, 100)
+            configPeakOutputReverse(0.0, 0)
+            configClosedLoopPeriod(0, 1, 100)
         }
 
     val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
@@ -62,8 +65,8 @@ object Shooger : Subsystem("Shooger") {
 
     // settings
 
-    private var targetVelocity = ShoogerConstants.TargetVelocity.value
-    private var bangBang = true
+    private var targetVelocity = ShoogerConstants.TargetVelocity
+    private var bangBang = false
 
     // state
 
@@ -71,18 +74,16 @@ object Shooger : Subsystem("Shooger") {
     private var setpoint = 0.0
     private var active = false
 
+    private val average = MovingAverageFilter(10)
+
     // shuffleboard
 
     init {
         val shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
 
-        targetVelocity = shooterVelocityEntry.getDouble(ShoogerConstants.TargetVelocity.value)
+        targetVelocity = shooterVelocityEntry.getDouble(ShoogerConstants.TargetVelocity)
 
         shooterVelocityEntry.setPersistent()
-        shooterVelocityEntry.addListener( { event ->
-            targetVelocity = if (event.value.isDouble()) event.value.getDouble() else targetVelocity
-            println("Updated Target Velocity: ${targetVelocity}")
-        }, EntryListenerFlags.kUpdate)
 
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
@@ -96,7 +97,7 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
-    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity
+    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && average.average >= setpointVelocity
 
     public fun isActive(): Boolean = active
 
@@ -110,7 +111,7 @@ object Shooger : Subsystem("Shooger") {
         setpoint = calculateSetpoint(shoogVelocity)
 
         if (!bangBang) {
-            masterMotor.set(ControlMode.Velocity, setpoint)
+            masterMotor.set(ControlMode.Velocity, calculateSetpoint(ShoogerConstants.TargetVelocity))
         }
     }
 
@@ -141,12 +142,15 @@ object Shooger : Subsystem("Shooger") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        if (setpoint != 0.0 && bangBang) {
-            if (setpointVelocity + ShoogerConstants.BangBangTolerance >= flyWheelVelocity) {
-                masterMotor.set(ControlMode.PercentOutput, 1.0)
-            } else {
-                masterMotor.set(ControlMode.PercentOutput, 0.0)
-            }
-        }
+        println(masterMotor.getClosedLoopError(0))
+        println(average.average)
+        // average += flyWheelVelocity
+        // if (setpoint != 0.0 && bangBang) {
+        //     if (setpointVelocity + ShoogerConstants.BangBangTolerance >= average.average) {
+        //         masterMotor.set(ControlMode.PercentOutput, 1.0)
+        //     } else {
+        //         masterMotor.set(ControlMode.PercentOutput, 0.0)
+        //     }
+        // }
     }
 }
