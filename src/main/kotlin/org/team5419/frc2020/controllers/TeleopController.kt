@@ -59,8 +59,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         //     Drivetrain.invert()
         output = driveHelper.output()
 
-
-
         if ( isAlign ) {
             if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
                 Vision.offset += driver.adjustOffsetRight() / 10
@@ -71,8 +69,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             }
 
             alignOutput = Vision.autoAlign()
-
-
 
             if ( Vision.aligned ) {
                 codriverXbox.setRumble(RumbleType.kLeftRumble, 0.1)
@@ -122,10 +118,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // shooger
 
-        if ( codriver.shoog() )
-            // codriver.loadShooger() determins wether we should be just
-            // spining up or if were shooging
-            Shooger.shoog( codriver.loadShooger() )
+             if ( codriver.shoog() ) Shooger.shoog()
+        else if ( codriver.spinUp() ) Shooger.spinUp()
         else Shooger.stop()
 
         // storage

@@ -71,14 +71,12 @@ object Shooger : Subsystem("Shooger") {
     // settings
 
     private var targetVelocity = ShoogerConstants.TargetVelocity
-    private var bangBang = false
 
     // state
+
     private var setpointVelocity = 0.0
     private var setpoint = 0.0
     private var active = false
-
-    // private val average = MovingAverageFilter(10)
 
     // shuffleboard
 
@@ -92,7 +90,7 @@ object Shooger : Subsystem("Shooger") {
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
 
-    // gettes
+    // getters
 
     public val flyWheelVelocity
         get() = masterMotor.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60
@@ -107,25 +105,22 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isActive(): Boolean = active
 
-    public fun shoog(active: Boolean? = null, shoogVelocity: Double = targetVelocity) {
-        this.active = active ?: true
+    public fun shoog(shoogVelocity: Double = targetVelocity) {
 
-        if ( shoogVelocity == setpointVelocity ) return
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)
 
-        if (!bangBang) {
-            masterMotor.set(ControlMode.Velocity, calculateSetpoint(ShoogerConstants.TargetVelocity))
-        }
+        setShoogerVelocity(shoogVelocity)
+    }
+
+    public fun spinUp(shoogVelocity: Double = targetVelocity) {
+        setShoogerVelocity(shoogVelocity)
     }
 
     public fun stop() {
-        setpoint = 0.0
-        setpointVelocity = 0.0
-
         active = false
 
-        powerShooger(0.0)
+        setShoogerVelocity(0.0)
     }
 
     // private api
@@ -133,8 +128,14 @@ object Shooger : Subsystem("Shooger") {
     private fun calculateSetpoint(velocity : Double) =
         velocity * 4096.0 / 600.0
 
-    private fun powerShooger(percent: Double) =
-        masterMotor.set(ControlMode.PercentOutput, percent)
+    private fun setShoogerVelocity(shoogVelocity: Double) {
+        if ( shoogVelocity == setpointVelocity ) return
+
+        setpointVelocity = shoogVelocity
+        setpoint = calculateSetpoint(shoogVelocity)
+
+        masterMotor.set(ControlMode.Velocity, setpoint)
+    }
 
     // subsystem functions
 
@@ -148,13 +149,5 @@ object Shooger : Subsystem("Shooger") {
     override fun periodic() {
         println(masterMotor.getClosedLoopError(0))
         println(flyWheelVelocity)
-        // average += flyWheelVelocity
-        // if (setpoint != 0.0 && bangBang) {
-        //     if (setpointVelocity + ShoogerConstants.BangBangTolerance >= flyWheelVelocity) {
-        //         masterMotor.set(ControlMode.PercentOutput, 1.0)
-        //     } else {
-        //         masterMotor.set(ControlMode.PercentOutput, 0.0)
-        //     }
-        // }
     }
 }

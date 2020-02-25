@@ -10,6 +10,5 @@ import org.team5419.fault.math.units.SIUnit
 import org.team5419.fault.auto.Action
 
 public class SpinUpAction() : Action() {
-
-    override fun update() = Shooger.shoog(false)
+    override fun update() = Shooger.spinUp(100.0) // TODO: change me
 }

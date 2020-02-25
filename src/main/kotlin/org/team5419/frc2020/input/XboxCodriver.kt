@@ -12,9 +12,9 @@ object XboxCodriver: CodriverControls {
 
     // shooger functions
 
-    override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight) || codriverXbox.getBumper(Hand.kLeft)
+    override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
 
-    override public fun loadShooger(): Boolean = codriverXbox.getBumper(Hand.kRight)
+    override public fun spinUp(): Boolean = codriverXbox.getBumper(Hand.kRight)
 
     // intake functions
 

@@ -14,6 +14,6 @@ public class TimedShoogAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
         withTimeout(timeout)
     }
 
-    override fun update() = Shooger.shoog(null)
+    override fun update() = Shooger.shoog(100.0) // TODO get real target
     override fun finish() = Shooger.stop()
 }
