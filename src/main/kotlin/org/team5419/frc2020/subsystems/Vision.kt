@@ -10,6 +10,8 @@ import org.team5419.fault.hardware.Limelight
 import org.team5419.fault.hardware.Limelight.LightMode
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.controller.PIDController
+import org.team5419.fault.input.DriveSignal
+
 
 object Vision : Subsystem("Vision") {
     // config limelight
@@ -57,7 +59,7 @@ object Vision : Subsystem("Vision") {
     public val horizontalOffset
         get() = limelight.horizontalOffset
 
-    public fun autoAlign() {
+    public fun autoAlign() : DriveSignal {
 
         // turn lights on
         on()
@@ -66,19 +68,14 @@ object Vision : Subsystem("Vision") {
         var output = calculate()
 
         // do we need to allign?
-        if ( !limelight.targetFound || aligned ) return
+        if ( !limelight.targetFound || aligned )
+            return DriveSignal()
 
         // limit the output
         if (output >  maxSpeed) output =  maxSpeed
         if (output < -maxSpeed) output = -maxSpeed
 
-        val flip = 1
-
-        // lets drive, baby
-        Drivetrain.setPercent(
-            (flip * output),
-            (-flip * output)
-        )
+        return DriveSignal(output, -output)
     }
 
     public fun on() {
