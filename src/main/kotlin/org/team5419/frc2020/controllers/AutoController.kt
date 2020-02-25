@@ -28,6 +28,7 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     init {
         tab.add("Auto Selector", autoSelector)
         autoSelector.setDefaultOption("Baseline", baseline)
+
         refreshRoutines()
     }
 

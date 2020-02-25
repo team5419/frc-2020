@@ -15,23 +15,20 @@ object Intake : Subsystem("Intake") {
     val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
 
     val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
-    val deployMotor = BerkeliumSRX(100, deployModel).apply {
+    val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel).apply {
         talonSRX.configFactoryDefault()
         talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder)
         talonSRX.setSelectedSensorPosition(0,0,100)
-        talonSRX.setSensorPhase(false)
-        talonSRX.setInverted(true)
+        talonSRX.setSensorPhase(true)
+        talonSRX.setInverted(false)
         talonSRX.configClosedLoopPeakOutput(0, .6)
         talonSRX.config_kD(0, 10.0)
         talonSRX.config_kP(0, 1.0)
-        talonSRX.configForwardSoftLimitThreshold(
-            radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
-        )
-        talonSRX.configForwardSoftLimitEnable(true)
-    }
-
-    init{
-        // tab.addNumber("Intake Pos", { deployMotor.talonSRX.getClosedLoopError(0).toDouble() })
+        // talonSRX.configForwardSoftLimitThreshold(
+        //     radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
+        // )
+        // talonSRX.configForwardSoftLimitEnable(true)
+        talonSRX.configClosedLoopPeakOutput(0,0.4)
     }
 
     // intake modes
@@ -47,8 +44,8 @@ object Intake : Subsystem("Intake") {
             if ( mode == field ) return
 
             when (mode) {
-                IntakeMode.INTAKE  -> { intakeMotor.setPercent( 0.7 ) }
-                IntakeMode.OUTTAKE -> { intakeMotor.setPercent(  -1.0 ) }
+                IntakeMode.INTAKE  -> { intakeMotor.setPercent(  0.7 ) }
+                IntakeMode.OUTTAKE -> { intakeMotor.setPercent( -1.0 ) }
                 IntakeMode.OFF     -> { intakeMotor.setPercent(  0.0 ) }
             }
 
@@ -75,7 +72,7 @@ object Intake : Subsystem("Intake") {
                     deployMotor.setPosition(IntakeConstants.StorePosition)
                 }
                 DeployMode.OFF -> {
-                    deployMotor.setPercent(  0.0 )
+                    deployMotor.setPercent( 0.0 )
                 }
             }
 
@@ -116,7 +113,7 @@ object Intake : Subsystem("Intake") {
     public fun outtake() {
         intakeMode = IntakeMode.OUTTAKE
 
-        // cant intake if were down
+        // cant outintake if were down
         deployMode = DeployMode.DEPLOY
     }
 

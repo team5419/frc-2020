@@ -40,11 +40,8 @@ object Vision : Subsystem("Vision") {
 
     // add the pid controller to shuffleboard
     init {
-        tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
-
-        tab.addNumber("area", { limelight.targetArea })
+        tab.addNumber("Offset", { limelight.horizontalOffset })
         tab.addBoolean("Aligned", { aligned })
-
     }
 
     // auto alignment

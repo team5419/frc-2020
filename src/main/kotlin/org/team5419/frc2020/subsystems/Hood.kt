@@ -49,12 +49,14 @@ object Hood : Subsystem("Hood") {
 
             // reset the sensor
             setSelectedSensorPosition(0, 0, 100)
+            set(ControlMode.Position, 0.0)
         }
 
     // hood positions
 
-    public enum class HoodPosititions(public var angle: Double, public var velocity: Double) {
+    public enum class HoodPosititions(override val angle: Double, override val velocity: Double) : ShotSetpoint {
         FAR(HoodConstants.FarHoodAngle, 4800.0),
+        TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
         CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
         AUTO(12.0, 3500.0),
         RETRACT(0.0, 4800.0)
@@ -63,19 +65,14 @@ object Hood : Subsystem("Hood") {
     var mode: HoodPosititions = HoodPosititions.RETRACT
         set(value: HoodPosititions){
             if (field == mode) return
+
             field = mode
+
             goto(value.angle)
-            Shooger.targetVelocity = value.velocity
         }
 
     init {
-        val hoodAngleEntry = tab.add("Target Hood", HoodPosititions.FAR.angle).getEntry()
-        hoodAngleEntry.addListener( { event ->
-            if ( event.value.isDouble() )
-                HoodPosititions.FAR.angle = event.value.getDouble()
-        }, EntryListenerFlags.kUpdate)
-
-        HoodPosititions.FAR.angle = hoodAngleEntry.getDouble(HoodPosititions.FAR.angle)
+        goto(HoodPosititions.RETRACT)
     }
 
     // public api
@@ -92,6 +89,7 @@ object Hood : Subsystem("Hood") {
     }
 
     fun goto(angle: Double) {
+        println("goto angle")
         assert(angle >= 0.0 && angle <= HoodConstants.MaxAngle)
 
         val ticks = angleToNativeUnits(angle)

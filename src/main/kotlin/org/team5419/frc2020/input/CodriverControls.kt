@@ -26,6 +26,8 @@ public interface CodriverControls {
 
     public fun deployHoodClose(): Boolean
 
+    public fun deployHoodTruss() : Boolean
+
     public fun retractHood() : Boolean
 
     public fun toogleStorage(): Boolean

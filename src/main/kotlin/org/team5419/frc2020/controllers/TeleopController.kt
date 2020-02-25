@@ -16,9 +16,6 @@ import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.GenericHID.RumbleType
 import edu.wpi.first.wpilibj.XboxController
 
-
-
-
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     var isAlign = false
@@ -33,7 +30,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         InputConstants.SlowMoveMultiplier
     )
 
-    override fun start() {}
+    override fun start() {
+    }
 
     override fun update() {
         updateCodriver()
@@ -71,10 +69,16 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             Vision.autoAlign()
 
             if ( Vision.aligned ) {
-                codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
-                codriverXbox.setRumble(RumbleType.kRightRumble, 0.3)
+                codriverXbox.setRumble(RumbleType.kLeftRumble, 0.1)
+                codriverXbox.setRumble(RumbleType.kRightRumble, 0.1)
             }
         }
+
+        // if ( driverXbox.getXButton() ) {
+        //     Climber.climb()
+        // } else {
+        //     Climber.stop()
+        // }
 
 
     }
@@ -89,14 +93,21 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // hood
 
-        if ( codriver.deployHoodFar() )
+        if ( codriver.deployHoodFar() ) {
+            println("goto far")
             Hood.goto( Hood.HoodPosititions.FAR )
-
-        if ( codriver.deployHoodClose() )
+        } else if ( codriver.deployHoodTruss()) {
+            println("goto truss")
+            Hood.goto( Hood.HoodPosititions.TRUSS )
+        } else if ( codriver.deployHoodClose() ) {
+            println("goto close")
             Hood.goto( Hood.HoodPosititions.CLOSE )
-
-        if ( codriver.retractHood() || driver.retractHood() )
+        } else if ( codriver.retractHood() || driver.retractHood() ){
+            println("goto")
             Hood.goto( Hood.HoodPosititions.RETRACT )
+        }
+
+        // rumble
 
         if ( Shooger.isSpedUp() ) {
             codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
@@ -109,6 +120,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         // shooger
 
         if ( codriver.shoog() )
+            // codriver.loadShooger() determins wether we should be just
+            // spining up or if were shooging
             Shooger.shoog( codriver.loadShooger() )
         else Shooger.stop()
 
