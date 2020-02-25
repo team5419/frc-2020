@@ -15,5 +15,5 @@ public class UnjamAction(timeout: SIUnit<Second> = 0.1.seconds) : Action() {
     }
 
     override fun start() = Storage.reverse()
-    override fun finish() = Storage.reset()
+    override fun finish() = Storage.resetReverse()
 }

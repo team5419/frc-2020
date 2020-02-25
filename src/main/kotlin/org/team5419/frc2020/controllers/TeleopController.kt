@@ -87,16 +87,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         else if ( codriver.intake() ) Intake.intake()
         else Intake.store()
 
-        // storage
-
-        if ( codriver.reverseStorage() ) Storage.reverse() else Storage.reset()
-
-        // shooger
-
-        if ( codriver.shoog() )
-            Shooger.shoog( codriver.loadShooger() )
-        else Shooger.stop()
-
         // hood
 
         if ( codriver.deployHoodFar() )
@@ -114,6 +104,28 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         } else {
             codriverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
             codriverXbox.setRumble(RumbleType.kRightRumble, 0.0)
+        }
+
+        // shooger
+
+        if ( codriver.shoog() )
+            Shooger.shoog( codriver.loadShooger() )
+        else Shooger.stop()
+
+        // storage
+
+        if ( codriver.reverseStorage() ) {
+            Storage.reverse()
+        } else {
+            Storage.resetReverse()
+
+            if ( Shooger.isHungry() ) {
+                Storage.mode = StorageMode.LOAD
+            } else if ( Intake.isActive() || Shooger.isActive() ) {
+                Storage.mode = StorageMode.PASSIVE
+            } else {
+                Storage.mode = StorageMode.OFF
+            }
         }
     }
 
