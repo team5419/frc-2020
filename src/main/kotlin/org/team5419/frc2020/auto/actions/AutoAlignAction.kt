@@ -15,7 +15,7 @@ class AutoAlignAction() : Action() {
     }
 
     override public fun update() {
-        Vision.autoAlign()
+        Drivetrain.setPercent(Vision.autoAlign())
     }
 
     override public fun finish() {

@@ -27,7 +27,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         { driver.getThrottle() },
         { driver.getTurn() },
         { driver.fastTurn() },
-        { driver.slowMove() || isAlign },
+        { isAlign || driver.slowMove() },
         InputConstants.JoystickDeadband,
         InputConstants.SlowTurnMultiplier,
         InputConstants.SlowMoveMultiplier
