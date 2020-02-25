@@ -68,9 +68,11 @@ object Shooger : Subsystem("Shooger") {
             setNeutralMode(NeutralMode.Coast)
         }
 
-    // settings
+    // shuffleboard
 
-    private var targetVelocity = ShoogerConstants.TargetVelocity
+    init {
+        tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
+    }
 
     // state
 
@@ -78,24 +80,10 @@ object Shooger : Subsystem("Shooger") {
     private var setpoint = 0.0
     private var active = false
 
-    // shuffleboard
-
-    init {
-        val shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
-
-        targetVelocity = shooterVelocityEntry.getDouble(ShoogerConstants.TargetVelocity)
-
-        shooterVelocityEntry.setPersistent()
-
-        tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
-    }
-
-    // getters
+    // accesors
 
     public val flyWheelVelocity
         get() = masterMotor.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60
-
-    // public api
 
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
@@ -105,22 +93,31 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isActive(): Boolean = active
 
-    public fun shoog(shoogVelocity: Double = targetVelocity) {
+    // mutators
 
-        setpointVelocity = shoogVelocity
-        setpoint = calculateSetpoint(shoogVelocity)
+    public fun shoog(shotSetpoint: ShotSetpoint) = shoog(shotSetpoint.velocity)
+
+    public fun shoog(shoogVelocity: Double) {
+        active = true
 
         setShoogerVelocity(shoogVelocity)
     }
 
-    public fun spinUp(shoogVelocity: Double = targetVelocity) {
+    public fun spinUp(shotSetpoint: ShotSetpoint) = spinUp(shotSetpoint.velocity)
+
+    public fun spinUp(shoogVelocity: Double) {
+        active = false
+
         setShoogerVelocity(shoogVelocity)
     }
 
     public fun stop() {
         active = false
 
-        setShoogerVelocity(0.0)
+        setpointVelocity = 0.0
+        setpoint = 0.0
+
+        masterMotor.set(ControlMode.Velocity, setpoint)
     }
 
     // private api

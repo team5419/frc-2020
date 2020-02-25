@@ -36,8 +36,6 @@ object XboxCodriver: CodriverControls {
 
     override public fun retractHood(): Boolean = codriverXbox.getPOV() == 180
 
-    override public fun toogleStorage(): Boolean = codriverXbox.getAButton()
-
     // climb
 
     override public fun climb(): Boolean = codriverXbox.getYButton()

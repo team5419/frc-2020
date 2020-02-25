@@ -77,7 +77,6 @@ object Hood : Subsystem("Hood") {
 
     // public api
 
-
     private val nativeUnitsToAngle = HoodConstants.GearRatio / HoodConstants.TicksPerRotation * (2 * PI)
 
     fun angleToNativeUnits(angle: Double) = angle / nativeUnitsToAngle

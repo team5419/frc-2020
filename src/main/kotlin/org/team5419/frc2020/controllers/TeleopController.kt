@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.XboxController
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     var isAlign = false
-    var output = DriveSignal()
     var alignOutput = DriveSignal()
 
     private val driveHelper = SpaceDriveHelper(
@@ -57,7 +56,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // if(driver.invertDrivetrain())
         //     Drivetrain.invert()
-        output = driveHelper.output()
+        val output = driveHelper.output()
 
         if ( isAlign ) {
             if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
@@ -68,18 +67,20 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 Vision.offset -= driver.adjustOffsetLeft() / 10
             }
 
-            alignOutput = Vision.autoAlign()
+            val alignOutput = Vision.autoAlign()
 
             if ( Vision.aligned ) {
                 codriverXbox.setRumble(RumbleType.kLeftRumble, 0.1)
                 codriverXbox.setRumble(RumbleType.kRightRumble, 0.1)
             }
-        }
 
-        Drivetrain.setPercent(
-            output.right + alignOutput.right,
-            output.left + alignOutput.left
-        )
+            Drivetrain.setPercent(
+                output.right + alignOutput.right,
+                output.left + alignOutput.left
+            )
+        } else {
+            Drivetrain.setPercent(output.right, output.left)
+        }
     }
 
     @Suppress("ComplexMethod")
@@ -118,8 +119,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // shooger
 
-             if ( codriver.shoog() ) Shooger.shoog()
-        else if ( codriver.spinUp() ) Shooger.spinUp()
+             if ( codriver.shoog() ) Shooger.shoog( Hood.mode )
+        else if ( codriver.spinUp() ) Shooger.spinUp( Hood.mode )
         else Shooger.stop()
 
         // storage

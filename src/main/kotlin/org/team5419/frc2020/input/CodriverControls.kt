@@ -30,8 +30,6 @@ public interface CodriverControls {
 
     public fun retractHood() : Boolean
 
-    public fun toogleStorage(): Boolean
-
     // climb
 
     public fun climb(): Boolean
