@@ -11,6 +11,7 @@ import org.team5419.frc2020.HoodConstants
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
 import org.team5419.fault.input.SpaceDriveHelper
+import org.team5419.fault.input.DriveSignal
 import org.team5419.fault.Controller
 import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.GenericHID.RumbleType
@@ -19,12 +20,14 @@ import edu.wpi.first.wpilibj.XboxController
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     var isAlign = false
+    var output = DriveSignal()
+    var alignOutput = DriveSignal()
 
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
         { driver.fastTurn() },
-        { driver.slowMove() },
+        { isAlign || driver.slowMove() },
         InputConstants.JoystickDeadband,
         InputConstants.SlowTurnMultiplier,
         InputConstants.SlowMoveMultiplier
@@ -54,8 +57,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // if(driver.invertDrivetrain())
         //     Drivetrain.invert()
+        output = driveHelper.output()
 
-        Drivetrain.setPercent(driveHelper.output())
+
 
         if ( isAlign ) {
             if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
@@ -66,7 +70,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 Vision.offset -= driver.adjustOffsetLeft() / 10
             }
 
-            Vision.autoAlign()
+            alignOutput = Vision.autoAlign()
+
+
 
             if ( Vision.aligned ) {
                 codriverXbox.setRumble(RumbleType.kLeftRumble, 0.1)
@@ -74,13 +80,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             }
         }
 
-        // if ( driverXbox.getXButton() ) {
-        //     Climber.climb()
-        // } else {
-        //     Climber.stop()
-        // }
-
-
+        Drivetrain.setPercent(
+            output.right + alignOutput.right,
+            output.left + alignOutput.left
+        )
     }
 
     @Suppress("ComplexMethod")
