@@ -22,17 +22,14 @@ import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.geometry.Vector2
 
 public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
-    public var autoSelector = SendableChooser<Routine>()
-
-    public var routine: Action = baseline
+    private var autoSelector = SendableChooser<Routine>()
+    private var routine: Routine = baseline
 
     init {
         tab.add("Auto Selector", autoSelector)
         autoSelector.setDefaultOption("Baseline", baseline)
-        refreshRoutines()
 
-        val refreshRoutinesEntry = tab.add("Zero Robot Position", true).getEntry()
-        refreshRoutinesEntry.addListener( { refreshRoutines() }, EntryListenerFlags.kUpdate)
+        refreshRoutines()
     }
 
     private fun refreshRoutines() {
@@ -42,31 +39,28 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
 
         // add all the routies
         generateRoutines(Drivetrain.position.robotPosition).iterator().forEach({
-            println("routine")
             autoSelector.addOption(it.name, it)
         })
     }
 
     override fun start() {
-        routine
-            RamseteAction(
-                Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-                arrayOf<Vector2<Meter>>(),
-                Pose2d(1.0.meters, 0.0.meters, 0.0.degrees)
-            )
-
-        println("starting action")
+        routine = autoSelector.getSelected() ?: baseline
 
         routine.start()
+
+        println("starting rotine ${routine.name}")
     }
 
     override fun update() {
         routine.update()
 
+
         if (routine.next()) {
             routine.finish()
-            routine = NothingAction()
-            println("done with action")
+            println("done with action ${routine.name}")
+
+            // test the routine so that we dont do anything
+            routine = Routine("Baseline", Pose2d(), NothingAction())
         }
     }
 

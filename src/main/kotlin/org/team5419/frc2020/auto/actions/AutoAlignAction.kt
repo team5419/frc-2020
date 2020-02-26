@@ -6,15 +6,29 @@ import org.team5419.fault.auto.Action
 
 class AutoAlignAction() : Action() {
     init {
-        finishCondition.set({ Vision.aligned })
+        finishCondition += { Vision.aligned }
+    }
+
+    override public fun start() {
+        // turn limelight leds on
+        Vision.on()
+
+        // put the drive train in brake mode to make autoaligning easiers
+        Drivetrain.brakeMode = true
     }
 
     override public fun update() {
-        Vision.autoAlign()
+        Drivetrain.setPercent(Vision.autoAlign())
     }
 
     override public fun finish() {
+        // turn limelight leds on
         Vision.off()
+
+        // put the drive train back in coast mode
+        Drivetrain.brakeMode = false
+
+        // make sure the drive train has stoped moving
         Drivetrain.setPercent(0.0, 0.0)
     }
 }

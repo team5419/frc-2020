@@ -95,12 +95,14 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
-            config_kF( 0, DriveConstants.PID.F , 100 )
+            // config_kF( 0, DriveConstants.PID.F , 100 )
 
             setSelectedSensorPosition(0, 0, 100)
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+
+            setNeutralMode(NeutralMode.Coast)
         }
 
         rightMasterMotor.apply {
@@ -112,12 +114,14 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
-            config_kF( 0, DriveConstants.PID.F , 100 )
+            // config_kF( 0, DriveConstants.PID.F , 100 )
 
             setSelectedSensorPosition(0, 0, 100)
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+
+            setNeutralMode(NeutralMode.Coast)
         }
 
         gyro.apply {
@@ -204,6 +208,8 @@ object Drivetrain : Subsystem("DriveTrain") {
         )
     }
 
+    // subsystem functions
+
     override fun periodic() {
         odometry.update(
             WPILibRotation2d.fromDegrees(Drivetrain.angle),
@@ -211,4 +217,14 @@ object Drivetrain : Subsystem("DriveTrain") {
             Drivetrain.rightDistance.inMeters()
         )
     }
+
+    fun reset() {
+        leftMasterMotor.set(ControlMode.PercentOutput, 0.0)
+        rightMasterMotor.set(ControlMode.PercentOutput, 0.0)
+
+        brakeMode = false
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 }

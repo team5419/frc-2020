@@ -49,30 +49,33 @@ object Hood : Subsystem("Hood") {
 
             // reset the sensor
             setSelectedSensorPosition(0, 0, 100)
+
         }
 
     // hood positions
 
-    public enum class HoodPosititions(public var angle: Double, public var velocity: Double) {
+    public enum class HoodPosititions(override val angle: Double, override val velocity: Double) : ShotSetpoint {
         FAR(HoodConstants.FarHoodAngle, 4800.0),
+        TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
         CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
+        AUTO(12.0, 3500.0),
         RETRACT(0.0, 4800.0)
     }
 
     var mode: HoodPosititions = HoodPosititions.RETRACT
+        set(value: HoodPosititions){
+            if (field == value) return
+
+            field = value
+
+            goto(value.angle)
+        }
 
     init {
-        val hoodAngleEntry = tab.add("Target Hood", HoodPosititions.FAR.angle).getEntry()
-        hoodAngleEntry.addListener( { event ->
-            if ( event.value.isDouble() )
-                HoodPosititions.FAR.angle = event.value.getDouble()
-        }, EntryListenerFlags.kUpdate)
-
-        HoodPosititions.FAR.angle = hoodAngleEntry.getDouble(HoodPosititions.FAR.angle)
+        goto(HoodPosititions.RETRACT)
     }
 
     // public api
-
 
     private val nativeUnitsToAngle = HoodConstants.GearRatio / HoodConstants.TicksPerRotation * (2 * PI)
 
@@ -82,8 +85,6 @@ object Hood : Subsystem("Hood") {
 
     fun goto(angle: HoodPosititions) {
         mode = angle
-
-        goto( angle.angle )
     }
 
     fun goto(angle: Double) {
@@ -93,4 +94,13 @@ object Hood : Subsystem("Hood") {
 
         hoodMotor.set(ControlMode.Position, ticks)
     }
+
+    // subsystem functions
+
+    fun reset() {
+        hoodMotor.set(ControlMode.PercentOutput, 0.0)
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 }

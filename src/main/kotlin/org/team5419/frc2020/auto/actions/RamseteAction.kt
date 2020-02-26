@@ -24,22 +24,26 @@ import org.team5419.frc2020.DriveConstants
 // https://github.com/wpilibsuite/allwpilib/blob/master/wpilibNewCommands/src/main/java/edu/wpi/first/wpilibj2/command/RamseteCommand.java
 // https://docs.wpilib.org/en/latest/docs/software/examples-tutorials/trajectory-tutorial/index.html
 
+private fun pose2dToWPILibPose2d(pose: Pose2d): WPILibPose2d {
+    return WPILibPose2d(
+        pose.translation.x.inMeters(),
+        pose.translation.y.inMeters(),
+        WPILibRotation2d(
+            pose.rotation.radian.value
+        )
+    )
+}
+
 public class RamseteAction(
-    val startingPose: Pose2d,
+    val poses: Array<Pose2d>,
 
-    val intermidatePose: Array<Vector2<Meter>>,
-
-    val finalPose: Pose2d,
-
+    // default settings
     val maxVelocity: SIUnit<LinearVelocity> = DriveConstants.MaxVelocity,
     val maxAcceleration: SIUnit<LinearAcceleration> = DriveConstants.MaxAcceleration,
     val maxVoltage: SIUnit<Volt> = 12.volts,
-
     val trackWidth: SIUnit<Meter> = DriveConstants.TrackWidth,
-
     val beta: Double = DriveConstants.Beta,
     val zeta: Double = DriveConstants.Zeta,
-
     val kS: Double = DriveConstants.DriveKs,
     val kV: Double = DriveConstants.DriveKv,
     val kA: Double = DriveConstants.DriveKa
@@ -72,26 +76,9 @@ public class RamseteAction(
     }
 
     val trajectory = TrajectoryGenerator.generateTrajectory(
-        // inital pose
-        WPILibPose2d(
-            startingPose.translation.x.inMeters(),
-            startingPose.translation.y.inMeters(),
-            WPILibRotation2d(
-                startingPose.rotation.radian.value
-            )
-        ),
 
-        // list of intermidate points
-        intermidatePose.map({ WPILibTranslation2d(it.x.inMeters(), it.y.inMeters()) }),
-
-        // final pose
-        WPILibPose2d(
-            finalPose.translation.x.inMeters(),
-            finalPose.translation.y.inMeters(),
-            WPILibRotation2d(
-                finalPose.rotation.radian.value
-            )
-        ),
+        // list of points
+        poses.map({ pose2dToWPILibPose2d(it) }),
 
         // the trajectory configuration
         config
@@ -103,7 +90,7 @@ public class RamseteAction(
     var prevSpeed = DifferentialDriveWheelSpeeds(0.0, 0.0)
 
     init {
-        // finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
+        finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
     }
 
     override fun update() {

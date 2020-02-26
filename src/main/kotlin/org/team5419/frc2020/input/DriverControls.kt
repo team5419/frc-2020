@@ -16,7 +16,7 @@ public interface DriverControls {
 
     // auto alignment functions
 
-    public fun align(): Boolean
+    public fun togleAligning(): Boolean
 
     public fun adjustOffsetLeft(): Double
 

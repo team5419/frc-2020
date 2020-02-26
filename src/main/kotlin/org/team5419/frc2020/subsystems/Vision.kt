@@ -10,6 +10,8 @@ import org.team5419.fault.hardware.Limelight
 import org.team5419.fault.hardware.Limelight.LightMode
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.controller.PIDController
+import org.team5419.fault.input.DriveSignal
+
 
 object Vision : Subsystem("Vision") {
     // config limelight
@@ -26,7 +28,7 @@ object Vision : Subsystem("Vision") {
 
     public var offset = VisionConstants.TargetOffset
 
-    public val maxSpeed = VisionConstants.MaxAutoAlignSpeed//.value
+    public val maxSpeed = VisionConstants.MaxAutoAlignSpeed
 
     // PID loop controller
     public val controller: PIDController =
@@ -40,41 +42,33 @@ object Vision : Subsystem("Vision") {
 
     // add the pid controller to shuffleboard
     init {
-        tab.add("Vision PID", controller).withWidget(BuiltInWidgets.kPIDCommand)
-
-        tab.addNumber("area", { limelight.targetArea })
+        tab.addNumber("Offset", { limelight.horizontalOffset })
+        tab.addBoolean("Aligned", { aligned })
     }
 
     // auto alignment
 
+    public val targetFound
+        get() = limelight.targetFound || limelight.verticalOffset != 0.0
+
     public val aligned
-        get() = limelight.targetFound && controller.atSetpoint()
+        get() = targetFound && controller.atSetpoint()
 
-    public val horizontalOffset
-        get() = limelight.horizontalOffset
+    public fun calculate() = controller.calculate(limelight.horizontalOffset + offset)
 
-    public fun autoAlign() {
-        // turn lights on
-        on()
-
+    public fun autoAlign() : DriveSignal {
         // get the pid loop output
-        var output = controller.calculate(limelight.horizontalOffset + offset)
+        var output = calculate()
 
-
-        // do we need to allign?
-        if ( !limelight.targetFound || aligned ) return
+        // can we align / do we need to allign?
+        if ( !targetFound || aligned )
+            return DriveSignal(0.0, 0.0)
 
         // limit the output
         if (output >  maxSpeed) output =  maxSpeed
         if (output < -maxSpeed) output = -maxSpeed
 
-        val flip = 1
-
-        // lets drive, baby
-        Drivetrain.setPercent(
-            (flip * output),
-            (-flip * output)
-        )
+        return DriveSignal(output, -output)
     }
 
     public fun on() {

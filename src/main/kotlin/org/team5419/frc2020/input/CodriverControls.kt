@@ -6,7 +6,7 @@ public interface CodriverControls {
 
     public fun shoog() : Boolean
 
-    public fun loadShooger() : Boolean
+    public fun spinUp() : Boolean
 
     // intake functions
 
@@ -26,9 +26,9 @@ public interface CodriverControls {
 
     public fun deployHoodClose(): Boolean
 
-    public fun retractHood() : Boolean
+    public fun deployHoodTruss() : Boolean
 
-    public fun toogleStorage(): Boolean
+    public fun retractHood() : Boolean
 
     // climb
 

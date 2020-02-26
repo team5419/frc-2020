@@ -8,6 +8,7 @@ import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
+import org.team5419.fault.util.MovingAverageFilter
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput
@@ -18,6 +19,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.ControlMode
+
+public interface ShotSetpoint {
+    public val angle: Double
+    public val velocity: Double
+}
 
 @Suppress("TooManyFunctions")
 object Shooger : Subsystem("Shooger") {
@@ -31,12 +37,10 @@ object Shooger : Subsystem("Shooger") {
             setSensorPhase(false)
             setInverted(false)
 
-            configPeakCurrentLimit(40)
-
-            config_kP(0, 0.3, 100)
+            config_kP(0, 10000.0, 100)
             config_kI(0, 0.0, 100)
-            config_kD(0, 0.5, 100)
-            config_kF(0, 0.06, 100)
+            config_kD(0, 0.0, 100)
+            config_kF(0, 0.0, 100)
 
             selectProfileSlot(0, 0)
 
@@ -44,6 +48,8 @@ object Shooger : Subsystem("Shooger") {
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
 
             setSelectedSensorPosition(0, 0, 100)
+            configPeakOutputReverse(0.0, 0)
+            configClosedLoopPeriod(0, 1, 100)
         }
 
     val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
@@ -60,10 +66,11 @@ object Shooger : Subsystem("Shooger") {
             setNeutralMode(NeutralMode.Coast)
         }
 
-    // settings
+    // shuffleboard
 
-    private var targetVelocity = ShoogerConstants.TargetVelocity.value
-    private var bangBang = true
+    init {
+        tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
+    }
 
     // state
 
@@ -71,82 +78,82 @@ object Shooger : Subsystem("Shooger") {
     private var setpoint = 0.0
     private var active = false
 
-    // shuffleboard
-
-    init {
-        val shooterVelocityEntry = tab.add("Target Velocity", targetVelocity).getEntry()
-
-        targetVelocity = shooterVelocityEntry.getDouble(ShoogerConstants.TargetVelocity.value)
-
-        shooterVelocityEntry.setPersistent()
-        shooterVelocityEntry.addListener( { event ->
-            targetVelocity = if (event.value.isDouble()) event.value.getDouble() else targetVelocity
-            println("Updated Target Velocity: ${targetVelocity}")
-        }, EntryListenerFlags.kUpdate)
-
-        tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
-    }
-
-    // gettes
+    // accesors
 
     public val flyWheelVelocity
         get() = masterMotor.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60
 
-    // public api
-
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
-    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 30
+    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 50
+
+    public fun shouldStopFeeding(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 100
 
     public fun isActive(): Boolean = active
 
-    public fun shoog(active: Boolean? = null, shoogVelocity: Double = targetVelocity) {
-        this.active = active ?: true
+    // mutators
 
-        if ( shoogVelocity == setpointVelocity ) return
+    public fun shoog(shotSetpoint: ShotSetpoint) = shoog(shotSetpoint.velocity)
 
-        setpointVelocity = shoogVelocity
+    public fun shoog(shoogVelocity: Double) {
+        // full current baby, lets get this wheel spining
+        masterMotor.configPeakCurrentLimit(40)
 
-        setpoint = calculateSetpoint(shoogVelocity)
+        // its active, we want to shoot if at full speed
+        active = true
 
-        if (!bangBang) {
-            masterMotor.set(ControlMode.Velocity, setpoint)
-        }
+        // tell it to go to target velocity
+        setShoogerVelocity(shoogVelocity)
+    }
+
+    public fun spinUp(shotSetpoint: ShotSetpoint) = spinUp(shotSetpoint.velocity)
+
+    public fun spinUp(shoogVelocity: Double) {
+        // limit the current so we dont brown out if were driving
+        masterMotor.configPeakCurrentLimit(20)
+
+        // its not active, we dont want to shoot even if at speed
+        active = false
+
+        // tell it to go to target velocity
+        setShoogerVelocity(shoogVelocity)
     }
 
     public fun stop() {
-        setpoint = 0.0
-        setpointVelocity = 0.0
-
+        // we dont want any balls to be loaded
         active = false
 
-        powerShooger(0.0)
+        // reset the setpoints, not that it matters
+        setpointVelocity = 0.0
+        setpoint = 0.0
+
+        // turn off the flywheel
+        masterMotor.set(ControlMode.PercentOutput, 0.0)
     }
 
     // private api
 
     private fun calculateSetpoint(velocity : Double) =
-        velocity * 4096.0 / 600.0
+        ( velocity + 50 ) * 4096.0 / 600.0
 
-    private fun powerShooger(percent: Double) =
-        masterMotor.set(ControlMode.PercentOutput, percent)
+    private fun setShoogerVelocity(shoogVelocity: Double) {
+        if ( shoogVelocity == setpointVelocity ) return
+
+        // set the setpoints to the given velocity
+        setpointVelocity = shoogVelocity
+        setpoint = calculateSetpoint(shoogVelocity)
+
+        // tell the motor to go
+        masterMotor.set(ControlMode.Velocity, setpoint)
+    }
 
     // subsystem functions
 
-    fun reset() {
-        stop()
-    }
+    fun reset() = stop()
 
     override fun autoReset() = reset()
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        if (setpoint != 0.0 && bangBang) {
-            if (setpointVelocity + ShoogerConstants.BangBangTolerance >= flyWheelVelocity) {
-                masterMotor.set(ControlMode.PercentOutput, 1.0)
-            } else {
-                masterMotor.set(ControlMode.PercentOutput, 0.0)
-            }
-        }
     }
 }

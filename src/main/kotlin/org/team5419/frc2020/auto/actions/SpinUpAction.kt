@@ -9,11 +9,6 @@ import org.team5419.fault.math.units.Second
 import org.team5419.fault.math.units.SIUnit
 import org.team5419.fault.auto.Action
 
-public class TimedShoogAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
-    init {
-        withTimeout(timeout)
-    }
-
-    override fun update() = Shooger.shoog(Hood.mode)
-    override fun finish() = Shooger.stop()
+public class SpinUpAction() : Action() {
+    override fun update() = Shooger.spinUp(Hood.mode)
 }

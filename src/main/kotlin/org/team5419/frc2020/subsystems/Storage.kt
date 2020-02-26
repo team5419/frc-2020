@@ -72,7 +72,7 @@ object Storage : Subsystem("Storage") {
         mode = StorageMode.REVERSE
     }
 
-    public fun reset() {
+    public fun resetReverse() {
         if (mode == StorageMode.REVERSE) {
             mode = lastMode
         }
@@ -88,7 +88,7 @@ object Storage : Subsystem("Storage") {
 
     // distance sensor to find balls
 
-    private val isLoadedBall: Boolean
+    public val isLoadedBall: Boolean
         get() = -feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
 
     init {
@@ -99,22 +99,7 @@ object Storage : Subsystem("Storage") {
 
     // subsystem functions
 
-    @Suppress("ComplexMethod")
     override public fun periodic() {
-        // if its reversed then we want to overide the any outher logic
-        if (mode == StorageMode.REVERSE ) {
-            return
-        }
-
-        // figure out what mode should we be in?
-        if ( Shooger.isHungry() ) {
-            mode = StorageMode.LOAD
-        } else if ( Intake.isActive() || Shooger.isActive() ) {
-            mode = StorageMode.PASSIVE
-        } else {
-            mode = StorageMode.OFF
-        }
-
         // do we need to partally load?
         if (mode == StorageMode.PASSIVE) {
             feeder.set(
@@ -123,4 +108,11 @@ object Storage : Subsystem("Storage") {
             )
         }
     }
+
+    fun reset() {
+        mode = StorageMode.OFF
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 }
