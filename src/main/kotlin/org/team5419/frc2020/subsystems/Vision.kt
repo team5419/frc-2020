@@ -28,7 +28,7 @@ object Vision : Subsystem("Vision") {
 
     public var offset = VisionConstants.TargetOffset
 
-    public val maxSpeed = VisionConstants.MaxAutoAlignSpeed//.value
+    public val maxSpeed = VisionConstants.MaxAutoAlignSpeed
 
     // PID loop controller
     public val controller: PIDController =

@@ -20,7 +20,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 object Climber : Subsystem("Climber") {
     // motor
 
-    private val climberMotor = TalonSRX(ClimberConstants.ClimberPort)
+    private val deployMotor = TalonSRX(ClimberConstants.DeployPort)
         .apply {
             // reset
             configFactoryDefault(100)
@@ -32,19 +32,21 @@ object Climber : Subsystem("Climber") {
 
     // public api
 
-    fun climb() {
-        climberMotor.set(ControlMode.PercentOutput, 1.0)
+    fun deploy() {
+        deployMotor.set(ControlMode.PercentOutput, -0.5)
+    }
+
+    fun retract() {
+        deployMotor.set(ControlMode.PercentOutput, 0.25)
     }
 
     fun stop() {
-        climberMotor.set(ControlMode.PercentOutput, 0.0);
+        deployMotor.set(ControlMode.PercentOutput, 0.0)
     }
 
     // subsystem functions
 
-    fun reset() {
-        climberMotor.set(ControlMode.PercentOutput, 0.0)
-    }
+    fun reset() = stop()
 
     override fun autoReset() = reset()
     override fun teleopReset() = reset()

@@ -137,7 +137,7 @@ object IntakeConstants {
     public val DeployPosition = 0.radians
 
     public const val IntakePort = 8
-    public const val DeployPort = 11
+    public const val DeployPort = 216
 
     // public const val RollerPort = 30
 
@@ -145,7 +145,8 @@ object IntakeConstants {
 }
 
 object ClimberConstants {
-    public val ClimberPort = 15
+    public val WenchPort = 11
+    public val DeployPort = 13
 }
 
 object VisionConstants {

@@ -117,7 +117,7 @@ object Shooger : Subsystem("Shooger") {
         setpointVelocity = 0.0
         setpoint = 0.0
 
-        masterMotor.set(ControlMode.Velocity, setpoint)
+        masterMotor.set(ControlMode.PercentOutput, 0.0)
     }
 
     // private api

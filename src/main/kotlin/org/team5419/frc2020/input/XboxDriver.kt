@@ -22,7 +22,7 @@ object XboxDriver : DriverControls {
 
     // alignment functions
 
-    override public fun align(): Boolean = driverXbox.getAButtonPressed()
+    override public fun togleAligning(): Boolean = driverXbox.getAButtonPressed()
 
     override public fun adjustOffsetLeft(): Double = driverXbox.getTriggerAxis(Hand.kLeft)
 

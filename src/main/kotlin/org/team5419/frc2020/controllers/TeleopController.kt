@@ -19,15 +19,15 @@ import edu.wpi.first.wpilibj.XboxController
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
-    var isAlign = false
-    var isLoadingBall = false
-    var alignOutput = DriveSignal()
+    var isAligning = false
+
+    var shotAngle: ShotSetpoint = Hood.HoodPosititions.RETRACT
 
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
         { driver.fastTurn() },
-        { isAlign || driver.slowMove() },
+        { isAligning || driver.slowMove() },
         InputConstants.JoystickDeadband,
         InputConstants.SlowTurnMultiplier,
         InputConstants.SlowMoveMultiplier
@@ -43,9 +43,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     private fun updateDriver() {
 
-        if( driver.align() ) {
-            isAlign = !isAlign
-            if(isAlign){
+        if( driver.togleAligning() ) {
+            isAligning = !isAligning
+
+            if(isAligning) {
                 // turn limelight leds on
                 Vision.on()
 
@@ -66,7 +67,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         val output = driveHelper.output()
 
-        if ( isAlign ) {
+        if ( isAligning ) {
             if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
                 Vision.offset += driver.adjustOffsetRight() / 10
             }
@@ -143,6 +144,16 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             } else {
                 Storage.mode = StorageMode.OFF
             }
+        }
+
+        // climber
+
+        if ( driverXbox.getXButton() ) {
+            Climber.deploy()
+        } else if ( driverXbox.getBButton() ) {
+            Climber.retract()
+        } else {
+            Climber.stop()
         }
     }
 
