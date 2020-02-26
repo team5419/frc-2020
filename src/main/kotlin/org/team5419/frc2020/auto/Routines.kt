@@ -21,20 +21,26 @@ import java.nio.file.Path
 fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
         Routine("Trech", initalPose,
-
             // shoog from starting position
             HoodAction(HoodPosititions.AUTO),
             TimedShoogAction(5.seconds),
 
+            // bring hood back down and turn intake on
             HoodAction(HoodPosititions.RETRACT),
             IntakeAction(true),
+
+            // navigate to behind trench
             RamseteAction( arrayOf<Pose2d>(
-                Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+                Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
                 Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
-                Pose2d(8.0.meters, -1.50.meters, 0.0.degrees)
+                Pose2d(8.0.meters, -1.50.meters, 0.0.radians)
             ) ),
+
+            // turn the intake off and lift the hood
             IntakeAction(false),
             HoodAction(HoodPosititions.FAR),
+
+            // align and shoog
             AutoAlignAction(),
             TimedShoogAction(6.seconds)
         ),
