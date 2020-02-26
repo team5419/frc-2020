@@ -48,15 +48,16 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
 
         routine.start()
 
-        println("starting action ${routine.name}")
+        println("starting rotine ${routine.name}")
     }
 
     override fun update() {
         routine.update()
 
+
         if (routine.next()) {
             routine.finish()
-            println("done with action")
+            println("done with action ${routine.name}")
 
             // test the routine so that we dont do anything
             routine = Routine("Baseline", Pose2d(), NothingAction())
