@@ -99,7 +99,6 @@ object Storage : Subsystem("Storage") {
 
     // subsystem functions
 
-    @Suppress("ComplexMethod")
     override public fun periodic() {
         // do we need to partally load?
         if (mode == StorageMode.PASSIVE) {
@@ -109,4 +108,11 @@ object Storage : Subsystem("Storage") {
             )
         }
     }
+
+    fun reset() {
+        mode = StorageMode.OFF
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 }

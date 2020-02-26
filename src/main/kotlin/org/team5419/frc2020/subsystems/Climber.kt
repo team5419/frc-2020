@@ -32,7 +32,6 @@ object Climber : Subsystem("Climber") {
 
     // public api
 
-
     fun climb() {
         climberMotor.set(ControlMode.PercentOutput, 1.0)
     }
@@ -40,4 +39,13 @@ object Climber : Subsystem("Climber") {
     fun stop() {
         climberMotor.set(ControlMode.PercentOutput, 0.0);
     }
+
+    // subsystem functions
+
+    fun reset() {
+        climberMotor.set(ControlMode.PercentOutput, 0.0)
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 }

@@ -49,7 +49,7 @@ object Hood : Subsystem("Hood") {
 
             // reset the sensor
             setSelectedSensorPosition(0, 0, 100)
-            set(ControlMode.Position, 0.0)
+
         }
 
     // hood positions
@@ -95,4 +95,13 @@ object Hood : Subsystem("Hood") {
 
         hoodMotor.set(ControlMode.Position, ticks)
     }
+
+    // subsystem functions
+
+    fun reset() {
+        hoodMotor.set(ControlMode.PercentOutput, 0.0)
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 }

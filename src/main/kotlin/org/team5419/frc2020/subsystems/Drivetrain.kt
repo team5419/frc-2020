@@ -204,6 +204,8 @@ object Drivetrain : Subsystem("DriveTrain") {
         )
     }
 
+    // subsystem functions
+
     override fun periodic() {
         odometry.update(
             WPILibRotation2d.fromDegrees(Drivetrain.angle),
@@ -211,4 +213,12 @@ object Drivetrain : Subsystem("DriveTrain") {
             Drivetrain.rightDistance.inMeters()
         )
     }
+
+    fun reset() {
+        leftMasterMotor.set(ControlMode.PercentOutput, 0.0)
+        rightMasterMotor.set(ControlMode.PercentOutput, 0.0)
+    }
+
+    override fun autoReset() = reset()
+    override fun teleopReset() = reset()
 }
