@@ -137,7 +137,7 @@ object IntakeConstants {
     public val DeployPosition = 0.radians
 
     public const val IntakePort = 8
-    public const val DeployPort = 216
+    public const val DeployPort = 15
 
     // public const val RollerPort = 30
 

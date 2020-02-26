@@ -88,8 +88,6 @@ object Hood : Subsystem("Hood") {
     }
 
     fun goto(angle: Double) {
-        println("goto angle ${angle}")
-
         assert(angle >= 0.0 && angle <= HoodConstants.MaxAngle)
 
         val ticks = angleToNativeUnits(angle)

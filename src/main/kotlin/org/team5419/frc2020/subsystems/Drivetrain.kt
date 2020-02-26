@@ -101,6 +101,8 @@ object Drivetrain : Subsystem("DriveTrain") {
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+
+            setNeutralMode(NeutralMode.Coast)
         }
 
         rightMasterMotor.apply {
@@ -118,6 +120,8 @@ object Drivetrain : Subsystem("DriveTrain") {
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+
+            setNeutralMode(NeutralMode.Coast)
         }
 
         gyro.apply {
@@ -217,6 +221,8 @@ object Drivetrain : Subsystem("DriveTrain") {
     fun reset() {
         leftMasterMotor.set(ControlMode.PercentOutput, 0.0)
         rightMasterMotor.set(ControlMode.PercentOutput, 0.0)
+
+        brakeMode = false
     }
 
     override fun autoReset() = reset()
