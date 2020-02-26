@@ -14,7 +14,7 @@ object XboxCodriver: CodriverControls {
 
     override public fun shoog(): Boolean = codriverXbox.getBumper(Hand.kRight)
 
-    override public fun spinUp(): Boolean = codriverXbox.getBumper(Hand.kRight)
+    override public fun spinUp(): Boolean = codriverXbox.getBumper(Hand.kLeft)
 
     // intake functions
 

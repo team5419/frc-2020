@@ -84,8 +84,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             }
 
             Drivetrain.setPercent(
-                output.right + alignOutput.right,
-                output.left + alignOutput.left
+                output.left + alignOutput.left,
+                output.right + alignOutput.right
             )
         } else {
             Drivetrain.setPercent(output)

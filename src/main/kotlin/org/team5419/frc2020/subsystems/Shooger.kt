@@ -37,8 +37,6 @@ object Shooger : Subsystem("Shooger") {
             setSensorPhase(false)
             setInverted(false)
 
-            configPeakCurrentLimit(40)
-
             config_kP(0, 10000.0, 100)
             config_kI(0, 0.0, 100)
             config_kD(0, 0.0, 100)
@@ -98,25 +96,38 @@ object Shooger : Subsystem("Shooger") {
     public fun shoog(shotSetpoint: ShotSetpoint) = shoog(shotSetpoint.velocity)
 
     public fun shoog(shoogVelocity: Double) {
+        // full current baby, lets get this wheel spining
+        masterMotor.configPeakCurrentLimit(40)
+
+        // its active, we want to shoot if at full speed
         active = true
 
+        // tell it to go to target velocity
         setShoogerVelocity(shoogVelocity)
     }
 
     public fun spinUp(shotSetpoint: ShotSetpoint) = spinUp(shotSetpoint.velocity)
 
     public fun spinUp(shoogVelocity: Double) {
+        // limit the current so we dont brown out if were driving
+        masterMotor.configPeakCurrentLimit(20)
+
+        // its not active, we dont want to shoot even if at speed
         active = false
 
+        // tell it to go to target velocity
         setShoogerVelocity(shoogVelocity)
     }
 
     public fun stop() {
+        // we dont want any balls to be loaded
         active = false
 
+        // reset the setpoints, not that it matters
         setpointVelocity = 0.0
         setpoint = 0.0
 
+        // turn off the flywheel
         masterMotor.set(ControlMode.PercentOutput, 0.0)
     }
 
@@ -128,23 +139,21 @@ object Shooger : Subsystem("Shooger") {
     private fun setShoogerVelocity(shoogVelocity: Double) {
         if ( shoogVelocity == setpointVelocity ) return
 
+        // set the setpoints to the given velocity
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)
 
+        // tell the motor to go
         masterMotor.set(ControlMode.Velocity, setpoint)
     }
 
     // subsystem functions
 
-    fun reset() {
-        stop()
-    }
+    fun reset() = stop()
 
     override fun autoReset() = reset()
     override fun teleopReset() = reset()
 
     override fun periodic() {
-        println(masterMotor.getClosedLoopError(0))
-        println(flyWheelVelocity)
     }
 }

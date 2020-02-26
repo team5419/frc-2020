@@ -64,9 +64,9 @@ object Hood : Subsystem("Hood") {
 
     var mode: HoodPosititions = HoodPosititions.RETRACT
         set(value: HoodPosititions){
-            if (field == mode) return
+            if (field == value) return
 
-            field = mode
+            field = value
 
             goto(value.angle)
         }
@@ -88,7 +88,8 @@ object Hood : Subsystem("Hood") {
     }
 
     fun goto(angle: Double) {
-        println("goto angle")
+        println("goto angle ${angle}")
+
         assert(angle >= 0.0 && angle <= HoodConstants.MaxAngle)
 
         val ticks = angleToNativeUnits(angle)
