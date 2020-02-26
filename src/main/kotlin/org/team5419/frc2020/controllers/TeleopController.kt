@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.XboxController
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     var isAlign = false
+    var isLoadingBall = false
     var alignOutput = DriveSignal()
 
     private val driveHelper = SpaceDriveHelper(
@@ -54,8 +55,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             }
         }
 
-        // if(driver.invertDrivetrain())
-        //     Drivetrain.invert()
         val output = driveHelper.output()
 
         if ( isAlign ) {
@@ -79,7 +78,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 output.left + alignOutput.left
             )
         } else {
-            Drivetrain.setPercent(output.right, output.left)
+            Drivetrain.setPercent(output)
         }
     }
 
@@ -94,16 +93,12 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         // hood
 
         if ( codriver.deployHoodFar() ) {
-            println("goto far")
             Hood.goto( Hood.HoodPosititions.FAR )
         } else if ( codriver.deployHoodTruss()) {
-            println("goto truss")
             Hood.goto( Hood.HoodPosititions.TRUSS )
         } else if ( codriver.deployHoodClose() ) {
-            println("goto close")
             Hood.goto( Hood.HoodPosititions.CLOSE )
         } else if ( codriver.retractHood() || driver.retractHood() ){
-            println("goto")
             Hood.goto( Hood.HoodPosititions.RETRACT )
         }
 
@@ -130,8 +125,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         } else {
             Storage.resetReverse()
 
-            if ( Shooger.isHungry() ) {
+            if( Shooger.isHungry() && Storage.isLoadedBall){
                 Storage.mode = StorageMode.LOAD
+            } else if( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall){
+                Storage.mode = StorageMode.PASSIVE
             } else if ( Intake.isActive() || Shooger.isActive() ) {
                 Storage.mode = StorageMode.PASSIVE
             } else {
