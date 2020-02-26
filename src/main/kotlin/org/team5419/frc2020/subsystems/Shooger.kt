@@ -39,7 +39,7 @@ object Shooger : Subsystem("Shooger") {
 
             configPeakCurrentLimit(40)
 
-            config_kP(0, 1.0, 100)
+            config_kP(0, 10000.0, 100)
             config_kI(0, 0.0, 100)
             config_kD(0, 0.0, 100)
             config_kF(0, 0.0, 100)
@@ -123,7 +123,7 @@ object Shooger : Subsystem("Shooger") {
     // private api
 
     private fun calculateSetpoint(velocity : Double) =
-        velocity * 4096.0 / 600.0
+        ( velocity + 50 ) * 4096.0 / 600.0
 
     private fun setShoogerVelocity(shoogVelocity: Double) {
         if ( shoogVelocity == setpointVelocity ) return
