@@ -48,25 +48,18 @@ object Vision : Subsystem("Vision") {
 
     // auto alignment
 
-    public fun calculate() = controller.calculate(limelight.horizontalOffset + offset)
-
     public val aligned
         get() = limelight.targetFound && controller.atSetpoint()
 
-    public val horizontalOffset
-        get() = limelight.horizontalOffset
+    public fun calculate() = controller.calculate(limelight.horizontalOffset + offset)
 
     public fun autoAlign() : DriveSignal {
-
-        // turn lights on
-        on()
-
         // get the pid loop output
         var output = calculate()
 
         // do we need to allign?
         if ( !limelight.targetFound || aligned )
-            return DriveSignal()
+            return DriveSignal(0.0, 0.0)
 
         // limit the output
         if (output >  maxSpeed) output =  maxSpeed

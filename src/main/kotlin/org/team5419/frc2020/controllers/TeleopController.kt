@@ -46,12 +46,21 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         if( driver.align() ) {
             isAlign = !isAlign
             if(isAlign){
+                // turn limelight leds on
+                Vision.on()
+
+                // put the drive train in brake mode to make autoaligning easiers
                 Drivetrain.brakeMode = true
             } else {
+                // turn limelight leds off
+                Vision.off()
+
+                // put the drive train back in coast mode
+                Drivetrain.brakeMode = false
+
+                // turn of any rumbling from the controller
                 driverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
                 driverXbox.setRumble(RumbleType.kRightRumble, 0.0)
-                Vision.off()
-                Drivetrain.brakeMode = false
             }
         }
 
