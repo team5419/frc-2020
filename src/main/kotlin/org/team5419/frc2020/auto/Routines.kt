@@ -21,20 +21,18 @@ import java.nio.file.Path
 fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
         Routine("Trech", initalPose,
+
+            // shoog from starting position
             HoodAction(HoodPosititions.AUTO),
             TimedShoogAction(5.seconds),
+
             HoodAction(HoodPosititions.RETRACT),
-            RamseteAction(
-                Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-                arrayOf<Vector2<Meter>>(),
-                Pose2d(2.0.meters, -1.55.meters, 0.0.degrees)
-            ),
             IntakeAction(true),
-            RamseteAction(
+            RamseteAction( arrayOf<Pose2d>(
+                Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
                 Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
-                arrayOf<Vector2<Meter>>(),
                 Pose2d(8.0.meters, -1.50.meters, 0.0.degrees)
-            ),
+            ) ),
             IntakeAction(false),
             HoodAction(HoodPosititions.FAR),
             AutoAlignAction(),
