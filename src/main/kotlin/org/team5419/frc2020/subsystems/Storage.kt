@@ -19,10 +19,10 @@ object Storage : Subsystem("Storage") {
     enum class StorageMode() { LOAD, PASSIVE, REVERSE, OFF }
 
     public var mode = StorageMode.OFF
-        set(mode: StorageMode) {
-            if (mode == field) return
+        set(value: StorageMode) {
+            if (value == field) return
 
-            when (mode) {
+            when (value) {
                 StorageMode.LOAD -> {
                     hopper.set( ControlMode.PercentOutput, hopperPercent )
                     feeder.set( ControlMode.PercentOutput, feederPercent )
@@ -46,7 +46,7 @@ object Storage : Subsystem("Storage") {
 
             lastMode = field
 
-            field = mode
+            field = value
         }
 
     var lastMode = mode
@@ -87,6 +87,9 @@ object Storage : Subsystem("Storage") {
     private var hopperLazyPercent = StorageConstants.HopperLazyPercent
 
     // distance sensor to find balls
+
+    public val sensorPosition: Int
+        get() = -feeder.getSelectedSensorPosition(0)
 
     public val isLoadedBall: Boolean
         get() = -feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold

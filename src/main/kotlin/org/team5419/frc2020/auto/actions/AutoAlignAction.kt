@@ -6,10 +6,11 @@ import org.team5419.fault.auto.Action
 
 class AutoAlignAction() : Action() {
     init {
-        finishCondition += { Vision.aligned }
+        finishCondition += {  Vision.calculate(); Vision.aligned() }
     }
 
     override public fun start() {
+        println("start auto align")
         // turn limelight leds on
         Vision.on()
 
@@ -22,6 +23,7 @@ class AutoAlignAction() : Action() {
     }
 
     override public fun finish() {
+        println("finish auto algin")
         // turn limelight leds on
         Vision.off()
 

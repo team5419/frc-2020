@@ -49,7 +49,6 @@ object Hood : Subsystem("Hood") {
 
             // reset the sensor
             setSelectedSensorPosition(0, 0, 100)
-
         }
 
     // hood positions
@@ -72,7 +71,7 @@ object Hood : Subsystem("Hood") {
         }
 
     init {
-        goto(HoodPosititions.RETRACT)
+        tab.addNumber("hood angle", {hoodAngle()})
     }
 
     // public api
@@ -88,7 +87,11 @@ object Hood : Subsystem("Hood") {
     }
 
     fun goto(angle: Double) {
-        assert(angle >= 0.0 && angle <= HoodConstants.MaxAngle)
+        if (angle < 0.0 || angle > HoodConstants.MaxAngle) {
+            println("angle out of range")
+
+            return goto(angle.coerceIn(0.0, HoodConstants.MaxAngle))
+        }
 
         val ticks = angleToNativeUnits(angle)
 

@@ -6,8 +6,9 @@ import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.fault.auto.Action
 
 class HoodAction(val pos: HoodPosititions) : Action() {
-
     override public fun start() {
         Hood.goto(pos)
     }
+
+    override public fun next() = true
 }

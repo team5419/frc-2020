@@ -12,6 +12,8 @@ import org.team5419.fault.trajectory.constraints.TimingConstraint
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.frc2020.auto.actions.*
 import org.team5419.frc2020.subsystems.Hood.HoodPosititions
+import org.team5419.frc2020.subsystems.Setpoint
+import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.DriveConstants
 import edu.wpi.first.wpilibj.Filesystem
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
@@ -22,28 +24,39 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
         Routine("Trech", initalPose,
             // shoog from starting position
-            HoodAction(HoodPosititions.AUTO),
-            TimedShoogAction(5.seconds),
+            // HoodAction(HoodPosititions.AUTO),
+            // TimedShoogAction(5.seconds),
 
-            // bring hood back down and turn intake on
-            HoodAction(HoodPosititions.RETRACT),
-            IntakeAction(true),
+            // // bring hood back down and turn intake on
+            // HoodAction(HoodPosititions.RETRACT),
+            // DeployIntakeAction(),
 
-            // navigate to behind trench
+            // // navigate to behind trench
             RamseteAction( arrayOf<Pose2d>(
                 Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
                 Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
                 Pose2d(8.0.meters, -1.50.meters, 0.0.radians)
-            ) ),
+            ) )
 
-            // turn the intake off and lift the hood
-            IntakeAction(false),
-            HoodAction(HoodPosititions.FAR),
+            // // turn the intake off and lift the hood
+            // RetractIntakeAction(),
+            // HoodAction(HoodPosititions.FAR),
 
-            // align and shoog
-            AutoAlignAction(),
-            TimedShoogAction(6.seconds)
+            // // align and shoog
+            // AutoAlignAction(),
+            // IndexedShoogAction(6)
         ),
-        Routine("Align", initalPose, AutoAlignAction())
+        Routine("Align", initalPose, AutoAlignAction()),
+        Routine("Shoot 3", initalPose,
+            HoodAction(HoodPosititions.FAR),
+            IndexedShoogAction(3)
+        ),
+        Routine("Pathfollowing", initalPose,
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
+            Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
+            Pose2d(8.0.meters, -1.50.meters, 0.0.radians)
+        ) )
+        )
     )
 }

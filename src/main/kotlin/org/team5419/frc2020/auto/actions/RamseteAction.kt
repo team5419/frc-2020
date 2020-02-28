@@ -119,10 +119,9 @@ public class RamseteAction(
 
         Drivetrain.setVelocity(
             setSpeed.leftMetersPerSecond.meters.velocity,
-            setSpeed.rightMetersPerSecond.meters.velocity
-            // ,
-            // leftFeedForward.volts / 12.0,
-            // rightFeedForward.volts / 12.0
+            setSpeed.rightMetersPerSecond.meters.velocity,
+            leftFeedForward.volts / 12.0,
+            rightFeedForward.volts / 12.0
         )
     }
 }

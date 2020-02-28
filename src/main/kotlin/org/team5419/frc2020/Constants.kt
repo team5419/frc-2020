@@ -49,7 +49,7 @@ object DriveConstants {
 
     // characterization
 
-    const val Beta = 2.0 // m^-2
+    const val Beta = 1.0 // m^-2
     const val Zeta = 0.7 // unitless
 
     val TrackWidth = 1.781.meters
@@ -81,7 +81,7 @@ object InputConstants {
 
     // deadbands
     public const val TriggerDeadband = 0.1
-    public const val JoystickDeadband = 0.07
+    public const val JoystickDeadband = 0.03
 }
 
 object ShoogerConstants {
@@ -137,7 +137,7 @@ object IntakeConstants {
     public val DeployPosition = 0.radians
 
     public const val IntakePort = 8
-    public const val DeployPort = 15
+    public const val DeployPort = -1 // make sure it dosent overlap with intake deploy
 
     // public const val RollerPort = 30
 
@@ -145,8 +145,8 @@ object IntakeConstants {
 }
 
 object ClimberConstants {
-    public val WenchPort = 11
-    public val DeployPort = 13
+    public val WinchPort = 15
+    public val DeployPort = 11 // make sure it dosent overlap with climber deploy
 }
 
 object VisionConstants {
@@ -155,15 +155,15 @@ object VisionConstants {
 
     public val TargetHeight = 0.0.meters
 
-    public val Tolerance = 0.1
+    public val Tolerance = 0.3
 
     public val MaxAutoAlignSpeed = 0.2
 
     public val TargetOffset = 0.0
 
     object PID {
-        public const val P = 0.016
-        public const val I = 0.0
+        public const val P = 0.015
+        public const val I = 0.003
         public const val D = 0.0005
     }
 }

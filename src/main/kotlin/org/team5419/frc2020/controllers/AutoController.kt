@@ -46,9 +46,9 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     override fun start() {
         routine = autoSelector.getSelected() ?: baseline
 
-        routine.start()
-
         println("starting rotine ${routine.name}")
+
+        routine.start()
     }
 
     override fun update() {
@@ -64,7 +64,6 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
         }
     }
 
-    override fun reset() {
-        start()
-    }
+
+    override fun reset() {}
 }

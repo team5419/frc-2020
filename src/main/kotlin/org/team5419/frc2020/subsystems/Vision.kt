@@ -43,25 +43,33 @@ object Vision : Subsystem("Vision") {
     // add the pid controller to shuffleboard
     init {
         tab.addNumber("Offset", { limelight.horizontalOffset })
-        tab.addBoolean("Aligned", { aligned })
+        tab.addBoolean("Aligned", { aligned() })
     }
 
     // auto alignment
 
     public val targetFound
-        get() = limelight.targetFound || limelight.verticalOffset != 0.0
+        get() = limelight.targetFound && limelight.verticalOffset != 0.0
 
-    public val aligned
-        get() = targetFound && controller.atSetpoint()
+    public fun aligned(): Boolean{
+        // println("at set point: ${controller.atSetpoint()}")
+        // println("target found: ${limelight.targetFound}")
+        // println("verticle offset: ${limelight.verticalOffset}")
+        return targetFound && controller.atSetpoint() && Drivetrain.averageSpeed.value < 0.1
+    }
 
     public fun calculate() = controller.calculate(limelight.horizontalOffset + offset)
 
     public fun autoAlign() : DriveSignal {
+        // println("Error: ${limelight.horizontalOffset + offset}")
+
         // get the pid loop output
         var output = calculate()
 
+        println( limelight.horizontalOffset )
+
         // can we align / do we need to allign?
-        if ( !targetFound || aligned )
+        if ( !targetFound || aligned() )
             return DriveSignal(0.0, 0.0)
 
         // limit the output
