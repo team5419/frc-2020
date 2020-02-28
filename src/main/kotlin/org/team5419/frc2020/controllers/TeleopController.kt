@@ -78,7 +78,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
             val alignOutput = Vision.autoAlign()
 
-            if ( Vision.aligned ) {
+            if ( Vision.aligned() ) {
                 codriverXbox.setRumble(RumbleType.kLeftRumble, 0.1)
                 codriverXbox.setRumble(RumbleType.kRightRumble, 0.1)
             }
@@ -155,8 +155,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         } else {
             Climber.stop()
         }
-
-        println( driverXbox.getPOV() )
 
         if( driver.winch() ){
             Climber.winch()

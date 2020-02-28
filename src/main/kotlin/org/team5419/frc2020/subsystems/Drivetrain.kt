@@ -167,6 +167,9 @@ object Drivetrain : Subsystem("DriveTrain") {
     val rightVelocity: SIUnit<LinearVelocity>
         get() = nativeUnitsToMetersPerSecond(rightMasterMotor.getSelectedSensorVelocity(0))
 
+    val averageSpeed: SIUnit<LinearVelocity>
+        get() = ((Math.abs(leftVelocity.value) + Math.abs(leftVelocity.value))/2).meters.velocity
+
     val angle: Double
         get() = -gyro.getFusedHeading()
 

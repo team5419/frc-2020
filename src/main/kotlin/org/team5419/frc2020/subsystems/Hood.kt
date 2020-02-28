@@ -63,9 +63,7 @@ object Hood : Subsystem("Hood") {
 
     var mode: HoodPosititions = HoodPosititions.RETRACT
         set(value: HoodPosititions){
-            println("hood going to ${value}")
             if (field == value) return
-            println("suc!")
 
             field = value
 

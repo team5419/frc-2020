@@ -88,6 +88,9 @@ object Storage : Subsystem("Storage") {
 
     // distance sensor to find balls
 
+    public val sensorPosition: Int
+        get() = -feeder.getSelectedSensorPosition(0)
+
     public val isLoadedBall: Boolean
         get() = -feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
 

@@ -47,6 +47,16 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
             // IndexedShoogAction(6)
         ),
         Routine("Align", initalPose, AutoAlignAction()),
-        Routine("Shoot 3", initalPose, IndexedShoogAction(3, Setpoint(0.0, 0.0)))
+        Routine("Shoot 3", initalPose,
+            HoodAction(HoodPosititions.FAR),
+            IndexedShoogAction(3)
+        ),
+        Routine("Pathfollowing", initalPose,
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
+            Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
+            Pose2d(8.0.meters, -1.50.meters, 0.0.radians)
+        ) )
+        )
     )
 }

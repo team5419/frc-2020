@@ -31,15 +31,14 @@ open public class ConfigAction(
     override fun start() {
         if(intake != null){
             Intake.intakeMode = intake
-            println("settings intake mode to ${intake}")
         }
+
         if(deploy != null){
             Intake.deployMode = deploy
-            println("settings deploy mode to ${deploy}")
         }
+
         if(storage != null){
             Storage.mode = storage
-            println("settings storage mode to ${storage}")
         }
     }
 
