@@ -6,6 +6,10 @@ import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.subsystems.Intake.IntakeMode
 import org.team5419.frc2020.subsystems.Intake.DeployMode
 
+public class IntakeAction(config: IntakeMode): ConfigAction(intake = config)
+public class DeployAction(config: DeployMode): ConfigAction(deploy = config)
+public class StorageAction(config: StorageMode): ConfigAction(storage = config)
+
 data class Config (
     val intake: IntakeMode? = null,
     val deploy: DeployMode? = null,

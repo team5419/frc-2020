@@ -12,6 +12,8 @@ import org.team5419.fault.trajectory.constraints.TimingConstraint
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.frc2020.auto.actions.*
 import org.team5419.frc2020.subsystems.Hood.HoodPosititions
+import org.team5419.frc2020.subsystems.Setpoint
+import org.team5419.frc2020.subsystems.StorageMode
 import org.team5419.frc2020.DriveConstants
 import edu.wpi.first.wpilibj.Filesystem
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
@@ -22,8 +24,12 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
         Routine("Trech", initalPose,
             // shoog from starting position
-            HoodAction(HoodPosititions.AUTO),
-            TimedShoogAction(5.seconds),
+            ParrellelAction(
+                HoodAction(HoodPosititions.AUTO),
+                StorageAction(StorageMode.PASSIVE)
+                IndexedShoogAction(3)
+            ),
+            StorageAction(StorageMode.OFF),
 
             // bring hood back down and turn intake on
             HoodAction(HoodPosititions.RETRACT),
@@ -42,8 +48,9 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
 
             // align and shoog
             AutoAlignAction(),
-            TimedShoogAction(6.seconds)
+            IndexedShoogAction(6)
         ),
-        Routine("Align", initalPose, AutoAlignAction())
+        Routine("Align", initalPose, AutoAlignAction()),
+        Routine("Shoot 3", initalPose, IndexedShoogAction(3, Setpoint(0.0, 0.0)))
     )
 }

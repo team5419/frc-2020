@@ -25,6 +25,8 @@ public interface ShotSetpoint {
     public val velocity: Double
 }
 
+public data class Setpoint(override val angle: Double, override val velocity: Double) : ShotSetpoint
+
 @Suppress("TooManyFunctions")
 object Shooger : Subsystem("Shooger") {
     // shooger motors
