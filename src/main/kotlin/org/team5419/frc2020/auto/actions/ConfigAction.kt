@@ -6,13 +6,16 @@ import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.subsystems.Intake.IntakeMode
 import org.team5419.frc2020.subsystems.Intake.DeployMode
 
+// intake actions
 public class IntakeAction(): ConfigAction(intake = IntakeMode.INTAKE)
 public class OuttakeAction(): ConfigAction(intake = IntakeMode.OUTTAKE)
 public class DisableIntakeAction(): ConfigAction(intake = IntakeMode.OFF)
 
+// intake actions
 public class DeployIntakeAction(): ConfigAction(deploy = DeployMode.DEPLOY)
 public class RetractIntakeAction(): ConfigAction(deploy = DeployMode.STORE)
 
+// storage actions
 public class PassiveStorageAction(): ConfigAction(storage = StorageMode.PASSIVE)
 public class UnajamStorageAction(): ConfigAction(storage = StorageMode.REVERSE)
 public class LoadStorageAction(): ConfigAction(storage = StorageMode.LOAD)
@@ -25,15 +28,18 @@ open public class ConfigAction(
     val storage: StorageMode? = null
 ) : Action() {
 
-    override fun start(){
+    override fun start() {
         if(intake != null){
             Intake.intakeMode = intake
+            println("settings intake mode to ${intake}")
         }
         if(deploy != null){
             Intake.deployMode = deploy
+            println("settings deploy mode to ${deploy}")
         }
         if(storage != null){
             Storage.mode = storage
+            println("settings storage mode to ${storage}")
         }
     }
 

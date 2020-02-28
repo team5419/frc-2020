@@ -49,7 +49,6 @@ object Hood : Subsystem("Hood") {
 
             // reset the sensor
             setSelectedSensorPosition(0, 0, 100)
-
         }
 
     // hood positions
@@ -64,7 +63,9 @@ object Hood : Subsystem("Hood") {
 
     var mode: HoodPosititions = HoodPosititions.RETRACT
         set(value: HoodPosititions){
+            println("hood going to ${value}")
             if (field == value) return
+            println("suc!")
 
             field = value
 
@@ -72,7 +73,7 @@ object Hood : Subsystem("Hood") {
         }
 
     init {
-        goto(HoodPosititions.RETRACT)
+        tab.addNumber("hood angle", {hoodAngle()})
     }
 
     // public api
