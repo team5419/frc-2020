@@ -148,12 +148,18 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         // climber
 
-        if ( driverXbox.getXButton() ) {
+        if ( driver.climb() ) {
             Climber.deploy()
-        } else if ( driverXbox.getBButton() ) {
+        } else if ( driver.unclimb() ) {
             Climber.retract()
         } else {
             Climber.stop()
+        }
+
+        if( driver.winch() ){
+            Climber.winch()
+        } else {
+            Climber.stopWinch()
         }
     }
 

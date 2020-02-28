@@ -13,7 +13,7 @@ import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.frc2020.auto.actions.*
 import org.team5419.frc2020.subsystems.Hood.HoodPosititions
 import org.team5419.frc2020.subsystems.Setpoint
-import org.team5419.frc2020.subsystems.StorageMode
+import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.DriveConstants
 import edu.wpi.first.wpilibj.Filesystem
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
@@ -24,16 +24,16 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
         Routine("Trech", initalPose,
             // shoog from starting position
-            ParrellelAction(
+            ParallelAction(
                 HoodAction(HoodPosititions.AUTO),
-                StorageAction(StorageMode.PASSIVE)
+                LoadStorageAction(),
                 IndexedShoogAction(3)
             ),
-            StorageAction(StorageMode.OFF),
+            DisableStorageAction(),
 
             // bring hood back down and turn intake on
             HoodAction(HoodPosititions.RETRACT),
-            IntakeAction(true),
+            DeployIntakeAction(),
 
             // navigate to behind trench
             RamseteAction( arrayOf<Pose2d>(
@@ -43,7 +43,7 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
             ) ),
 
             // turn the intake off and lift the hood
-            IntakeAction(false),
+            RetractIntakeAction(),
             HoodAction(HoodPosititions.FAR),
 
             // align and shoog

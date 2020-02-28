@@ -6,22 +6,24 @@ import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.subsystems.Intake.IntakeMode
 import org.team5419.frc2020.subsystems.Intake.DeployMode
 
-public class IntakeAction(config: IntakeMode): ConfigAction(intake = config)
-public class DeployAction(config: DeployMode): ConfigAction(deploy = config)
-public class StorageAction(config: StorageMode): ConfigAction(storage = config)
+public class IntakeAction(): ConfigAction(intake = IntakeMode.INTAKE)
+public class OuttakeAction(): ConfigAction(intake = IntakeMode.OUTTAKE)
+public class DisableIntakeAction(): ConfigAction(intake = IntakeMode.OFF)
 
-data class Config (
+public class DeployIntakeAction(): ConfigAction(deploy = DeployMode.DEPLOY)
+public class RetractIntakeAction(): ConfigAction(deploy = DeployMode.STORE)
+
+public class PassiveStorageAction(): ConfigAction(storage = StorageMode.PASSIVE)
+public class UnajamStorageAction(): ConfigAction(storage = StorageMode.REVERSE)
+public class LoadStorageAction(): ConfigAction(storage = StorageMode.LOAD)
+public class DisableStorageAction(): ConfigAction(storage = StorageMode.OFF)
+
+
+open public class ConfigAction(
     val intake: IntakeMode? = null,
     val deploy: DeployMode? = null,
     val storage: StorageMode? = null
-)
-
-public class ConfigAction(
-    val intake: IntakeMode?,
-    val deploy: DeployMode?,
-    val storage: StorageMode?
 ) : Action() {
-    constructor(config: Config) : this(config.intake, config.deploy, config.storage)
 
     override fun start(){
         if(intake != null){

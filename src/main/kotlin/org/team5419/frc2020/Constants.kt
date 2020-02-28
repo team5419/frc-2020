@@ -145,7 +145,7 @@ object IntakeConstants {
 }
 
 object ClimberConstants {
-    public val WenchPort = 11
+    public val WinchPort = 11
     public val DeployPort = 13
 }
 

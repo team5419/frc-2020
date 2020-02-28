@@ -26,9 +26,10 @@ object Climber : Subsystem("Climber") {
             configFactoryDefault(100)
         }
 
-
-    init {
-    }
+    private val winchMotor = TalonSRX(ClimberConstants.WinchPort)
+        .apply{
+            configFactoryDefault(100)
+        }
 
     // public api
 
@@ -42,6 +43,15 @@ object Climber : Subsystem("Climber") {
 
     fun stop() {
         deployMotor.set(ControlMode.PercentOutput, 0.0)
+    }
+
+    fun winch() {
+        winchMotor.set(ControlMode.PercentOutput, 1.0)
+    }
+
+    fun stopWinch(){
+        winchMotor.set(ControlMode.PercentOutput, 0.0)
+
     }
 
     // subsystem functions
