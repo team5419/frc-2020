@@ -64,7 +64,6 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
         }
     }
 
-    override fun reset() {
-        start()
-    }
+
+    override fun reset() {}
 }

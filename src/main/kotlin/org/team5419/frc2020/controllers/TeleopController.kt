@@ -156,6 +156,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             Climber.stop()
         }
 
+        println( driverXbox.getPOV() )
+
         if( driver.winch() ){
             Climber.winch()
         } else {

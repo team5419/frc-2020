@@ -16,19 +16,21 @@ object Intake : Subsystem("Intake") {
 
     val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
     val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel).apply {
-        talonSRX.configFactoryDefault()
+        talonSRX.configFactoryDefault(100)
+
         talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder)
         talonSRX.setSelectedSensorPosition(0,0,100)
+
         talonSRX.setSensorPhase(true)
         talonSRX.setInverted(false)
-        talonSRX.configClosedLoopPeakOutput(0, .6)
+
         talonSRX.config_kD(0, 10.0)
         talonSRX.config_kP(0, 1.0)
         // talonSRX.configForwardSoftLimitThreshold(
         //     radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
         // )
         // talonSRX.configForwardSoftLimitEnable(true)
-        talonSRX.configClosedLoopPeakOutput(0,0.4)
+        talonSRX.configClosedLoopPeakOutput(0, 0.4)
     }
 
     // intake modes

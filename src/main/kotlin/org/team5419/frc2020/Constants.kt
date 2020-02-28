@@ -137,7 +137,7 @@ object IntakeConstants {
     public val DeployPosition = 0.radians
 
     public const val IntakePort = 8
-    public const val DeployPort = 15
+    public const val DeployPort = -1 // make sure it dosent overlap with intake deploy
 
     // public const val RollerPort = 30
 
@@ -145,8 +145,8 @@ object IntakeConstants {
 }
 
 object ClimberConstants {
-    public val WinchPort = 11
-    public val DeployPort = 13
+    public val WinchPort = 15
+    public val DeployPort = 11 // make sure it dosent overlap with climber deploy
 }
 
 object VisionConstants {
