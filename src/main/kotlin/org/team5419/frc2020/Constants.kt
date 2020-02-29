@@ -35,10 +35,10 @@ object DriveConstants {
 
     // path following parameters
 
-    val MaxVelocity = 3.0.meters.velocity
+    val MaxVelocity = 2.5.meters.velocity
     val MaxAcceleration = 4.0.feet.acceleration
 
-    val MaxCentripetalAcceleration = 0.75.feet.acceleration
+    val MaxCentripetalAcceleration = 1.0.feet.acceleration
 
     // dimensions
 
