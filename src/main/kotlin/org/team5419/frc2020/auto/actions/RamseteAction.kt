@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveKinematicsConstraint
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig
+import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics
 import edu.wpi.first.wpilibj.geometry.Translation2d as WPILibTranslation2d
@@ -73,6 +74,9 @@ public class RamseteAction(
         config.setKinematics(driveKinematics)
         config.addConstraint(voltageConstraint)
         config.addConstraint(driveKinematicsConstraint)
+        config.addConstraint(CentripetalAccelerationConstraint(
+            DriveConstants.MaxCentripetalAcceleration.value
+        ))
     }
 
     val trajectory = TrajectoryGenerator.generateTrajectory(

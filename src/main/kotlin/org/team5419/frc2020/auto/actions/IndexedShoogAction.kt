@@ -10,26 +10,32 @@ import org.team5419.frc2020.subsystems.Hood
 
 public class IndexedShoogAction(val balls: Int, val setpoint: ShotSetpoint = Hood.mode) : Action() {
 
-    var lastSensorPosition: Int
-    var loadedBalls: Int = 0
+    val sensorPos
+        get() = Shooger.averageVelocity
+
+    var lastSensorPos = sensorPos
+    var ballShot: Int = 0
+
+    val ballShootThreashold = (setpoint.velocity - 200)
 
     init {
-        finishCondition.set({ false })
-        lastSensorPosition = Storage.sensorPosition
-        tab.addNumber("Number of Changed States", { loadedBalls.toDouble() })
+        finishCondition.set({ ballShot >= balls })
+        lastSensorPos = Shooger.averageVelocity
     }
 
-    override fun start(){}
+    override fun start() {
+        ballShot = 0
+    }
 
-    override fun update(){
+    override fun update() {
         Shooger.shoog(setpoint)
 
-        if(Storage.sensorPosition < 300 && lastSensorPosition >= 300){
-            println("loaded ball")
-            loadedBalls++
+        if ( sensorPos < ballShootThreashold && lastSensorPos > ballShootThreashold ) {
+            ballShot++
+            println("shot ball ${ballShot}")
         }
 
-        lastSensorPosition = Storage.sensorPosition
+        lastSensorPos = sensorPos
 
         if( Shooger.isHungry() && Storage.isLoadedBall ){
             Storage.mode = StorageMode.LOAD
@@ -41,6 +47,10 @@ public class IndexedShoogAction(val balls: Int, val setpoint: ShotSetpoint = Hoo
     }
 
     override fun finish() {
+        println("done")
+
+        Shooger.stop()
+
         Storage.mode = StorageMode.OFF
     }
 }

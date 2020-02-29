@@ -71,6 +71,7 @@ object Shooger : Subsystem("Shooger") {
     // shuffleboard
 
     init {
+        tab.addNumber("Avg Real Velocity", { Shooger.averageVelocity })
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
 
@@ -79,6 +80,11 @@ object Shooger : Subsystem("Shooger") {
     private var setpointVelocity = 0.0
     private var setpoint = 0.0
     private var active = false
+
+    private val averageVelocityFilter = MovingAverageFilter(10)
+
+    public val averageVelocity: Double
+        get() = averageVelocityFilter.average
 
     // accesors
 
@@ -157,5 +163,6 @@ object Shooger : Subsystem("Shooger") {
     override fun teleopReset() = reset()
 
     override fun periodic() {
+        averageVelocityFilter += flyWheelVelocity
     }
 }
