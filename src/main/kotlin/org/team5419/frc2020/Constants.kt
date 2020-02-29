@@ -96,7 +96,7 @@ object ShoogerConstants {
 object HoodConstants {
     public const val HoodPort = 12
 
-    public const val FarHoodAngle = 14.8
+    public const val FarHoodAngle = 15.0
     public const val TrussHoodAngle = 14.8
     public const val CloseHoodAngle = 3.0
 
