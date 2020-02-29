@@ -33,7 +33,6 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
     private fun refreshRoutines() {
-        println("refresh routines")
         // added the baseline as the default action
         autoSelector.setDefaultOption("Baseline", baseline)
 
@@ -44,6 +43,8 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
     override fun start() {
+        refreshRoutines()
+
         routine = autoSelector.getSelected() ?: baseline
 
         println("starting rotine ${routine.name}")

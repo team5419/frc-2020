@@ -16,6 +16,7 @@ import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
 import org.team5419.fault.hardware.ctre.*
 import com.ctre.phoenix.motorcontrol.*
+import org.team5419.fault.subsystems.SubsystemManager
 
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
@@ -60,7 +61,6 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
     override fun disabledInit() {
         reset()
-        Drivetrain.brakeMode = true
     }
 
     override fun disabledPeriodic() {
@@ -68,6 +68,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
     override fun autonomousInit() {
         reset()
+        SubsystemManager.zeroOutputs()
         autoController.start()
     }
 

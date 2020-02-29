@@ -35,11 +35,10 @@ object DriveConstants {
 
     // path following parameters
 
-    val MaxVelocity = 4.0.meters.velocity
+    val MaxVelocity = 3.0.meters.velocity
     val MaxAcceleration = 4.0.feet.acceleration
 
-    val MaxCentripetalAcceleration = 4.0.feet.acceleration
-    val MaxAngularAcceleration = 2.0.radians.acceleration
+    val MaxCentripetalAcceleration = 0.75.feet.acceleration
 
     // dimensions
 
@@ -49,14 +48,11 @@ object DriveConstants {
 
     // characterization
 
-    const val Beta = 1.0 // m^-2
+    const val Beta = 2.0 // m^-2
     const val Zeta = 0.7 // unitless
 
     val TrackWidth = 1.781.meters
     val EffectiveWheelbaseRadius = TrackWidth / 2.0
-
-    val Moi = 0.0 // kg * m^2
-    val AngularDrag = 10.0 // (N * m) / (rad / s)  TUNE ME
 
     const val DriveKv = 2.2
     const val DriveKa = 0.174
@@ -125,7 +121,7 @@ object StorageConstants {
     public const val HopperPercent = 1.0
 
     public const val FeederLazyPercent = 0.3
-    public const val HopperLazyPercent = 0.3
+    public const val HopperLazyPercent = 1.0
 
     public const val SensorThreshold = 500 //3500
 }

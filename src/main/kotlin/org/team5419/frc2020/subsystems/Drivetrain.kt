@@ -59,7 +59,12 @@ object Drivetrain : Subsystem("DriveTrain") {
     val robotPosition
         get() = position.robotPosition
 
-    private var inverted = 1;
+    private var inverted = 1
+
+    init {
+        tab.addNumber("left vel", { leftVelocity.value })
+        tab.addNumber("right vel", { rightVelocity.value })
+    }
 
     init {
         leftSlave.apply {
@@ -134,7 +139,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
     // odometry
 
-    val odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(angle))
+    var odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(angle))
 
     val pose
         get() = odometry.getPoseMeters()
@@ -230,4 +235,13 @@ object Drivetrain : Subsystem("DriveTrain") {
 
     override fun autoReset() = reset()
     override fun teleopReset() = reset()
+
+    override fun zeroOutputs() {
+        leftMasterMotor.setSelectedSensorPosition(0, 0, 100)
+        rightMasterMotor.setSelectedSensorPosition(0, 0, 100)
+
+        gyro.setFusedHeading(0.0, 100)
+
+        odometry = DifferentialDriveOdometry(WPILibRotation2d.fromDegrees(angle))
+    }
 }

@@ -57,7 +57,7 @@ object Hood : Subsystem("Hood") {
         FAR(HoodConstants.FarHoodAngle, 4800.0),
         TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
         CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
-        AUTO(12.0, 3500.0),
+        AUTO(12.5, 3000.0),
         RETRACT(0.0, 4800.0)
     }
 
