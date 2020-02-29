@@ -61,9 +61,9 @@ object Hood : Subsystem("Hood") {
         RETRACT(0.0, 4800.0)
     }
 
-    var mode: HoodPosititions = HoodPosititions.RETRACT
-        set(value: HoodPosititions){
-            if (field == value) return
+    var mode: ShotSetpoint = HoodPosititions.RETRACT
+        set(value: ShotSetpoint){
+            if (field.angle == value.angle && field.velocity == value.velocity) return
 
             field = value
 
@@ -82,7 +82,7 @@ object Hood : Subsystem("Hood") {
 
     fun hoodAngle() = hoodMotor.getSelectedSensorPosition(0) * nativeUnitsToAngle
 
-    fun goto(angle: HoodPosititions) {
+    fun goto(angle: ShotSetpoint) {
         mode = angle
     }
 

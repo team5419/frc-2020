@@ -58,6 +58,8 @@ object Vision : Subsystem("Vision") {
         return targetFound && controller.atSetpoint() && Drivetrain.averageSpeed.value < 0.1
     }
 
+    public fun getShotSetpoint() = Lookup.get(limelight.horizontalDistance.inMeters())
+
     public fun calculate() = controller.calculate(limelight.horizontalOffset + offset)
 
     public fun autoAlign() : DriveSignal {

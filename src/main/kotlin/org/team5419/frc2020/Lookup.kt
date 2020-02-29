@@ -7,6 +7,16 @@ data class LookupEntry(
 ) : ShotSetpoint
 
 object Lookup {
+
+    init {
+        add( 2.73, 12.0, 3500.0 )
+        add( 2.12, 12.0, 3500.0 )
+        add( 1.56, 12.0, 3500.0 )
+        add( 0.97, 14.0, 4000.0 )
+        add( 0.64, 15.0, 4500.0 )
+        add( 0.31, 14.8, 4800.0 )
+    }
+
     // largest entery at 0
     private val table = mutableListOf<LookupEntry>()
 
