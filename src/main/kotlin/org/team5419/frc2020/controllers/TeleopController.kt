@@ -34,6 +34,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     )
 
     override fun start() {
+        Vision.zoomOut()
     }
 
     override fun update() {
@@ -49,7 +50,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 Vision.on()
 
                 // put the drive train in brake mode to make autoaligning easiers
-                // Drivetrain.brakeMode = true
+                Drivetrain.brakeMode = true
             } else {
                 // turn limelight leds off
                 Vision.off()
@@ -81,10 +82,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
                 codriverXbox.setRumble(RumbleType.kRightRumble, 0.1)
             }
 
-            // Drivetrain.setPercent(
-            //     output.left + alignOutput.left,
-            //     output.right + alignOutput.right
-            // )
+            Drivetrain.setPercent(
+                output.left + alignOutput.left,
+                output.right + alignOutput.right
+            )
         } else {
             Drivetrain.setPercent(output)
         }
@@ -111,7 +112,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         }
 
         // when should we use the lookup table?
-        if ( true ) {
+        if ( false ) {
             // if the shot setpoint is not null, then set the shotSetpoint to it.
             Vision.getShotSetpoint()?.let { shotSetpoint = it }
         }
@@ -172,5 +173,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     override fun reset() {
+        Vision.zoomOut()
     }
 }
