@@ -64,31 +64,31 @@ object Vision : Subsystem("Vision") {
 
     public fun autoAlign() : DriveSignal {
         // println("Error: ${limelight.horizontalOffset + offset}")
-        if(
-            limelight.zoom == 1 &&
-            Math.abs(limelight.horizontalOffset) < VisionConstants.MaxOffsetFor2XZoom
-        ) {
-            println("zoom in")
-            limelight.zoom = 2
-            controller.setPID(
-                VisionConstants.PID.P,
-                VisionConstants.PID.I,
-                VisionConstants.PID.D
-            )
-        } else if( !targetFound ){
-            println("zoom out")
-            limelight.zoom = 1
-            controller.setPID(
-                VisionConstants.PID2.P,
-                VisionConstants.PID2.I,
-                VisionConstants.PID2.D
-            )
-        }
+        // if(
+        //     limelight.zoom == 1 &&
+        //     Math.abs(limelight.horizontalOffset) < VisionConstants.MaxOffsetFor2XZoom
+        // ) {
+        //     // println("zoom in")
+        //     limelight.zoom = 2
+        //     controller.setPID(
+        //         VisionConstants.PID.P,
+        //         VisionConstants.PID.I,
+        //         VisionConstants.PID.D
+        //     )
+        // } else if( !targetFound ){
+        //     // println("zoom out")
+        //     limelight.zoom = 1
+        //     controller.setPID(
+        //         VisionConstants.PID2.P,
+        //         VisionConstants.PID2.I,
+        //         VisionConstants.PID2.D
+        //     )
+        // }
 
         // get the pid loop output
         var output = calculate()
 
-        println( limelight.horizontalOffset )
+        // println( limelight.horizontalOffset )
 
         // can we align / do we need to allign?
         if ( !targetFound || aligned() )
