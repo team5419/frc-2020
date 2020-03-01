@@ -37,9 +37,9 @@ public class IndexedShoogAction(val balls: Int, val setpoint: ShotSetpoint = Hoo
 
         lastSensorPos = sensorPos
 
-        if( Shooger.isHungry() && Storage.isLoadedBall ){
+        if ( Shooger.isHungry() && Storage.isLoadedBall ) {
             Storage.mode = StorageMode.LOAD
-        } else if( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall){
+        } else if ( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall) {
             Storage.mode = StorageMode.PASSIVE
         } else {
             Storage.mode = StorageMode.PASSIVE

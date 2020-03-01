@@ -62,7 +62,7 @@ object Hood : Subsystem("Hood") {
     }
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT
-        set(value: ShotSetpoint){
+        set(value: ShotSetpoint) {
             if (field.angle == value.angle && field.velocity == value.velocity) return
 
             field = value

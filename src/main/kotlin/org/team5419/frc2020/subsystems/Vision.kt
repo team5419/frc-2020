@@ -97,7 +97,7 @@ object Vision : Subsystem("Vision") {
         limelight.lightMode = LightMode.Off
     }
 
-    public fun zoomIn(){
+    public fun zoomIn() {
         limelight.pipeline = 1
         controller.setPID(
             VisionConstants.PID2.P,
@@ -106,7 +106,7 @@ object Vision : Subsystem("Vision") {
         )
     }
 
-    public fun zoomOut(){
+    public fun zoomOut() {
         limelight.pipeline = 0
         controller.setPID(
             VisionConstants.PID.P,

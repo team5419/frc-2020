@@ -98,7 +98,7 @@ object Intake : Subsystem("Intake") {
     }
 
     public fun stopDeploy() {
-        if( deployMode != DeployMode.STORE ){
+        if( deployMode != DeployMode.STORE ) {
             deployMode = DeployMode.OFF
         }
     }

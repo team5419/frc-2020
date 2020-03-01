@@ -26,6 +26,10 @@ public interface DriverControls {
 
     public fun retractHood(): Boolean
 
+    public fun adjustHoodUp(): Boolean
+
+    public fun adjustHoodDown(): Boolean
+
     // climb
 
     public fun climb(): Boolean

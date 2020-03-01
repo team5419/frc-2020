@@ -8,8 +8,8 @@ public class IntakeAction(): ConfigIntakeAction(IntakeMode.INTAKE)
 public class OuttakeAction(): ConfigIntakeAction(IntakeMode.OUTTAKE)
 public class DisableIntakeAction(): ConfigIntakeAction(IntakeMode.OFF)
 
-open class ConfigIntakeAction(val intake: IntakeMode): Action(){
-    override fun start(){
+open class ConfigIntakeAction(val intake: IntakeMode): Action() {
+    override fun start() {
         Intake.intakeMode = intake
     }
 

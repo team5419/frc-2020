@@ -23,6 +23,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     var shotSetpoint: ShotSetpoint = Hood.HoodPosititions.RETRACT
 
+    data class Setpoint ( override val angle: Double, override val velocity: Double  ) : ShotSetpoint
+
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
@@ -107,7 +109,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             shotSetpoint = Hood.HoodPosititions.TRUSS
         } else if ( codriver.deployHoodClose() ) {
             shotSetpoint = Hood.HoodPosititions.CLOSE
-        } else if ( codriver.retractHood() || driver.retractHood() ){
+        } else if ( codriver.retractHood() || driver.retractHood() ) {
             shotSetpoint = Hood.HoodPosititions.RETRACT
         }
 
@@ -117,7 +119,11 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             Vision.getShotSetpoint()?.let { shotSetpoint = it }
         }
 
-        // println(shotSetpoint)
+        if ( driver.adjustHoodUp() ) {
+            shotSetpoint = Setpoint( shotSetpoint.angle + 1.0, shotSetpoint.velocity )
+        } else if ( driver.adjustHoodDown() ) {
+            shotSetpoint = Setpoint( shotSetpoint.angle - 1.0, shotSetpoint.velocity )
+        }
 
         Hood.goto( shotSetpoint )
 

@@ -9,7 +9,7 @@ public class LoadStorageAction(): ConfigStorageAction(StorageMode.LOAD)
 public class DisableStorageAction(): ConfigStorageAction(StorageMode.OFF)
 
 open class ConfigStorageAction(val storage: StorageMode): Action() {
-    override fun start(){
+    override fun start() {
         Storage.mode = storage
     }
 

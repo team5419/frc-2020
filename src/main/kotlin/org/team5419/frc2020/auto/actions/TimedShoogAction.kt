@@ -19,9 +19,9 @@ public class TimedShoogAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
     override fun update() {
         Shooger.shoog(Hood.mode)
 
-        if( Shooger.isHungry() && Storage.isLoadedBall ){
+        if ( Shooger.isHungry() && Storage.isLoadedBall ) {
             Storage.mode = StorageMode.LOAD
-        } else if( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall){
+        } else if ( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall) {
             Storage.mode = StorageMode.PASSIVE
         } else {
             Storage.mode = StorageMode.PASSIVE
