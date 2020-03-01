@@ -157,7 +157,15 @@ object VisionConstants {
 
     public val TargetOffset = 0.0
 
+    public const val MaxOffsetFor2XZoom = 10.0
+
     object PID {
+        public const val P = 0.015
+        public const val I = 0.003
+        public const val D = 0.0005
+    }
+
+    object PID2 {
         public const val P = 0.015
         public const val I = 0.003
         public const val D = 0.0005

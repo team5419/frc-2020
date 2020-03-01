@@ -10,7 +10,7 @@ import org.team5419.frc2020.InputConstants
 import org.team5419.frc2020.HoodConstants
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
-import org.team5419.fault.input.SpaceDriveHelper
+import org.team5419.frc2020.input.SpaceDriveHelper
 import org.team5419.fault.input.DriveSignal
 import org.team5419.fault.Controller
 import edu.wpi.first.wpilibj.GenericHID.Hand
