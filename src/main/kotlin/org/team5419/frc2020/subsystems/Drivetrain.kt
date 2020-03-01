@@ -69,6 +69,7 @@ object Drivetrain : Subsystem("DriveTrain") {
     init {
         leftSlave.apply {
             configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             // fallow the master
             follow(leftMasterMotor)
@@ -80,6 +81,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         rightSlave.apply {
             configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             // fallow the master
             follow(rightMasterMotor)
@@ -93,6 +95,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         leftMasterMotor.apply {
             configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             setSensorPhase(false)
             setInverted(inverted)
@@ -112,6 +115,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         rightMasterMotor.apply {
             configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             setSensorPhase(true)
             setInverted(!inverted)
@@ -189,6 +193,7 @@ object Drivetrain : Subsystem("DriveTrain") {
     fun setOpenLoop(left: Double, right: Double) {
         leftMasterMotor.set(ControlMode.PercentOutput, left * inverted)
         rightMasterMotor.set(ControlMode.PercentOutput, right * inverted)
+        // println("${left} ${right}")
     }
 
     fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>) {

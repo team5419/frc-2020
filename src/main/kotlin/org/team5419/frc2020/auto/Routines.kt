@@ -24,11 +24,11 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
     return arrayOf<Routine> (
         Routine("Trech", initalPose,
             // shoog from starting position
-            HoodAction(HoodPosititions.AUTO),
+            AutoHoodAction(),
             IndexedShoogAction(3),
 
             // bring hood back down and turn intake on
-            HoodAction(HoodPosititions.RETRACT),
+            RetractHoodAction(),
             DeployIntakeAction(),
 
             // navigate to behind trench
@@ -45,7 +45,7 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
 
             // align and shoog
             AutoAlignAction(),
-            HoodAction(HoodPosititions.FAR),
+            FarHoodAction(),
             IndexedShoogAction(5)
         ),
         Routine("Align", initalPose, AutoAlignAction()),

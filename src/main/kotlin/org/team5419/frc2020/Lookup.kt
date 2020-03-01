@@ -4,29 +4,54 @@ data class LookupEntry(
     val distance: Double,
     override val angle: Double,
     override val velocity: Double
-) : ShotSetpoint
+) : ShotSetpoint {
+    override fun toString() = "D: ${distance}, A: ${angle}, V: ${velocity}"
+}
 
 object Lookup {
+
+    private val table: MutableList<LookupEntry>
+
+    init {
+        table = mutableListOf<LookupEntry>()
+        println("add 0")
+        add( 2.73, 12.0, 3500.0 )
+        println("add 1")
+        add( 2.12, 12.0, 3500.0 )
+        add( 1.56, 12.0, 3500.0 )
+        add( 0.97, 14.0, 4000.0 )
+        add( 0.64, 15.0, 4500.0 )
+        add( 0.31, 14.8, 4800.0 )
+        println("init")
+    }
+
     // largest entery at 0
-    private val table = mutableListOf<LookupEntry>()
 
     fun add(distance: Double, angle: Double, velocity: Double) {
-        for (i in 0..table.size) {
+        println("size" + table.size)
+        if(table.size == 0){
+            table.add(LookupEntry(distance, angle, velocity))
+            return
+        }
+        for (i in 0..table.size-1) {
+            println(i)
             val entry = table.get(i)
 
             if (entry.distance < distance) {
                 table.add(i, LookupEntry(distance, angle, velocity))
-
                 break
             }
         }
     }
 
     fun get(distance: Double): LookupEntry? {
-        for (i in 0..table.size) {
+        println("Distence" + distance)
+        for (i in 0..table.size-1) {
             val entry = table.get(i)
 
+
             if (entry.distance < distance) {
+                println(entry.distance)
                 if (i == 0) {
                     println("distance is too large")
                     return null

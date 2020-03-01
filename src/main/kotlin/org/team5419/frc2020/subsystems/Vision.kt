@@ -52,21 +52,31 @@ object Vision : Subsystem("Vision") {
         get() = limelight.targetFound && limelight.verticalOffset != 0.0
 
     public fun aligned(): Boolean{
-        // println("at set point: ${controller.atSetpoint()}")
-        // println("target found: ${limelight.targetFound}")
-        // println("verticle offset: ${limelight.verticalOffset}")
         return targetFound && controller.atSetpoint() && Drivetrain.averageSpeed.value < 0.1
     }
+
+    public fun getShotSetpoint() = Lookup.get(limelight.horizontalDistance.inMeters())
 
     public fun calculate() = controller.calculate(limelight.horizontalOffset + offset)
 
     public fun autoAlign() : DriveSignal {
         // println("Error: ${limelight.horizontalOffset + offset}")
+        if (!targetFound) {
+            zoomOut()
+            return DriveSignal()
+        }
+
+        if(
+            limelight.pipeline == 0 &&
+            Math.abs(limelight.horizontalOffset) < VisionConstants.MaxOffsetFor2XZoom
+        ) {
+            zoomIn()
+        }
 
         // get the pid loop output
         var output = calculate()
 
-        println( limelight.horizontalOffset )
+        // println( limelight.horizontalOffset )
 
         // can we align / do we need to allign?
         if ( !targetFound || aligned() )
@@ -85,5 +95,23 @@ object Vision : Subsystem("Vision") {
 
     public fun off() {
         limelight.lightMode = LightMode.Off
+    }
+
+    public fun zoomIn(){
+        limelight.pipeline = 1
+        controller.setPID(
+            VisionConstants.PID2.P,
+            VisionConstants.PID2.I,
+            VisionConstants.PID2.D
+        )
+    }
+
+    public fun zoomOut(){
+        limelight.pipeline = 0
+        controller.setPID(
+            VisionConstants.PID.P,
+            VisionConstants.PID.I,
+            VisionConstants.PID.D
+        )
     }
 }

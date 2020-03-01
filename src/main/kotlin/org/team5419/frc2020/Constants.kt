@@ -19,8 +19,8 @@ object DriveConstants {
     const val LeftMasterPort = 2
     const val LeftSlavePort = 3
 
-    const val RightMasterPort = 5
-    const val RightSlavePort = 4
+    const val RightMasterPort = 4
+    const val RightSlavePort = 5
 
     const val GyroPort = 20
 
@@ -146,10 +146,10 @@ object ClimberConstants {
 }
 
 object VisionConstants {
-    public val CameraAngle = 0.0.radians
-    public val CameraHeight = 0.0.meters
+    public val CameraAngle = 16.599.degrees
+    public val CameraHeight = 7.inches
 
-    public val TargetHeight = 0.0.meters
+    public val TargetHeight = 2.28.meters
 
     public val Tolerance = 0.3
 
@@ -157,7 +157,15 @@ object VisionConstants {
 
     public val TargetOffset = 0.0
 
+    public const val MaxOffsetFor2XZoom = 10.0
+
     object PID {
+        public const val P = 0.015
+        public const val I = 0.003
+        public const val D = 0.0005
+    }
+
+    object PID2 {
         public const val P = 0.015
         public const val I = 0.003
         public const val D = 0.0005
