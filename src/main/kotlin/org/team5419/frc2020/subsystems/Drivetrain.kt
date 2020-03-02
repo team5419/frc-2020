@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry
 import edu.wpi.first.wpilibj.geometry.Rotation2d as WPILibRotation2d
 import edu.wpi.first.wpilibj.Notifier
 import com.ctre.phoenix.sensors.PigeonIMU
-import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import com.ctre.phoenix.motorcontrol.*
@@ -28,13 +28,14 @@ import com.ctre.phoenix.motorcontrol.*
 object Drivetrain : Subsystem("DriveTrain") {
     // hardware
 
-    val leftMasterMotor = TalonFX(DriveConstants.LeftMasterPort)
+    val leftMasterMotor = TalonSRX(DriveConstants.LeftMasterPort)
+    private val leftSlave1 = TalonSRX(DriveConstants.LeftSlave1Port)
+    private val leftSlave2 = TalonSRX(DriveConstants.LeftSlave2Port)
 
-    private val leftSlave = TalonFX(DriveConstants.LeftSlavePort)
 
-    val rightMasterMotor = TalonFX(DriveConstants.RightMasterPort)
-
-    private val rightSlave = TalonFX(DriveConstants.RightSlavePort)
+    val rightMasterMotor = TalonSRX(DriveConstants.RightMasterPort)
+    private val rightSlave1 = TalonSRX(DriveConstants.RightSlave1Port)
+    private val rightSlave2 = TalonSRX(DriveConstants.RightSlave2Port)
 
     public val gyro = PigeonIMU(DriveConstants.GyroPort)
 
@@ -67,7 +68,7 @@ object Drivetrain : Subsystem("DriveTrain") {
     }
 
     init {
-        leftSlave.apply {
+        leftSlave1.apply {
             configFactoryDefault(100)
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
@@ -79,7 +80,31 @@ object Drivetrain : Subsystem("DriveTrain") {
             enableVoltageCompensation(true)
         }
 
-        rightSlave.apply {
+        leftSlave2.apply {
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+            // fallow the master
+            follow(leftMasterMotor)
+            setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+        }
+
+        rightSlave1.apply {
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+            // fallow the master
+            follow(rightMasterMotor)
+            setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+        }
+
+        rightSlave2.apply {
             configFactoryDefault(100)
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
@@ -97,6 +122,7 @@ object Drivetrain : Subsystem("DriveTrain") {
             configFactoryDefault(100)
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
             setSensorPhase(false)
             setInverted(inverted)
 
@@ -117,6 +143,7 @@ object Drivetrain : Subsystem("DriveTrain") {
             configFactoryDefault(100)
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
             setSensorPhase(true)
             setInverted(!inverted)
 
