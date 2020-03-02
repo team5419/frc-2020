@@ -54,7 +54,7 @@ object Hood : Subsystem("Hood") {
     // hood positions
 
     public enum class HoodPosititions(override val angle: Double, override val velocity: Double) : ShotSetpoint {
-        FAR(HoodConstants.FarHoodAngle, 4800.0),
+        FAR(HoodConstants.FarHoodAngle, 5000.0),
         TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
         CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
         AUTO(12.5, 3000.0),
