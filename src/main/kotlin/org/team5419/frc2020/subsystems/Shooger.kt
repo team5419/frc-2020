@@ -14,11 +14,11 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.EntryListenerFlags
-import com.ctre.phoenix.motorcontrol.can.VictorSPX
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration
 
 public interface ShotSetpoint {
     public val angle: Double
@@ -31,7 +31,7 @@ public data class Setpoint(override val angle: Double, override val velocity: Do
 object Shooger : Subsystem("Shooger") {
     // shooger motors
 
-    val masterMotor = TalonSRX(ShoogerConstants.MasterPort)
+    val masterMotor = TalonFX(ShoogerConstants.MasterPort)
         .apply {
             configFactoryDefault(100)
 
@@ -47,24 +47,16 @@ object Shooger : Subsystem("Shooger") {
             selectProfileSlot(0, 0)
 
             configClosedLoopPeakOutput(0, 1.0, 100)
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
 
             setSelectedSensorPosition(0, 0, 100)
             configPeakOutputReverse(0.0, 0)
             configClosedLoopPeriod(0, 1, 100)
         }
 
-    val slaveMotor1 = VictorSPX(ShoogerConstants.SlavePort1)
+    val slaveMotor1 = TalonFX(ShoogerConstants.SlavePort1)
         .apply {
             follow(masterMotor)
             setInverted(true)
-            setNeutralMode(NeutralMode.Coast)
-        }
-
-    val slaveMotor2 = VictorSPX(ShoogerConstants.SlavePort2)
-        .apply {
-            follow(masterMotor)
-            setInverted(false)
             setNeutralMode(NeutralMode.Coast)
         }
 
@@ -105,7 +97,7 @@ object Shooger : Subsystem("Shooger") {
 
     public fun shoog(shoogVelocity: Double) {
         // full current baby, lets get this wheel spining
-        masterMotor.configPeakCurrentLimit(40)
+        masterMotor.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
         // its active, we want to shoot if at full speed
         active = true
@@ -118,7 +110,7 @@ object Shooger : Subsystem("Shooger") {
 
     public fun spinUp(shoogVelocity: Double) {
         // limit the current so we dont brown out if were driving
-        masterMotor.configPeakCurrentLimit(20)
+        masterMotor.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
         // its not active, we dont want to shoot even if at speed
         active = false
