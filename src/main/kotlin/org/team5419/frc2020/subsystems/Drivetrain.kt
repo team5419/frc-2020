@@ -70,7 +70,7 @@ object Drivetrain : Subsystem("DriveTrain") {
     init {
         leftSlave1.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configPeakCurrentLimit(40)
 
             // fallow the master
             follow(leftMasterMotor)
@@ -82,7 +82,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         leftSlave2.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configPeakCurrentLimit(40)
 
             // fallow the master
             follow(leftMasterMotor)
@@ -94,7 +94,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         rightSlave1.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configPeakCurrentLimit(40)
 
             // fallow the master
             follow(rightMasterMotor)
@@ -106,7 +106,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         rightSlave2.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configPeakCurrentLimit(40)
 
             // fallow the master
             follow(rightMasterMotor)
@@ -120,7 +120,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         leftMasterMotor.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configPeakCurrentLimit(40)
 
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
             setSensorPhase(false)
@@ -141,7 +141,7 @@ object Drivetrain : Subsystem("DriveTrain") {
 
         rightMasterMotor.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configPeakCurrentLimit(40)
 
             configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
             setSensorPhase(true)
