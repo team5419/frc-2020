@@ -49,11 +49,16 @@ object Drivetrain : Subsystem("DriveTrain") {
             if(value == field) return
             if(value) {
                 leftMasterMotor.setNeutralMode(NeutralMode.Brake)
+                leftSlave.setNeutralMode(NeutralMode.Brake)
                 rightMasterMotor.setNeutralMode(NeutralMode.Brake)
+                rightSlave.setNeutralMode(NeutralMode.Brake)
             } else {
                 leftMasterMotor.setNeutralMode(NeutralMode.Coast)
+                leftSlave.setNeutralMode(NeutralMode.Coast)
                 rightMasterMotor.setNeutralMode(NeutralMode.Coast)
+                rightSlave.setNeutralMode(NeutralMode.Coast)
             }
+            field = value
         }
 
     val robotPosition
@@ -77,6 +82,8 @@ object Drivetrain : Subsystem("DriveTrain") {
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+
+            setNeutralMode(NeutralMode.Coast)
         }
 
         rightSlave.apply {
@@ -89,6 +96,8 @@ object Drivetrain : Subsystem("DriveTrain") {
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+
+            setNeutralMode(NeutralMode.Coast)
         }
 
         val inverted = false
@@ -103,7 +112,7 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
-            // config_kF( 0, DriveConstants.PID.F , 100 )
+            config_kF( 0, DriveConstants.PID.F , 100 )
 
             setSelectedSensorPosition(0, 0, 100)
 
@@ -123,7 +132,7 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
-            // config_kF( 0, DriveConstants.PID.F , 100 )
+            config_kF( 0, DriveConstants.PID.F , 100 )
 
             setSelectedSensorPosition(0, 0, 100)
 
