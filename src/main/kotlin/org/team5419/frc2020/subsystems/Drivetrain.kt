@@ -131,6 +131,8 @@ object Drivetrain : Subsystem("DriveTrain") {
 
             // Set the encoder position update frequency to 100Hz
             setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+            setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer, 10, 100)
+            setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 10)
         }
 
         rightMasterMotor.apply {
@@ -156,6 +158,8 @@ object Drivetrain : Subsystem("DriveTrain") {
 
             // Set the encoder position update frequency to 100Hz
             setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+            setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer, 10, 100)
+            setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 10)
         }
 
         gyro.apply {
