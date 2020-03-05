@@ -84,6 +84,9 @@ object Drivetrain : Subsystem("DriveTrain") {
             enableVoltageCompensation(true)
 
             setNeutralMode(NeutralMode.Coast)
+
+            setStatusFramePeriod(StatusFrame.Status_1_General, 255, 100)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 255, 100)
         }
 
         rightSlave.apply {
@@ -98,6 +101,9 @@ object Drivetrain : Subsystem("DriveTrain") {
             enableVoltageCompensation(true)
 
             setNeutralMode(NeutralMode.Coast)
+
+            setStatusFramePeriod(StatusFrame.Status_1_General, 255, 100)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 255, 100)
         }
 
         val inverted = false
@@ -114,12 +120,17 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kD( 0, DriveConstants.PID.D , 100 )
             config_kF( 0, DriveConstants.PID.F , 100 )
 
+            // set the falcons to use their internal encoder (put it on PID slot 0, with an error timeout of 100ms)
+            configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 100)
             setSelectedSensorPosition(0, 0, 100)
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
 
             setNeutralMode(NeutralMode.Coast)
+
+            // Set the encoder position update frequency to 100Hz
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
         }
 
         rightMasterMotor.apply {
@@ -134,12 +145,17 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kD( 0, DriveConstants.PID.D , 100 )
             config_kF( 0, DriveConstants.PID.F , 100 )
 
+            // set the falcons to use their internal encoder (put it on PID slot 0, with an error timeout of 100ms)
+            configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 100)
             setSelectedSensorPosition(0, 0, 100)
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
 
             setNeutralMode(NeutralMode.Coast)
+
+            // Set the encoder position update frequency to 100Hz
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
         }
 
         gyro.apply {

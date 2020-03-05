@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.StatusFrame
 
 object Storage : Subsystem("Storage") {
     // storage mode
@@ -59,6 +60,8 @@ object Storage : Subsystem("Storage") {
             setSensorPhase(false)
             setNeutralMode(NeutralMode.Brake)
             configSelectedFeedbackSensor(FeedbackDevice.Analog)
+
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
         }
 
     public val hopper = TalonSRX(StorageConstants.HopperPort)

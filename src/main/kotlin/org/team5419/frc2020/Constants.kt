@@ -88,7 +88,7 @@ object ShoogerConstants {
     public const val BangBangTolerance = 50
 
     public val TargetVelocity = 4800.0
-    public val TicksPerRotation = 4092.0.nativeUnits
+    public val TicksPerRotation = 4096.0.nativeUnits
 
     public val ShoogTime = 3.0.seconds
 }
@@ -109,7 +109,7 @@ object HoodConstants {
     public val MaxSpeed = 0.7
     public val MaxAngle = 18.0
 
-    public val TicksPerRotation = 4092.0
+    public val TicksPerRotation = 4096.0
     public val GearRatio = 4.0/1.0
 }
 
