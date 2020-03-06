@@ -20,10 +20,14 @@ import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.math.units.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.geometry.Vector2
+import org.team5419.fault.util.time.WPITimer
 
 public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
-    private var autoSelector = SendableChooser<Routine>()
+    private val autoSelector = SendableChooser<Routine>()
+    private val timer = WPITimer()
+
     private var routine: Routine = baseline
+    private var prevTime = timer.get()
 
     init {
         tab.add("Auto Selector", autoSelector)
@@ -50,11 +54,14 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
         println("starting rotine ${routine.name}")
 
         routine.start()
+
+        timer.stop()
+        timer.reset()
+        timer.start()
     }
 
     override fun update() {
-        routine.update()
-
+        routine.update(timer.get() - prevTime)
 
         if (routine.next()) {
             routine.finish()
@@ -63,6 +70,8 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
             // test the routine so that we dont do anything
             routine = Routine("Baseline", Pose2d(), NothingAction())
         }
+
+        prevTime = timer.get()
     }
 
 

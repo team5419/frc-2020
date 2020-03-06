@@ -10,5 +10,5 @@ import org.team5419.fault.math.units.SIUnit
 import org.team5419.fault.auto.Action
 
 public class SpinUpAction() : Action() {
-    override fun update() = Shooger.spinUp(Hood.mode)
+    override fun update(dt: SIUnit<Second>) = Shooger.spinUp(Hood.mode)
 }

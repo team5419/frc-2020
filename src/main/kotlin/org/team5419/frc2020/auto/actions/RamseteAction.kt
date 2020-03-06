@@ -97,9 +97,8 @@ public class RamseteAction(
         finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
     }
 
-    override fun update() {
+    override fun update(dt: SIUnit<Second>) {
         val time = getTime()
-        val dt = time - prevTime
 
         val chassisSpeed = controller.calculate(
             Drivetrain.pose,

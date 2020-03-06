@@ -3,6 +3,7 @@ package org.team5419.frc2020.auto.actions
 import org.team5419.frc2020.subsystems.Vision
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.fault.auto.Action
+import org.team5419.fault.math.units.*
 
 class AutoAlignAction() : Action() {
     init {
@@ -18,7 +19,7 @@ class AutoAlignAction() : Action() {
         Drivetrain.brakeMode = true
     }
 
-    override public fun update() {
+    override public fun update(dt: SIUnit<Second>) {
         Drivetrain.setPercent(Vision.autoAlign())
     }
 

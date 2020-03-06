@@ -13,6 +13,6 @@ public class TimedIntakeAction(timeout: SIUnit<Second>) : Action() {
         withTimeout(timeout)
     }
 
-    override fun update() = Intake.intake()
+    override fun update(dt: SIUnit<Second>) = Intake.intake()
     override fun finish() = Intake.stopIntake()
 }

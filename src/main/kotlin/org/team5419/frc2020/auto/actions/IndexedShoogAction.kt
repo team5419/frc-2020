@@ -7,6 +7,7 @@ import org.team5419.frc2020.subsystems.ShotSetpoint
 import org.team5419.frc2020.subsystems.Storage
 import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.subsystems.Hood
+import org.team5419.fault.math.units.*
 
 public class IndexedShoogAction(val balls: Int, val setpoint: ShotSetpoint = Hood.mode) : Action() {
 
@@ -27,7 +28,7 @@ public class IndexedShoogAction(val balls: Int, val setpoint: ShotSetpoint = Hoo
         ballShot = 0
     }
 
-    override fun update() {
+    override fun update(dt: SIUnit<Second>) {
         Shooger.shoog(setpoint)
 
         if ( sensorPos < ballShootThreashold && lastSensorPos > ballShootThreashold ) {
