@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.XboxController
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     var isAligning = false
+    var isDeployed = false
 
     var shotSetpoint: ShotSetpoint = Hood.HoodPosititions.RETRACT
 
@@ -96,10 +97,20 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     @Suppress("ComplexMethod")
     private fun updateCodriver() {
         // intake
+        if( codriver.storeIntake() ){
+            isDeployed = !isDeployed
+            if(isDeployed) {
+                Intake.deploy()
+                println("deploy intake")
+            } else {
+                Intake.store()
+                println("store intake")
+            }
+        }
 
-             if ( codriver.outtake() ) Intake.outtake()
+        if ( codriver.outtake() ) Intake.outtake()
         else if ( codriver.intake() ) Intake.intake()
-        else Intake.store()
+        else Intake.stopIntake()
 
         // hood
 

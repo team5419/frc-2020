@@ -56,7 +56,7 @@ object Intake : Subsystem("Intake") {
             if ( mode == field ) return
 
             when (mode) {
-                IntakeMode.INTAKE  -> { intakeMotor.set(ControlMode.PercentOutput, 1.0 ) }
+                IntakeMode.INTAKE  -> { intakeMotor.set(ControlMode.PercentOutput, 0.8 ) }
                 IntakeMode.OUTTAKE -> { intakeMotor.set(ControlMode.PercentOutput, -1.0 ) }
                 IntakeMode.OFF     -> { intakeMotor.set(ControlMode.PercentOutput, 0.0 ) }
             }
@@ -117,16 +117,10 @@ object Intake : Subsystem("Intake") {
 
     public fun intake() {
         intakeMode = IntakeMode.INTAKE
-
-        // cant intake if were down
-        deployMode = DeployMode.DEPLOY
     }
 
     public fun outtake() {
         intakeMode = IntakeMode.OUTTAKE
-
-        // cant outintake if were down
-        deployMode = DeployMode.DEPLOY
     }
 
     public fun stopIntake() {

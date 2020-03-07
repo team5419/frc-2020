@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.EntryListenerFlags
+import edu.wpi.first.networktables.EntryNotification
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
@@ -49,18 +50,18 @@ object Shooger : Subsystem("Shooger") {
             config_kP(1, 0.5, 100)
             config_kI(1, 0.0, 100)
             config_kD(1, 0.0, 100)
-            config_kF(1, 0.0463, 100)
+            config_kF(1, 0.06, 100)
 
             selectProfileSlot(1, 0)
 
-            configClosedLoopPeakOutput(0, 1.0, 100)
+            // configClosedLoopPeakOutput(0, 1.0, 100)
 
             setSelectedSensorPosition(0, 0, 100)
-            configClosedloopRamp(0.1, 100)
+            configClosedloopRamp(0.25, 100)
 
             configClosedLoopPeriod(0, 1, 100)
-            // configPeakOutputForward(0.70, 100)
-            configPeakOutputReverse(0.0, 100)
+            configPeakOutputForward(1.0, 100)
+            configPeakOutputReverse(1.0, 100)
 
 
         }
@@ -76,6 +77,14 @@ object Shooger : Subsystem("Shooger") {
     // shuffleboard
 
     init {
+        tab.add("Target Velocity", 0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(mapOf<String, Double>("min" to 0.0, "max" to 4800.0))
+            .getEntry()
+            .addListener({
+                value: EntryNotification ->  if(value.value.isDouble()) setShoogerVelocity(value.value.getDouble())
+                println("update target velocity: ${setpointVelocity}")
+            }, EntryListenerFlags.kUpdate)
         tab.addNumber("Avg Real Velocity", { Shooger.averageVelocity })
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
@@ -86,15 +95,19 @@ object Shooger : Subsystem("Shooger") {
     private var setpoint = 0.0
     private var active = false
 
-    private val averageVelocityFilter = MovingAverageFilter(10)
+    private val averageVelocityFilter: MovingAverageFilter
 
     public val averageVelocity: Double
         get() = averageVelocityFilter.average
 
+    init{
+        averageVelocityFilter = MovingAverageFilter(10)
+    }
+
     // accesors
     private var isCap = true
     public val flyWheelVelocity
-        get() = masterMotor.getSelectedSensorVelocity(0) / 2048.0 * 10.0 * 60 / 0.75
+        get() = masterMotor.getSelectedSensorVelocity(0) / 2048.0 * 10.0 * 60.0 / 0.75
 
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
@@ -115,7 +128,7 @@ object Shooger : Subsystem("Shooger") {
         active = true
 
         // tell it to go to target velocity
-        setShoogerVelocity(shoogVelocity)
+        // setShoogerVelocity(shoogVelocity)
     }
 
     public fun spinUp(shotSetpoint: ShotSetpoint) = spinUp(shotSetpoint.velocity)
@@ -128,7 +141,7 @@ object Shooger : Subsystem("Shooger") {
         active = false
 
         // tell it to go to target velocity
-        setShoogerVelocity(shoogVelocity)
+        // setShoogerVelocity(shoogVelocity)
     }
 
     public fun stop() {
@@ -136,8 +149,8 @@ object Shooger : Subsystem("Shooger") {
         active = false
 
         // reset the setpoints, not that it matters
-        setpointVelocity = 0.0
-        setpoint = 0.0
+        // setpointVelocity = 0.0
+        // setpoint = 0.0
 
         // turn off the flywheel
         masterMotor.set(ControlMode.PercentOutput, 0.0)
@@ -156,6 +169,7 @@ object Shooger : Subsystem("Shooger") {
         setpoint = calculateSetpoint(shoogVelocity)
 
         // tell the motor to go
+        println(shoogVelocity)
         masterMotor.set(ControlMode.Velocity, setpoint)
     }
 
@@ -176,5 +190,6 @@ object Shooger : Subsystem("Shooger") {
             // masterMotor.configClosedloopRamp(0.0, 100)
             isCap = false
         }
+        println(masterMotor.getBusVoltage())
     }
 }
