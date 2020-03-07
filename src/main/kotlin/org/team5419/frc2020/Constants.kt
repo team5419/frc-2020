@@ -16,11 +16,11 @@ object RobotConstants {
 object DriveConstants {
     // ports
 
-    const val LeftMasterPort = 2
-    const val LeftSlavePort = 3
+    const val LeftMasterPort = 3
+    const val LeftSlavePort = 4
 
-    const val RightMasterPort = 4
-    const val RightSlavePort = 5
+    const val RightMasterPort = 1
+    const val RightSlavePort = 2
 
     const val GyroPort = 20
 
@@ -81,9 +81,8 @@ object InputConstants {
 }
 
 object ShoogerConstants {
-    public const val MasterPort = 7
-    public const val SlavePort1 = 17
-    public const val SlavePort2 = 18
+    public const val MasterPort = 6
+    public const val SlavePort = 7
 
     public const val BangBangTolerance = 50
 
@@ -94,7 +93,7 @@ object ShoogerConstants {
 }
 
 object HoodConstants {
-    public const val HoodPort = 12
+    public const val HoodPort = 10
 
     public const val FarHoodAngle = 15.0
     public const val TrussHoodAngle = 14.8
@@ -114,8 +113,8 @@ object HoodConstants {
 }
 
 object StorageConstants {
-    public const val FeederPort = 10
-    public const val HopperPort = 9
+    public const val FeederPort = 12
+    public const val HopperPort = 11
 
     public const val FeederPercent = 1.0
     public const val HopperPercent = 1.0
@@ -141,8 +140,8 @@ object IntakeConstants {
 }
 
 object ClimberConstants {
-    public val WinchPort = 15
-    public val DeployPort = 11 // make sure it dosent overlap with climber deploy
+    public val WinchPort = 13
+    public val DeployPort = 14 // make sure it dosent overlap with climber deploy
 }
 
 object VisionConstants {
