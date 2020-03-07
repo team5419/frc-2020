@@ -79,7 +79,7 @@ object Shooger : Subsystem("Shooger") {
         get() = averageVelocityFilter.average
 
     // accesors
-
+    private var isCap = true
     public val flyWheelVelocity
         get() = masterMotor.getSelectedSensorVelocity(0) / 4096.0 * 10.0 * 60
 
@@ -156,5 +156,13 @@ object Shooger : Subsystem("Shooger") {
 
     override fun periodic() {
         averageVelocityFilter += flyWheelVelocity
+
+        if(flyWheelVelocity < 500 && !isCap) {
+            masterMotor.configClosedLoopRamp(0.1, 100)
+            isCap = true
+        } else if (flyWheelVelocity > 500 && isCap) {
+            masterMotor.configClosedLoopRamp(0.0, 100)
+            isCap = false
+        }
     }
 }
