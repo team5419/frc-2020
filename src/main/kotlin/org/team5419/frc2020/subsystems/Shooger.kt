@@ -53,7 +53,7 @@ object Shooger : Subsystem("Shooger") {
             configClosedLoopPeriod(0, 1, 100)
         }
 
-    val slaveMotor1 = TalonFX(ShoogerConstants.SlavePort1)
+    val slaveMotor1 = TalonFX(ShoogerConstants.SlavePort)
         .apply {
             follow(masterMotor)
             setInverted(true)
