@@ -49,6 +49,9 @@ object Hood : Subsystem("Hood") {
 
             // reset the sensor
             setSelectedSensorPosition(0, 0, 100)
+
+            // configPeakOutputForward(0)
+            // configPeakOutputReverse(-0.25)
         }
 
     // hood positions
@@ -58,7 +61,7 @@ object Hood : Subsystem("Hood") {
         TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
         CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
         AUTO(12.5, 3000.0),
-        RETRACT(0.0, 4800.0)
+        RETRACT(0.0, 2500.0)
     }
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT

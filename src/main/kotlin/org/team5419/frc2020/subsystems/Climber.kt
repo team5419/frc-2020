@@ -25,6 +25,8 @@ object Climber : Subsystem("Climber") {
             // reset
             configFactoryDefault(100)
             setInverted(true)
+            configPeakOutputForward(0.25)
+            configPeakOutputReverse(0.25)
 
         }
 
@@ -32,6 +34,8 @@ object Climber : Subsystem("Climber") {
         .apply{
             configFactoryDefault(100)
             setNeutralMode(NeutralMode.Brake)
+            configPeakOutputForward(0.25)
+            configPeakOutputReverse(0.25)
         }
 
     // public api

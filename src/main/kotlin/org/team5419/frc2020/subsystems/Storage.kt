@@ -59,11 +59,15 @@ object Storage : Subsystem("Storage") {
             setSensorPhase(false)
             setNeutralMode(NeutralMode.Brake)
             configSelectedFeedbackSensor(FeedbackDevice.Analog)
+            configPeakOutputForward(0.25)
+            configPeakOutputReverse(-0.25)
         }
 
     public val hopper = TalonSRX(StorageConstants.HopperPort)
         .apply {
-            setInverted(true)
+            setInverted(false)
+            configPeakOutputForward(0.25)
+            configPeakOutputReverse(-0.25)
         }
 
     // reverse
@@ -104,12 +108,12 @@ object Storage : Subsystem("Storage") {
 
     override public fun periodic() {
         // do we need to partally load?
-        if (mode == StorageMode.PASSIVE) {
-            feeder.set(
-                ControlMode.PercentOutput,
-                if ( !isLoadedBall ) feederLazyPercent else 0.0
-            )
-        }
+        // if (mode == StorageMode.PASSIVE) {
+        //     feeder.set(
+        //         ControlMode.PercentOutput,
+        //         if ( !isLoadedBall ) feederLazyPercent else 0.0
+        //     )
+        // }
     }
 
     fun reset() {

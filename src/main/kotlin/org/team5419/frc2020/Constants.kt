@@ -100,7 +100,7 @@ object HoodConstants {
     public const val CloseHoodAngle = 3.0
 
     object PID {
-        public const val P = 3.0
+        public const val P = 0.5
         public const val I = 0.0
         public const val D = 45.0
     }
@@ -128,11 +128,11 @@ object StorageConstants {
 object IntakeConstants {
     public val DeployTicksPerRotation = (4096).nativeUnits
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
-    public val StorePosition = 3.037282.radians
-    public val DeployPosition = 0.radians
+    public val StorePosition = 1300
+    public val DeployPosition = 0
 
-    public const val IntakePort = 8
-    public const val DeployPort = -1 // make sure it dosent overlap with intake deploy
+    public const val IntakePort = 9
+    public const val DeployPort = 8 // make sure it dosent overlap with intake deploy
 
     // public const val RollerPort = 30
 
