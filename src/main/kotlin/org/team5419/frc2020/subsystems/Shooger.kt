@@ -39,13 +39,13 @@ object Shooger : Subsystem("Shooger") {
             setNeutralMode(NeutralMode.Coast)
             setSensorPhase(false)
             setInverted(true)
+
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             config_kP(0, 10000.0, 100)
             config_kI(0, 0.0, 100)
             config_kD(0, 0.0, 100)
             config_kF(0, 0.0, 100)
-
 
             config_kP(1, 0.5, 100)
             config_kI(1, 0.0, 100)
@@ -54,12 +54,11 @@ object Shooger : Subsystem("Shooger") {
 
             selectProfileSlot(1, 0)
 
-            // configClosedLoopPeakOutput(0, 1.0, 100)
-
             setSelectedSensorPosition(0, 0, 100)
             configClosedloopRamp(0.75, 100)
 
             configClosedLoopPeriod(0, 1, 100)
+
             configPeakOutputForward(1.0, 100)
             configPeakOutputReverse(0.0, 100)
         }
@@ -67,9 +66,12 @@ object Shooger : Subsystem("Shooger") {
     val slaveMotor = TalonFX(ShoogerConstants.SlavePort)
         .apply {
             follow(masterMotor)
+
             setInverted(false)
             setNeutralMode(NeutralMode.Coast)
+
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
             configPeakOutputForward(1.0, 100)
             configPeakOutputReverse(0.0, 100)
         }
@@ -87,19 +89,17 @@ object Shooger : Subsystem("Shooger") {
     private var setpoint = 0.0
     private var active = false
 
-    private val averageVelocityFilter: MovingAverageFilter
+    private val averageVelocityFilter = MovingAverageFilter(10)
+
+    private val velocityMultiplier = ShoogerConstants.TicksPerRotation * ShoogerConstants.GearRation / 600.0
+
+    // accesors
 
     public val averageVelocity: Double
         get() = averageVelocityFilter.average
 
-    init{
-        averageVelocityFilter = MovingAverageFilter(10)
-    }
-
-    // accesors
-    private var isCap = true
     public val flyWheelVelocity
-        get() = masterMotor.getSelectedSensorVelocity(0) / 2048.0 * 10.0 * 60.0 / 0.75
+        get() = masterMotor.getSelectedSensorVelocity(0) / velocityMultiplier
 
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
@@ -116,7 +116,6 @@ object Shooger : Subsystem("Shooger") {
     public fun shoog(shoogVelocity: Double) {
         // its active, we want to shoot if at full speed
         active = true
-        // masterMotor.set(ControlMode.PercentOutput, 1.0)
 
         // tell it to go to target velocity
         setShoogerVelocity(shoogVelocity)
@@ -127,7 +126,6 @@ object Shooger : Subsystem("Shooger") {
     public fun spinUp(shoogVelocity: Double) {
         // its not active, we dont want to shoot even if at speed
         active = false
-        println("spin up")
 
         // tell it to go to target velocity
         setShoogerVelocity(shoogVelocity)
@@ -140,7 +138,6 @@ object Shooger : Subsystem("Shooger") {
         // reset the setpoints, not that it matters
         setpointVelocity = 0.0
         setpoint = 0.0
-        println("stop")
 
         // turn off the flywheel
         masterMotor.set(ControlMode.PercentOutput, 0.0)
@@ -148,8 +145,7 @@ object Shooger : Subsystem("Shooger") {
 
     // private api
 
-    private fun calculateSetpoint(velocity : Double) =
-        velocity * 2048.0 / 600.0 * 0.75
+    private fun calculateSetpoint(velocity : Double) = velocity * velocityMultiplier
 
     private fun setShoogerVelocity(shoogVelocity: Double) {
         if ( shoogVelocity == setpointVelocity ) return
@@ -173,13 +169,6 @@ object Shooger : Subsystem("Shooger") {
     override fun periodic() {
         averageVelocityFilter += flyWheelVelocity
 
-        if(flyWheelVelocity < 500 && !isCap) {
-            // masterMotor.configClosedloopRamp(0.1, 100)
-            isCap = true
-        } else if (flyWheelVelocity > 500 && isCap) {
-            // masterMotor.configClosedloopRamp(0.0, 100)
-            isCap = false
-        }
         println(masterMotor.getMotorOutputVoltage())
     }
 }

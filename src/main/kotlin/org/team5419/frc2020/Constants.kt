@@ -34,9 +34,9 @@ object DriveConstants {
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
     // path following parameters
+
     val MaxVelocity = 4.5.meters.velocity
     val MaxAcceleration = 6.0.feet.acceleration
-
     val MaxCentripetalAcceleration = 3.0.meters.acceleration
 
     // dimensions
@@ -83,10 +83,8 @@ object ShoogerConstants {
     public const val MasterPort = 6
     public const val SlavePort = 7
 
-    public const val BangBangTolerance = 50
-
-    public val TargetVelocity = 4800.0
-    public val TicksPerRotation = 4092.0.nativeUnits
+    public val TicksPerRotation = 2048.0
+    public val GearRation = 0.75
 
     public val ShoogTime = 3.0.seconds
 }
