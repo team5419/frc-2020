@@ -55,9 +55,9 @@ fun generateRoutines (initalPose: Pose2d): Array<Routine>{
         ),
         Routine("Pathfollowing", initalPose,
             RamseteAction( arrayOf<Pose2d>(
-                Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
-                Pose2d(3.0.meters, -1.6.meters, 0.0.radians),
-                Pose2d(3.7.meters, -1.5.meters, 0.0.radians)
+                Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+                Pose2d(3.0.meters, -1.5.meters, 0.0.radians),
+                Pose2d(3.8.meters, -1.5.meters, 0.0.radians)
                 // Pose2d(7.0.meters, -1.55.meters, 0.0.radians),
                 // Pose2d(9.0.meters, -1.50.meters, 0.0.radians)
             ) )

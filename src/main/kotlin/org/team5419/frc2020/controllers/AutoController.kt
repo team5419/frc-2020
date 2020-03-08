@@ -28,6 +28,7 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
 
     private var routine: Routine = baseline
     private var prevTime = timer.get()
+    private var time: SIUnit<Second> = 0.0.seconds
 
     init {
         tab.add("Auto Selector", autoSelector)
@@ -61,7 +62,8 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
     override fun update() {
-        routine.update(timer.get() - prevTime)
+        time = timer.get()
+        routine.update(time - prevTime)
 
         if (routine.next()) {
             routine.finish()
@@ -71,7 +73,8 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
             routine = Routine("Baseline", Pose2d(), NothingAction())
         }
 
-        prevTime = timer.get()
+        prevTime = time
+
     }
 
 

@@ -34,11 +34,10 @@ object DriveConstants {
     val PigeonConversion = (3600.0 / 8192.0).nativeUnits
 
     // path following parameters
+    val MaxVelocity = 4.5.meters.velocity
+    val MaxAcceleration = 8.0.feet.acceleration
 
-    val MaxVelocity = 2.5.meters.velocity
-    val MaxAcceleration = 4.0.feet.acceleration
-
-    val MaxCentripetalAcceleration = 1.0.feet.acceleration
+    val MaxCentripetalAcceleration = 4.0.meters.acceleration
 
     // dimensions
 
