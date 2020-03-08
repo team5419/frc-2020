@@ -117,7 +117,7 @@ object StorageConstants {
     public const val HopperPercent = 1.0
 
     public const val FeederLazyPercent = 0.3
-    public const val HopperLazyPercent = 1.0
+    public const val HopperLazyPercent = 0.35
 
     public const val SensorThreshold = 500 //3500
 }

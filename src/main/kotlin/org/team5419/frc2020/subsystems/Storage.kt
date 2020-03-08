@@ -55,19 +55,25 @@ object Storage : Subsystem("Storage") {
 
     public val feeder = TalonSRX(StorageConstants.FeederPort)
         .apply {
+            configFactoryDefault(100)
+
+            configPeakOutputForward(1.0, 100)
+            configPeakOutputReverse(-1.0, 100)
+
             setInverted(true)
             setSensorPhase(false)
             setNeutralMode(NeutralMode.Brake)
             configSelectedFeedbackSensor(FeedbackDevice.Analog)
-            configPeakOutputForward(0.25)
-            configPeakOutputReverse(-0.25)
         }
 
     public val hopper = TalonSRX(StorageConstants.HopperPort)
         .apply {
+            configFactoryDefault(100)
+
+            configPeakOutputForward(1.0, 100)
+            configPeakOutputReverse(-1.0, 100)
+
             setInverted(false)
-            configPeakOutputForward(0.25)
-            configPeakOutputReverse(-0.25)
         }
 
     // reverse

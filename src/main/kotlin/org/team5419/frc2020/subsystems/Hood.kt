@@ -49,9 +49,6 @@ object Hood : Subsystem("Hood") {
 
             // reset the sensor
             setSelectedSensorPosition(0, 0, 100)
-
-            // configPeakOutputForward(0)
-            // configPeakOutputReverse(-0.25)
         }
 
     // hood positions

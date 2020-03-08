@@ -168,7 +168,5 @@ object Shooger : Subsystem("Shooger") {
 
     override fun periodic() {
         averageVelocityFilter += flyWheelVelocity
-
-        println(masterMotor.getMotorOutputVoltage())
     }
 }

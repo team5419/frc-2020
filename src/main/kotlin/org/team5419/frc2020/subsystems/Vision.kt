@@ -98,20 +98,20 @@ object Vision : Subsystem("Vision") {
     }
 
     public fun zoomIn() {
-        limelight.pipeline = 1
-        controller.setPID(
-            VisionConstants.PID2.P,
-            VisionConstants.PID2.I,
-            VisionConstants.PID2.D
-        )
+        // limelight.pipeline = 1
+        // controller.setPID(
+        //     VisionConstants.PID2.P,
+        //     VisionConstants.PID2.I,
+        //     VisionConstants.PID2.D
+        // )
     }
 
     public fun zoomOut() {
-        limelight.pipeline = 0
-        controller.setPID(
-            VisionConstants.PID.P,
-            VisionConstants.PID.I,
-            VisionConstants.PID.D
-        )
+        // limelight.pipeline = 0
+        // controller.setPID(
+        //     VisionConstants.PID.P,
+        //     VisionConstants.PID.I,
+        //     VisionConstants.PID.D
+        // )
     }
 }
