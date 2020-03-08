@@ -10,7 +10,7 @@ import org.team5419.frc2020.InputConstants
 import org.team5419.frc2020.HoodConstants
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
-import org.team5419.frc2020.input.SpaceDriveHelper
+import org.team5419.fault.input.SpaceDriveHelper
 import org.team5419.fault.input.DriveSignal
 import org.team5419.fault.Controller
 import edu.wpi.first.wpilibj.GenericHID.Hand
@@ -149,9 +149,10 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         }
 
         // shooger
+        // println("shot set point: ${shotSetpoint}")
 
-        if ( codriver.shoog() )         Shooger.shoog( shotSetpoint )
-        else if ( codriver.spinUp() )   Shooger.spinUp( shotSetpoint )
+        if ( codriver.shoog() ) Shooger.shoog( shotSetpoint )
+        else if ( codriver.spinUp() ) Shooger.spinUp( shotSetpoint )
         else Shooger.stop()
 
         // storage
@@ -161,15 +162,23 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         } else {
             Storage.resetReverse()
 
-            if( Shooger.isHungry() && Storage.isLoadedBall ) {
+            if( Shooger.isHungry() ){
                 Storage.mode = StorageMode.LOAD
-            } else if ( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall ) {
-                Storage.mode = StorageMode.PASSIVE
-            } else if ( Intake.isActive() || Shooger.isActive() ) {
+            } else if( Intake.isActive() || Shooger.isActive() ) {
                 Storage.mode = StorageMode.PASSIVE
             } else {
                 Storage.mode = StorageMode.OFF
             }
+
+            // if( Shooger.isHungry() ) {
+            //     Storage.mode = StorageMode.LOAD
+            // } else if ( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall ) {
+            //     Storage.mode = StorageMode.PASSIVE
+            // } else if ( Intake.isActive() || Shooger.isActive() ) {
+            //     Storage.mode = StorageMode.PASSIVE
+            // } else {
+            //     Storage.mode = StorageMode.OFF
+            // }
         }
 
         // climber

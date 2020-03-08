@@ -193,7 +193,7 @@ object Drivetrain : Subsystem("DriveTrain") {
     fun setOpenLoop(left: Double, right: Double) {
         leftMasterMotor.set(ControlMode.PercentOutput, left * inverted)
         rightMasterMotor.set(ControlMode.PercentOutput, right * inverted)
-        // println("${left} ${right}")
+        println("${left} ${right}")
     }
 
     fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>) {

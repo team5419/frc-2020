@@ -57,13 +57,11 @@ object Shooger : Subsystem("Shooger") {
             // configClosedLoopPeakOutput(0, 1.0, 100)
 
             setSelectedSensorPosition(0, 0, 100)
-            configClosedloopRamp(0.25, 100)
+            configClosedloopRamp(0.75, 100)
 
             configClosedLoopPeriod(0, 1, 100)
             configPeakOutputForward(1.0, 100)
-            configPeakOutputReverse(1.0, 100)
-
-
+            configPeakOutputReverse(0.0, 100)
         }
 
     val slaveMotor = TalonFX(ShoogerConstants.SlavePort)
@@ -72,19 +70,13 @@ object Shooger : Subsystem("Shooger") {
             setInverted(false)
             setNeutralMode(NeutralMode.Coast)
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configPeakOutputForward(1.0, 100)
+            configPeakOutputReverse(0.0, 100)
         }
 
     // shuffleboard
 
     init {
-        tab.add("Target Velocity", 0)
-            .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(mapOf<String, Double>("min" to 0.0, "max" to 4800.0))
-            .getEntry()
-            .addListener({
-                value: EntryNotification ->  if(value.value.isDouble()) setShoogerVelocity(value.value.getDouble())
-                println("update target velocity: ${setpointVelocity}")
-            }, EntryListenerFlags.kUpdate)
         tab.addNumber("Avg Real Velocity", { Shooger.averageVelocity })
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
@@ -122,26 +114,23 @@ object Shooger : Subsystem("Shooger") {
     public fun shoog(shotSetpoint: ShotSetpoint) = shoog(shotSetpoint.velocity)
 
     public fun shoog(shoogVelocity: Double) {
-        // full current baby, lets get this wheel spining
-        // masterMotor.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
         // its active, we want to shoot if at full speed
         active = true
+        // masterMotor.set(ControlMode.PercentOutput, 1.0)
 
         // tell it to go to target velocity
-        // setShoogerVelocity(shoogVelocity)
+        setShoogerVelocity(shoogVelocity)
     }
 
     public fun spinUp(shotSetpoint: ShotSetpoint) = spinUp(shotSetpoint.velocity)
 
     public fun spinUp(shoogVelocity: Double) {
-        // limit the current so we dont brown out if were driving
-        masterMotor.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
-
         // its not active, we dont want to shoot even if at speed
         active = false
+        println("spin up")
 
         // tell it to go to target velocity
-        // setShoogerVelocity(shoogVelocity)
+        setShoogerVelocity(shoogVelocity)
     }
 
     public fun stop() {
@@ -149,8 +138,9 @@ object Shooger : Subsystem("Shooger") {
         active = false
 
         // reset the setpoints, not that it matters
-        // setpointVelocity = 0.0
-        // setpoint = 0.0
+        setpointVelocity = 0.0
+        setpoint = 0.0
+        println("stop")
 
         // turn off the flywheel
         masterMotor.set(ControlMode.PercentOutput, 0.0)
@@ -169,7 +159,7 @@ object Shooger : Subsystem("Shooger") {
         setpoint = calculateSetpoint(shoogVelocity)
 
         // tell the motor to go
-        println(shoogVelocity)
+        println("Setting Velocity: ${shoogVelocity}")
         masterMotor.set(ControlMode.Velocity, setpoint)
     }
 
@@ -184,12 +174,12 @@ object Shooger : Subsystem("Shooger") {
         averageVelocityFilter += flyWheelVelocity
 
         if(flyWheelVelocity < 500 && !isCap) {
-            masterMotor.configClosedloopRamp(0.1, 100)
+            // masterMotor.configClosedloopRamp(0.1, 100)
             isCap = true
         } else if (flyWheelVelocity > 500 && isCap) {
             // masterMotor.configClosedloopRamp(0.0, 100)
             isCap = false
         }
-        println(masterMotor.getBusVoltage())
+        println(masterMotor.getMotorOutputVoltage())
     }
 }

@@ -77,7 +77,7 @@ object InputConstants {
 
     // deadbands
     public const val TriggerDeadband = 0.1
-    public const val JoystickDeadband = 0.03
+    public const val JoystickDeadband = 0.05
 }
 
 object ShoogerConstants {
