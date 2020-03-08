@@ -103,12 +103,13 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
-            // config_kF( 0, DriveConstants.PID.F , 100 )
+            config_kF( 0, 0.0 , 100 )
 
             setSelectedSensorPosition(0, 0, 100)
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
 
             setNeutralMode(NeutralMode.Coast)
         }
@@ -123,12 +124,13 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
-            // config_kF( 0, DriveConstants.PID.F , 100 )
+            config_kF( 0, 0.0 , 100 )
 
             setSelectedSensorPosition(0, 0, 100)
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
 
             setNeutralMode(NeutralMode.Coast)
         }

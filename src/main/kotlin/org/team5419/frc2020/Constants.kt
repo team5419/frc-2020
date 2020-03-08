@@ -35,9 +35,9 @@ object DriveConstants {
 
     // path following parameters
     val MaxVelocity = 4.5.meters.velocity
-    val MaxAcceleration = 8.0.feet.acceleration
+    val MaxAcceleration = 6.0.feet.acceleration
 
-    val MaxCentripetalAcceleration = 4.0.meters.acceleration
+    val MaxCentripetalAcceleration = 3.0.meters.acceleration
 
     // dimensions
 
@@ -53,9 +53,9 @@ object DriveConstants {
     val TrackWidth = 1.781.meters
     val EffectiveWheelbaseRadius = TrackWidth / 2.0
 
-    const val DriveKv = 2.2
-    const val DriveKa = 0.174
-    const val DriveKs = 0.328
+    const val DriveKv = 2.3
+    const val DriveKa = 0.463
+    const val DriveKs = 0.191
 
     object PID {
         public const val P = 0.2
