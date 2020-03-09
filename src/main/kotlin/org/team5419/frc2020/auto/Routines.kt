@@ -15,52 +15,80 @@ import org.team5419.frc2020.subsystems.Hood.HoodPosititions
 import org.team5419.frc2020.subsystems.Setpoint
 import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.DriveConstants
-import edu.wpi.first.wpilibj.Filesystem
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
 import edu.wpi.first.wpilibj.trajectory.Trajectory
-import java.nio.file.Path
 
-fun generateRoutines (initalPose: Pose2d): Array<Routine>{
-    return arrayOf<Routine> (
-        Routine("Trech", initalPose,
-            // shoog from starting position
-            AutoHoodAction(),
-            IndexedShoogAction(3),
+val routines = arrayOf<Routine>(
+    Routine("Alliance Trech - Goal Start", Pose2d(),
+        // shoog from starting position
+        AutoHoodAction(),
+        IndexedShoogAction(3),
 
-            // bring hood back down and turn intake on
-            RetractHoodAction(),
-            DeployIntakeAction(),
+        // bring hood back down and turn intake on
+        RetractHoodAction(),
+        DeployIntakeAction(),
 
-            // navigate to behind trench
-            IntakeAction(),
-            RamseteAction( arrayOf<Pose2d>(
-                Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
-                Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
-                Pose2d(7.8.meters, -1.50.meters, 0.0.radians)
-            ) ),
-            DisableIntakeAction(),
-            // RamseteAction(
-            //     Pose(8.0.meters,-1.50.meters, 0.0.radians)
-            // )
+        // navigate to behind trench
+        IntakeAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
+            Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
+            Pose2d(7.8.meters, -1.50.meters, 0.0.radians)
+        ) ),
+        DisableIntakeAction(),
+        // RamseteAction(
+        //     Pose(8.0.meters,-1.50.meters, 0.0.radians)
+        // )
 
-            // align and shoog
-            AutoAlignAction(),
-            FarHoodAction(),
-            IndexedShoogAction(5)
-        ),
-        Routine("Align", initalPose, AutoAlignAction()),
-        Routine("Shoot 3", initalPose,
-            HoodAction(HoodPosititions.AUTO),
-            IndexedShoogAction(3)
-        ),
-        Routine("Pathfollowing", initalPose,
-            RamseteAction( arrayOf<Pose2d>(
-                Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-                Pose2d(3.0.meters, -1.5.meters, 0.0.radians),
-                Pose2d(3.8.meters, -1.5.meters, 0.0.radians)
-                // Pose2d(7.0.meters, -1.55.meters, 0.0.radians),
-                // Pose2d(9.0.meters, -1.50.meters, 0.0.radians)
-            ) )
-        )
+        // align and shoog
+        AutoAlignAction(),
+        FarHoodAction(),
+        IndexedShoogAction(5)
+    ),
+
+    Routine("Alliance Trech - Trench Start", Pose2d(),
+        AutoHoodAction(),
+        IndexedShoogAction(3),
+
+        RetractHoodAction(),
+        DeployIntakeAction(),
+
+        IntakeAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(2.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(7.8.meters, 0.0.meters, 0.0.radians)
+        ))
+
+    ),
+
+    Routine("Align", Pose2d(), AutoAlignAction()),
+    Routine("Shoot 3", Pose2d(),
+        HoodAction(HoodPosititions.AUTO),
+        IndexedShoogAction(3)
+    ),
+    Routine("Pathfollowing", Pose2d(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(3.0.meters, -1.5.meters, 0.0.radians),
+            Pose2d(3.8.meters, -1.5.meters, 0.0.radians)
+            // Pose2d(7.0.meters, -1.55.meters, 0.0.radians),
+            // Pose2d(9.0.meters, -1.50.meters, 0.0.radians)
+        ) )
+    ),
+    Routine("Test", Pose2d(),
+        AutoHoodAction(),
+        DeployIntakeAction(),
+        RetractHoodAction(),
+        IntakeAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(3.0.meters, -1.5.meters, 0.0.radians),
+            Pose2d(3.8.meters, -1.5.meters, 0.0.radians)
+            // Pose2d(7.0.meters, -1.55.meters, 0.0.radians),
+            // Pose2d(9.0.meters, -1.50.meters, 0.0.radians)
+        ) ),
+        DisableIntakeAction(),
+        FarHoodAction()
     )
-}
+)

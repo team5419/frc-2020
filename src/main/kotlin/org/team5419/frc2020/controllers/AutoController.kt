@@ -1,6 +1,6 @@
 package org.team5419.frc2020.controllers
 
-import org.team5419.frc2020.auto.generateRoutines
+import org.team5419.frc2020.auto.routines
 import org.team5419.frc2020.auto.*
 import org.team5419.fault.auto.SerialAction
 import org.team5419.frc2020.subsystems.*
@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.EntryListenerFlags
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
-import edu.wpi.first.wpilibj.Filesystem
 import org.team5419.fault.Controller
 import org.team5419.fault.auto.Action
 import org.team5419.fault.auto.NothingAction
@@ -34,21 +33,13 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
         tab.add("Auto Selector", autoSelector)
         autoSelector.setDefaultOption("Baseline", baseline)
 
-        refreshRoutines()
-    }
-
-    private fun refreshRoutines() {
-        // added the baseline as the default action
-        autoSelector.setDefaultOption("Baseline", baseline)
-
-        // add all the routies
-        generateRoutines(Drivetrain.position.robotPosition).iterator().forEach({
+        routines.iterator().forEach({
             autoSelector.addOption(it.name, it)
         })
     }
 
+
     override fun start() {
-        refreshRoutines()
 
         routine = autoSelector.getSelected() ?: baseline
 
