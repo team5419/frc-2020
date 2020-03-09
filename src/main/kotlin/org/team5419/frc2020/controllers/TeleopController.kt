@@ -41,11 +41,15 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     override fun update() {
-        updateCodriver()
-        updateDriver()
+        updateDrivetrain()
+        updateIntake()
+        updateHood()
+        updateShooger()
+        updateStorage()
+        updateClimber()
     }
 
-    private fun updateDriver() {
+    private fun updateDrivetrain() {
         if( driver.togleAligning() ) {
             isAligning = !isAligning
             if(isAligning) {
@@ -70,13 +74,13 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         val output = driveHelper.output()
 
         if ( isAligning ) {
-            if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
-                Vision.offset += driver.adjustOffsetRight() / 10
-            }
+            // if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
+            //     Vision.offset += driver.adjustOffsetRight() / 10
+            // }
 
-            if ( driver.adjustOffsetLeft() >= InputConstants.TriggerDeadband ) {
-                Vision.offset -= driver.adjustOffsetLeft() / 10
-            }
+            // if ( driver.adjustOffsetLeft() >= InputConstants.TriggerDeadband ) {
+            //     Vision.offset -= driver.adjustOffsetLeft() / 10
+            // }
 
             val alignOutput = Vision.autoAlign()
 
@@ -94,9 +98,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         }
     }
 
-    @Suppress("ComplexMethod")
-    private fun updateCodriver() {
-        // intake
+    private fun updateIntake() {
         if( codriver.storeIntake() ){
             isDeployed = !isDeployed
             if(isDeployed) {
@@ -108,37 +110,38 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             }
         }
 
-        if ( codriver.outtake() ) Intake.outtake()
+             if ( codriver.outtake() ) Intake.outtake()
         else if ( codriver.intake() ) Intake.intake()
         else Intake.stopIntake()
+    }
 
-        // hood
-
-        if ( codriver.deployHoodFar() ) {
+    private fun updateHood() {
+        if ( codriver.deployHoodFar() )
             shotSetpoint = Hood.HoodPosititions.FAR
-        } else if ( codriver.deployHoodTruss()) {
+        else if ( codriver.deployHoodTruss())
             shotSetpoint = Hood.HoodPosititions.TRUSS
-        } else if ( codriver.deployHoodClose() ) {
+        else if ( codriver.deployHoodClose() )
             shotSetpoint = Hood.HoodPosititions.CLOSE
-        } else if ( codriver.retractHood() || driver.retractHood() ) {
+        else if ( codriver.retractHood() || driver.retractHood() )
             shotSetpoint = Hood.HoodPosititions.RETRACT
-        }
 
-        // when should we use the lookup table?
         if ( false ) {
             // if the shot setpoint is not null, then set the shotSetpoint to it.
             Vision.getShotSetpoint()?.let { shotSetpoint = it }
         }
 
-        if ( driver.adjustHoodUp() ) {
+        if ( driver.adjustHoodUp() )
             shotSetpoint = Setpoint( shotSetpoint.angle + 1.0, shotSetpoint.velocity )
-        } else if ( driver.adjustHoodDown() ) {
+        else if ( driver.adjustHoodDown() )
             shotSetpoint = Setpoint( shotSetpoint.angle - 1.0, shotSetpoint.velocity )
-        }
 
         Hood.goto( shotSetpoint )
+    }
 
-        // rumble
+    private fun updateShooger() {
+             if ( codriver.shoog() ) Shooger.shoog( shotSetpoint )
+        else if ( codriver.spinUp() ) Shooger.spinUp( shotSetpoint )
+        else Shooger.stop()
 
         if ( Shooger.isSpedUp() ) {
             codriverXbox.setRumble(RumbleType.kLeftRumble, 0.3)
@@ -147,16 +150,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             codriverXbox.setRumble(RumbleType.kLeftRumble, 0.0)
             codriverXbox.setRumble(RumbleType.kRightRumble, 0.0)
         }
+    }
 
-        // shooger
-        // println("shot set point: ${shotSetpoint}")
-
-        if ( codriver.shoog() ) Shooger.shoog( shotSetpoint )
-        else if ( codriver.spinUp() ) Shooger.spinUp( shotSetpoint )
-        else Shooger.stop()
-
-        // storage
-
+    private fun updateStorage() {
         if ( codriver.reverseStorage() ) {
             Storage.reverse()
         } else {
@@ -180,9 +176,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             //     Storage.mode = StorageMode.OFF
             // }
         }
+    }
 
-        // climber
-
+    private fun updateClimber() {
         if ( driver.climb() ) {
             Climber.deploy()
         } else if ( driver.unclimb() ) {

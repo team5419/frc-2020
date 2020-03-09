@@ -26,8 +26,6 @@ object Vision : Subsystem("Vision") {
 
     // settings
 
-    public var offset = VisionConstants.TargetOffset
-
     public val maxSpeed = VisionConstants.MaxAutoAlignSpeed
 
     // PID loop controller
@@ -57,10 +55,9 @@ object Vision : Subsystem("Vision") {
 
     public fun getShotSetpoint() = Lookup.get(limelight.horizontalDistance.inMeters())
 
-    public fun calculate() = controller.calculate(limelight.horizontalOffset + offset)
+    public fun calculate() = controller.calculate(limelight.horizontalOffset)
 
     public fun autoAlign() : DriveSignal {
-        // println("Error: ${limelight.horizontalOffset + offset}")
         if (!targetFound) {
             zoomOut()
             return DriveSignal()
@@ -75,8 +72,6 @@ object Vision : Subsystem("Vision") {
 
         // get the pid loop output
         var output = calculate()
-
-        // println( limelight.horizontalOffset )
 
         // can we align / do we need to allign?
         if ( !targetFound || aligned() )
@@ -98,20 +93,20 @@ object Vision : Subsystem("Vision") {
     }
 
     public fun zoomIn() {
-        limelight.pipeline = 1
-        controller.setPID(
-            VisionConstants.PID2.P,
-            VisionConstants.PID2.I,
-            VisionConstants.PID2.D
-        )
+        // limelight.pipeline = 1
+        // controller.setPID(
+        //     VisionConstants.PID2.P,
+        //     VisionConstants.PID2.I,
+        //     VisionConstants.PID2.D
+        // )
     }
 
     public fun zoomOut() {
-        limelight.pipeline = 0
-        controller.setPID(
-            VisionConstants.PID.P,
-            VisionConstants.PID.I,
-            VisionConstants.PID.D
-        )
+        // limelight.pipeline = 0
+        // controller.setPID(
+        //     VisionConstants.PID.P,
+        //     VisionConstants.PID.I,
+        //     VisionConstants.PID.D
+        // )
     }
 }

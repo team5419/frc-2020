@@ -38,10 +38,10 @@ object XboxDriver : DriverControls {
 
     // climb
 
-    override public fun climb(): Boolean = driverXbox.getPOV() == 90
+    override public fun climb(): Boolean = driverXbox.getPOV() == 0
 
-    override public fun unclimb(): Boolean = driverXbox.getPOV() == 270
+    override public fun unclimb(): Boolean = driverXbox.getPOV() == 180
 
-    override public fun winch(): Boolean = driverXbox.getPOV() == 0
+    override public fun winch(): Boolean = driverXbox.getPOV() == 90
 
 }
