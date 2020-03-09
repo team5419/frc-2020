@@ -23,7 +23,7 @@ object Intake : Subsystem("Intake") {
     val deployMotor = TalonSRX(IntakeConstants.DeployPort).apply {
         configFactoryDefault(100)
 
-        configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+        configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute)
 
         setSelectedSensorPosition(0,0,100)
 
@@ -33,10 +33,12 @@ object Intake : Subsystem("Intake") {
         setInverted(false)
 
         config_kP(0, 1.0)
+
         // configForwardSoftLimitThreshold(
         //     radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
         // )
         // configForwardSoftLimitEnable(true)
+
         configClosedLoopPeakOutput(0, 0.5, 100)
     }
 

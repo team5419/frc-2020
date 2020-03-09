@@ -119,26 +119,23 @@ object StorageConstants {
     public const val FeederLazyPercent = 0.3
     public const val HopperLazyPercent = 0.35
 
-    public const val SensorThreshold = 500 //3500
+    public const val SensorThreshold = 300
 }
 
 object IntakeConstants {
     public val DeployTicksPerRotation = (4096).nativeUnits
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
+
     public val StorePosition = 1300
     public val DeployPosition = 0
 
     public const val IntakePort = 9
-    public const val DeployPort = 8 // make sure it dosent overlap with intake deploy
-
-    // public const val RollerPort = 30
-
-    public const val DeployStrength = 0.4
+    public const val DeployPort = 8
 }
 
 object ClimberConstants {
     public val WinchPort = 13
-    public val DeployPort = 14 // make sure it dosent overlap with climber deploy
+    public val DeployPort = 14
 }
 
 object VisionConstants {

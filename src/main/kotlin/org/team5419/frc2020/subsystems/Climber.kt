@@ -22,11 +22,12 @@ object Climber : Subsystem("Climber") {
 
     private val deployMotor = TalonSRX(ClimberConstants.DeployPort)
         .apply {
-            // reset
             configFactoryDefault(100)
+
             setInverted(true)
-            configPeakOutputForward(0.25)
-            configPeakOutputReverse(0.25)
+
+            configPeakOutputForward(1.0)
+            configPeakOutputReverse(-1.0)
 
         }
 
@@ -34,8 +35,9 @@ object Climber : Subsystem("Climber") {
         .apply{
             configFactoryDefault(100)
             setNeutralMode(NeutralMode.Brake)
-            configPeakOutputForward(0.25)
-            configPeakOutputReverse(0.25)
+
+            configPeakOutputForward(1.0)
+            configPeakOutputReverse(-1.0)
         }
 
     // public api
@@ -44,7 +46,7 @@ object Climber : Subsystem("Climber") {
         deployMotor.set(ControlMode.PercentOutput, percent)
     }
 
-    fun retract(percent: Double = -0.25) {
+    fun retract(percent: Double = -0.8) {
         deployMotor.set(ControlMode.PercentOutput, percent)
     }
 
@@ -57,7 +59,7 @@ object Climber : Subsystem("Climber") {
         winchMotor.set(ControlMode.PercentOutput, percent)
     }
 
-    fun retractWinch(percent: Double = -0.25) {
+    fun retractWinch(percent: Double = 0.25) {
         winchMotor.set(ControlMode.PercentOutput, percent)
     }
 

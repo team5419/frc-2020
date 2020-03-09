@@ -74,13 +74,13 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         val output = driveHelper.output()
 
         if ( isAligning ) {
-            if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
-                Vision.offset += driver.adjustOffsetRight() / 10
-            }
+            // if ( driver.adjustOffsetRight() >= InputConstants.TriggerDeadband ) {
+            //     Vision.offset += driver.adjustOffsetRight() / 10
+            // }
 
-            if ( driver.adjustOffsetLeft() >= InputConstants.TriggerDeadband ) {
-                Vision.offset -= driver.adjustOffsetLeft() / 10
-            }
+            // if ( driver.adjustOffsetLeft() >= InputConstants.TriggerDeadband ) {
+            //     Vision.offset -= driver.adjustOffsetLeft() / 10
+            // }
 
             val alignOutput = Vision.autoAlign()
 
