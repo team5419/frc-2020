@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
 import edu.wpi.first.wpilibj.trajectory.Trajectory
 
 val routines = arrayOf<Routine>(
-    Routine("Alliance Trech - Goal Start", Pose2d(),
+    Routine("Alliance Trech - Target Start", Pose2d(),
         // shoog from starting position
         AutoHoodAction(),
         IndexedShoogAction(3),
@@ -36,9 +36,6 @@ val routines = arrayOf<Routine>(
             Pose2d(7.8.meters, -1.50.meters, 0.0.radians)
         ) ),
         DisableIntakeAction(),
-        // RamseteAction(
-        //     Pose(8.0.meters,-1.50.meters, 0.0.radians)
-        // )
 
         // align and shoog
         AutoAlignAction(),
@@ -59,36 +56,26 @@ val routines = arrayOf<Routine>(
             Pose2d(2.0.meters, 0.0.meters, 0.0.radians),
             Pose2d(7.8.meters, 0.0.meters, 0.0.radians)
         ))
-
     ),
 
-    Routine("Align", Pose2d(), AutoAlignAction()),
-    Routine("Shoot 3", Pose2d(),
-        HoodAction(HoodPosititions.AUTO),
-        IndexedShoogAction(3)
-    ),
-    Routine("Pathfollowing", Pose2d(),
-        RamseteAction( arrayOf<Pose2d>(
-            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            Pose2d(3.0.meters, -1.5.meters, 0.0.radians),
-            Pose2d(3.8.meters, -1.5.meters, 0.0.radians)
-            // Pose2d(7.0.meters, -1.55.meters, 0.0.radians),
-            // Pose2d(9.0.meters, -1.50.meters, 0.0.radians)
-        ) )
-    ),
-    Routine("Test", Pose2d(),
-        AutoHoodAction(),
+    Routine("Enemy Trech", Pose2d(),
+        // go into enemy trench and steal first balls
         DeployIntakeAction(),
-        RetractHoodAction(),
         IntakeAction(),
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            Pose2d(3.0.meters, -1.5.meters, 0.0.radians),
-            Pose2d(3.8.meters, -1.5.meters, 0.0.radians)
-            // Pose2d(7.0.meters, -1.55.meters, 0.0.radians),
-            // Pose2d(9.0.meters, -1.50.meters, 0.0.radians)
-        ) ),
+            Pose2d(2.0.meters, 0.0.meters, 0.0.radians)
+        )),
         DisableIntakeAction(),
-        FarHoodAction()
+
+        // drive to shooting position
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(2.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(0.0.meters, 3.0.meters, 0.0.radians)
+        )), // TODO: make it reversed
+
+        // shoot are balls
+
+        AlignAndIndexedShoogAction(5)
     )
 )
