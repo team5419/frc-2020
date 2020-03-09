@@ -63,6 +63,13 @@ object DriveConstants {
         public const val D = 0.0
         public const val F = 0.05
     }
+
+    object TurnPID {
+        public const val P = 0.2
+        public const val I = 0.0
+        public const val D = 0.0
+        public const val F = 0.05
+    }
 }
 
 object InputConstants {
