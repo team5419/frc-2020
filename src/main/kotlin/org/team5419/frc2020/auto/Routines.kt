@@ -83,7 +83,7 @@ val routines = arrayOf<Routine>(
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(130.36.inches, 0.0.meters, 0.0.radians),
             Pose2d(0.0.meters, 3.0.meters, 0.0.radians)
-        )), // TODO: make it reversed
+        ), reversed=true),
 
         // shoot the balls
         AlignAndIndexedShoogAction(5),
