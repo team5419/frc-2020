@@ -8,6 +8,8 @@ import org.team5419.fault.math.units.*
 class AutoAlignAction() : Action() {
     init {
         finishCondition += {  Vision.calculate(); Vision.aligned() }
+
+        this.withTimeout( 3.0.seconds )
     }
 
     override public fun start() {
