@@ -44,6 +44,7 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
         routine = autoSelector.getSelected() ?: baseline
 
         println("starting rotine ${routine.name}")
+        Drivetrain.brakeMode = true
 
         routine.start()
 
@@ -69,5 +70,7 @@ public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d()
     }
 
 
-    override fun reset() {}
+    override fun reset() {
+        Drivetrain.brakeMode = false
+    }
 }
