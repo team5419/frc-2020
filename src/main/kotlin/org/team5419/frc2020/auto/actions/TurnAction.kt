@@ -8,7 +8,11 @@ import edu.wpi.first.wpilibj.controller.PIDController
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.frc2020.DriveConstants.TurnPID
 
-public class TurnAction(theta: Double): Action() {
+public enum class TurnDiection(val value: Int){ ClockWise(1), CounterClockwise(-1) }
+
+public class TurnAction(theta: Double, val dir: Int): Action() {
+
+    constructor(theta: Double, direction: TurnDiection) : this(theta, direction.value)
 
     private val pid: PIDController
     private var output: Double
@@ -26,7 +30,7 @@ public class TurnAction(theta: Double): Action() {
 
     override fun update(dt: SIUnit<Second>) {
         output = pid.calculate(Drivetrain.angle)
-        Drivetrain.setPercent(output, -output)
+        Drivetrain.setPercent(dir * output, -dir * output)
     }
 
     override fun finish() {
