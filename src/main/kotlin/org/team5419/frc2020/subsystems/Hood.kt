@@ -63,6 +63,7 @@ object Hood : Subsystem("Hood") {
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT
         set(value: ShotSetpoint) {
+            if (value == field) return
             if (field.angle == value.angle && field.velocity == value.velocity) return
 
             field = value
@@ -87,6 +88,7 @@ object Hood : Subsystem("Hood") {
     }
 
     fun goto(angle: Double) {
+        println("hood goto ${angle}")
         if (angle < 0.0 || angle > HoodConstants.MaxAngle) {
             println("angle out of range")
 
@@ -101,6 +103,7 @@ object Hood : Subsystem("Hood") {
     // subsystem functions
 
     fun reset() {
+        println("hood reset")
         hoodMotor.set(ControlMode.PercentOutput, 0.0)
     }
 
