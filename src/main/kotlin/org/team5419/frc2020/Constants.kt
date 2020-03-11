@@ -124,7 +124,7 @@ object StorageConstants {
     public const val HopperPercent = 1.0
 
     public const val FeederLazyPercent = 0.3
-    public const val HopperLazyPercent = 1.0 //.35
+    public const val HopperLazyPercent = 0.35
 
     public const val SensorThreshold = 300
 }
@@ -153,7 +153,7 @@ object VisionConstants {
 
     public val Tolerance = 0.3
 
-    public val MaxAutoAlignSpeed = 0.2
+    public val MaxAutoAlignSpeed = 0.15
 
     public val TargetOffset = 0.0
 
@@ -161,7 +161,7 @@ object VisionConstants {
 
     object PID {
         public const val P = 0.015
-        public const val I = 0.003
+        public const val I = 0.006
         public const val D = 0.0005
     }
 

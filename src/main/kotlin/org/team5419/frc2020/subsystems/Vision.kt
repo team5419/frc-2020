@@ -55,7 +55,7 @@ object Vision : Subsystem("Vision") {
 
     public fun getShotSetpoint() = Lookup.get(limelight.horizontalDistance.inMeters())
 
-    public fun calculate() = controller.calculate(limelight.horizontalOffset)
+    public fun calculate() = controller.calculate(limelight.horizontalOffset + VisionConstants.TargetOffset)
 
     public fun autoAlign() : DriveSignal {
         if (!targetFound) {
