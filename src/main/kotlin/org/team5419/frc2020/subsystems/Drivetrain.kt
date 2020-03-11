@@ -69,7 +69,6 @@ object Drivetrain : Subsystem("DriveTrain") {
     init {
         tab.addNumber("left vel", { leftVelocity.value })
         tab.addNumber("right vel", { rightVelocity.value })
-        // tab.add("Boolean", false).withWidget(BuiltInWidgets)
     }
 
     init {

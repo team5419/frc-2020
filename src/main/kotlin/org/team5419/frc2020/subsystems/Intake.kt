@@ -20,6 +20,7 @@ object Intake : Subsystem("Intake") {
 
         setInverted(true)
     }
+
     val deployMotor = TalonSRX(IntakeConstants.DeployPort).apply {
         configFactoryDefault(100)
 
@@ -43,6 +44,7 @@ object Intake : Subsystem("Intake") {
     }
 
     // intake modes
+
     init {
         tab.addNumber("depoy pos", { deployMotor.getSelectedSensorPosition(0).toDouble() })
     }
@@ -94,6 +96,7 @@ object Intake : Subsystem("Intake") {
         }
 
     // deploy functions
+
     fun radiansToNativeUnits(radians: Double): Int = (radians / Math.PI / 2 * 4096).toInt()
 
     fun nativeUnitsToRadians(ticks: Int): Double = ticks / 4096 * 2 * Math.PI

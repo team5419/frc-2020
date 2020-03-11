@@ -80,20 +80,19 @@ object Hood : Subsystem("Hood") {
         tab.addNumber("hood angle", {hoodAngle()})
         tab.addNumber("hood ticks", {hoodMotor.getSelectedSensorPosition(0).toDouble()})
         tab.addNumber("hood error", {hoodMotor.getClosedLoopError(0).toDouble()})
-        // tab.add("Set Hood Pos", 0.0)
-        //     .withWidget(BuiltInWidgets.kNumberSlider)
-        //     .getEntry()
-        //     .addListener({
-        //         value: EntryNotification -> goto(value.value.getDouble())
-        //     }, EntryListenerFlags.kUpdate)
     }
 
     // public api
 
-    // private val nativeUnitsToAngle = 18.0 / 130.0
-    fun angleToNativeUnits(angle: Double) = angle / 18.0  * (616.0 - 486.0) + 486.0
+    val hoodMinPos = 486.0
+    val hoodMaxPos = 616.0
+    val hoodDeltaPos = hoodMaxPos - hoodMinPos
 
-    fun hoodAngle() = (hoodMotor.getSelectedSensorPosition(0) - 486.0) / (616.0 - 486.0) * 18.0
+    fun angleToNativeUnits(angle: Double) =
+        angle / 18.0 * hoodDeltaPos + hoodMinPos
+
+    fun hoodAngle() =
+        (hoodMotor.getSelectedSensorPosition(0) - hoodMinPos) / hoodDeltaPos * 18.0
 
     fun goto(angle: ShotSetpoint) {
         mode = angle

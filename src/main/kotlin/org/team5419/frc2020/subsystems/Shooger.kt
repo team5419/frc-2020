@@ -42,16 +42,19 @@ object Shooger : Subsystem("Shooger") {
 
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
+            // bang bang PID
             config_kP(0, 10000.0, 100)
             config_kI(0, 0.0, 100)
             config_kD(0, 0.0, 100)
             config_kF(0, 0.0, 100)
 
+            // velocity controlle PID
             config_kP(1, 0.5, 100)
             config_kI(1, 0.0, 100)
             config_kD(1, 0.0, 100)
             config_kF(1, 0.06, 100)
 
+            // we want to use velocity controlle
             selectProfileSlot(1, 0)
 
             setSelectedSensorPosition(0, 0, 100)
@@ -79,13 +82,6 @@ object Shooger : Subsystem("Shooger") {
     // shuffleboard
 
     init {
-
-        tab.add("Set Shooger Velocity", 0.0)
-            .withWidget(BuiltInWidgets.kNumberSlider)
-            .getEntry()
-            .addListener({
-                value: EntryNotification -> setShoogerVelocity(value.value.getDouble())
-            }, EntryListenerFlags.kUpdate)
         tab.addNumber("Avg Real Velocity", { Shooger.averageVelocity })
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
@@ -125,7 +121,7 @@ object Shooger : Subsystem("Shooger") {
         active = true
 
         // tell it to go to target velocity
-        // setShoogerVelocity(shoogVelocity)
+        setShoogerVelocity(shoogVelocity)
     }
 
     public fun spinUp(shotSetpoint: ShotSetpoint) = spinUp(shotSetpoint.velocity)
@@ -135,7 +131,7 @@ object Shooger : Subsystem("Shooger") {
         active = false
 
         // tell it to go to target velocity
-        // setShoogerVelocity(shoogVelocity)
+        setShoogerVelocity(shoogVelocity)
     }
 
     public fun stop() {
