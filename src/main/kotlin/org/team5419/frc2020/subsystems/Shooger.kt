@@ -79,6 +79,13 @@ object Shooger : Subsystem("Shooger") {
     // shuffleboard
 
     init {
+
+        tab.add("Set Shooger Velocity", 0.0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .getEntry()
+            .addListener({
+                value: EntryNotification -> setShoogerVelocity(value.value.getDouble())
+            }, EntryListenerFlags.kUpdate)
         tab.addNumber("Avg Real Velocity", { Shooger.averageVelocity })
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
@@ -118,7 +125,7 @@ object Shooger : Subsystem("Shooger") {
         active = true
 
         // tell it to go to target velocity
-        setShoogerVelocity(shoogVelocity)
+        // setShoogerVelocity(shoogVelocity)
     }
 
     public fun spinUp(shotSetpoint: ShotSetpoint) = spinUp(shotSetpoint.velocity)
@@ -128,7 +135,7 @@ object Shooger : Subsystem("Shooger") {
         active = false
 
         // tell it to go to target velocity
-        setShoogerVelocity(shoogVelocity)
+        // setShoogerVelocity(shoogVelocity)
     }
 
     public fun stop() {

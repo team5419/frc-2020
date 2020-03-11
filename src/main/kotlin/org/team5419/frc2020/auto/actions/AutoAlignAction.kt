@@ -9,7 +9,7 @@ class AutoAlignAction() : Action() {
     init {
         finishCondition += {  Vision.calculate(); Vision.aligned() }
 
-        this.withTimeout( 3.0.seconds )
+        this.withTimeout( 1.0.seconds )
     }
 
     override public fun start() {
@@ -26,7 +26,8 @@ class AutoAlignAction() : Action() {
     }
 
     override public fun finish() {
-        println("finish auto algin")
+
+        println("finish auto algin: ${Vision.aligned()}")
         // turn limelight leds on
         Vision.off()
 

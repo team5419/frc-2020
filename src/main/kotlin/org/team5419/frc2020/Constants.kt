@@ -35,8 +35,8 @@ object DriveConstants {
 
     // path following parameters
 
-    val MaxVelocity = 4.5.meters.velocity
-    val MaxAcceleration = 6.0.feet.acceleration
+    val MaxVelocity = 3.0.meters.velocity
+    val MaxAcceleration = 5.0.feet.acceleration
     val MaxCentripetalAcceleration = 3.0.meters.acceleration
 
     // dimensions
@@ -47,7 +47,7 @@ object DriveConstants {
 
     // characterization
 
-    const val Beta = 2.0 // m^-2
+    const val Beta = 1.8 // m^-2
     const val Zeta = 0.7 // unitless
 
     val TrackWidth = 1.781.meters
@@ -58,7 +58,7 @@ object DriveConstants {
     const val DriveKs = 0.191
 
     object PID {
-        public const val P = 0.2
+        public const val P = 0.0
         public const val I = 0.0
         public const val D = 0.0
         public const val F = 0.05
@@ -104,15 +104,15 @@ object HoodConstants {
     public const val CloseHoodAngle = 3.0
 
     object PID {
-        public const val P = 0.5
-        public const val I = 0.0
-        public const val D = 45.0
+        public const val P = 11.0
+        public const val I = 0.003
+        public const val D = 100.0
     }
 
     public val MaxSpeed = 0.7
     public val MaxAngle = 18.0
 
-    public val TicksPerRotation = 4092.0
+    public val TicksPerRotation = 131
     public val GearRatio = 4.0/1.0
 }
 
@@ -124,7 +124,7 @@ object StorageConstants {
     public const val HopperPercent = 1.0
 
     public const val FeederLazyPercent = 0.3
-    public const val HopperLazyPercent = 0.35
+    public const val HopperLazyPercent = 1.0 //.35
 
     public const val SensorThreshold = 300
 }

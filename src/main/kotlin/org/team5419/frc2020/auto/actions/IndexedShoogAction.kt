@@ -23,10 +23,12 @@ public class IndexedShoogAction(val balls: Int, val setpoint: ShotSetpoint = Hoo
     init {
         finishCondition += { ballShot >= balls }
 
-        this.withTimeout( (balls * 1.3).seconds )
+        withTimeout( (balls * 1.3).seconds )
     }
 
     override fun start() {
+        super.start()
+
         ballShot = 0
     }
 

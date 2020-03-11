@@ -44,4 +44,6 @@ object XboxDriver : DriverControls {
 
     override public fun winch(): Boolean = driverXbox.getPOV() == 90
 
+    override public fun unwinch(): Boolean = driverXbox.getPOV() == 270
+
 }

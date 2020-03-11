@@ -12,6 +12,7 @@ import kotlin.math.PI
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.networktables.EntryListenerFlags
+import edu.wpi.first.networktables.EntryNotification
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
@@ -34,12 +35,14 @@ object Hood : Subsystem("Hood") {
             configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 100)
 
             // limit the current to not brown out
-            configPeakCurrentLimit(40, 100)
+            configPeakCurrentLimit(20, 100)
 
             // config the sensor and direction
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
-            setSensorPhase(true)
+            configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 100)
+            setSensorPhase(false)
             setInverted(false)
+
+            setNeutralMode(NeutralMode.Brake)
 
             // config the soft limits
             configForwardSoftLimitThreshold( angleToNativeUnits( HoodConstants.MaxAngle ).toInt(), 100)
@@ -47,8 +50,10 @@ object Hood : Subsystem("Hood") {
             configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 100)
             configReverseSoftLimitEnable(true, 100)
 
+            // configClosedLoopPeakOutput(0, 0.3, 100)
+
             // reset the sensor
-            setSelectedSensorPosition(0, 0, 100)
+            // setSelectedSensorPosition(0, 0, 100)
         }
 
     // hood positions
@@ -73,15 +78,22 @@ object Hood : Subsystem("Hood") {
 
     init {
         tab.addNumber("hood angle", {hoodAngle()})
+        tab.addNumber("hood ticks", {hoodMotor.getSelectedSensorPosition(0).toDouble()})
+        tab.addNumber("hood error", {hoodMotor.getClosedLoopError(0).toDouble()})
+        // tab.add("Set Hood Pos", 0.0)
+        //     .withWidget(BuiltInWidgets.kNumberSlider)
+        //     .getEntry()
+        //     .addListener({
+        //         value: EntryNotification -> goto(value.value.getDouble())
+        //     }, EntryListenerFlags.kUpdate)
     }
 
     // public api
 
-    private val nativeUnitsToAngle = HoodConstants.GearRatio / HoodConstants.TicksPerRotation * (2 * PI)
+    // private val nativeUnitsToAngle = 18.0 / 130.0
+    fun angleToNativeUnits(angle: Double) = angle / 18.0  * (616.0 - 486.0) + 486.0
 
-    fun angleToNativeUnits(angle: Double) = angle / nativeUnitsToAngle
-
-    fun hoodAngle() = hoodMotor.getSelectedSensorPosition(0) * nativeUnitsToAngle
+    fun hoodAngle() = (hoodMotor.getSelectedSensorPosition(0) - 486.0) / (616.0 - 486.0) * 18.0
 
     fun goto(angle: ShotSetpoint) {
         mode = angle

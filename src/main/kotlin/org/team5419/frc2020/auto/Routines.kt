@@ -21,26 +21,36 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory
 val routines = arrayOf<Routine>(
     Routine("Alliance Trech - Target Start", Pose2d(),
         // shoog from starting position
-        AutoHoodAction(),
+        // AutoHoodAction(),
         IndexedShoogAction(3),
+        // TimedShoogAction(3.seconds),
 
         // bring hood back down and turn intake on
-        RetractHoodAction(),
+        // RetractHoodAction(),
         DeployIntakeAction(),
 
         // navigate to behind trench
         IntakeAction(),
+        PassiveStorageAction(),
         RamseteAction( arrayOf<Pose2d>(
-            Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
-            Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
-            Pose2d(7.8.meters, -1.50.meters, 0.0.radians)
+            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(2.0.meters, -1.70.meters, 0.0.radians),
+            Pose2d(2.3.meters, -1.70.meters, 0.0.radians),
+            Pose2d(6.3.meters, -1.70.meters, 0.0.radians)
         ) ),
-        DisableIntakeAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(6.3.meters, -1.70.meters, 0.0.radians),
+            // Pose2d(5.5.meters, -1.70.meters, 0.0.radians),
+            Pose2d(5.0.meters, -1.65.meters, -5.0.degrees)
+        ), reversed=true),
 
         // align and shoog
+        SpinUpAction(),
         AutoAlignAction(),
         FarHoodAction(),
-        IndexedShoogAction(5)
+        IndexedShoogAction(5),
+        DisableIntakeAction()
+
     ),
 
     Routine("Alliance Trech - Trench Start", Pose2d(),

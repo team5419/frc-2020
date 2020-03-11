@@ -24,6 +24,11 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import com.ctre.phoenix.motorcontrol.*
 
+import edu.wpi.first.networktables.NetworkTableEntry
+import edu.wpi.first.networktables.EntryListenerFlags
+import edu.wpi.first.networktables.EntryNotification
+// import edu.wpi.first.networktables.BuiltInWidgets
+
 @Suppress("TooManyFunctions")
 object Drivetrain : Subsystem("DriveTrain") {
     // hardware
@@ -64,6 +69,7 @@ object Drivetrain : Subsystem("DriveTrain") {
     init {
         tab.addNumber("left vel", { leftVelocity.value })
         tab.addNumber("right vel", { rightVelocity.value })
+        // tab.add("Boolean", false).withWidget(BuiltInWidgets)
     }
 
     init {

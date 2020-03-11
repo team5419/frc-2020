@@ -37,4 +37,6 @@ public interface DriverControls {
     public fun unclimb(): Boolean
 
     public fun winch(): Boolean
+
+    public fun unwinch(): Boolean
 }

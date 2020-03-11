@@ -43,4 +43,6 @@ object XboxCodriver: CodriverControls {
     override public fun unclimb(): Boolean = codriverXbox.getAButton()
 
     override public fun winch(): Boolean = codriverXbox.getRawButton(6)
+
+    override public fun unwinch(): Boolean = false
 }

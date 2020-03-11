@@ -189,6 +189,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
         if ( driver.winch() ) {
             Climber.winch()
+        } else if (driver.unwinch() ){
+            Climber.retractWinch()
         } else {
             Climber.stopWinch()
         }
