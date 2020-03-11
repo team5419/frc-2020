@@ -8,8 +8,8 @@ public class DeployIntakeAction(): ConfigDeployAction(DeployMode.DEPLOY)
 public class RetractIntakeAction(): ConfigDeployAction(DeployMode.STORE)
 public class DisableIntakeDeployAction(): ConfigDeployAction(DeployMode.OFF)
 
-open class ConfigDeployAction(val deploy: DeployMode): Action(){
-    override fun start(){
+open class ConfigDeployAction(val deploy: DeployMode): Action() {
+    override fun start() {
         Intake.deployMode = deploy
     }
 

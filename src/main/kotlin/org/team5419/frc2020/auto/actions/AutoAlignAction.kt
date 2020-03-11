@@ -3,10 +3,13 @@ package org.team5419.frc2020.auto.actions
 import org.team5419.frc2020.subsystems.Vision
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.fault.auto.Action
+import org.team5419.fault.math.units.*
 
 class AutoAlignAction() : Action() {
     init {
         finishCondition += {  Vision.calculate(); Vision.aligned() }
+
+        this.withTimeout( 1.0.seconds )
     }
 
     override public fun start() {
@@ -18,12 +21,13 @@ class AutoAlignAction() : Action() {
         Drivetrain.brakeMode = true
     }
 
-    override public fun update() {
+    override public fun update(dt: SIUnit<Second>) {
         Drivetrain.setPercent(Vision.autoAlign())
     }
 
     override public fun finish() {
-        println("finish auto algin")
+
+        println("finish auto algin: ${Vision.aligned()}")
         // turn limelight leds on
         Vision.off()
 

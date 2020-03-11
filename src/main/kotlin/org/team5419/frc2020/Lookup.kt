@@ -29,10 +29,12 @@ object Lookup {
 
     fun add(distance: Double, angle: Double, velocity: Double) {
         println("size" + table.size)
-        if(table.size == 0){
+
+        if (table.size == 0) {
             table.add(LookupEntry(distance, angle, velocity))
             return
         }
+
         for (i in 0..table.size-1) {
             println(i)
             val entry = table.get(i)

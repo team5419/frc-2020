@@ -24,6 +24,11 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import com.ctre.phoenix.motorcontrol.*
 
+import edu.wpi.first.networktables.NetworkTableEntry
+import edu.wpi.first.networktables.EntryListenerFlags
+import edu.wpi.first.networktables.EntryNotification
+// import edu.wpi.first.networktables.BuiltInWidgets
+
 @Suppress("TooManyFunctions")
 object Drivetrain : Subsystem("DriveTrain") {
     // hardware
@@ -103,12 +108,13 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
-            // config_kF( 0, DriveConstants.PID.F , 100 )
+            config_kF( 0, 0.0 , 100 )
 
             setSelectedSensorPosition(0, 0, 100)
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
 
             setNeutralMode(NeutralMode.Coast)
         }
@@ -123,12 +129,13 @@ object Drivetrain : Subsystem("DriveTrain") {
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
             config_kD( 0, DriveConstants.PID.D , 100 )
-            // config_kF( 0, DriveConstants.PID.F , 100 )
+            config_kF( 0, 0.0 , 100 )
 
             setSelectedSensorPosition(0, 0, 100)
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
 
             setNeutralMode(NeutralMode.Coast)
         }
@@ -193,7 +200,6 @@ object Drivetrain : Subsystem("DriveTrain") {
     fun setOpenLoop(left: Double, right: Double) {
         leftMasterMotor.set(ControlMode.PercentOutput, left * inverted)
         rightMasterMotor.set(ControlMode.PercentOutput, right * inverted)
-        // println("${left} ${right}")
     }
 
     fun setVelocity(leftVelocity: SIUnit<LinearVelocity>, rightVelocity: SIUnit<LinearVelocity>) {

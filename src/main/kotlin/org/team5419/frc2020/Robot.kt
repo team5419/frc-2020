@@ -3,6 +3,7 @@ package org.team5419.frc2020
 import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.input.*
 import org.team5419.frc2020.controllers.*
+import org.team5419.frc2020.auto.actions.RamseteAction
 import org.team5419.fault.math.units.seconds
 import org.team5419.fault.BerkeliumRobot
 
@@ -14,7 +15,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import org.team5419.fault.math.units.native.*
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
+import org.team5419.fault.math.geometry.Pose2d
 import org.team5419.fault.hardware.ctre.*
+import org.team5419.fault.auto.Routine
 import com.ctre.phoenix.motorcontrol.*
 import org.team5419.fault.subsystems.SubsystemManager
 
@@ -26,7 +29,13 @@ class Robot : BerkeliumRobot(0.02.seconds) {
     private val teleopController: TeleopController
 
     init {
-        autoController = AutoController()
+        autoController = AutoController(Routine("Baseline", Pose2d(),
+            RamseteAction( arrayOf<Pose2d>(
+                Pose2d(),
+                Pose2d(1.0.meters, 0.0.meters, 0.0.radians)
+            ))
+        ))
+
         teleopController = TeleopController(XboxDriver, XboxCodriver)
 
         // maximum update speed for Network tables, seconds
@@ -61,6 +70,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
     override fun disabledInit() {
         reset()
+        Drivetrain.brakeMode = false
     }
 
     override fun disabledPeriodic() {

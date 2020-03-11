@@ -11,8 +11,6 @@ public class AutoHoodAction(): HoodAction(HoodPosititions.AUTO)
 public class CloseHoodAction(): HoodAction(HoodPosititions.CLOSE)
 public class RetractHoodAction(): HoodAction(HoodPosititions.CLOSE)
 
-
-
 open class HoodAction(val pos: HoodPosititions) : Action() {
     override public fun start() {
         Hood.goto(pos)

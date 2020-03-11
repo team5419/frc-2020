@@ -39,6 +39,7 @@ public class RamseteAction(
     val poses: Array<Pose2d>,
 
     // default settings
+    val reversed: Boolean = false,
     val maxVelocity: SIUnit<LinearVelocity> = DriveConstants.MaxVelocity,
     val maxAcceleration: SIUnit<LinearAcceleration> = DriveConstants.MaxAcceleration,
     val maxVoltage: SIUnit<Volt> = 12.volts,
@@ -68,13 +69,12 @@ public class RamseteAction(
     val config = TrajectoryConfig(
         maxVelocity.value,
         maxAcceleration.value
-    )
-
-    init {
-        config.setKinematics(driveKinematics)
-        config.addConstraint(voltageConstraint)
-        config.addConstraint(driveKinematicsConstraint)
-        config.addConstraint(CentripetalAccelerationConstraint(
+    ).apply {
+        setKinematics(driveKinematics)
+        setReversed(reversed)
+        addConstraint(voltageConstraint)
+        addConstraint(driveKinematicsConstraint)
+        addConstraint(CentripetalAccelerationConstraint(
             DriveConstants.MaxCentripetalAcceleration.value
         ))
     }
@@ -97,9 +97,8 @@ public class RamseteAction(
         finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
     }
 
-    override fun update() {
+    override fun update(dt: SIUnit<Second>) {
         val time = getTime()
-        val dt = time - prevTime
 
         val chassisSpeed = controller.calculate(
             Drivetrain.pose,
@@ -124,8 +123,8 @@ public class RamseteAction(
         Drivetrain.setVelocity(
             setSpeed.leftMetersPerSecond.meters.velocity,
             setSpeed.rightMetersPerSecond.meters.velocity,
-            leftFeedForward.volts / 12.0,
-            rightFeedForward.volts / 12.0
+            leftFeedForward.volts,
+            rightFeedForward.volts
         )
     }
 }

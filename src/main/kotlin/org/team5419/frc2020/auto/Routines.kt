@@ -15,52 +15,96 @@ import org.team5419.frc2020.subsystems.Hood.HoodPosititions
 import org.team5419.frc2020.subsystems.Setpoint
 import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.DriveConstants
-import edu.wpi.first.wpilibj.Filesystem
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
 import edu.wpi.first.wpilibj.trajectory.Trajectory
-import java.nio.file.Path
 
-fun generateRoutines (initalPose: Pose2d): Array<Routine>{
-    return arrayOf<Routine> (
-        Routine("Trech", initalPose,
-            // shoog from starting position
-            AutoHoodAction(),
-            IndexedShoogAction(3),
+val routines = arrayOf<Routine>(
+    Routine("Alliance Trech - Target Start", Pose2d(),
+        // shoog from starting position
+        // AutoHoodAction(),
+        IndexedShoogAction(3),
+        // TimedShoogAction(3.seconds),
 
-            // bring hood back down and turn intake on
-            RetractHoodAction(),
-            DeployIntakeAction(),
+        // bring hood back down and turn intake on
+        // RetractHoodAction(),
+        DeployIntakeAction(),
 
-            // navigate to behind trench
-            IntakeAction(),
-            RamseteAction( arrayOf<Pose2d>(
-                Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
-                Pose2d(2.0.meters, -1.55.meters, 0.0.radians),
-                Pose2d(7.8.meters, -1.50.meters, 0.0.radians)
-            ) ),
-            DisableIntakeAction(),
-            // RamseteAction(
-            //     Pose(8.0.meters,-1.50.meters, 0.0.radians)
-            // )
+        // navigate to behind trench
+        IntakeAction(),
+        PassiveStorageAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(2.0.meters, -1.70.meters, 0.0.radians),
+            Pose2d(2.3.meters, -1.70.meters, 0.0.radians),
+            Pose2d(6.3.meters, -1.70.meters, 0.0.radians)
+        ) ),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(6.3.meters, -1.70.meters, 0.0.radians),
+            // Pose2d(5.5.meters, -1.70.meters, 0.0.radians),
+            Pose2d(5.0.meters, -1.65.meters, -5.0.degrees)
+        ), reversed=true),
 
-            // align and shoog
-            AutoAlignAction(),
-            FarHoodAction(),
-            IndexedShoogAction(5)
-        ),
-        Routine("Align", initalPose, AutoAlignAction()),
-        Routine("Shoot 3", initalPose,
-            HoodAction(HoodPosititions.AUTO),
-            IndexedShoogAction(3)
-        ),
-        Routine("Pathfollowing", initalPose,
-            RamseteAction( arrayOf<Pose2d>(
-                Pose2d(0.0.meters,   0.0.meters, 0.0.radians),
-                Pose2d(3.0.meters, -1.6.meters, 0.0.radians),
-                Pose2d(3.7.meters, -1.5.meters, 0.0.radians)
-                // Pose2d(7.0.meters, -1.55.meters, 0.0.radians),
-                // Pose2d(9.0.meters, -1.50.meters, 0.0.radians)
-            ) )
-        )
+        // align and shoog
+        SpinUpAction(),
+        AutoAlignAction(),
+        FarHoodAction(),
+        IndexedShoogAction(5),
+        DisableIntakeAction()
+
+    ),
+
+    Routine("Alliance Trech - Trench Start", Pose2d(),
+        // shoog from starting position
+        AutoHoodAction(),
+        IndexedShoogAction(3),
+
+        // bring hood back down and turn intake on
+        RetractHoodAction(),
+        DeployIntakeAction(),
+        TurnAction(140.0, -1),
+
+        // navigate to behind trench
+        IntakeAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(258.9.inches, 0.0.meters, 0.0.radians)
+        )),
+        DisableIntakeAction(),
+
+        // align and shoog
+        AutoAlignAction(),
+        FarHoodAction(),
+        IndexedShoogAction(5)
+
+    ),
+
+    Routine("Enemy Trech", Pose2d(),
+        // go into enemy trench and steal first balls
+        DeployIntakeAction(),
+        IntakeAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
+            Pose2d(130.36.inches, 0.0.meters, 0.0.radians)
+        )),
+        DisableIntakeAction(),
+        RetractIntakeAction(),
+
+        // drive to shooting position
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(130.36.inches, 0.0.meters, 0.0.radians),
+            Pose2d(0.0.meters, 3.0.meters, 0.0.radians)
+        ), reversed=true),
+
+        // shoot the balls
+        AlignAndIndexedShoogAction(5),
+
+        // pick up more balls
+        DeployIntakeAction(),
+        IntakeAction(),
+
+        RamseteAction(arrayOf<Pose2d>(
+            Pose2d(130.36.inches, 0.0.meters, 0.0.radians),
+            Pose2d(3.meters, 1.meters, 30.degrees)
+        ))
     )
-}
+)

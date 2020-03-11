@@ -1,7 +1,5 @@
 package org.team5419.frc2020.auto.actions
 
-import org.team5419.frc2020.tab
-
 import org.team5419.frc2020.subsystems.Shooger
 import org.team5419.frc2020.subsystems.Hood
 import org.team5419.frc2020.subsystems.Storage
@@ -16,12 +14,12 @@ public class TimedShoogAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
         withTimeout(timeout)
     }
 
-    override fun update() {
+    override fun update(dt: SIUnit<Second>) {
         Shooger.shoog(Hood.mode)
 
-        if( Shooger.isHungry() && Storage.isLoadedBall ){
+        if ( Shooger.isHungry() && Storage.isLoadedBall ) {
             Storage.mode = StorageMode.LOAD
-        } else if( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall){
+        } else if ( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall) {
             Storage.mode = StorageMode.PASSIVE
         } else {
             Storage.mode = StorageMode.PASSIVE

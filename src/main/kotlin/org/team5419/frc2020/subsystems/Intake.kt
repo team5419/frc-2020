@@ -4,36 +4,50 @@ import org.team5419.frc2020.tab
 import org.team5419.frc2020.IntakeConstants
 import org.team5419.fault.subsystems.Subsystem
 import org.team5419.fault.math.units.native.NativeUnitRotationModel
-import org.team5419.fault.hardware.ctre.BerkeliumSRX
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.motorcontrol.ControlMode
 
 @Suppress("TooManyFunctions")
 object Intake : Subsystem("Intake") {
     // motors
 
-    val intakeModel = NativeUnitRotationModel(IntakeConstants.IntakeTicksPerRotation)
-    val deployModel = NativeUnitRotationModel(IntakeConstants.DeployTicksPerRotation)
+    val intakeMotor = TalonSRX(IntakeConstants.IntakePort).apply {
+        configFactoryDefault(100)
 
-    val intakeMotor = BerkeliumSRX(IntakeConstants.IntakePort, intakeModel)
-    val deployMotor = BerkeliumSRX(IntakeConstants.DeployPort, deployModel).apply {
-        talonSRX.configFactoryDefault(100)
+        setNeutralMode(NeutralMode.Coast)
 
-        talonSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder)
-        talonSRX.setSelectedSensorPosition(0,0,100)
+        setInverted(true)
+    }
 
-        talonSRX.setSensorPhase(true)
-        talonSRX.setInverted(false)
+    val deployMotor = TalonSRX(IntakeConstants.DeployPort).apply {
+        configFactoryDefault(100)
 
-        talonSRX.config_kD(0, 10.0)
-        talonSRX.config_kP(0, 1.0)
-        // talonSRX.configForwardSoftLimitThreshold(
+        configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute)
+
+        setSelectedSensorPosition(0,0,100)
+
+        setNeutralMode(NeutralMode.Brake)
+
+        setSensorPhase(true)
+        setInverted(false)
+
+        config_kP(0, 1.0)
+
+        // configForwardSoftLimitThreshold(
         //     radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
         // )
-        // talonSRX.configForwardSoftLimitEnable(true)
-        talonSRX.configClosedLoopPeakOutput(0, 0.4)
+        // configForwardSoftLimitEnable(true)
+
+        configClosedLoopPeakOutput(0, 0.5, 100)
     }
 
     // intake modes
+
+    init {
+        tab.addNumber("depoy pos", { deployMotor.getSelectedSensorPosition(0).toDouble() })
+    }
 
     public enum class IntakeMode {
         INTAKE,
@@ -46,9 +60,9 @@ object Intake : Subsystem("Intake") {
             if ( mode == field ) return
 
             when (mode) {
-                IntakeMode.INTAKE  -> { intakeMotor.setPercent(  0.9 ) }
-                IntakeMode.OUTTAKE -> { intakeMotor.setPercent( -1.0 ) }
-                IntakeMode.OFF     -> { intakeMotor.setPercent(  0.0 ) }
+                IntakeMode.INTAKE  -> { intakeMotor.set(ControlMode.PercentOutput, 0.8 ) }
+                IntakeMode.OUTTAKE -> { intakeMotor.set(ControlMode.PercentOutput, -1.0 ) }
+                IntakeMode.OFF     -> { intakeMotor.set(ControlMode.PercentOutput, 0.0 ) }
             }
 
             field = mode
@@ -68,13 +82,13 @@ object Intake : Subsystem("Intake") {
 
             when (mode) {
                 DeployMode.DEPLOY -> {
-                    deployMotor.setPosition(IntakeConstants.DeployPosition)
+                    deployMotor.set(ControlMode.PercentOutput, 0.0)
                 }
                 DeployMode.STORE -> {
-                    deployMotor.setPosition(IntakeConstants.StorePosition)
+                    deployMotor.set(ControlMode.Position, IntakeConstants.StorePosition.toDouble())
                 }
                 DeployMode.OFF -> {
-                    deployMotor.setPercent( 0.0 )
+                    deployMotor.set(ControlMode.PercentOutput, 0.0 )
                 }
             }
 
@@ -82,9 +96,14 @@ object Intake : Subsystem("Intake") {
         }
 
     // deploy functions
+
     fun radiansToNativeUnits(radians: Double): Int = (radians / Math.PI / 2 * 4096).toInt()
 
     fun nativeUnitsToRadians(ticks: Int): Double = ticks / 4096 * 2 * Math.PI
+
+    init {
+        tab.addNumber("intake pos", {deployMotor.getSelectedSensorPosition(0).toDouble()})
+    }
 
     public fun store() {
         deployMode = DeployMode.STORE
@@ -98,7 +117,7 @@ object Intake : Subsystem("Intake") {
     }
 
     public fun stopDeploy() {
-        if( deployMode != DeployMode.STORE ){
+        if( deployMode != DeployMode.STORE ) {
             deployMode = DeployMode.OFF
         }
     }
@@ -107,16 +126,10 @@ object Intake : Subsystem("Intake") {
 
     public fun intake() {
         intakeMode = IntakeMode.INTAKE
-
-        // cant intake if were down
-        deployMode = DeployMode.DEPLOY
     }
 
     public fun outtake() {
         intakeMode = IntakeMode.OUTTAKE
-
-        // cant outintake if were down
-        deployMode = DeployMode.DEPLOY
     }
 
     public fun stopIntake() {
@@ -126,7 +139,7 @@ object Intake : Subsystem("Intake") {
     public fun isActive() = intakeMode == IntakeMode.INTAKE
 
     public fun isAtSetPoint() =
-        deployMotor.talonSRX.getClosedLoopError() < 30
+        deployMotor.getClosedLoopError() < 30
 
     // combined functions
 

@@ -37,4 +37,6 @@ public interface CodriverControls {
     public fun unclimb(): Boolean
 
     public fun winch(): Boolean
+
+    public fun unwinch(): Boolean
 }

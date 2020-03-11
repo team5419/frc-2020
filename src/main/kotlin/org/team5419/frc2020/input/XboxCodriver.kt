@@ -22,7 +22,7 @@ object XboxCodriver: CodriverControls {
 
     override public fun outtake(): Boolean = codriverXbox.getTriggerAxis(Hand.kRight) > 0.3
 
-    override public fun storeIntake(): Boolean = !intake() && !outtake()
+    override public fun storeIntake(): Boolean = codriverXbox.getXButtonPressed()
 
     override public fun reverseStorage(): Boolean = codriverXbox.getYButton()
 
@@ -43,4 +43,6 @@ object XboxCodriver: CodriverControls {
     override public fun unclimb(): Boolean = codriverXbox.getAButton()
 
     override public fun winch(): Boolean = codriverXbox.getRawButton(6)
+
+    override public fun unwinch(): Boolean = false
 }

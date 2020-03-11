@@ -12,6 +12,7 @@ import kotlin.math.PI
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.networktables.EntryListenerFlags
+import edu.wpi.first.networktables.EntryNotification
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
@@ -34,12 +35,14 @@ object Hood : Subsystem("Hood") {
             configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 100)
 
             // limit the current to not brown out
-            configPeakCurrentLimit(40, 100)
+            configPeakCurrentLimit(20, 100)
 
             // config the sensor and direction
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 100)
-            setSensorPhase(true)
+            configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 100)
+            setSensorPhase(false)
             setInverted(false)
+
+            setNeutralMode(NeutralMode.Brake)
 
             // config the soft limits
             configForwardSoftLimitThreshold( angleToNativeUnits( HoodConstants.MaxAngle ).toInt(), 100)
@@ -47,22 +50,25 @@ object Hood : Subsystem("Hood") {
             configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 100)
             configReverseSoftLimitEnable(true, 100)
 
+            // configClosedLoopPeakOutput(0, 0.3, 100)
+
             // reset the sensor
-            setSelectedSensorPosition(0, 0, 100)
+            // setSelectedSensorPosition(0, 0, 100)
         }
 
     // hood positions
 
     public enum class HoodPosititions(override val angle: Double, override val velocity: Double) : ShotSetpoint {
-        FAR(HoodConstants.FarHoodAngle, 4800.0),
+        FAR(HoodConstants.FarHoodAngle, 5000.0),
         TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
         CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
         AUTO(12.5, 3000.0),
-        RETRACT(0.0, 4800.0)
+        RETRACT(0.0, 2500.0)
     }
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT
-        set(value: ShotSetpoint){
+        set(value: ShotSetpoint) {
+            if (value == field) return
             if (field.angle == value.angle && field.velocity == value.velocity) return
 
             field = value
@@ -71,22 +77,35 @@ object Hood : Subsystem("Hood") {
         }
 
     init {
+        tab.add("Set Shooger Velocity", 0.0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .getEntry()
+            .addListener({
+                value: EntryNotification -> goto(value.value.getDouble())
+            }, EntryListenerFlags.kUpdate)
         tab.addNumber("hood angle", {hoodAngle()})
+        tab.addNumber("hood ticks", {hoodMotor.getSelectedSensorPosition(0).toDouble()})
+        tab.addNumber("hood error", {hoodMotor.getClosedLoopError(0).toDouble()})
     }
 
     // public api
 
-    private val nativeUnitsToAngle = HoodConstants.GearRatio / HoodConstants.TicksPerRotation * (2 * PI)
+    val hoodMinPos = 486.0
+    val hoodMaxPos = 616.0
+    val hoodDeltaPos = hoodMaxPos - hoodMinPos
 
-    fun angleToNativeUnits(angle: Double) = angle / nativeUnitsToAngle
+    fun angleToNativeUnits(angle: Double) =
+        angle / 18.0 * hoodDeltaPos + hoodMinPos
 
-    fun hoodAngle() = hoodMotor.getSelectedSensorPosition(0) * nativeUnitsToAngle
+    fun hoodAngle() =
+        (hoodMotor.getSelectedSensorPosition(0) - hoodMinPos) / hoodDeltaPos * 18.0
 
     fun goto(angle: ShotSetpoint) {
         mode = angle
     }
 
     fun goto(angle: Double) {
+        println("hood goto ${angle}")
         if (angle < 0.0 || angle > HoodConstants.MaxAngle) {
             println("angle out of range")
 
@@ -101,6 +120,7 @@ object Hood : Subsystem("Hood") {
     // subsystem functions
 
     fun reset() {
+        println("hood reset")
         hoodMotor.set(ControlMode.PercentOutput, 0.0)
     }
 

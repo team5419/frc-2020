@@ -55,6 +55,11 @@ object Storage : Subsystem("Storage") {
 
     public val feeder = TalonSRX(StorageConstants.FeederPort)
         .apply {
+            configFactoryDefault(100)
+
+            configPeakOutputForward(1.0, 100)
+            configPeakOutputReverse(-1.0, 100)
+
             setInverted(true)
             setSensorPhase(false)
             setNeutralMode(NeutralMode.Brake)
@@ -63,7 +68,12 @@ object Storage : Subsystem("Storage") {
 
     public val hopper = TalonSRX(StorageConstants.HopperPort)
         .apply {
-            setInverted(true)
+            configFactoryDefault(100)
+
+            configPeakOutputForward(1.0, 100)
+            configPeakOutputReverse(-1.0, 100)
+
+            setInverted(false)
         }
 
     // reverse
@@ -84,7 +94,7 @@ object Storage : Subsystem("Storage") {
     private var feederPercent = StorageConstants.FeederPercent
 
     private var feederLazyPercent = StorageConstants.FeederLazyPercent
-    private var hopperLazyPercent = StorageConstants.HopperLazyPercent
+    private var hopperLazyPercent = 0.0 // set in reset function
 
     // distance sensor to find balls
 
@@ -92,11 +102,11 @@ object Storage : Subsystem("Storage") {
         get() = -feeder.getSelectedSensorPosition(0)
 
     public val isLoadedBall: Boolean
-        get() = -feeder.getSelectedSensorPosition(0) >= StorageConstants.SensorThreshold
+        get() = sensorPosition >= StorageConstants.SensorThreshold
 
     init {
         tab.addNumber("feeder amperage", { feeder.getStatorCurrent() })
-        tab.addNumber("IR pos", { -feeder.getSelectedSensorPosition(0).toDouble() })
+        tab.addNumber("IR pos", { sensorPosition.toDouble() })
         tab.addBoolean("IR Sensor", { isLoadedBall })
     }
 
@@ -116,6 +126,15 @@ object Storage : Subsystem("Storage") {
         mode = StorageMode.OFF
     }
 
-    override fun autoReset() = reset()
-    override fun teleopReset() = reset()
+    override fun autoReset() {
+        reset()
+
+        hopperLazyPercent = StorageConstants.AutoHopperLazyPercent
+    }
+
+    override fun teleopReset() {
+        reset()
+
+        hopperLazyPercent = StorageConstants.HopperLazyPercent
+    }
 }
