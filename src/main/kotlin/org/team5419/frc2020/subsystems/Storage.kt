@@ -94,7 +94,7 @@ object Storage : Subsystem("Storage") {
     private var feederPercent = StorageConstants.FeederPercent
 
     private var feederLazyPercent = StorageConstants.FeederLazyPercent
-    private var hopperLazyPercent = StorageConstants.HopperLazyPercent
+    private var hopperLazyPercent = 0.0 // set in reset function
 
     // distance sensor to find balls
 
@@ -126,6 +126,15 @@ object Storage : Subsystem("Storage") {
         mode = StorageMode.OFF
     }
 
-    override fun autoReset() = reset()
-    override fun teleopReset() = reset()
+    override fun autoReset() {
+        reset()
+
+        hopperLazyPercent = StorageConstants.AutoHopperLazyPercent
+    }
+
+    override fun teleopReset() {
+        reset()
+
+        hopperLazyPercent = StorageConstants.HopperLazyPercent
+    }
 }
