@@ -98,6 +98,10 @@ object Intake : Subsystem("Intake") {
 
     fun nativeUnitsToRadians(ticks: Int): Double = ticks / 4096 * 2 * Math.PI
 
+    init {
+        tab.addNumber("intake pos", {deployMotor.getSelectedSensorPosition(0).toDouble()})
+    }
+
     public fun store() {
         deployMode = DeployMode.STORE
 
