@@ -146,8 +146,8 @@ object ClimberConstants {
 }
 
 object VisionConstants {
-    public val CameraAngle = 16.599.degrees
-    public val CameraHeight = 7.inches
+    public val CameraAngle = 10.0.degrees
+    public val CameraHeight = 9.25.inches
 
     public val TargetHeight = 2.28.meters
 

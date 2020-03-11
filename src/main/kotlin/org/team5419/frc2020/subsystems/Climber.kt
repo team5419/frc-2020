@@ -34,13 +34,14 @@ object Climber : Subsystem("Climber") {
     private val winchMotor = TalonSRX(ClimberConstants.WinchPort)
         .apply{
             configFactoryDefault(100)
+
             setNeutralMode(NeutralMode.Brake)
 
             configPeakOutputForward(1.0)
             configPeakOutputReverse(-1.0)
         }
 
-    // public api
+    // deploy
 
     fun deploy(percent: Double = 1.0) {
         deployMotor.set(ControlMode.PercentOutput, percent)
@@ -50,10 +51,11 @@ object Climber : Subsystem("Climber") {
         deployMotor.set(ControlMode.PercentOutput, percent)
     }
 
-    fun stop() {
+    fun stopDeploy() {
         deployMotor.set(ControlMode.PercentOutput, 0.0)
-        stopWinch()
     }
+
+    // winch
 
     fun winch(percent: Double = 1.0) {
         winchMotor.set(ControlMode.PercentOutput, percent)
@@ -68,10 +70,15 @@ object Climber : Subsystem("Climber") {
 
     }
 
+    // are forces combined
+
+    fun stop() {
+        stopDeploy()
+        stopWinch()
+    }
+
     // subsystem functions
 
-    fun reset() = stop()
-
-    override fun autoReset() = reset()
-    override fun teleopReset() = reset()
+    override fun autoReset() = stop()
+    override fun teleopReset() = stop()
 }

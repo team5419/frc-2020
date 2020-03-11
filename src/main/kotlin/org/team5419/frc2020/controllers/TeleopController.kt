@@ -135,7 +135,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         else if ( driver.adjustHoodDown() )
             shotSetpoint = Setpoint( shotSetpoint.angle - 1.0, shotSetpoint.velocity )
 
-        Hood.goto( shotSetpoint )
+        // Hood.goto( shotSetpoint )
     }
 
     private fun updateShooger() {
