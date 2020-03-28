@@ -77,7 +77,7 @@ object Hood : Subsystem("Hood") {
         }
 
     init {
-        tab.add("Set Shooger Velocity", 0.0)
+        tab.add("Set Hood Angle", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .getEntry()
             .addListener({

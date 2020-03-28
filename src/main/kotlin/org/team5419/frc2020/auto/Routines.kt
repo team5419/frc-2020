@@ -106,5 +106,10 @@ val routines = arrayOf<Routine>(
             Pose2d(130.36.inches, 0.0.meters, 0.0.radians),
             Pose2d(3.meters, 1.meters, 30.degrees)
         ))
+    ),
+    Routine("Path Following", Pose2d(),
+        RamseteAction(arrayOf<Pose2d>(
+            Pose2d(), Pose2d(84.inches, 60.inches, 0.0.radians)
+        ))
     )
 )
