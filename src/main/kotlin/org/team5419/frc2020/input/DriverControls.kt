@@ -18,9 +18,9 @@ public interface DriverControls {
 
     public fun togleAligning(): Boolean
 
-    public fun adjustOffsetLeft(): Double
+    public fun adjustOffsetLeft(): Double?
 
-    public fun adjustOffsetRight(): Double
+    public fun adjustOffsetRight(): Double?
 
     // hood functions
 
@@ -39,4 +39,10 @@ public interface DriverControls {
     public fun winch(): Boolean
 
     public fun unwinch(): Boolean
+
+    // intake
+
+    public fun intake(): Boolean
+
+    public fun outtake(): Boolean
 }

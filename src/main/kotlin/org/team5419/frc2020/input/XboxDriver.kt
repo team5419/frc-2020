@@ -46,4 +46,9 @@ object XboxDriver : DriverControls {
 
     override public fun unwinch(): Boolean = driverXbox.getPOV() == 270
 
+    //intake
+
+    override public fun intake(): Boolean = driverXbox.getTriggerAxis(Hand.kLeft) > 0.3
+
+    override public fun outtake(): Boolean = driverXbox.getTriggerAxis(Hand.kRight) > 0.3
 }

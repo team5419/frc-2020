@@ -110,8 +110,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
             }
         }
 
-             if ( codriver.outtake() ) Intake.outtake()
-        else if ( codriver.intake() ) Intake.intake()
+             if ( codriver.intake() || driver.intake()) Intake.intake()
+        else if ( codriver.outtake() || driver.outtake()) Intake.outtake()
         else Intake.stopIntake()
     }
 
