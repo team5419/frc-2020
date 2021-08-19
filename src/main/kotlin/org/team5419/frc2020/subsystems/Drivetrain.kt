@@ -97,14 +97,14 @@ object Drivetrain : AbstractTankDrive() {
             DriveConstants.kPigeonConversion.value, 1, 0
         )
 
-        leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
-        leftMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
-        rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kPositionSlot, 0)
-        rightMasterMotor.talonSRX.setSelectedSensorPosition(0, kVelocitySlot, 0)
+        leftMasterMotor.talonSRX.setSelectedSensorPosition(0.0, kPositionSlot, 0)
+        leftMasterMotor.talonSRX.setSelectedSensorPosition(0.0, kVelocitySlot, 0)
+        rightMasterMotor.talonSRX.setSelectedSensorPosition(0.0, kPositionSlot, 0)
+        rightMasterMotor.talonSRX.setSelectedSensorPosition(0.0, kVelocitySlot, 0)
 
         rightMasterMotor.talonSRX.configAuxPIDPolarity(true, 0)
         rightMasterMotor.talonSRX.configClosedLoopPeakOutput(kTurnSlot, 1.0, 0)
-        rightMasterMotor.talonSRX.configAllowableClosedloopError(kTurnSlot, 0, 0)
+        rightMasterMotor.talonSRX.configAllowableClosedloopError(kTurnSlot, 0.0, 0)
 
         leftMasterMotor.talonSRX.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 5, 0)
         rightMasterMotor.talonSRX.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 5, 0)

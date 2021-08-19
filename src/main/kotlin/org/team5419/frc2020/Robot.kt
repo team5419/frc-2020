@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import org.team5419.frc2020.controllers.TeleopController
-import org.team5419.frc2020.controllers.AutoController
+// import org.team5419.frc2020.controllers.AutoController
 import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.auto.generateRoutines
 import org.team5419.fault.BerkeliumRobot
@@ -18,14 +18,14 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     private val mDriver: XboxController
     private val mCodriver: XboxController
     private val teleopController: TeleopController
-    private val autoController: AutoController
+    // private val autoController: AutoController
     private val smartDashboard: ShuffleboardTab
 
     init {
         mDriver = XboxController(0)
         mCodriver = XboxController(1)
         teleopController = TeleopController(mDriver, mCodriver)
-        autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
+        // autoController = AutoController(Routine("", Pose2d()), generateRoutines(Pose2d()))
         smartDashboard = Shuffleboard.getTab("SmartDashboard")
 
         // subsystem manager
@@ -39,7 +39,7 @@ class Robot : BerkeliumRobot(0.05.seconds) {
             add("Angle", Drivetrain.gyro).withWidget(BuiltInWidgets.kGyro)
             //add number of preoaded balls
             // add("Video Feed", Drivetrain).withWidget(BuiltInWidgets.kCameraStream)
-            add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
+            // add("Auto Selector", autoController.mAutoSelector).withWidget(BuiltInWidgets.kComboBoxChooser)
         }
     }
 
@@ -54,11 +54,11 @@ class Robot : BerkeliumRobot(0.05.seconds) {
     }
 
     override fun autonomousInit() {
-        autoController.start()
+        // autoController.start()
     }
 
     override fun autonomousPeriodic() {
-        autoController.update()
+        // autoController.update()
     }
 
     override fun teleopInit() {
