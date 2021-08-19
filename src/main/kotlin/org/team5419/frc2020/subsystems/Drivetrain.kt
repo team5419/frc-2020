@@ -147,6 +147,13 @@ object Drivetrain : AbstractTankDrive() {
     override val turnError: SIUnit<Radian>
         get() = periodicIO.turnError
 
+    override val leftVelocity: SIUnit<LinearVelocity>
+        get() = periodicIO.leftVelocity
+
+    override val rightVelocity: SIUnit<LinearVelocity>
+        get() = periodicIO.leftVelocity
+
+
     override fun setPercent(left: Double, right: Double) = setOpenLoop(left, right)
     fun setPercent(signal: DriveSignal) = setOpenLoop(signal.left, signal.right)
 
