@@ -68,6 +68,7 @@ object Hood : Subsystem("Hood") {
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT
         set(value: ShotSetpoint) {
+            println("[Debug: 71] set angle")
             if (value == field) return
             if (field.angle == value.angle && field.velocity == value.velocity) return
 
@@ -90,8 +91,8 @@ object Hood : Subsystem("Hood") {
 
     // public api
 
-    val hoodMinPos = 486.0
-    val hoodMaxPos = 616.0
+    val hoodMinPos = 0
+    val hoodMaxPos = 130.0
     val hoodDeltaPos = hoodMaxPos - hoodMinPos
 
     fun angleToNativeUnits(angle: Double) =

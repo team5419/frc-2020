@@ -116,14 +116,22 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateHood() {
-        if ( codriver.deployHoodFar() )
+        if ( codriver.deployHoodFar() ){
+            println("[Debug] hood far")
             shotSetpoint = Hood.HoodPosititions.FAR
-        else if ( codriver.deployHoodTruss())
+        }
+        else if ( codriver.deployHoodTruss()){
+            println("[Debug] hood truss")
             shotSetpoint = Hood.HoodPosititions.TRUSS
-        else if ( codriver.deployHoodClose() )
+        }
+        else if ( codriver.deployHoodClose() ){
             shotSetpoint = Hood.HoodPosititions.CLOSE
-        else if ( codriver.retractHood() || driver.retractHood() )
+            println("[Debug] hood close")
+        }
+        else if ( codriver.retractHood() || driver.retractHood() ){
+            println("[Debug] hood retract")
             shotSetpoint = Hood.HoodPosititions.RETRACT
+        }
 
         if ( false ) {
             // if the shot setpoint is not null, then set the shotSetpoint to it.
@@ -135,7 +143,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         else if ( driver.adjustHoodDown() )
             shotSetpoint = Setpoint( shotSetpoint.angle - 1.0, shotSetpoint.velocity )
 
-        // Hood.goto( shotSetpoint )
+        Hood.goto( shotSetpoint )
     }
 
     private fun updateShooger() {
