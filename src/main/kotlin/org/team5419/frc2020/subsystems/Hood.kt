@@ -77,12 +77,12 @@ object Hood : Subsystem("Hood") {
         }
 
     init {
-        tab.add("Set Shooger Velocity", 0.0)
-            .withWidget(BuiltInWidgets.kNumberSlider)
-            .getEntry()
-            .addListener({
-                value: EntryNotification -> goto(value.value.getDouble())
-            }, EntryListenerFlags.kUpdate)
+        // tab.add("Set Shooger Velocity", 0.0)
+        //     .withWidget(BuiltInWidgets.kNumberSlider)
+        //     .getEntry()
+        //     .addListener({
+        //         value: EntryNotification -> goto(value.value.getDouble())
+        //     }, EntryListenerFlags.kUpdate)
         tab.addNumber("hood angle", {hoodAngle()})
         tab.addNumber("hood ticks", {hoodMotor.getSelectedSensorPosition(0).toDouble()})
         tab.addNumber("hood error", {hoodMotor.getClosedLoopError(0).toDouble()})
