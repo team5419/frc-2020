@@ -1,6 +1,9 @@
 package org.team5419.frc2020.controllers
 
 import org.team5419.frc2020.subsystems.*
+
+
+
 import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
@@ -10,12 +13,14 @@ import org.team5419.frc2020.InputConstants
 import org.team5419.frc2020.HoodConstants
 import org.team5419.fault.math.units.derived.*
 import org.team5419.fault.math.units.*
+//import org.team5419.fault.input.DriveHelper
 import org.team5419.fault.input.SpaceDriveHelper
 import org.team5419.fault.input.DriveSignal
 import org.team5419.fault.Controller
 import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.GenericHID.RumbleType
 import edu.wpi.first.wpilibj.XboxController
+
 
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
@@ -135,7 +140,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         else if ( driver.adjustHoodDown() )
             shotSetpoint = Setpoint( shotSetpoint.angle - 1.0, shotSetpoint.velocity )
 
-        // Hood.goto( shotSetpoint )
+        Hood.goto( shotSetpoint )
     }
 
     private fun updateShooger() {

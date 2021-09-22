@@ -99,18 +99,18 @@ object ShoogerConstants {
 object HoodConstants {
     public const val HoodPort = 10
 
-    public const val FarHoodAngle = 15.0
-    public const val TrussHoodAngle = 14.8
-    public const val CloseHoodAngle = 3.0
+    public const val FarHoodAngle = 2500.0
+    public const val TrussHoodAngle = 2467.0
+    public const val CloseHoodAngle = 500.0
 
     object PID {
-        public const val P = 11.0
-        public const val I = 0.003
-        public const val D = 100.0
+        public const val P = 3.0
+        public const val I = 0.00
+        public const val D = 70.00
     }
 
-    public val MaxSpeed = 0.7
-    public val MaxAngle = 18.0
+    public val MaxSpeed = 0.3
+    public val MaxAngle = 2700.0
 
     public val TicksPerRotation = 131
     public val GearRatio = 4.0/1.0

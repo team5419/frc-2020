@@ -19,6 +19,8 @@ object Intake : Subsystem("Intake") {
         setNeutralMode(NeutralMode.Coast)
 
         setInverted(true)
+
+        //configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute) // temporary
     }
 
     val deployMotor = TalonSRX(IntakeConstants.DeployPort).apply {

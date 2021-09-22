@@ -18,6 +18,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.ControlMode
 
+import org.team5419.frc2020.subsystems.Intake.intakeMotor
+
 object Hood : Subsystem("Hood") {
     // motor
 
@@ -38,9 +40,9 @@ object Hood : Subsystem("Hood") {
             configPeakCurrentLimit(20, 100)
 
             // config the sensor and direction
-            configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 100)
+            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute)
             setSensorPhase(false)
-            setInverted(false)
+            setInverted(true)
 
             setNeutralMode(NeutralMode.Brake)
 
@@ -50,10 +52,10 @@ object Hood : Subsystem("Hood") {
             configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 100)
             configReverseSoftLimitEnable(true, 100)
 
-            // configClosedLoopPeakOutput(0, 0.3, 100)
+            configClosedLoopPeakOutput(0, 0.5, 100)
 
             // reset the sensor
-            // setSelectedSensorPosition(0, 0, 100)
+            //setSelectedSensorPosition(0, 0, 100)
         }
 
     // hood positions
@@ -63,7 +65,7 @@ object Hood : Subsystem("Hood") {
         TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
         CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
         AUTO(12.5, 3000.0),
-        RETRACT(0.0, 2500.0)
+        RETRACT(500.0, 2500.0)
     }
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT
@@ -83,7 +85,7 @@ object Hood : Subsystem("Hood") {
         //     .addListener({
         //         value: EntryNotification -> goto(value.value.getDouble())
         //     }, EntryListenerFlags.kUpdate)
-        tab.addNumber("hood angle", {hoodAngle()})
+        //tab.addNumber("hood angle", {hoodAngle()})
         tab.addNumber("hood ticks", {hoodMotor.getSelectedSensorPosition(0).toDouble()})
         tab.addNumber("hood error", {hoodMotor.getClosedLoopError(0).toDouble()})
     }
@@ -112,9 +114,10 @@ object Hood : Subsystem("Hood") {
             return goto(angle.coerceIn(0.0, HoodConstants.MaxAngle))
         }
 
-        val ticks = angleToNativeUnits(angle)
+        //val ticks = angleToNativeUnits(angle)
+        println("ticks: ${angle}")
 
-        hoodMotor.set(ControlMode.Position, ticks)
+        hoodMotor.set(ControlMode.Position, angle)
     }
 
     // subsystem functions
