@@ -32,8 +32,8 @@ object Intake : Subsystem("Intake") {
 
         setNeutralMode(NeutralMode.Brake)
 
-        setSensorPhase(true)
-        setInverted(false)
+        setSensorPhase(false)
+        setInverted(true)
 
         config_kP(0, 1.0)
 
@@ -42,7 +42,7 @@ object Intake : Subsystem("Intake") {
         // )
         // configForwardSoftLimitEnable(true)
 
-        configClosedLoopPeakOutput(0, 0.5, 100)
+        configClosedLoopPeakOutput(0, 1.0, 100)
     }
 
     // intake modes
