@@ -15,6 +15,7 @@ object Lookup {
     init {
         table = mutableListOf<LookupEntry>()
         println("add 0")
+        //add(10.0, 12.0, 3500.0 )
         add( 2.73, 12.0, 3500.0 )
         println("add 1")
         add( 2.12, 12.0, 3500.0 )
@@ -41,16 +42,19 @@ object Lookup {
 
             if (entry.distance < distance) {
                 table.add(i, LookupEntry(distance, angle, velocity))
-                break
+                return
             }
         }
+
+        table.add(LookupEntry(distance, angle, velocity))
     }
 
     fun get(distance: Double): LookupEntry? {
         println("Distence" + distance)
+        println("table size is " + table.size)
         for (i in 0..table.size-1) {
             val entry = table.get(i)
-
+            println(entry.distance.toString() + " is the entry distance for " + i)
 
             if (entry.distance < distance) {
                 println(entry.distance)
@@ -63,7 +67,7 @@ object Lookup {
 
                 val percent = (distance - entry.distance) / (prevEntery.distance - entry.distance)
 
-                val invertedPercent = percent - 1.0
+                val invertedPercent = 1.0 - percent
 
                 return LookupEntry(
                     distance,

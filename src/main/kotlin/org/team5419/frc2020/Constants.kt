@@ -99,20 +99,36 @@ object ShoogerConstants {
 object HoodConstants {
     public const val HoodPort = 10
 
-    public const val FarHoodAngle = 2500.0
-    public const val TrussHoodAngle = 2467.0
-    public const val CloseHoodAngle = 500.0
+    object Far { // farthest shot
+        public const val angle = 15.0
+        public const val velocity = 5000.0
+    }
+
+    object Truss { // semi-far shot
+        public const val angle = 14.8
+        public const val velocity = 4700.0
+    }
+
+    object Close { // close shot
+        public const val angle = 3.0
+        public const val velocity = 3000.0
+    }
+
+    object Auto { // autonomous shot
+        public const val angle = 12.5
+        public const val velocity = 3000.0
+    }
 
     object PID {
-        public const val P = 3.0
-        public const val I = 0.00
-        public const val D = 70.00
+        public const val P = 120.0
+        public const val I = 0.01
+        public const val D = 12000.00
     }
 
     public val MaxSpeed = 0.3
-    public val MaxAngle = 2700.0
+    public val MaxAngle = 18.0
 
-    public val TicksPerRotation = 131
+    public val TicksPerRotation = 66
     public val GearRatio = 4.0/1.0
 }
 
@@ -135,11 +151,17 @@ object IntakeConstants {
     public val DeployTicksPerRotation = (4096).nativeUnits
     public val IntakeTicksPerRotation = (4096 * 10).nativeUnits
 
-    public val StorePosition = 1300
+    public val StorePosition = 1070
     public val DeployPosition = 0
 
     public const val IntakePort = 9
     public const val DeployPort = 8
+
+    object DeployPID {
+        public const val P = 3.0
+        public const val I = 0.0
+        public const val D = 0.0
+    }
 }
 
 object ClimberConstants {

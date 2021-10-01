@@ -40,8 +40,8 @@ object Hood : Subsystem("Hood") {
             configPeakCurrentLimit(20, 100)
 
             // config the sensor and direction
-            configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute)
-            setSensorPhase(false)
+            configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 100)
+            setSensorPhase(true)
             setInverted(true)
 
             setNeutralMode(NeutralMode.Brake)
@@ -52,20 +52,21 @@ object Hood : Subsystem("Hood") {
             configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 100)
             configReverseSoftLimitEnable(true, 100)
 
-            configClosedLoopPeakOutput(0, 0.5, 100)
+            configClosedLoopPeakOutput(0, 0.4, 100)
 
             // reset the sensor
-            //setSelectedSensorPosition(0, 0, 100)
+            setSelectedSensorPosition(0, 0, 100)
         }
 
+    private var previousReading: Double = 0.0
     // hood positions
 
     public enum class HoodPosititions(override val angle: Double, override val velocity: Double) : ShotSetpoint {
-        FAR(HoodConstants.FarHoodAngle, 5000.0),
-        TRUSS(HoodConstants.TrussHoodAngle, 4700.0),
-        CLOSE(HoodConstants.CloseHoodAngle, 3000.0),
-        AUTO(12.5, 3000.0),
-        RETRACT(500.0, 2500.0)
+        FAR(HoodConstants.Far.angle, HoodConstants.Far.velocity),
+        TRUSS(HoodConstants.Truss.angle, HoodConstants.Truss.velocity),
+        CLOSE(HoodConstants.Close.angle, HoodConstants.Close.velocity),
+        AUTO(HoodConstants.Auto.angle, HoodConstants.Auto.velocity),
+        RETRACT(0.0, 2500.0) // no need to edit this one
     }
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT
@@ -85,22 +86,22 @@ object Hood : Subsystem("Hood") {
         //     .addListener({
         //         value: EntryNotification -> goto(value.value.getDouble())
         //     }, EntryListenerFlags.kUpdate)
-        //tab.addNumber("hood angle", {hoodAngle()})
+        tab.addNumber("hood angle", {hoodAngle()})
         tab.addNumber("hood ticks", {hoodMotor.getSelectedSensorPosition(0).toDouble()})
         tab.addNumber("hood error", {hoodMotor.getClosedLoopError(0).toDouble()})
     }
 
     // public api
 
-    val hoodMinPos = 486.0
-    val hoodMaxPos = 616.0
+    val hoodMinPos = 0.0
+    val hoodMaxPos = 66.0
     val hoodDeltaPos = hoodMaxPos - hoodMinPos
 
     fun angleToNativeUnits(angle: Double) =
-        angle / 18.0 * hoodDeltaPos + hoodMinPos
+        angle / HoodConstants.MaxAngle * hoodDeltaPos + hoodMinPos
 
-    fun hoodAngle() =
-        (hoodMotor.getSelectedSensorPosition(0) - hoodMinPos) / hoodDeltaPos * 18.0
+    fun hoodAngle() = // from ticks to angle!!
+        (hoodMotor.getSelectedSensorPosition(0) - hoodMinPos) / hoodDeltaPos * HoodConstants.MaxAngle
 
     fun goto(angle: ShotSetpoint) {
         mode = angle
@@ -114,13 +115,24 @@ object Hood : Subsystem("Hood") {
             return goto(angle.coerceIn(0.0, HoodConstants.MaxAngle))
         }
 
-        //val ticks = angleToNativeUnits(angle)
-        println("ticks: ${angle}")
+        val ticks = angleToNativeUnits(angle)
+        println("ticks: ${ticks}")
 
-        hoodMotor.set(ControlMode.Position, angle)
+        hoodMotor.set(ControlMode.Position, ticks)
     }
 
     // subsystem functions
+
+    fun checkAndReset() {
+        val gotten: Double = hoodMotor.getSelectedSensorPosition(0).toDouble()
+        if(gotten < 0.0 || gotten > hoodMaxPos) {
+            println("Out of range. Ticks: " + gotten + ". Resetting to " + previousReading.toInt())
+            hoodMotor.setSelectedSensorPosition(previousReading.toInt() /* because our pot only reads ints */, 0, 0)
+            return
+        }
+        previousReading = gotten
+        return
+    }
 
     fun reset() {
         println("hood reset")

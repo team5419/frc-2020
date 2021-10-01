@@ -43,11 +43,11 @@ object Climber : Subsystem("Climber") {
 
     // deploy
 
-    fun deploy(percent: Double = 1.0) {
+    fun deploy(percent: Double = 0.5) {
         deployMotor.set(ControlMode.PercentOutput, percent)
     }
 
-    fun retract(percent: Double = -0.8) {
+    fun retract(percent: Double = -0.7) {
         deployMotor.set(ControlMode.PercentOutput, percent)
     }
 

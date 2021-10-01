@@ -62,7 +62,7 @@ object Shooger : Subsystem("Shooger") {
 
             configClosedLoopPeriod(0, 1, 100)
 
-            configPeakOutputForward(1.0, 100)
+            configPeakOutputForward(0.2, 100)
             configPeakOutputReverse(0.0, 100)
         }
 
@@ -75,7 +75,7 @@ object Shooger : Subsystem("Shooger") {
 
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
-            configPeakOutputForward(1.0, 100)
+            configPeakOutputForward(0.2, 100)
             configPeakOutputReverse(0.0, 100)
         }
 

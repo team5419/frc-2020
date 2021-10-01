@@ -121,6 +121,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     }
 
     private fun updateHood() {
+        Hood.checkAndReset()
         if ( codriver.deployHoodFar() )
             shotSetpoint = Hood.HoodPosititions.FAR
         else if ( codriver.deployHoodTruss())
@@ -130,15 +131,16 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         else if ( codriver.retractHood() || driver.retractHood() )
             shotSetpoint = Hood.HoodPosititions.RETRACT
 
-        if ( false ) {
-            // if the shot setpoint is not null, then set the shotSetpoint to it.
-            Vision.getShotSetpoint()?.let { shotSetpoint = it }
-        }
-
         if ( driver.adjustHoodUp() )
             shotSetpoint = Setpoint( shotSetpoint.angle + 1.0, shotSetpoint.velocity )
         else if ( driver.adjustHoodDown() )
             shotSetpoint = Setpoint( shotSetpoint.angle - 1.0, shotSetpoint.velocity )
+
+        if ( false ) { // disabled until hood lookup table is complete
+            println("Its true")
+             // if the shot setpoint is not null, then set the shotSetpoint to it.
+            Vision.getShotSetpoint()?.let { shotSetpoint = it }
+        }
 
         Hood.goto( shotSetpoint )
     }

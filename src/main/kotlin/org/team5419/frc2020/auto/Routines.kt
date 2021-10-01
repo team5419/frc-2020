@@ -21,12 +21,12 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory
 val routines = arrayOf<Routine>(
     Routine("Alliance Trech - Target Start", Pose2d(),
         // shoog from starting position
-        // AutoHoodAction(),
+        AutoHoodAction(),
         IndexedShoogAction(3),
-        // TimedShoogAction(3.seconds),
+        TimedShoogAction(3.seconds),
 
         // bring hood back down and turn intake on
-        // RetractHoodAction(),
+        RetractHoodAction(),
         DeployIntakeAction(),
 
         // navigate to behind trench

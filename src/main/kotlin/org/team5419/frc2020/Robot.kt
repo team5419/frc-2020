@@ -70,7 +70,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
     override fun disabledInit() {
         reset()
-        Drivetrain.brakeMode = false
+        Drivetrain.brakeMode = true
     }
 
     override fun disabledPeriodic() {

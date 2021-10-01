@@ -24,31 +24,36 @@ object Intake : Subsystem("Intake") {
     }
 
     val deployMotor = TalonSRX(IntakeConstants.DeployPort).apply {
+        //println("success")
         configFactoryDefault(100)
 
         configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute)
 
-        setSelectedSensorPosition(0,0,100)
 
+        //
         setNeutralMode(NeutralMode.Brake)
 
         setSensorPhase(false)
         setInverted(true)
 
-        config_kP(0, 1.0)
+        config_kP(0, IntakeConstants.DeployPID.P, 100)
+        config_kI(0, IntakeConstants.DeployPID.I, 100)
+        config_kD(0, IntakeConstants.DeployPID.D, 100)
 
         // configForwardSoftLimitThreshold(
         //     radiansToNativeUnits(IntakeConstants.DeployPosition.value), 100
         // )
         // configForwardSoftLimitEnable(true)
 
-        configClosedLoopPeakOutput(0, 1.0, 100)
+        configClosedLoopPeakOutput(0, 0.6, 100)
+        setSelectedSensorPosition(0,0,100)
     }
 
     // intake modes
 
     init {
         tab.addNumber("depoy pos", { deployMotor.getSelectedSensorPosition(0).toDouble() })
+        tab.addNumber("depoy err", { deployMotor.getClosedLoopError(0).toDouble() })
     }
 
     public enum class IntakeMode {
@@ -103,9 +108,9 @@ object Intake : Subsystem("Intake") {
 
     fun nativeUnitsToRadians(ticks: Int): Double = ticks / 4096 * 2 * Math.PI
 
-    init {
+    /*init {
         tab.addNumber("intake pos", {deployMotor.getSelectedSensorPosition(0).toDouble()})
-    }
+    }*/
 
     public fun store() {
         deployMode = DeployMode.STORE
