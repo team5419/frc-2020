@@ -1,14 +1,14 @@
 package org.team5419.frc2020.auto.actions
 
 import org.team5419.frc2020.tab
-import org.team5419.fault.auto.Action
+import org.team5419.frc2020.fault.auto.Action
 import org.team5419.frc2020.StorageConstants
 import org.team5419.frc2020.subsystems.Shooger
 import org.team5419.frc2020.subsystems.ShotSetpoint
 import org.team5419.frc2020.subsystems.Storage
 import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.subsystems.Hood
-import org.team5419.fault.math.units.*
+import org.team5419.frc2020.fault.math.units.*
 
 public class IndexedShoogAction(val balls: Int, val setpoint: ShotSetpoint = Hood.mode) : Action() {
 
@@ -43,7 +43,7 @@ public class IndexedShoogAction(val balls: Int, val setpoint: ShotSetpoint = Hoo
         lastSensorPos = sensorPos
 
         if ( Shooger.isHungry() && Storage.isLoadedBall ) {
-            Storage.mode = StorageMode.LOAD
+            Storage.mode = StorageMode.PASSIVE
         } else if ( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall) {
             Storage.mode = StorageMode.PASSIVE
         } else {

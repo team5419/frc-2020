@@ -4,22 +4,22 @@ import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.input.*
 import org.team5419.frc2020.controllers.*
 import org.team5419.frc2020.auto.actions.RamseteAction
-import org.team5419.fault.math.units.seconds
-import org.team5419.fault.BerkeliumRobot
+import org.team5419.frc2020.fault.math.units.seconds
+import org.team5419.frc2020.fault.BerkeliumRobot
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
 import com.ctre.phoenix.motorcontrol.can.VictorSPX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import org.team5419.fault.math.units.native.*
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.math.units.*
-import org.team5419.fault.math.geometry.Pose2d
-import org.team5419.fault.hardware.ctre.*
-import org.team5419.fault.auto.Routine
+import org.team5419.frc2020.fault.math.units.native.*
+import org.team5419.frc2020.fault.math.units.derived.*
+import org.team5419.frc2020.fault.math.units.*
+import org.team5419.frc2020.fault.math.geometry.Pose2d
+import org.team5419.frc2020.fault.hardware.ctre.*
+import org.team5419.frc2020.fault.auto.Routine
 import com.ctre.phoenix.motorcontrol.*
-import org.team5419.fault.subsystems.SubsystemManager
+import org.team5419.frc2020.fault.subsystems.SubsystemManager
 
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 

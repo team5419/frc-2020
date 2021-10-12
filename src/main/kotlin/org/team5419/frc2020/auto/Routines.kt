@@ -1,13 +1,13 @@
 package org.team5419.frc2020.auto
 
-import org.team5419.fault.auto.*
-import org.team5419.fault.math.geometry.Pose2d
-import org.team5419.fault.math.geometry.Vector2
-import org.team5419.fault.math.geometry.Pose2dWithCurvature
-import org.team5419.fault.math.units.*
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.trajectory.DefaultTrajectoryGenerator
-import org.team5419.fault.trajectory.constraints.TimingConstraint
+import org.team5419.frc2020.fault.auto.*
+import org.team5419.frc2020.fault.math.geometry.Pose2d
+import org.team5419.frc2020.fault.math.geometry.Vector2
+import org.team5419.frc2020.fault.math.geometry.Pose2dWithCurvature
+import org.team5419.frc2020.fault.math.units.*
+import org.team5419.frc2020.fault.math.units.derived.*
+import org.team5419.frc2020.fault.trajectory.DefaultTrajectoryGenerator
+import org.team5419.frc2020.fault.trajectory.constraints.TimingConstraint
 import org.team5419.frc2020.subsystems.Drivetrain
 import org.team5419.frc2020.auto.actions.*
 import org.team5419.frc2020.auto.actions.RamseteAction
@@ -18,20 +18,27 @@ import org.team5419.frc2020.DriveConstants
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil
 import edu.wpi.first.wpilibj.trajectory.Trajectory
 
+
 val routines = arrayOf<Routine>(
     Routine("Alliance Trech - Target Start", Pose2d(),
         // shoog from starting position
         AutoHoodAction(),
-        IndexedShoogAction(3),
-        TimedShoogAction(3.seconds),
+        SpinUpAction(10.seconds),
+        //IndexedShoogAction(3),
+        TimedShoogAction(5.seconds),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(),
+            Pose2d(3.0.meters, 0.0.meters, 0.0.radians)
+        ))
+        //TimedShoogAction(3.seconds)
 
         // bring hood back down and turn intake on
-        RetractHoodAction(),
+        /*RetractHoodAction(),
         DeployIntakeAction(),
 
         // navigate to behind trench
         IntakeAction(),
-        PassiveStorageAction(),
+        PassiveStorageAction(),8
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
             Pose2d(2.0.meters, -1.70.meters, 0.0.radians),
@@ -49,7 +56,7 @@ val routines = arrayOf<Routine>(
         AutoAlignAction(),
         FarHoodAction(),
         IndexedShoogAction(5),
-        DisableIntakeAction()
+        DisableIntakeAction()*/
 
     ),
 

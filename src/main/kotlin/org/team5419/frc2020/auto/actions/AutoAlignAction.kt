@@ -2,8 +2,8 @@ package org.team5419.frc2020.auto.actions
 
 import org.team5419.frc2020.subsystems.Vision
 import org.team5419.frc2020.subsystems.Drivetrain
-import org.team5419.fault.auto.Action
-import org.team5419.fault.math.units.*
+import org.team5419.frc2020.fault.auto.Action
+import org.team5419.frc2020.fault.math.units.*
 
 class AutoAlignAction() : Action() {
     init {

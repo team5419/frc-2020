@@ -1,9 +1,9 @@
 package org.team5419.frc2020
 
-import org.team5419.fault.math.units.native.*
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.math.units.*
-import org.team5419.fault.math.kEpsilon
+import org.team5419.frc2020.fault.math.units.native.*
+import org.team5419.frc2020.fault.math.units.derived.*
+import org.team5419.frc2020.fault.math.units.*
+import org.team5419.frc2020.fault.math.kEpsilon
 import kotlin.math.PI
 
 object RobotConstants {
@@ -80,6 +80,7 @@ object InputConstants {
     // slow movments multipliers
     public const val SlowTurnMultiplier = 0.4
     public const val SlowMoveMultiplier = 0.4
+    public const val SuperSlowMoveMultiplier = 0.1
 
     // deadbands
     public const val TriggerDeadband = 0.1

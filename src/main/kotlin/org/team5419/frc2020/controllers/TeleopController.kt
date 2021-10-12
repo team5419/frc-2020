@@ -2,8 +2,8 @@ package org.team5419.frc2020.controllers
 
 import org.team5419.frc2020.subsystems.*
 
-
-
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import org.team5419.frc2020.subsystems.Storage.StorageMode
 import org.team5419.frc2020.input.DriverControls
 import org.team5419.frc2020.input.CodriverControls
@@ -11,17 +11,21 @@ import org.team5419.frc2020.input.driverXbox
 import org.team5419.frc2020.input.codriverXbox
 import org.team5419.frc2020.InputConstants
 import org.team5419.frc2020.HoodConstants
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.math.units.*
-//import org.team5419.fault.input.DriveHelper
-import org.team5419.fault.input.SpaceDriveHelper
-import org.team5419.fault.input.DriveSignal
-import org.team5419.fault.Controller
+import org.team5419.frc2020.fault.math.units.derived.*
+import org.team5419.frc2020.fault.math.units.*
+//import org.team5419.frc2020.fault.input.DriveHelper
+import org.team5419.frc2020.fault.input.SpaceDriveHelper
+import org.team5419.frc2020.fault.input.DriveSignal
+import org.team5419.frc2020.fault.Controller
 import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.GenericHID.RumbleType
 import edu.wpi.first.wpilibj.XboxController
 
+val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
+var complete = false
+var slowMultiplier = InputConstants.SlowMoveMultiplier
 
+@SuppressWarnings("LargeClass")
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
     var isAligning = false
@@ -31,14 +35,22 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     data class Setpoint ( override val angle: Double, override val velocity: Double  ) : ShotSetpoint
 
+    init {
+        /*tab.addNumber("FAR Adjustment", { HoodConstants.Far.adjustment })
+        tab.addNumber("TRUSS Adjustment", { HoodConstants.Truss.adjustment })
+        tab.addNumber("CLOSE Adjustment", { HoodConstants.Close.adjustment })*/
+    }
+
     private val driveHelper = SpaceDriveHelper(
         { driver.getThrottle() },
         { driver.getTurn() },
         { driver.fastTurn() },
         { isAligning || driver.slowMove() },
+        { driver.superSlowMove() },
         InputConstants.JoystickDeadband,
         InputConstants.SlowTurnMultiplier,
-        InputConstants.SlowMoveMultiplier
+        InputConstants.SlowMoveMultiplier,
+        InputConstants.SuperSlowMoveMultiplier
     )
 
     override fun start() {
@@ -101,6 +113,15 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         } else {
             Drivetrain.setPercent(output)
         }
+
+        if( driver.slowMove()){
+            slowMultiplier = InputConstants.SlowMoveMultiplier
+            //driveHelper.slowMultiplier = slowMultiplier
+        }
+        else if (driver.superSlowMove()){
+            slowMultiplier = InputConstants.SuperSlowMoveMultiplier
+            //  driveHelper.slowMultiplier = slowMultiplier
+        }
     }
 
     private fun updateIntake() {
@@ -120,16 +141,77 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         else Intake.stopIntake()
     }
 
+    private fun resetAdjustment()
+    {
+        /*HoodConstants.Far.adjustment = 0.0
+        HoodConstants.Truss.adjustment = 0.0
+        HoodConstants.Close.adjustment = 0.0*/
+    }
+
+    @SuppressWarnings("ComplexMethod")
     private fun updateHood() {
         Hood.checkAndReset()
+
         if ( codriver.deployHoodFar() )
+        {
             shotSetpoint = Hood.HoodPosititions.FAR
+            //resetAdjustment()
+        }
         else if ( codriver.deployHoodTruss())
+        {
             shotSetpoint = Hood.HoodPosititions.TRUSS
+            //resetAdjustment()
+        }
         else if ( codriver.deployHoodClose() )
+        {
             shotSetpoint = Hood.HoodPosititions.CLOSE
+            //resetAdjustment()
+        }
         else if ( codriver.retractHood() || driver.retractHood() )
+        {
             shotSetpoint = Hood.HoodPosititions.RETRACT
+            //resetAdjustment()
+        }
+        /*else if ( driver.increaseShoogVelocity() && !complete)
+        {
+            if(shotSetpoint == Hood.HoodPosititions.FAR && HoodConstants.Far.angle+HoodConstants.Far.adjustment < 15.0 )
+            {
+                HoodConstants.Far.adjustment = HoodConstants.Far.adjustment + 0.25
+            }
+            else if (shotSetpoint == Hood.HoodPosititions.TRUSS &&
+                    HoodConstants.Truss.angle+HoodConstants.Truss.adjustment < 15.0)
+            {
+                HoodConstants.Truss.adjustment = HoodConstants.Truss.adjustment  + 0.25
+            }
+            else if (shotSetpoint == Hood.HoodPosititions.CLOSE &&
+                    HoodConstants.Close.angle+HoodConstants.Close.adjustment < 15.0)
+            {
+                HoodConstants.Close.adjustment = HoodConstants.Close.adjustment + 0.25
+            }
+            complete = true
+        }
+        else if ( driver.decreaseShoogVelocity() && !complete)
+        {
+            if(shotSetpoint == Hood.HoodPosititions.FAR &&
+                    HoodConstants.Far.angle+HoodConstants.Far.adjustment > 1.0)
+            {
+                HoodConstants.Far.adjustment = HoodConstants.Far.adjustment - 0.25
+            }
+            else if (shotSetpoint == Hood.HoodPosititions.TRUSS &&
+                    HoodConstants.Truss.angle+HoodConstants.Truss.adjustment > 1.0)
+            {
+                HoodConstants.Truss.adjustment = HoodConstants.Truss.adjustment - 0.25
+            }
+            else if (shotSetpoint == Hood.HoodPosititions.CLOSE &&
+                    HoodConstants.Close.angle+HoodConstants.Close.adjustment > 1.0)
+            {
+                HoodConstants.Close.adjustment = HoodConstants.Close.adjustment - 0.25
+
+            }
+            complete = true
+        }
+        else if (!driver.decreaseShoogVelocity()) complete = false */
+
 
         if ( driver.adjustHoodUp() )
             shotSetpoint = Setpoint( shotSetpoint.angle + 1.0, shotSetpoint.velocity )

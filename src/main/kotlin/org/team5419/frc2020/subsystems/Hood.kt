@@ -2,12 +2,12 @@ package org.team5419.frc2020.subsystems
 
 import org.team5419.frc2020.tab
 import org.team5419.frc2020.HoodConstants
-import org.team5419.fault.subsystems.Subsystem
-import org.team5419.fault.math.units.native.NativeUnitRotationModel
-import org.team5419.fault.math.units.native.*
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.math.units.*
-import org.team5419.fault.hardware.ctre.BerkeliumSRX
+import org.team5419.frc2020.fault.subsystems.Subsystem
+import org.team5419.frc2020.fault.math.units.native.NativeUnitRotationModel
+import org.team5419.frc2020.fault.math.units.native.*
+import org.team5419.frc2020.fault.math.units.derived.*
+import org.team5419.frc2020.fault.math.units.*
+import org.team5419.frc2020.fault.hardware.ctre.BerkeliumSRX
 import kotlin.math.PI
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
@@ -62,11 +62,11 @@ object Hood : Subsystem("Hood") {
     // hood positions
 
     public enum class HoodPosititions(override val angle: Double, override val velocity: Double) : ShotSetpoint {
-        FAR(HoodConstants.Far.angle, HoodConstants.Far.velocity),
-        TRUSS(HoodConstants.Truss.angle, HoodConstants.Truss.velocity),
-        CLOSE(HoodConstants.Close.angle, HoodConstants.Close.velocity),
+        FAR(HoodConstants.Far.angle/*+HoodConstants.Far.adjustment*/, HoodConstants.Far.velocity),
+        TRUSS(HoodConstants.Truss.angle/*+HoodConstants.Far.adjustment*/, HoodConstants.Truss.velocity),
+        CLOSE(HoodConstants.Close.angle/*+HoodConstants.Close.adjustment*/, HoodConstants.Close.velocity),
         AUTO(HoodConstants.Auto.angle, HoodConstants.Auto.velocity),
-        RETRACT(0.0, 2500.0) // no need to edit this one
+        RETRACT(11.3, 5000.0) // no need to edit this one
     }
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT

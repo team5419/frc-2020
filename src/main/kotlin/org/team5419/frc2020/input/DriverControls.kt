@@ -10,6 +10,8 @@ public interface DriverControls {
 
     public fun slowMove() : Boolean
 
+    public fun superSlowMove() : Boolean
+
     public fun fastTurn() : Boolean
 
     public fun invertDrivetrain() : Boolean
@@ -29,6 +31,10 @@ public interface DriverControls {
     public fun adjustHoodUp(): Boolean
 
     public fun adjustHoodDown(): Boolean
+
+    public fun increaseShoogVelocity(): Boolean
+
+    public fun decreaseShoogVelocity(): Boolean
 
     // climb
 

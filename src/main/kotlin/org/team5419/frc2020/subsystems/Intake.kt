@@ -2,8 +2,8 @@ package org.team5419.frc2020.subsystems
 
 import org.team5419.frc2020.tab
 import org.team5419.frc2020.IntakeConstants
-import org.team5419.fault.subsystems.Subsystem
-import org.team5419.fault.math.units.native.NativeUnitRotationModel
+import org.team5419.frc2020.fault.subsystems.Subsystem
+import org.team5419.frc2020.fault.math.units.native.NativeUnitRotationModel
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.NeutralMode

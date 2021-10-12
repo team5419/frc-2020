@@ -2,7 +2,7 @@ package org.team5419.frc2020.controllers
 
 import org.team5419.frc2020.auto.routines
 import org.team5419.frc2020.auto.*
-import org.team5419.fault.auto.SerialAction
+import org.team5419.frc2020.fault.auto.SerialAction
 import org.team5419.frc2020.subsystems.*
 import org.team5419.frc2020.DriveConstants
 import org.team5419.frc2020.auto.actions.*
@@ -11,15 +11,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.EntryListenerFlags
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
-import org.team5419.fault.Controller
-import org.team5419.fault.auto.Action
-import org.team5419.fault.auto.NothingAction
-import org.team5419.fault.auto.Routine
-import org.team5419.fault.math.geometry.Pose2d
-import org.team5419.fault.math.units.*
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.math.geometry.Vector2
-import org.team5419.fault.util.time.WPITimer
+import org.team5419.frc2020.fault.Controller
+import org.team5419.frc2020.fault.auto.Action
+import org.team5419.frc2020.fault.auto.NothingAction
+import org.team5419.frc2020.fault.auto.Routine
+import org.team5419.frc2020.fault.math.geometry.Pose2d
+import org.team5419.frc2020.fault.math.units.*
+import org.team5419.frc2020.fault.math.units.derived.*
+import org.team5419.frc2020.fault.math.geometry.Vector2
+import org.team5419.frc2020.fault.util.time.WPITimer
 
 public class AutoController(val baseline: Routine = Routine("Baseline", Pose2d(), NothingAction())) : Controller {
     private val autoSelector = SendableChooser<Routine>()

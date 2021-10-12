@@ -4,11 +4,11 @@ import org.team5419.frc2020.tab
 import org.team5419.frc2020.subsystems.Storage
 import org.team5419.frc2020.ShoogerConstants
 import org.team5419.frc2020.HoodConstants
-import org.team5419.fault.subsystems.Subsystem
-import org.team5419.fault.math.units.native.*
-import org.team5419.fault.math.units.derived.*
-import org.team5419.fault.math.units.*
-import org.team5419.fault.util.MovingAverageFilter
+import org.team5419.frc2020.fault.subsystems.Subsystem
+import org.team5419.frc2020.fault.math.units.native.*
+import org.team5419.frc2020.fault.math.units.derived.*
+import org.team5419.frc2020.fault.math.units.*
+import org.team5419.frc2020.fault.util.MovingAverageFilter
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput
@@ -58,11 +58,11 @@ object Shooger : Subsystem("Shooger") {
             selectProfileSlot(1, 0)
 
             setSelectedSensorPosition(0, 0, 100)
-            configClosedloopRamp(0.75, 100)
+            configClosedloopRamp(1.0, 100)
 
             configClosedLoopPeriod(0, 1, 100)
 
-            configPeakOutputForward(0.2, 100)
+            configPeakOutputForward(1.0, 100)
             configPeakOutputReverse(0.0, 100)
         }
 
@@ -75,7 +75,7 @@ object Shooger : Subsystem("Shooger") {
 
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
-            configPeakOutputForward(0.2, 100)
+            configPeakOutputForward(1.0, 100)
             configPeakOutputReverse(0.0, 100)
         }
 
@@ -90,6 +90,7 @@ object Shooger : Subsystem("Shooger") {
                 value: EntryNotification -> setShoogerVelocity(value.value.getDouble())
             }, EntryListenerFlags.kUpdate)
 
+        tab.addNumber("Attempted Velocity", { setpoint })
         tab.addNumber("Avg Real Velocity", { Shooger.averageVelocity })
         tab.addNumber("Real Velocity", { Shooger.flyWheelVelocity })
     }
@@ -114,7 +115,7 @@ object Shooger : Subsystem("Shooger") {
 
     public fun isHungry(): Boolean = isActive() && isSpedUp()
 
-    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 50
+    public fun isSpedUp(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity
 
     public fun shouldStopFeeding(): Boolean = setpointVelocity != 0.0 && flyWheelVelocity >= setpointVelocity - 100
 
@@ -128,6 +129,7 @@ object Shooger : Subsystem("Shooger") {
         // its active, we want to shoot if at full speed
         active = true
 
+        println("attempted velocity"+shoogVelocity)
         // tell it to go to target velocity
         setShoogerVelocity(shoogVelocity)
     }
@@ -166,7 +168,7 @@ object Shooger : Subsystem("Shooger") {
         setpoint = calculateSetpoint(shoogVelocity)
 
         // tell the motor to go
-        println("Setting Velocity: ${shoogVelocity}")
+        println("Setting Velocity: ${setpoint}")
         masterMotor.set(ControlMode.Velocity, setpoint)
     }
 

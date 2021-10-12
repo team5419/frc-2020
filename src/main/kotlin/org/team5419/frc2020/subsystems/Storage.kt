@@ -4,7 +4,7 @@ import org.team5419.frc2020.tab
 import org.team5419.frc2020.subsystems.Shooger
 import org.team5419.frc2020.StorageConstants
 import org.team5419.frc2020.ShoogerConstants
-import org.team5419.fault.subsystems.Subsystem
+import org.team5419.frc2020.fault.subsystems.Subsystem
 import edu.wpi.first.wpilibj.shuffleboard.*
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.AnalogInput

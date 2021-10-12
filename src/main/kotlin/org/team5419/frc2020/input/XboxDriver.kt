@@ -16,6 +16,8 @@ object XboxDriver : DriverControls {
 
     override public fun slowMove() = driverXbox.getBumper( Hand.kLeft )
 
+    override public fun superSlowMove(): Boolean = (driverXbox.getTriggerAxis(Hand.kLeft) != 0.0)
+
     override public fun fastTurn() = driverXbox.getBumper( Hand.kRight )
 
     override public fun invertDrivetrain(): Boolean = driverXbox.getXButtonPressed()
@@ -24,7 +26,7 @@ object XboxDriver : DriverControls {
 
     override public fun togleAligning(): Boolean = driverXbox.getAButtonPressed()
 
-    override public fun adjustOffsetLeft(): Double = driverXbox.getTriggerAxis(Hand.kLeft)
+    override public fun adjustOffsetLeft(): Double = 0.0 //driverXbox.getTriggerAxis(Hand.kLeft)
 
     override public fun adjustOffsetRight(): Double = driverXbox.getTriggerAxis(Hand.kRight)
 
@@ -32,9 +34,13 @@ object XboxDriver : DriverControls {
 
     override public fun retractHood(): Boolean = driverXbox.getBButton()
 
-    override public fun adjustHoodUp(): Boolean = false
+    override public fun adjustHoodUp(): Boolean = driverXbox.getBButtonPressed()
 
-    override public fun adjustHoodDown(): Boolean = false
+    override public fun adjustHoodDown(): Boolean = driverXbox.getXButtonPressed()
+
+    override public fun increaseShoogVelocity(): Boolean = false //driverXbox.getBButtonPressed()
+
+    override public fun decreaseShoogVelocity(): Boolean = false //driverXbox.getXButtonPressed()
 
     // climb
 
