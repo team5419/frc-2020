@@ -32,13 +32,13 @@ class Robot : BerkeliumRobot(0.02.seconds) {
         public fun getRight() = driverXbox.getY( Hand.kRight )
     }
 
-    val leftMasterMotor = TalonFX(3)
+    val leftMasterMotor = TalonFX(1)
 
-    private val leftSlave = TalonFX(4)
+    private val leftSlave = TalonFX(2)
 
-    val rightMasterMotor = TalonFX(5)
+    val rightMasterMotor = TalonFX(4)
 
-    private val rightSlave = TalonFX(6)
+    private val rightSlave = TalonFX(3)
 
     init  {
         leftSlave.apply {
@@ -52,7 +52,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
 
-            configClosedLoopPeakOutput(0, 0.4, 100)
+            configClosedLoopPeakOutput(0, 0.1, 100)
         }
 
         rightSlave.apply {
@@ -66,7 +66,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
 
-            configClosedLoopPeakOutput(0, 0.4, 100)
+            configClosedLoopPeakOutput(0, 0.1, 100)
         }
 
         leftMasterMotor.apply {
@@ -89,7 +89,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
             setNeutralMode(NeutralMode.Coast)
 
-            configClosedLoopPeakOutput(0, 0.4, 100)
+            configClosedLoopPeakOutput(0, 0.1, 100)
         }
 
         rightMasterMotor.apply {
@@ -112,7 +112,7 @@ class Robot : BerkeliumRobot(0.02.seconds) {
 
             setNeutralMode(NeutralMode.Coast)
 
-            configClosedLoopPeakOutput(0, 0.4, 100)
+            configClosedLoopPeakOutput(0, 0.1, 100)
         }
     }
 
@@ -120,8 +120,8 @@ class Robot : BerkeliumRobot(0.02.seconds) {
     }
 
     override fun teleopPeriodic() {
-        leftMasterMotor.set(ControlMode.PercentOutput, DriverControls.getLeft())
-        rightMasterMotor.set(ControlMode.PercentOutput, DriverControls.getRight())
+        leftMasterMotor.set(ControlMode.PercentOutput, DriverControls.getLeft() * -0.05)
+        rightMasterMotor.set(ControlMode.PercentOutput, DriverControls.getRight() * -0.05)
     }
 
 }
