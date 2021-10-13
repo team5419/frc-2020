@@ -1,9 +1,5 @@
 package org.team5419.frc2020
 
-import org.team5419.frc2020.subsystems.*
-import org.team5419.frc2020.input.*
-import org.team5419.frc2020.controllers.*
-import org.team5419.frc2020.auto.actions.RamseteAction
 import org.team5419.frc2020.fault.math.units.seconds
 import org.team5419.frc2020.fault.BerkeliumRobot
 
@@ -21,84 +17,111 @@ import org.team5419.frc2020.fault.auto.Routine
 import com.ctre.phoenix.motorcontrol.*
 import org.team5419.frc2020.fault.subsystems.SubsystemManager
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX
+import edu.wpi.first.wpilibj.XboxController
+import edu.wpi.first.wpilibj.GenericHID.Hand
+
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
 @SuppressWarnings("TooManyFunctions")
 class Robot : BerkeliumRobot(0.02.seconds) {
-    private val autoController: AutoController
-    private val teleopController: TeleopController
 
-    init {
-        autoController = AutoController(Routine("Baseline", Pose2d(),
-            RamseteAction( arrayOf<Pose2d>(
-                Pose2d(),
-                Pose2d(1.0.meters, 0.0.meters, 0.0.radians)
-            ))
-        ))
-
-        teleopController = TeleopController(XboxDriver, XboxCodriver)
-
-        // maximum update speed for Network tables, seconds
-
-        NetworkTableInstance.getDefault().setUpdateRate(0.01)
-
-        // add subsystems to manager
-
-        +Climber
-        +Drivetrain
-        +Hood
-        +Intake
-        +Shooger
-        +Storage
-        +Vision
+    object DriverControls {
+        public val driverXbox = XboxController(0)
+        public fun getLeft() = driverXbox.getY( Hand.kLeft )
+        public fun getRight() = driverXbox.getY( Hand.kRight )
     }
 
+    val leftMasterMotor = TalonFX(3)
 
-    fun reset() {
-        teleopController.reset()
-        autoController.reset()
+    private val leftSlave = TalonFX(4)
 
-        // turn limelight off
-        Vision.off()
-    }
+    val rightMasterMotor = TalonFX(5)
 
-    override fun robotInit() {
-    }
+    private val rightSlave = TalonFX(6)
 
-    override fun robotPeriodic() {
-    }
+    init  {
+        leftSlave.apply {
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
-    override fun disabledInit() {
-        reset()
-        Drivetrain.brakeMode = true
-    }
+            // fallow the master
+            follow(leftMasterMotor)
+            setInverted(InvertType.FollowMaster)
 
-    override fun disabledPeriodic() {
-    }
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
 
-    override fun autonomousInit() {
-        reset()
-        SubsystemManager.zeroOutputs()
-        autoController.start()
-    }
+            configClosedLoopPeakOutput(0, 0.4, 100)
+        }
 
-    override fun autonomousPeriodic() {
-        autoController.update()
+        rightSlave.apply {
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+            // fallow the master
+            follow(rightMasterMotor)
+            setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+
+            configClosedLoopPeakOutput(0, 0.4, 100)
+        }
+
+        leftMasterMotor.apply {
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+            setSensorPhase(false)
+            setInverted(false)
+
+            config_kP( 0, 0.0 , 100 )
+            config_kI( 0, 0.0 , 100 )
+            config_kD( 0, 0.0 , 100 )
+            config_kF( 0, 0.0 , 100 )
+
+            setSelectedSensorPosition(0, 0, 100)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+
+            setNeutralMode(NeutralMode.Coast)
+
+            configClosedLoopPeakOutput(0, 0.4, 100)
+        }
+
+        rightMasterMotor.apply {
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+            setSensorPhase(true)
+            setInverted(true)
+
+            config_kP( 0, 0.0 , 100 )
+            config_kI( 0, 0.0 , 100 )
+            config_kD( 0, 0.0 , 100 )
+            config_kF( 0, 0.0 , 100 )
+
+            setSelectedSensorPosition(0, 0, 100)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+
+            setNeutralMode(NeutralMode.Coast)
+
+            configClosedLoopPeakOutput(0, 0.4, 100)
+        }
     }
 
     override fun teleopInit() {
-        reset()
-        teleopController.start()
     }
 
     override fun teleopPeriodic() {
-        teleopController.update()
+        leftMasterMotor.set(ControlMode.PercentOutput, DriverControls.getLeft())
+        rightMasterMotor.set(ControlMode.PercentOutput, DriverControls.getRight())
     }
 
-    override fun testInit() {
-    }
-
-    override fun testPeriodic() {
-
-    }
 }
