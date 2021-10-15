@@ -30,7 +30,13 @@ class Robot : BerkeliumRobot(0.02.seconds) {
         public val driverXbox = XboxController(0)
         public fun getPower() = driverXbox.getY( Hand.kLeft )
         public fun getDirection() = driverXbox.getX( Hand.kRight )
+        public fun getSlowMode() = driverXbox.getAButtonPressed()
+        public fun getReverse() = driverXbox.getBButtonPressed()
     }
+
+    var front=1
+
+    var slow=false
 
     val leftMasterMotor = TalonFX(1)
 
@@ -120,10 +126,29 @@ class Robot : BerkeliumRobot(0.02.seconds) {
     }
 
     override fun teleopPeriodic() {
-        leftMasterMotor.set(ControlMode.PercentOutput,
-        (DriverControls.getPower() - DriverControls.getDirection())*-0.05)
-        rightMasterMotor.set(ControlMode.PercentOutput,
-        (DriverControls.getPower() + DriverControls.getDirection())*-0.05)
+        if (DriverControls.getSlowMode()==true){
+            slow = !slow
+        }
+
+        if (DriverControls.getReverse()==true){
+            front *= -1
+        }
+
+        if (slow==true){
+            leftMasterMotor.set(ControlMode.PercentOutput,
+            (DriverControls.getPower() - DriverControls.getDirection())*-0.05 * front)
+
+            rightMasterMotor.set(ControlMode.PercentOutput,
+            (DriverControls.getPower() + DriverControls.getDirection())*-0.05 * front)
+        }
+
+        else{
+            leftMasterMotor.set(ControlMode.PercentOutput,
+            (DriverControls.getPower() - DriverControls.getDirection())*-0.1 * front)
+
+            rightMasterMotor.set(ControlMode.PercentOutput,
+            (DriverControls.getPower() + DriverControls.getDirection())*-0.1 * front)
+        }
 
     }
 
