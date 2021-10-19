@@ -31,7 +31,8 @@ class Robot : BerkeliumRobot(0.02.seconds) {
         public fun getPower() = driverXbox.getY( Hand.kLeft )
         public fun getDirection() = driverXbox.getX( Hand.kRight )
         public fun getSlowMode() = driverXbox.getAButtonPressed()
-        public fun getReverse() = driverXbox.getBButtonPressed()
+        public fun getReverse() = driverXbox.getYButtonPressed()
+        public fun getSpinLeft() = driverXbox.getXButtonPressed()
     }
 
     var front=1
@@ -143,6 +144,13 @@ class Robot : BerkeliumRobot(0.02.seconds) {
         }
 
         else{
+            leftMasterMotor.set(ControlMode.PercentOutput,
+            (DriverControls.getPower() - DriverControls.getDirection())*-0.1 * front)
+
+            rightMasterMotor.set(ControlMode.PercentOutput,
+            (DriverControls.getPower() + DriverControls.getDirection())*-0.1 * front)
+        }
+        if (DriverControls.getSpinLeft){
             leftMasterMotor.set(ControlMode.PercentOutput,
             (DriverControls.getPower() - DriverControls.getDirection())*-0.1 * front)
 
