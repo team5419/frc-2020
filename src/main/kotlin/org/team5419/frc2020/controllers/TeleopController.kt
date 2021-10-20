@@ -214,9 +214,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
 
         if ( driver.adjustHoodUp() )
-            shotSetpoint = Setpoint( shotSetpoint.angle + 1.0, shotSetpoint.velocity )
+            shotSetpoint = Setpoint( shotSetpoint.angle + 0.2, shotSetpoint.velocity )
         else if ( driver.adjustHoodDown() )
-            shotSetpoint = Setpoint( shotSetpoint.angle - 1.0, shotSetpoint.velocity )
+            shotSetpoint = Setpoint( shotSetpoint.angle - 0.2, shotSetpoint.velocity )
 
         if ( false ) { // disabled until hood lookup table is complete
             println("Its true")

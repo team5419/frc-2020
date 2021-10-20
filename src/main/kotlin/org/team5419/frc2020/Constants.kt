@@ -106,8 +106,8 @@ object HoodConstants {
     }
 
     object Truss { // semi-far shot
-        public const val angle = 14.8
-        public const val velocity = 4700.0
+        public const val angle = 12.7
+        public const val velocity = 4000.0
     }
 
     object Close { // close shot
