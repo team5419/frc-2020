@@ -32,7 +32,7 @@ object XboxDriver : DriverControls {
 
     // hood functions
 
-    override public fun retractHood(): Boolean = driverXbox.getBButton()
+    override public fun retractHood(): Boolean =  false //driverXbox.getBButton()
 
     override public fun adjustHoodUp(): Boolean = driverXbox.getBButtonPressed()
 
