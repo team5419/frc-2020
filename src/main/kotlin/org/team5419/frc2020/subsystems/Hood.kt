@@ -34,14 +34,14 @@ object Hood : Subsystem("Hood") {
             config_kD(0, HoodConstants.PID.D, 100)
 
             // make sure it dosent go to fast
-            configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 100)
+
 
             // limit the current to not brown out
             configPeakCurrentLimit(20, 100)
 
             // config the sensor and direction
             configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 100)
-            setSensorPhase(true)
+            setSensorPhase(false)
             setInverted(true)
 
             setNeutralMode(NeutralMode.Brake)
@@ -52,7 +52,7 @@ object Hood : Subsystem("Hood") {
             configReverseSoftLimitThreshold( angleToNativeUnits( 0.0 ).toInt(), 100)
             configReverseSoftLimitEnable(true, 100)
 
-            configClosedLoopPeakOutput(0, 0.4, 100)
+            configClosedLoopPeakOutput(0, HoodConstants.MaxSpeed, 100)
 
             // reset the sensor
             setSelectedSensorPosition(0, 0, 100)
@@ -66,7 +66,7 @@ object Hood : Subsystem("Hood") {
         TRUSS(HoodConstants.Truss.angle/*+HoodConstants.Far.adjustment*/, HoodConstants.Truss.velocity),
         CLOSE(HoodConstants.Close.angle/*+HoodConstants.Close.adjustment*/, HoodConstants.Close.velocity),
         AUTO(HoodConstants.Auto.angle, HoodConstants.Auto.velocity),
-        RETRACT(11.3, 5000.0) // no need to edit this one
+        RETRACT(0.0, 0.0) // no need to edit this one
     }
 
     var mode: ShotSetpoint = HoodPosititions.RETRACT
@@ -94,7 +94,7 @@ object Hood : Subsystem("Hood") {
     // public api
 
     val hoodMinPos = 0.0
-    val hoodMaxPos = 66.0
+    val hoodMaxPos = 714.0
     val hoodDeltaPos = hoodMaxPos - hoodMinPos
 
     fun angleToNativeUnits(angle: Double) =

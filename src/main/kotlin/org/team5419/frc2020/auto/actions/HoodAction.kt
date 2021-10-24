@@ -14,6 +14,7 @@ public class RetractHoodAction(): HoodAction(HoodPosititions.RETRACT)
 open class HoodAction(val pos: HoodPosititions) : Action() {
     override public fun start() {
         Hood.goto(pos)
+        println("hood up")
     }
 
     override public fun next() = true

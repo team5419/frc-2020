@@ -150,7 +150,7 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     @SuppressWarnings("ComplexMethod")
     private fun updateHood() {
-        Hood.checkAndReset()
+        //Hood.checkAndReset()
 
         if ( codriver.deployHoodFar() )
         {

@@ -97,7 +97,12 @@ public class RamseteAction(
         finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
     }
 
+    override public fun start() {
+        println("started motion")
+    }
+
     override fun update(dt: SIUnit<Second>) {
+        println("moving")
         val time = getTime()
 
         val chassisSpeed = controller.calculate(

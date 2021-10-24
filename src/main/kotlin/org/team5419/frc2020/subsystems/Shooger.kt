@@ -129,7 +129,7 @@ object Shooger : Subsystem("Shooger") {
         // its active, we want to shoot if at full speed
         active = true
 
-        println("attempted velocity"+shoogVelocity)
+        //println("attempted velocity"+shoogVelocity)
         // tell it to go to target velocity
         setShoogerVelocity(shoogVelocity)
     }

@@ -101,35 +101,35 @@ object HoodConstants {
     public const val HoodPort = 10
 
     object Far { // farthest shot
-        public const val angle = 15.0
+        public const val angle = 13.0
         public const val velocity = 5000.0
     }
 
     object Truss { // semi-far shot
-        public const val angle = 14.8
-        public const val velocity = 4700.0
+        public const val angle = 13.1
+        public const val velocity = 4000.0
     }
 
     object Close { // close shot
-        public const val angle = 3.0
+        public const val angle = 2.5
         public const val velocity = 3000.0
     }
 
     object Auto { // autonomous shot
-        public const val angle = 12.5
-        public const val velocity = 3000.0
+        public const val angle = 11.25
+        public const val velocity = 4000.0
     }
 
     object PID {
-        public const val P = 120.0
+        public const val P = 4.0
         public const val I = 0.01
-        public const val D = 12000.00
+        public const val D = 100.0
     }
 
-    public val MaxSpeed = 0.3
+    public val MaxSpeed = 0.85
     public val MaxAngle = 18.0
 
-    public val TicksPerRotation = 66
+    public val TicksPerRotation = 714.0
     public val GearRatio = 4.0/1.0
 }
 
@@ -185,7 +185,7 @@ object VisionConstants {
     public const val MaxOffsetFor2XZoom = 10.0
 
     object PID {
-        public const val P = 0.015
+        public const val P = 0.01
         public const val I = 0.006
         public const val D = 0.0005
     }

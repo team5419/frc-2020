@@ -22,30 +22,30 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory
 val routines = arrayOf<Routine>(
     Routine("Alliance Trech - Target Start", Pose2d(),
         // shoog from starting position
+        //AutoAlignAction(),
+        IntakeAction(),
         AutoHoodAction(),
-        SpinUpAction(10.seconds),
+        //SpinUpAction(5.seconds),
         //IndexedShoogAction(3),
-        TimedShoogAction(5.seconds),
-        RamseteAction( arrayOf<Pose2d>(
-            Pose2d(),
-            Pose2d(3.0.meters, 0.0.meters, 0.0.radians)
-        ))
+        AlignShootAction(5.seconds),
         //TimedShoogAction(3.seconds)
 
         // bring hood back down and turn intake on
-        /*RetractHoodAction(),
+        RetractHoodAction(),
         DeployIntakeAction(),
 
         // navigate to behind trench
-        IntakeAction(),
-        PassiveStorageAction(),8
-        RamseteAction( arrayOf<Pose2d>(
-            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            Pose2d(2.0.meters, -1.70.meters, 0.0.radians),
-            Pose2d(2.3.meters, -1.70.meters, 0.0.radians),
-            Pose2d(6.3.meters, -1.70.meters, 0.0.radians)
+
+        DisableStorageAction(),
+        /*RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(3.5.meters, 0.0.meters, 5.0.degrees)
         ) ),
         RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(-3.5.meters, 0.0.meters, 0.0.degrees)
+        ) ),
+        ,RamseteAction( arrayOf<Pose2d>(
             Pose2d(6.3.meters, -1.70.meters, 0.0.radians),
             // Pose2d(5.5.meters, -1.70.meters, 0.0.radians),
             Pose2d(5.0.meters, -1.65.meters, -5.0.degrees)
@@ -53,10 +53,11 @@ val routines = arrayOf<Routine>(
 
         // align and shoog
         SpinUpAction(),
-        AutoAlignAction(),
-        FarHoodAction(),
-        IndexedShoogAction(5),
-        DisableIntakeAction()*/
+        //AutoAlignAction(),
+        AutoHoodAction(),
+        AlignShootAction(6.seconds),
+        DisableStorageAction(),*/
+        DisableIntakeAction()
 
     ),
 

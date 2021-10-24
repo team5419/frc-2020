@@ -42,6 +42,7 @@ object Vision : Subsystem("Vision") {
     init {
         tab.addNumber("Offset", { limelight.horizontalOffset })
         tab.addBoolean("Aligned", { aligned() })
+        tab.addNumber("Horizontal Distance", { limelight.horizontalDistance.inMeters() })
     }
 
     // auto alignment
