@@ -42,6 +42,11 @@ object Storage : Subsystem("Storage") {
                     hopper.set( ControlMode.PercentOutput, -0.5 )
                     feeder.set( ControlMode.PercentOutput, -0.5 )
                 }
+
+                /*StorageMode.UNJAM -> {
+                    hopper.set( ControlMode.PercentOutput, -0.5 )
+                    feeder.set( ControlMode.PercentOutput, -0.5 )
+                }*/
             }
 
             lastMode = field

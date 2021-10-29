@@ -61,7 +61,7 @@ object Climber : Subsystem("Climber") {
         winchMotor.set(ControlMode.PercentOutput, percent)
     }
 
-    fun retractWinch(percent: Double = -0.5) {
+    fun retractWinch(percent: Double = -1.0) {
         winchMotor.set(ControlMode.PercentOutput, percent)
     }
 

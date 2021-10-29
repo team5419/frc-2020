@@ -66,17 +66,20 @@ object Hood : Subsystem("Hood") {
         TRUSS(HoodConstants.Truss.angle/*+HoodConstants.Far.adjustment*/, HoodConstants.Truss.velocity),
         CLOSE(HoodConstants.Close.angle/*+HoodConstants.Close.adjustment*/, HoodConstants.Close.velocity),
         AUTO(HoodConstants.Auto.angle, HoodConstants.Auto.velocity),
-        RETRACT(0.0, 0.0) // no need to edit this one
+        RETRACT(0.0, 0.0), // no need to edit this one
+        RESET(-1.0, -1.0) // used if the robot has reset so that you can move hood (especially in auto)
     }
 
-    var mode: ShotSetpoint = HoodPosititions.RETRACT
+    var mode: ShotSetpoint = HoodPosititions.RESET
         set(value: ShotSetpoint) {
             if (value == field) return
             if (field.angle == value.angle && field.velocity == value.velocity) return
 
             field = value
 
-            goto(value.angle)
+            if(value.angle >= 0.0 && value.velocity >= 0.0) { // dont move if you're just resetting
+                goto(value.angle)
+            }
         }
 
     init {
@@ -137,6 +140,7 @@ object Hood : Subsystem("Hood") {
     fun reset() {
         println("hood reset")
         hoodMotor.set(ControlMode.PercentOutput, 0.0)
+        mode = HoodPosititions.RESET
     }
 
     override fun autoReset() = reset()

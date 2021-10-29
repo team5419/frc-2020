@@ -31,7 +31,7 @@ object Intake : Subsystem("Intake") {
 
 
         //
-        setNeutralMode(NeutralMode.Brake)
+        setNeutralMode(NeutralMode.Coast)
 
         setSensorPhase(false)
         setInverted(true)
@@ -77,7 +77,7 @@ object Intake : Subsystem("Intake") {
 
     // deploy modes
 
-    public enum class DeployMode {
+    /*public enum class DeployMode {
         DEPLOY,
         STORE,
         OFF
@@ -100,7 +100,7 @@ object Intake : Subsystem("Intake") {
             }
 
             field = mode
-        }
+        }*/
 
     // deploy functions
 
@@ -113,21 +113,23 @@ object Intake : Subsystem("Intake") {
     }*/
 
     public fun store() {
-        deployMode = DeployMode.STORE
+        deployMotor.set(ControlMode.PercentOutput, 0.5)
+        //deployMode = DeployMode.STORE
 
         // turn off the intake, were storing it
         intakeMode = IntakeMode.OFF
     }
 
     public fun deploy() {
-        deployMode = DeployMode.DEPLOY
+        deployMotor.set(ControlMode.PercentOutput, 0.0)
+        //deployMode = DeployMode.DEPLOY
     }
 
-    public fun stopDeploy() {
+    /*public fun stopDeploy() {
         if( deployMode != DeployMode.STORE ) {
             deployMode = DeployMode.OFF
         }
-    }
+    }*/
 
     // intake functions
 
@@ -145,19 +147,20 @@ object Intake : Subsystem("Intake") {
 
     public fun isActive() = intakeMode == IntakeMode.INTAKE
 
-    public fun isAtSetPoint() =
-        deployMotor.getClosedLoopError() < 30
+    //public fun isAtSetPoint() =
+    //    deployMotor.getClosedLoopError() < 30
 
     // combined functions
 
     public fun stop() {
-        stopDeploy()
+        //stopDeploy()
         stopIntake()
     }
 
     // subsystem functions
     fun reset() {
-        deployMode = DeployMode.OFF
+        //deployMode = DeployMode.OFF
+        deployMotor.set(ControlMode.PercentOutput, 0.0)
         intakeMode = IntakeMode.OFF
     }
 

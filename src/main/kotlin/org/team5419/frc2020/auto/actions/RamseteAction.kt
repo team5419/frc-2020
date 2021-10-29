@@ -98,11 +98,14 @@ public class RamseteAction(
     }
 
     override public fun start() {
+        timer.stop()
+        timer.reset()
+        timer.start()
         println("started motion")
     }
 
     override fun update(dt: SIUnit<Second>) {
-        println("moving")
+        //println("moving")
         val time = getTime()
 
         val chassisSpeed = controller.calculate(
@@ -131,5 +134,10 @@ public class RamseteAction(
             leftFeedForward.volts,
             rightFeedForward.volts
         )
+    }
+
+
+    override public fun finish() {
+        println("done driving")
     }
 }

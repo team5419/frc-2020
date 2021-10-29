@@ -11,21 +11,28 @@ import org.team5419.frc2020.fault.math.units.Second
 import org.team5419.frc2020.fault.math.units.SIUnit
 import org.team5419.frc2020.fault.auto.Action
 
+import org.team5419.frc2020.fault.math.units.seconds
+
+import org.team5419.frc2020.StorageConstants
+
 public class AlignShootAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
     init {
         this.withTimeout(timeout)
     }
 
-    override fun start() {
+    override public fun start() {
+        timer.stop()
+        timer.reset()
+        timer.start()
         Vision.on()
         Drivetrain.brakeMode = true
     }
 
-    override fun update(dt: SIUnit<Second>) {
+    override public fun update(dt: SIUnit<Second>) {
         Drivetrain.setPercent(Vision.autoAlign())
         Shooger.shoog(Hood.mode)
 
-        if ( Shooger.isHungry() && Storage.isLoadedBall && { Vision.calculate(); Vision.aligned() }()) {
+        if ( Shooger.isHungry() && Storage.isLoadedBall && Vision.aligned()) {
             //println("load (is aligned)")
             Storage.mode = StorageMode.LOAD
         } else if ( Storage.mode == StorageMode.LOAD && !Storage.isLoadedBall) {
@@ -33,17 +40,22 @@ public class AlignShootAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
             Storage.mode = StorageMode.PASSIVE
         } else {
             //println("waiting for ir sensor")
-            Storage.mode = StorageMode.PASSIVE
+            if(timer.get().value.seconds.rem(StorageConstants.LoopTime) < StorageConstants.OffTime) {
+                Storage.mode = StorageMode.REVERSE // off cycle
+            } else {
+                Storage.mode = StorageMode.PASSIVE
+            }
         }
     }
 
-    override fun finish() {
+    override public fun finish() {
+        println("done shooting")
         Shooger.stop()
         Vision.off()
         // put the drive train back in coast mode
         Drivetrain.brakeMode = false
 
         // make sure the drive train has stoped moving
-        Drivetrain.setPercent(0.0, 0.0)
+    Drivetrain.setPercent(0.0, 0.0)
     }
 }

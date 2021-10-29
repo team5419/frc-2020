@@ -7,9 +7,9 @@ import org.team5419.frc2020.fault.auto.Action
 
 public class FarHoodAction() : HoodAction(HoodPosititions.FAR)
 public class TrussHoodAction() : HoodAction(HoodPosititions.TRUSS)
-public class AutoHoodAction(): HoodAction(HoodPosititions.AUTO)
-public class CloseHoodAction(): HoodAction(HoodPosititions.CLOSE)
-public class RetractHoodAction(): HoodAction(HoodPosititions.RETRACT)
+public class AutoHoodAction() : HoodAction(HoodPosititions.AUTO)
+public class CloseHoodAction() : HoodAction(HoodPosititions.CLOSE)
+public class RetractHoodAction() : HoodAction(HoodPosititions.RETRACT)
 
 open class HoodAction(val pos: HoodPosititions) : Action() {
     override public fun start() {

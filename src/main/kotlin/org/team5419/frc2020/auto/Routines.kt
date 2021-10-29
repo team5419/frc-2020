@@ -22,41 +22,32 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory
 val routines = arrayOf<Routine>(
     Routine("Alliance Trech - Target Start", Pose2d(),
         // shoog from starting position
-        //AutoAlignAction(),
         IntakeAction(),
         AutoHoodAction(),
-        //SpinUpAction(5.seconds),
-        //IndexedShoogAction(3),
         AlignShootAction(5.seconds),
-        //TimedShoogAction(3.seconds)
 
         // bring hood back down and turn intake on
         RetractHoodAction(),
         DeployIntakeAction(),
 
-        // navigate to behind trench
+        // // navigate to behind trench
 
-        DisableStorageAction(),
-        /*RamseteAction( arrayOf<Pose2d>(
-            Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(3.5.meters, 0.0.meters, 5.0.degrees)
-        ) ),
+        // DisableStorageAction(),
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(-3.5.meters, 0.0.meters, 0.0.degrees)
+            Pose2d(3.5.meters, 0.0.meters, 0.0.degrees)
         ) ),
-        ,RamseteAction( arrayOf<Pose2d>(
-            Pose2d(6.3.meters, -1.70.meters, 0.0.radians),
-            // Pose2d(5.5.meters, -1.70.meters, 0.0.radians),
-            Pose2d(5.0.meters, -1.65.meters, -5.0.degrees)
-        ), reversed=true),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(3.5.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(0.0.meters, 0.0.meters, 0.0.degrees)
+        ), reversed = true ),
 
         // align and shoog
-        SpinUpAction(),
+        //SpinUpAction(),
         //AutoAlignAction(),
         AutoHoodAction(),
         AlignShootAction(6.seconds),
-        DisableStorageAction(),*/
+        DisableStorageAction(),
         DisableIntakeAction()
 
     ),
@@ -95,7 +86,7 @@ val routines = arrayOf<Routine>(
             Pose2d(130.36.inches, 0.0.meters, 0.0.radians)
         )),
         DisableIntakeAction(),
-        RetractIntakeAction(),
+        //RetractIntakeAction(),
 
         // drive to shooting position
         RamseteAction( arrayOf<Pose2d>(

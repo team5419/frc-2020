@@ -10,6 +10,7 @@ public class DisableIntakeAction(): ConfigIntakeAction(IntakeMode.OFF)
 
 open class ConfigIntakeAction(val intake: IntakeMode): Action() {
     override fun start() {
+        println("intake action")
         Intake.intakeMode = intake
     }
 

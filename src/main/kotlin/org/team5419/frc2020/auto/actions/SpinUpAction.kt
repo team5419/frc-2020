@@ -13,7 +13,12 @@ public class SpinUpAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
     init {
         withTimeout(timeout)
     }
-    override fun start() = Shooger.spinUp(Hood.mode)
+    override fun start() {
+        timer.stop()
+        timer.reset()
+        timer.start()
+        Shooger.spinUp(Hood.mode)
+    }
 
     //override fun next() = true
 }

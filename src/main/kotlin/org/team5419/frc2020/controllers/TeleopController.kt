@@ -21,6 +21,12 @@ import edu.wpi.first.wpilibj.GenericHID.Hand
 import edu.wpi.first.wpilibj.GenericHID.RumbleType
 import edu.wpi.first.wpilibj.XboxController
 
+import org.team5419.frc2020.StorageConstants
+
+import org.team5419.frc2020.fault.util.time.ITimer
+import org.team5419.frc2020.fault.util.time.WPITimer
+import org.team5419.frc2020.fault.math.units.seconds
+
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 var complete = false
 var slowMultiplier = InputConstants.SlowMoveMultiplier
@@ -28,10 +34,12 @@ var slowMultiplier = InputConstants.SlowMoveMultiplier
 @SuppressWarnings("LargeClass")
 class TeleopController(val driver: DriverControls, val codriver: CodriverControls) : Controller {
 
-    var isAligning = false
-    var isDeployed = false
+    private val timer: ITimer = WPITimer()
 
-    var shotSetpoint: ShotSetpoint = Hood.HoodPosititions.RETRACT
+    var isAligning = false
+    //var isDeployed = false
+
+    var shotSetpoint: ShotSetpoint = Hood.HoodPosititions.RESET
 
     data class Setpoint ( override val angle: Double, override val velocity: Double  ) : ShotSetpoint
 
@@ -55,6 +63,8 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     override fun start() {
         Vision.zoomOut()
+        timer.reset()
+        timer.start()
     }
 
     override fun update() {
@@ -126,14 +136,12 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     private fun updateIntake() {
         if( codriver.storeIntake() ){
-            isDeployed = !isDeployed
-            if(isDeployed) {
-                Intake.deploy()
-                println("deploy intake")
-            } else {
-                Intake.store()
-                println("store intake")
-            }
+            //isDeployed = !isDeployed
+            Intake.store()
+            println("intake store")
+        } else {
+            Intake.deploy()
+
         }
 
              if ( codriver.outtake() ) Intake.outtake()
@@ -245,15 +253,21 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
         if ( codriver.reverseStorage() ) {
             Storage.reverse()
         } else {
-            Storage.resetReverse()
 
-            if( Shooger.isHungry() ){
+
+            if( Shooger.isHungry() && Storage.isLoadedBall ){
                 Storage.mode = StorageMode.LOAD
             } else if( Intake.isActive() || Shooger.isActive() ) {
-                Storage.mode = StorageMode.PASSIVE
+                if(timer.get().value.seconds.rem(StorageConstants.LoopTime) < StorageConstants.OffTime) {
+                    Storage.mode = StorageMode.REVERSE
+                } else {
+                    Storage.mode = StorageMode.PASSIVE
+                }
             } else {
                 Storage.mode = StorageMode.OFF
             }
+
+
 
             // if( Shooger.isHungry() ) {
             //     Storage.mode = StorageMode.LOAD
@@ -287,5 +301,6 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
 
     override fun reset() {
         Vision.zoomOut()
+        shotSetpoint = Hood.HoodPosititions.RESET
     }
 }

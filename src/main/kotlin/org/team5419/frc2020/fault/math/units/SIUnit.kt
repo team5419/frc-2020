@@ -26,6 +26,7 @@ inline class SIUnit<T : SIKey>(val value: Double) : Comparable<SIUnit<T>> {
     operator fun unaryMinus() = SIUnit<T>(-value)
     operator fun plus(other: SIUnit<T>) = SIUnit<T>(value.plus(other.value))
     operator fun minus(other: SIUnit<T>) = SIUnit<T>(value.minus(other.value))
+    operator fun rem(other: SIUnit<T>) = SIUnit<T>(value.rem(other.value))
     operator fun times(other: Double) = SIUnit<T>(value.times(other))
     operator fun div(other: Double) = SIUnit<T>(value.div(other))
     operator fun times(other: Number) = times(other.toDouble())

@@ -6,6 +6,10 @@ import org.team5419.frc2020.fault.math.units.*
 import org.team5419.frc2020.fault.math.kEpsilon
 import kotlin.math.PI
 
+import org.team5419.frc2020.fault.math.units.Second
+import org.team5419.frc2020.fault.math.units.SIUnit
+import org.team5419.frc2020.fault.math.units.seconds
+
 object RobotConstants {
     val Mass = 120.lbs
     val Length = 32.inches
@@ -121,8 +125,8 @@ object HoodConstants {
     }
 
     object PID {
-        public const val P = 4.0
-        public const val I = 0.01
+        public const val P = 6.0
+        public const val I = 0.0
         public const val D = 100.0
     }
 
@@ -143,9 +147,13 @@ object StorageConstants {
     public const val FeederLazyPercent = 0.3
     public const val HopperLazyPercent = 0.35
 
-    public const val AutoHopperLazyPercent = 1.0
+    public const val AutoHopperLazyPercent = 0.35
 
     public const val SensorThreshold = 300
+
+    public val LoopTime = 3.0.seconds // every LoopTime seconds is 1 loop of forward and then off cycle
+
+    public val OffTime = 0.2.seconds // time spent in off cycle
 }
 
 object IntakeConstants {

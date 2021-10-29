@@ -12,7 +12,7 @@ import org.team5419.frc2020.fault.util.time.WPITimer
 typealias NothingAction = Action
 
 open class Action(
-    private val timer: ITimer = WPITimer()
+    public val timer: ITimer = WPITimer()
 ) {
 
     protected var mTimeout = 0.0.seconds

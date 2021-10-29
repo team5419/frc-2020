@@ -1,16 +1,17 @@
 package org.team5419.frc2020.auto.actions
 
-import org.team5419.frc2020.subsystems.Intake.DeployMode
+//import org.team5419.frc2020.subsystems.Intake.DeployMode
 import org.team5419.frc2020.subsystems.Intake
 import org.team5419.frc2020.fault.auto.Action
+import com.ctre.phoenix.motorcontrol.ControlMode
 
-public class DeployIntakeAction(): ConfigDeployAction(DeployMode.DEPLOY)
+/*public class DeployIntakeAction(): ConfigDeployAction(DeployMode.DEPLOY)
 public class RetractIntakeAction(): ConfigDeployAction(DeployMode.STORE)
-public class DisableIntakeDeployAction(): ConfigDeployAction(DeployMode.OFF)
+public class DisableIntakeDeployAction(): ConfigDeployAction(DeployMode.OFF)*/
 
-open class ConfigDeployAction(val deploy: DeployMode): Action() {
+open class DeployIntakeAction(): Action() {
     override fun start() {
-        Intake.deployMode = deploy
+        Intake.deployMotor.set(ControlMode.PercentOutput, 0.0)
     }
 
     override fun next() = true
