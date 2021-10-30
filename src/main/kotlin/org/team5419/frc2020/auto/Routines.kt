@@ -23,10 +23,10 @@ val routines = arrayOf<Routine>(
     Routine("In front of target", Pose2d(),
         // shoog from starting position
         IntakeAction(),
-        //SpinUpAction(),
         AutoHoodAction(),
+        SpinUpAction(),
         AutoAlignAction(),
-        TimedShoogAction(4.seconds),
+        TimedShoogAction(3.seconds),
 
         // bring hood back down and turn intake on
 
@@ -35,21 +35,22 @@ val routines = arrayOf<Routine>(
 
         // // navigate to behind trench
 
-        // DisableStorageAction(),
+        //DisableStorageAction(),
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(3.3.meters, 0.0.meters, 0.0.degrees)
+            Pose2d(4.5.meters, 0.0.meters, 0.0.degrees)
         ) ),
+        AutoHoodAction(),
+        SpinUpAction(),
         RamseteAction( arrayOf<Pose2d>(
-            Pose2d(3.3.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(0.0.meters, 0.5.meters, -15.0.degrees)
+            Pose2d(4.5.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(0.0.meters, 0.5.meters, -17.0.degrees)
         ), reversed = true ),
 
         // align and shoog
         //SpinUpAction(),
         //AutoAlignAction(),
-        //SpinUpAction(),
-        AutoHoodAction(),
+        //
         AutoAlignAction(),
         TimedShoogAction(6.seconds),
         DisableStorageAction(),
@@ -60,13 +61,34 @@ val routines = arrayOf<Routine>(
     Routine("Anything else", Pose2d(),
         IntakeAction(),
         AutoHoodAction(),
+        SpinUpAction(),
         AutoAlignAction(),
         TimedShoogAction(7.seconds),
 
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(1.0.meters, 0.0.meters, 0.0.degrees)
+            Pose2d(1.5.meters, 0.0.meters, 0.0.degrees)
         ) )
+    ),
 
+    Routine("Enemy steal", Pose2d(),
+        IntakeAction(),
+        DeployIntakeAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(4.5.meters, 0.0.meters, 0.0.degrees)
+        )),
+        AutoHoodAction(),
+        SpinUpAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(4.5.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(4.5.meters, 5.0.meters, 0.0.degrees)
+        )),
+        AutoAlignAction(),
+        TimedShoogAction(10.seconds),
+
+        DisableIntakeAction(),
+        DisableStorageAction(),
+        RetractHoodAction()
     )
 )

@@ -129,8 +129,8 @@ public class RamseteAction(
         prevSpeed = setSpeed
 
         Drivetrain.setVelocity(
-            setSpeed.leftMetersPerSecond.meters.velocity * 1.2,
-            setSpeed.rightMetersPerSecond.meters.velocity * 1.2,
+            setSpeed.leftMetersPerSecond.meters.velocity * 2.0,
+            setSpeed.rightMetersPerSecond.meters.velocity * 2.0,
             leftFeedForward.volts,
             rightFeedForward.volts
         )
