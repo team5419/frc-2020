@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory
 
 
 val routines = arrayOf<Routine>(
-    Routine("Alliance Trech - Target Start", Pose2d(),
+    Routine("In front of target", Pose2d(),
         // shoog from starting position
         IntakeAction(),
         AutoHoodAction(),
@@ -52,58 +52,15 @@ val routines = arrayOf<Routine>(
 
     ),
 
-    Routine("Alliance Trech - Trench Start", Pose2d(),
-        // shoog from starting position
+    Routine("Anything else", Pose2d(),
+        IntakeAction(),
         AutoHoodAction(),
-        IndexedShoogAction(3),
+        AlignShootAction(5.seconds),
 
-        // bring hood back down and turn intake on
-        RetractHoodAction(),
-        DeployIntakeAction(),
-        TurnAction(140.0, -1),
-
-        // navigate to behind trench
-        IntakeAction(),
         RamseteAction( arrayOf<Pose2d>(
-            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            Pose2d(258.9.inches, 0.0.meters, 0.0.radians)
-        )),
-        DisableIntakeAction(),
+            Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(3.0.meters, 0.0.meters, 0.0.degrees)
+        ) )
 
-        // align and shoog
-        AutoAlignAction(),
-        FarHoodAction(),
-        IndexedShoogAction(5)
-
-    ),
-
-    Routine("Enemy Trech", Pose2d(),
-        // go into enemy trench and steal first balls
-        DeployIntakeAction(),
-        IntakeAction(),
-        RamseteAction( arrayOf<Pose2d>(
-            Pose2d(0.0.meters, 0.0.meters, 0.0.radians),
-            Pose2d(130.36.inches, 0.0.meters, 0.0.radians)
-        )),
-        DisableIntakeAction(),
-        //RetractIntakeAction(),
-
-        // drive to shooting position
-        RamseteAction( arrayOf<Pose2d>(
-            Pose2d(130.36.inches, 0.0.meters, 0.0.radians),
-            Pose2d(0.0.meters, 3.0.meters, 0.0.radians)
-        ), reversed=true),
-
-        // shoot the balls
-        AlignAndIndexedShoogAction(5),
-
-        // pick up more balls
-        DeployIntakeAction(),
-        IntakeAction(),
-
-        RamseteAction(arrayOf<Pose2d>(
-            Pose2d(130.36.inches, 0.0.meters, 0.0.radians),
-            Pose2d(3.meters, 1.meters, 30.degrees)
-        ))
     )
 )
