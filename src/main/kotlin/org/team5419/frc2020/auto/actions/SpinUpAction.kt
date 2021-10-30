@@ -9,9 +9,9 @@ import org.team5419.frc2020.fault.math.units.Second
 import org.team5419.frc2020.fault.math.units.SIUnit
 import org.team5419.frc2020.fault.auto.Action
 
-public class SpinUpAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
+public class SpinUpAction(/*timeout: SIUnit<Second> = ShoogTime*/) : Action() {
     init {
-        withTimeout(timeout)
+       // withTimeout(timeout)
     }
     override fun start() {
         timer.stop()
@@ -20,5 +20,5 @@ public class SpinUpAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
         Shooger.spinUp(Hood.mode)
     }
 
-    //override fun next() = true
+    override fun next() = true
 }

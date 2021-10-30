@@ -110,7 +110,7 @@ object HoodConstants {
     }
 
     object Truss { // semi-far shot
-        public const val angle = 13.1
+        public const val angle = 13.5 // 13.1
         public const val velocity = 4000.0
     }
 
@@ -120,7 +120,7 @@ object HoodConstants {
     }
 
     object Auto { // autonomous shot
-        public const val angle = 11.25
+        public const val angle = 12.0
         public const val velocity = 4000.0
     }
 
@@ -184,7 +184,7 @@ object VisionConstants {
 
     public val TargetHeight = 2.28.meters
 
-    public val Tolerance = 0.3
+    public val Tolerance = 3.0
 
     public val MaxAutoAlignSpeed = 0.15
 

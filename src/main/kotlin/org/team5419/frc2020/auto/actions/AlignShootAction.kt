@@ -56,6 +56,6 @@ public class AlignShootAction(timeout: SIUnit<Second> = ShoogTime) : Action() {
         Drivetrain.brakeMode = false
 
         // make sure the drive train has stoped moving
-    Drivetrain.setPercent(0.0, 0.0)
+        Drivetrain.setPercent(0.0, 0.0)
     }
 }

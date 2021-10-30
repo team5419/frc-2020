@@ -23,10 +23,13 @@ val routines = arrayOf<Routine>(
     Routine("In front of target", Pose2d(),
         // shoog from starting position
         IntakeAction(),
+        //SpinUpAction(),
         AutoHoodAction(),
-        AlignShootAction(5.seconds),
+        AutoAlignAction(),
+        TimedShoogAction(4.seconds),
 
         // bring hood back down and turn intake on
+
         RetractHoodAction(),
         DeployIntakeAction(),
 
@@ -35,18 +38,20 @@ val routines = arrayOf<Routine>(
         // DisableStorageAction(),
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(3.5.meters, 0.0.meters, 0.0.degrees)
+            Pose2d(3.3.meters, 0.0.meters, 0.0.degrees)
         ) ),
         RamseteAction( arrayOf<Pose2d>(
-            Pose2d(3.5.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(0.0.meters, 0.0.meters, 0.0.degrees)
+            Pose2d(3.3.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(0.0.meters, 0.5.meters, -15.0.degrees)
         ), reversed = true ),
 
         // align and shoog
         //SpinUpAction(),
         //AutoAlignAction(),
+        //SpinUpAction(),
         AutoHoodAction(),
-        AlignShootAction(6.seconds),
+        AutoAlignAction(),
+        TimedShoogAction(6.seconds),
         DisableStorageAction(),
         DisableIntakeAction()
 
@@ -55,11 +60,12 @@ val routines = arrayOf<Routine>(
     Routine("Anything else", Pose2d(),
         IntakeAction(),
         AutoHoodAction(),
-        AlignShootAction(5.seconds),
+        AutoAlignAction(),
+        TimedShoogAction(7.seconds),
 
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(3.0.meters, 0.0.meters, 0.0.degrees)
+            Pose2d(1.0.meters, 0.0.meters, 0.0.degrees)
         ) )
 
     )

@@ -163,6 +163,10 @@ object Shooger : Subsystem("Shooger") {
     private fun setShoogerVelocity(shoogVelocity: Double) {
         if ( shoogVelocity == setpointVelocity ) return
 
+        if(shoogVelocity < 0) {
+            return
+        }
+
         // set the setpoints to the given velocity
         setpointVelocity = shoogVelocity
         setpoint = calculateSetpoint(shoogVelocity)

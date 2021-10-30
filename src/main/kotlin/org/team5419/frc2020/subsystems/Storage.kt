@@ -40,7 +40,7 @@ object Storage : Subsystem("Storage") {
 
                 StorageMode.REVERSE -> {
                     hopper.set( ControlMode.PercentOutput, -0.5 )
-                    feeder.set( ControlMode.PercentOutput, -0.5 )
+                    feeder.set( ControlMode.PercentOutput, 0.0 )
                 }
 
                 /*StorageMode.UNJAM -> {
