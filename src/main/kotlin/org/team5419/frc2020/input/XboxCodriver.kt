@@ -28,7 +28,7 @@ object XboxCodriver: CodriverControls {
 
     // hood functions
 
-    override public fun deployHoodFar(): Boolean = codriverXbox.getPOV() == 0
+    override public fun deployHoodAuto(): Boolean = codriverXbox.getPOV() == 0
 
     override public fun deployHoodClose(): Boolean = codriverXbox.getPOV() == 90
 

@@ -28,7 +28,7 @@ object XboxDriver : DriverControls {
 
     override public fun adjustOffsetLeft(): Double = 0.0 //driverXbox.getTriggerAxis(Hand.kLeft)
 
-    override public fun adjustOffsetRight(): Double = driverXbox.getTriggerAxis(Hand.kRight)
+    override public fun adjustOffsetRight(): Double = 0.0 //driverXbox.getTriggerAxis(Hand.kRight)
 
     // hood functions
 

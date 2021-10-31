@@ -160,9 +160,9 @@ class TeleopController(val driver: DriverControls, val codriver: CodriverControl
     private fun updateHood() {
         //Hood.checkAndReset()
 
-        if ( codriver.deployHoodFar() )
+        if ( codriver.deployHoodAuto() )
         {
-            shotSetpoint = Hood.HoodPosititions.FAR
+            shotSetpoint = Hood.HoodPosititions.AUTO
             //resetAdjustment()
         }
         else if ( codriver.deployHoodTruss())
