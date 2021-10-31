@@ -151,7 +151,7 @@ object StorageConstants {
 
     public const val SensorThreshold = 300
 
-    public val LoopTime = 3.0.seconds // every LoopTime seconds is 1 loop of forward and then off cycle
+    public val LoopTime = 2.0.seconds // every LoopTime seconds is 1 loop of forward and then off cycle
 
     public val OffTime = 0.2.seconds // time spent in off cycle
 }

@@ -76,17 +76,41 @@ val routines = arrayOf<Routine>(
         DeployIntakeAction(),
         RamseteAction( arrayOf<Pose2d>(
             Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(4.5.meters, 0.0.meters, 0.0.degrees)
+            Pose2d(2.75.meters, 0.0.meters, -7.0.degrees)
+        )),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(2.75.meters, 0.0.meters, -7.0.degrees),
+            Pose2d(-0.5.meters, -3.5.meters, 17.0.degrees)
+        ), reversed = true),
+        AutoHoodAction(),
+        SpinUpAction(),
+        AutoAlignAction(),
+        TimedShoogAction(10.seconds),
+
+        DisableIntakeAction(),
+        DisableStorageAction(),
+        RetractHoodAction()
+    ),
+
+    Routine("Enemy steal with extra ball", Pose2d(),
+        IntakeAction(),
+        DeployIntakeAction(),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(0.0.meters, 0.0.meters, 0.0.degrees),
+            Pose2d(2.75.meters, 0.0.meters, 15.0.degrees) // pick up trench balls
         )),
         AutoHoodAction(),
         SpinUpAction(),
         RamseteAction( arrayOf<Pose2d>(
-            Pose2d(4.5.meters, 0.0.meters, 0.0.degrees),
-            Pose2d(4.5.meters, 5.0.meters, 0.0.degrees)
-        )),
+            Pose2d(2.75.meters, 0.0.meters, 15.0.degrees),
+            Pose2d(-0.5.meters, -3.5.meters, 17.0.degrees) // go to auto line and shoot
+        ), reversed = true),
         AutoAlignAction(),
-        TimedShoogAction(10.seconds),
-
+        TimedShoogAction(5.seconds),
+        RamseteAction( arrayOf<Pose2d>(
+            Pose2d(-0.5.meters, -3.5.meters, 17.0.degrees),
+            Pose2d(3.2.meters, -3.5.meters, 0.0.degrees) // drive back to pick up more balls (only if we have time)
+        )),
         DisableIntakeAction(),
         DisableStorageAction(),
         RetractHoodAction()
