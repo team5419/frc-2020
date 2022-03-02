@@ -10,7 +10,7 @@ public class Main {
     companion object {
         @JvmStatic
         public fun main(args: Array<String>) {
-            Robot().start()
+            Robot().start() //;;;;;;;;;
         }
     }
 }
